@@ -1,3 +1,32 @@
+:root {
+    --bg-estado: #a9dfbf48;
+    --bg-reporte:#31313167;
+    --bg-servicio :#31313167;
+    --bg-wifi:#cb1656;
+}
+ion-toolbar {
+    --background: transparent;
+    --ion-color-base: transparent !important;
+}
+ion-content{
+    --background: transparent;
+    --ion-color-base: transparent !important;
+}
+body{
+    background-color: rgb(243, 242, 242);
+}
+/*
+ion-item.selected{
+    background-color: #3691ef !important;
+    color: #fff !important;
+}
+ion-item.selected> ion-icon {
+    background-color: #3691ef !important;
+    color: #fff !important;
+}*/
+.font-weight-light{
+    font-size: 0.7em;
+}
 .mt-n1 {
     margin-top: -0.25rem !important;
 }
@@ -14,17 +43,39 @@
     margin-top: -2.5rem !important;
 }
 .success{
-    background-color: #a9dfbf48 !important;
+    background-color:var(--bg-estado) !important;
 }
 .dark{
-    background-color: #31313167 !important;
+    background-color: var(--bg-reporte)!important;
 }
 .info{
-    background-color: #cb1656 !important;
+    background-color: var(--bg-wifi) !important;
 }
 .border-activo{
     background-color: #4649460e;
     color: #67a958 !important;
+}
+.icon-app{
+    font-size: 35px;
+    color: #fff;
+}
+.reporte{
+    background-color: #3692ef1e !important;
+    color: #3691ef !important;
+}
+.wifi{
+    background-color: #cb1656 !important;
+}
+.wifi-sm{
+    background-color: #cb165517 !important;
+    color: #cb1656 !important;
+}
+.options{
+    cursor: pointer;
+    transition: 1.3s;
+}
+.options:hover{
+    transform: scale(1.1);
 }
 .shadow {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
@@ -47,24 +98,9 @@
 .shadow-none {
     box-shadow: none !important;
 }
-.shadow-xs{
-box-shadow: 1px 5px 5px 0px rgba(0, 0, 0, 0.18);
+
+.shadow-xs {
+    box-shadow: 1px 5px 5px 0px rgba(0, 0, 0, 0.18);
     -webkit-box-shadow: 1px 5px 5px 0px rgba(0, 0, 0, 0.18);
     -moz-box-shadow: 1px 5px 5px 0px rgba(0, 0, 0, 0.18);
-}
-
-.icon-app{
-    font-size: 35px;
-    color: #fff;
-}
-.reporte{
-    background-color: #3692ef1e !important;
-    color: #3691ef !important;
-}
-.wifi{
-    background-color: #cb1656 !important;
-}
-.wifi-sm{
-    background-color: #cb165517 !important;
-    color: #cb1656 !important;
 }
