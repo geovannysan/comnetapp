@@ -34,7 +34,7 @@ const Page: React.FC = () => {
     });
   };
   return (
-    <div className=' h-100'>
+    <IonContent fullscreen>
       <IonHeader className="ion-no-border " >
         <IonToolbar className='ion-toolbar-transparent' >
           <IonButtons slot="start">
@@ -62,7 +62,7 @@ const Page: React.FC = () => {
         </Switch>
 
       </div>
-    </div>
+    </IonContent>
   );
 };
 

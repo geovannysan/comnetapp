@@ -1,20 +1,25 @@
 :root {
     --bg-estado: #a9dfbf48;
-    --bg-reporte:#31313167;
-    --bg-servicio :#31313167;
-    --bg-wifi:#cb1656;
+    --bg-reporte: #31313167;
+    --bg-servicio: #31313167;
+    --bg-wifi: #cb1656;
 }
+
 ion-toolbar {
     --background: transparent;
     --ion-color-base: transparent !important;
 }
-ion-content{
+
+ion-content {
     --background: transparent;
     --ion-color-base: transparent !important;
 }
-body{
+
+body {
     background-color: rgb(243, 242, 242);
 }
+
+
 /*
 ion-item.selected{
     background-color: #3691ef !important;
@@ -24,59 +29,76 @@ ion-item.selected> ion-icon {
     background-color: #3691ef !important;
     color: #fff !important;
 }*/
-.font-weight-light{
+
+.font-weight-light {
     font-size: 0.7em;
 }
+
 .mt-n1 {
     margin-top: -0.25rem !important;
 }
+
 .mt-n2 {
     margin-top: -0.50rem !important;
 }
+
 .mt-n3 {
     margin-top: -0.750rem !important;
 }
+
 .mt-n4 {
     margin-top: -1.0rem !important;
 }
+
 .mt-n5 {
-    margin-top: -2.5rem !important;
+    margin-top: -1.8rem !important;
 }
-.success{
-    background-color:var(--bg-estado) !important;
+
+.success {
+    background-color: var(--bg-estado) !important;
 }
-.dark{
+
+.dark {
     background-color: var(--bg-reporte)!important;
 }
-.info{
+
+.info {
     background-color: var(--bg-wifi) !important;
 }
-.border-activo{
+
+.border-activo {
     background-color: #4649460e;
     color: #67a958 !important;
 }
-.icon-app{
+
+.icon-app {
     font-size: 35px;
     color: #fff;
 }
-.reporte{
+
+.reporte {
     background-color: #3692ef1e !important;
     color: #3691ef !important;
 }
-.wifi{
+
+.wifi {
     background-color: #cb1656 !important;
 }
-.wifi-sm{
+
+.wifi-sm {
     background-color: #cb165517 !important;
     color: #cb1656 !important;
 }
-.options{
+
+.options {
     cursor: pointer;
     transition: 1.3s;
 }
-.options:hover{
+
+.options:hover {
     transform: scale(1.1);
 }
+
 .shadow {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
