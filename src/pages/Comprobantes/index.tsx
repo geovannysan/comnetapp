@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
+export default function ComprovanteViews() {
+    useEffect(() => {
 
-export default function ComprovanteViews (){
-    return(
+
+    }, [])
+
+
+    return (
         <div className="container " >
             <h5>Comprobantes</h5>
 
-            <div className="card">
-                <div className="card-body">
-                    <table className="table table-striped  table-bordered">
+            <div className="bg-white">
+                <div className="w-100 py-3 bg-dark">
+                    <div className="text-white ps-2">
+                        <i className="bi bi-file-earmark-pdf"></i> Comprobantes
+                    </div>
+                </div>
+                <div className="p-2">
+                    <table id="example" className="table table-striped  table-bordered">
                         <thead>
                             <tr>
-                                
+
                                 <th >No</th>
                                 <th >No LEGAL</th>
                                 <th >EMITIDO</th>
@@ -20,27 +30,24 @@ export default function ComprovanteViews (){
                                 <th >IMPUESTO</th>
                                 <th >TOTAL</th>
                                 <th >ESTADO</th>
+                                <th ></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="text-center">
                             <tr>
-                                
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
+                                <td>00150764</td>
+                                <td>0</td>
+                                <td>30/12/2022</td>
+                                <td>30/12/2022</td>
+                                <td>0/0/0000</td>
+                                <td>$ 0.00  </td>
+                                <td>$ 0.00</td>
+                                <td>$ 0.00</td>
+                                <td><span className="badge bg-danger border"> Activo </span></td>
+                                <td> <button className="btn bg-white">Pagar Factura </button> </td>
                             </tr>
-                            <tr>
-                                
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
+
+
                         </tbody>
                     </table>
 

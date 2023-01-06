@@ -1,8 +1,7 @@
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton, IonPage, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton, 
+    IonTitle, IonToolbar } from '@ionic/react';
 import { useParams } from 'react-router';
 import { Route, Switch } from 'react-router';
-import ExploreContainer from '../components/ExploreContainer';
-import Inicipage from './Home/Home';
 import {
   settingsOutline,close
 } from 'ionicons/icons';
