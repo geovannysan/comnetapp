@@ -39,7 +39,7 @@ class DataTableBos extends React.Component {
             if (!$.fn.DataTable.isDataTable("#doc")) {
 
                 $(document).ready(function () {
-                    $("#doc").dataTable({
+                    var table = $("#doc").dataTable({
                         pageLength: 10,
                         stateSave: true,
                         responsive: true,
@@ -110,6 +110,16 @@ class DataTableBos extends React.Component {
     render() {
         return (
             <>
+                <div className=" container w-100 h-100  " style={{
+                    display: "fixed",
+                    height: "100%",
+                    width: "100%",
+                    zIndex: 1000,
+                    background: "black"
+
+                }}>
+
+                </div>
                 <div className="container "
                 >
                     <h5>Documentos</h5>
@@ -153,6 +163,7 @@ class DataTableBos extends React.Component {
 
 
                 </div>
+
             </>)
     }
 
