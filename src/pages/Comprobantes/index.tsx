@@ -17,10 +17,9 @@ export default function ComprovanteViews() {
                     </div>
                 </div>
                 <div className="p-2">
-                    <table id="example" className="table table-striped  table-bordered">
-                        <thead>
+                    <table id="example" className="table  table-bordered">
+                        <thead className="border">
                             <tr>
-
                                 <th >No</th>
                                 <th >No LEGAL</th>
                                 <th >EMITIDO</th>

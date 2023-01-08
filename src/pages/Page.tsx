@@ -1,9 +1,10 @@
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton, 
-    IonTitle, IonToolbar } from '@ionic/react';
-import { useParams } from 'react-router';
+import {
+  IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton,
+  IonTitle, IonToolbar
+} from '@ionic/react';
 import { Route, Switch } from 'react-router';
 import {
-  settingsOutline,close
+  settingsOutline, close
 } from 'ionicons/icons';
 import './Page.css';
 import routes from './route.js'
@@ -11,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { setlogin } from '../StoreRedux/Slice/UserSlice';
 const Page: React.FC = () => {
 
-  const { name } = useParams<{ name: string; }>();
+  //const { name } = useParams<{ name: string; }>();
 
   let usedispatch = useDispatch();
   function salir() {
@@ -50,7 +51,7 @@ const Page: React.FC = () => {
               <IonIcon ios={close} md={close} />
             </IonButton>
           </IonButtons>
-         
+
         </IonToolbar>
       </IonHeader>
 

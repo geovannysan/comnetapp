@@ -1,15 +1,16 @@
 import { IonButtons, IonContent, IonHeader, IonImg, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 
 
 
 const Inicipage: React.FC = () => {
+    let history = useHistory()
     return (
-        
+
         <div >
             <div className='container-fluid mt-4 d-flex  justify-content-center'>
                 <div className='row col-12 col-md-10 col-lg-12 px-0  '>
-                    <div className=' options col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3  py-1 ' onClick={() => console.log("clik")}>
+                    <div className=' options col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3  py-1 ' onClick={() => history.push("/page/Informe")}>
                         <div className='   bg-dark  ms-3 mb-1 card rounded-4 shadow' style={{
                             width: "60px",
                             height: "60px",
@@ -75,7 +76,7 @@ const Inicipage: React.FC = () => {
 
                                 }}
                             >
-                                
+
                                 Reportar pago
                             </div>
 
@@ -170,7 +171,7 @@ const Inicipage: React.FC = () => {
 
             </div>
         </div>
-       
+
     )
 }
 export default Inicipage

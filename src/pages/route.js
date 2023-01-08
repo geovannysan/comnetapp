@@ -1,11 +1,9 @@
 import ComprovanteViews from "./Comprobantes";
-import DocuumentosViews from "./Documentos";
 import Inicipage from "./Home/Home";
 import InformeViews from "./Informes";
 import Soportviews from "./Soporte";
-
-
-
+import TableViews from "../components/Datatable";
+import DataTableBos from "../components/Datatablebostrap";
 const route = [
     {
         path: "/inicio",
@@ -17,7 +15,7 @@ const route = [
         path: "/Documentos",
         layout: "/page",
         name: "Documentos",
-        component: DocuumentosViews,
+        component: DataTableBos,
     },
     {
         path: "/Comprobantes",
@@ -37,6 +35,6 @@ const route = [
         name: "Soporte",
         component: Soportviews,
     },
-  
+
 ]
 export default route

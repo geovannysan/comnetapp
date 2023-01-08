@@ -4,14 +4,14 @@ import { Provider } from 'react-redux';
 import { stores } from './StoreRedux/store';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals'; 
+import reportWebVitals from './reportWebVitals';
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <Provider store={stores}>
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
   </Provider>
 );
 
@@ -21,6 +21,6 @@ root.render(
 serviceWorkerRegistration.unregister();
 
 // If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
+// to log results (for exam ple: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

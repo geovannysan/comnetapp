@@ -23,6 +23,7 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 import "./css/style.css"
 import "./css/animate.css"
+import "./css/tablas.css"
 /* Theme variables */
 import './theme/variables.css';
 import { useEffect } from 'react';
@@ -31,51 +32,51 @@ setupIonicReact();
 
 const App: React.FC = () => {
   let usedispath = useDispatch()
-  let user = useSelector((state:any) => state.usuario)
+  let user = useSelector((state: any) => state.usuario)
 
-useEffect(()=>{
-  //console.log(usuario())
-  //console.log(user.authb)
-},[])
+  useEffect(() => {
+    //console.log(usuario())
+    //console.log(user.authb)
+  }, [])
 
   return (
     <IonApp>
       <IonReactRouter>
-        {user.authb ? 
-        <IonSplitPane contentId="main"
-        className=''
-        >
-          <Menu />
-          <IonRouterOutlet id="main">   
-          <Switch>
+        {user.authb ?
+          <IonSplitPane contentId="main"
+            className=''
+          >
+            <Menu />
+            <IonRouterOutlet id="main">
+              <Switch>
                 <Route path="/page"
-                   >
-                    <Page  />
-                   </Route>
-                
-               
+                >
+                  <Page />
+                </Route>
+
+
                 <Route path="/" >
                   <Redirect to="/page/Inicio" />
                 </Route>
-             
-            </Switch>         
-           
-            
-          </IonRouterOutlet>
-        </IonSplitPane>:
+
+              </Switch>
+
+
+            </IonRouterOutlet>
+          </IonSplitPane> :
           <IonRouterOutlet id="main">
-          
+
             <Route path="/" >
               <Inicio />
             </Route>
-           
+
             <Route path="*">
               <Redirect to="/" />
             </Route>
             <Route path="/">
               <Inicio />
             </Route>
-            </IonRouterOutlet>
+          </IonRouterOutlet>
         }
       </IonReactRouter>
     </IonApp>

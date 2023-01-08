@@ -1,0 +1,31 @@
+import React from "react"
+
+import "jszip"
+import "pdfmake"
+import "datatables.net-bs5"
+import "datatables.net-buttons-bs5"
+import "datatables.net-buttons/js/buttons.html5"
+import "datatables.net-responsive-bs5"
+import $ from "jquery"
+
+class DataTableBos extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data: [],
+        };
+    }
+    componentDidMount() {
+        fetch("https://jsonplaceholder.typicode.com/users").then(response => response.json()).then(e => console.log(e))
+            .catch(err => console.log(err))
+        if (!$.fn.DataTable.isDataTable("#table")) {
+
+        }
+    }
+    render() {
+        return (<></>)
+    }
+
+}
+export default DataTableBos

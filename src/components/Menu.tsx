@@ -74,40 +74,40 @@ const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
 const Menu: React.FC = () => {
   const location = useLocation();
-  
+
 
   return (
     <IonMenu contentId="main" type="push" className='col-lg-2 '>
       <div className=''>
         <IonHeader className=' py-3 ion-no-border info-user bg-dark'>
-          <img className='py-2  px-2'  src={logo}
-          style={{
-            height:"70px",
-            width:"auto"
-          }}
+          <img className='py-2  px-2' src={logo}
+            style={{
+              height: "70px",
+              width: "auto"
+            }}
           ></img>
           <IonListHeader className='text-white'>Usuario logeado</IonListHeader>
           <IonNote>hi@comnet.com</IonNote>
         </IonHeader>
-        
-      <div className='container pt-3'>
-        {appPages.map((appPage, index) => {
-          return (
-            <IonMenuToggle key={index} autoHide={false}>
-              <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                <IonLabel>{appPage.title}</IonLabel>
-              </IonItem>
-            </IonMenuToggle>
-          );
-        })}
+
+        <div className='container pt-3'>
+          {appPages.map((appPage, index) => {
+            return (
+              <IonMenuToggle key={index} autoHide={false}>
+                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
+                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                  <IonLabel>{appPage.title}</IonLabel>
+                </IonItem>
+              </IonMenuToggle>
+            );
+          })}
 
 
-        <IonList id="labels-list">
-          <IonListHeader>Utilidades</IonListHeader>
-        
-          
-        </IonList>
+          <IonList id="labels-list">
+            <IonListHeader>Utilidades</IonListHeader>
+
+
+          </IonList>
         </div>
       </div>
     </IonMenu>

@@ -1,0 +1,21 @@
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: none;
+    color: #3691ef !important;
+    border: none;
+
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+
+    border: none;
+
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+    background: none;
+    color: #3691ef !important;
+}
+
+.dataTables_wrapper td {
+    border: 1px solid rgba(0, 0, 0, 0.281);
+}
