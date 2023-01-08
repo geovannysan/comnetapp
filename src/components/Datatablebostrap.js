@@ -1,24 +1,26 @@
 import React from "react";
 import "jquery/dist/jquery.slim"
-import "jszip"
-import "pdfmake"
+import JSZip from "jszip";
+import pdfmake from "pdfmake"
 import "datatables.net/js/jquery.dataTables"
 import "datatables.net-bs5/js/dataTables.bootstrap5"
 import "datatables.net-buttons/js/dataTables.buttons"
 import "datatables.net-buttons/js/buttons.html5"
 import "datatables.net-buttons/js/buttons.colVis"
+import "datatables.net-buttons/js/buttons.html5.min.mjs"
 import "datatables.net-buttons/js/buttons.flash"
 import "datatables.net-buttons/js/buttons.print"
 import "datatables.net-responsive-bs5/js/responsive.bootstrap5.min.mjs"
 import "datatables.net-responsive-bs5"
 import $ from "jquery"
-
+window.JSZip = JSZip;
 class DataTableBos extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             data: [],
+            estdo: "none"
         };
     }
     componentDidMount() {
@@ -28,7 +30,14 @@ class DataTableBos extends React.Component {
             }
             ).catch(err => console.log(err))
         setTimeout(function () {
+            if ($.fn.dataTable.isDataTable('#doc')) {
+                $('#table').DataTable().clear();
+                $('#table').DataTable().destroy();
+                $('#table').empty();
+                $('#table').css("width", "100%")
+            }
             if (!$.fn.DataTable.isDataTable("#doc")) {
+
                 $(document).ready(function () {
                     $("#doc").dataTable({
                         pageLength: 10,
@@ -49,10 +58,7 @@ class DataTableBos extends React.Component {
                             style: "single",
                         },
                         buttons: [
-                            {
-                                extend: "csv",
-                                className: "btn btn-secondary ",
-                            },
+                            'excelHtml5',
                         ],
 
                         fnRowCallback: function (
@@ -79,6 +85,7 @@ class DataTableBos extends React.Component {
 
                     });
                 })
+
             }
         }, 1000)
     }
@@ -103,7 +110,8 @@ class DataTableBos extends React.Component {
     render() {
         return (
             <>
-                <div className="container " >
+                <div className="container "
+                >
                     <h5>Documentos</h5>
                     <div className="bg-white border">
                         <div className="w-100 py-3 bg-dark">
@@ -112,10 +120,13 @@ class DataTableBos extends React.Component {
                             </div>
                         </div>
                         <div className="p-2">
-                            <div className=" p-0 pb-2">
+                            <div className={"  p-0 pb-2"}
+
+                            >
                                 <table id="doc" className="table table-bordered nowrap"
                                     style={{
-                                        width: "100%"
+                                        width: "100%",
+
                                     }}
                                 >
                                     <thead className="border pt-2">

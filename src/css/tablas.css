@@ -16,6 +16,26 @@
     color: #3691ef !important;
 }
 
+.buttons-excel {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .05rem;
+    color: #fff;
+    background-color: #198754;
+}
+
+
+.buttons-excel:hover {
+    background-color: #00d91d;
+
+}
+
 .dataTables_wrapper td {
     border: 1px solid rgba(0, 0, 0, 0.281);
 }
