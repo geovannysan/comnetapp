@@ -1,5 +1,6 @@
 import {
   IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton,
+  IonProgressBar,
   IonTitle, IonToolbar
 } from '@ionic/react';
 import { Route, Switch } from 'react-router';
@@ -51,7 +52,7 @@ const Page: React.FC = () => {
               <IonIcon ios={close} md={close} />
             </IonButton>
           </IonButtons>
-
+          <IonProgressBar type="indeterminate" ></IonProgressBar>
         </IonToolbar>
       </IonHeader>
 

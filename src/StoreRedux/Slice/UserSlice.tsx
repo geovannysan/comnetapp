@@ -6,7 +6,8 @@ const initialState = {
         email:"",
         cedula:"",
     },
-    authb: false
+    authb: false,
+    progres:true,
 }
 const userSlice = createSlice({
     name: 'usuario',

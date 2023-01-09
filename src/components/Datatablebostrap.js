@@ -1,7 +1,6 @@
 import React from "react";
 import "jquery/dist/jquery.slim"
 import JSZip from "jszip";
-import pdfmake from "pdfmake"
 import "datatables.net/js/jquery.dataTables"
 import "datatables.net-bs5/js/dataTables.bootstrap5"
 import "datatables.net-buttons/js/dataTables.buttons"
@@ -20,74 +19,75 @@ class DataTableBos extends React.Component {
 
         this.state = {
             data: [],
-            estdo: "none"
+            estdo: ""
         };
     }
     componentDidMount() {
         fetch("https://jsonplaceholder.typicode.com/users").then(response => response.json())
             .then(response => {
                 this.setState({ data: response })
+             
+                    if ($.fn.dataTable.isDataTable('#doc')) {
+                        $('#table').DataTable().clear();
+                        $('#table').DataTable().destroy();
+                        $('#table').empty();
+                        $('#table').css("width", "100%")
+                    }
+                    if (!$.fn.DataTable.isDataTable("#doc")) {
+                        $(document).ready(function () {
+                            var table = $("#doc").dataTable({
+                                pageLength: 10,
+                                stateSave: true,
+                                responsive: true,
+                                "searching": true,
+                                "bDestroy": true,
+                                "language": {
+                                    "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+                                    "info": "Mostrando page _PAGE_ de _PAGES_",
+                                    'paginate': {
+                                        'previous': '<span class="prev-icon"><i class="bi bi-arrow-left-square"> </i> </span>',
+                                        'next': '<span class="next-icon"> <i class="bi bi-arrow-right-square"> </i></span>'
+                                    }
+                                },
+                                dom: "Bfrtip",
+                                select: {
+                                    style: "single",
+                                },
+                                buttons: [
+                                    'excelHtml5',
+                                ],
+
+                                fnRowCallback: function (
+                                    nRow,
+                                    aData,
+                                    iDisplayIndex,
+                                    iDisplayIndexFull
+                                ) {
+
+                                },
+
+                                lengthMenu: [
+                                    [10, 20, 30, 50, -1],
+                                    [10, 20, 30, 50, "All"],
+                                ],
+                                columnDefs: [
+                                    {
+                                        className: 'dtr-control',
+                                        orderable: false,
+                                        targets: 0,
+
+                                    }],
+                                order: [1, 'asc'],
+
+                            });
+                        })
+
+                    }
+                this.setState({ estdo: "d-none" })
+               
             }
             ).catch(err => console.log(err))
-        setTimeout(function () {
-            if ($.fn.dataTable.isDataTable('#doc')) {
-                $('#table').DataTable().clear();
-                $('#table').DataTable().destroy();
-                $('#table').empty();
-                $('#table').css("width", "100%")
-            }
-            if (!$.fn.DataTable.isDataTable("#doc")) {
-
-                $(document).ready(function () {
-                    var table = $("#doc").dataTable({
-                        pageLength: 10,
-                        stateSave: true,
-                        responsive: true,
-                        "searching": true,
-                        "bDestroy": true,
-                        "language": {
-                            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
-                            "info": "Mostrando page _PAGE_ de _PAGES_",
-                            'paginate': {
-                                'previous': '<span class="prev-icon"><i class="bi bi-arrow-left-square"> </i> </span>',
-                                'next': '<span class="next-icon"> <i class="bi bi-arrow-right-square"> </i></span>'
-                            }
-                        },
-                        dom: "Bfrtip",
-                        select: {
-                            style: "single",
-                        },
-                        buttons: [
-                            'excelHtml5',
-                        ],
-
-                        fnRowCallback: function (
-                            nRow,
-                            aData,
-                            iDisplayIndex,
-                            iDisplayIndexFull
-                        ) {
-
-                        },
-
-                        lengthMenu: [
-                            [10, 20, 30, 50, -1],
-                            [10, 20, 30, 50, "All"],
-                        ],
-                        columnDefs: [
-                            {
-                                className: 'dtr-control',
-                                orderable: false,
-                                targets: 0,
-
-                            }],
-                        order: [1, 'asc'],
-
-                    });
-                })
-
-            }
-        }, 1000)
+       
     }
     showDatos = () => {
 
@@ -160,7 +160,21 @@ class DataTableBos extends React.Component {
 
                     </div>
 
-
+                    <div className={this.state.estdo}
+                        style={{
+                            display: 'none',
+                            position: 'fixed',
+                           height:"100%",
+                            left: '0',
+                            bottom:'0',
+                            width: '100%',                         
+                            backgroundColor: '#fff',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            zIndex: '3'
+                        }}
+                    ></div>
 
                 </div>
 
