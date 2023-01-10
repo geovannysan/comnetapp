@@ -1,6 +1,6 @@
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Menu from './components/Menu';
 import Page from './pages/Page';
@@ -13,7 +13,6 @@ import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
-import { usuario } from './utils';
 /* Optional CSS utils that can be commented out */
 import '@ionic/react/css/padding.css';
 import '@ionic/react/css/float-elements.css';
@@ -21,20 +20,34 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
-import "./css/style.css"
-import "./css/animate.css"
-import "./css/tablas.css"
+
 /* Theme variables */
 import './theme/variables.css';
+import './theme/animate.css';
+import "./theme/style.css";
+import "./theme/tablas.css";
 import { useEffect } from 'react';
+import { userlog } from './utils/User';
+import { setDatosuser, setlogin } from './StoreRedux/Slice/UserSlice';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  let usedispath = useDispatch()
-  let user = useSelector((state: any) => state.usuario)
-
+  let history = useHistory()
+    let user = useSelector((state: any) => state.usuario)
+  let userdispach = useDispatch()
   useEffect(() => {
+    let datos = userlog()
+    //console.log(datos)
+    //1316523727
+    if (datos !=null) {
+
+      userdispach(setlogin({ estado: true }))
+      userdispach(setDatosuser({ ...datos }))
+     // history.push("/page/inicio")
+
+
+    }
     //console.log(usuario())
     //console.log(user.authb)
   }, [])

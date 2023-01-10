@@ -139,20 +139,20 @@ ion-item.selected> ion-icon {
 }
 
 table.collapsed td.dtr-control {
-    background: url('../imagen/mas.svg') no-repeat center;
+    background: url('mas.svg') no-repeat center;
     cursor: pointer !important;
 }
 
 
 
 tr.dt-hasChild.parent td.dtr-control {
-    background: url('../imagen/minus.svg') no-repeat center;
+    background: url('minus.svg') no-repeat center;
 }
 
 .dataTables_filter {
-    width: 100%;
+    width: 70%;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     margin-bottom: 5px;
 }
 
@@ -164,7 +164,7 @@ table {
     width: 50%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: end;
+    justify-content:  flex-end;
     align-content: space-between;
 
 
@@ -186,4 +186,19 @@ li.paginate_button :hover {
 li.paginate_button {
 
     padding: 1px !important;
+}
+ion-toast.custom-toast {
+    --background: #F4F4FA;
+    --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+    --color: #4b4a50;
+}
+
+ion-toast.custom-toast::part(message) {
+    font-style: italic;
+}
+
+ion-toast.custom-toast::part(button) {
+    border-left: 1px solid #d2d2d2;
+    color: #030207;
+    font-size: 15px;
 }

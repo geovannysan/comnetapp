@@ -7,7 +7,7 @@ const initialState = {
         cedula:"",
     },
     authb: false,
-    progres:true,
+    progres:false,
 }
 const userSlice = createSlice({
     name: 'usuario',
@@ -18,8 +18,11 @@ const userSlice = createSlice({
         },
         setlogin: (state, action) => {
             state.authb = action.payload.estado;
+        },
+        setProg:(state,action)=>{
+            state.progres=action.payload.progres
         }
     }
 })
-export const { setDatosuser, setlogin } = userSlice.actions;
+export const { setDatosuser, setlogin,setProg } = userSlice.actions;
 export default userSlice.reducer;

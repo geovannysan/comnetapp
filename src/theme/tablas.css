@@ -28,11 +28,30 @@
     border-radius: .05rem;
     color: #fff;
     background-color: #198754;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    
+}
+.dt-button-ligth{
+        display: inline-block;
+        font-weight: 400;
+        color: #212529;
+        text-align: center;
+        border: 1px solid transparent;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .05rem;
+        color: #000;
+        background-color: #f8f9fa;
+}
+.dt-button-ligth:hover{
+background-color: #dfdfdf;
 }
 
-
 .buttons-excel:hover {
-    background-color: #00d91d;
+    background-color: #1e9960;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    
 
 }
 

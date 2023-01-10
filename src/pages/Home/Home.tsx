@@ -1,35 +1,30 @@
 import { IonButtons, IonContent, IonHeader, IonImg, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { useParams, useHistory } from 'react-router';
-
-
-
+import {  useHistory } from 'react-router';
+import { useDispatch,useSelector } from 'react-redux';
 const Inicipage: React.FC = () => {
     let history = useHistory()
+    let datos = useSelector((state:any)=>state.usuario.user)
+    //console.log(datos)
     return (
-
         <div >
             <div className='container-fluid mt-4 d-flex  justify-content-center'>
                 <div className='row col-12 col-md-10 col-lg-12 px-0  '>
-                    <div className=' options col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3  py-1 ' onClick={() => history.push("/page/Informe")}>
+                    <div className=' options col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3  py-1 ' >
                         <div className='   bg-dark  ms-3 mb-1 card rounded-4 shadow' style={{
                             width: "60px",
                             height: "60px",
                             zIndex: 2
-
                         }}>
                             <div className='m-auto'>
                                 <i className="bi bi-info-circle text-white " style={{
                                     fontSize: 35
                                 }} ></i>
                             </div>
-
-
                         </div>
                         <div className="card  mb-3 mt-n5  rounded-4  shadow-xs" style={{
                             position: "relative",
                             zIndex: 1
                         }} >
-
                             <div className=" card-header    border-activo rounded-top-4 px-3 pt-n  text-end fw-bolder text-white  py-3"
                                 style={{
                                     fontSize: "1.35em",
@@ -37,20 +32,24 @@ const Inicipage: React.FC = () => {
 
                                 }}
                             >
-                                Servicio Activo
+                                <span className={datos.estado == "ACTIVO" ?"text-success":" text-danger" }>{datos.estado == "ACTIVO" ? " Servicio Activo" : "Servicio cancelado"}</span> 
                             </div>
-
-                            <div className=" px-2 py-2 ">
-
+                            <div className=" px-2 py-2 d-flex justify-content-between mx-1">
                                 <h5 className="card-title ms-3  text-default" style={{
                                     fontSize: "15px"
-                                }} >  Servicio Activo</h5>
-                                <p className="card-text"></p>
+                                }} >  </h5>
+                                <h5 className=' card-title ms-3 text-default'
+                                style={{
+                                    fontSize:"15px"
+                                }}
+                                >
+                                    {datos.servicios ? datos.servicios[0].perfil:""}
+                                </h5>
+                                
                             </div>
-
                         </div>
                     </div>
-                    <div className='options   col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 py-1 ' onClick={() => console.log("clik")}>
+                    <div className='options   col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 py-1 ' onClick={() => history.push("/page/Informe")}>
                         <div className=' mb-1    bg-success ms-3 card rounded-4 shadow' style={{
                             width: "60px",
                             height: "60px",
@@ -73,23 +72,23 @@ const Inicipage: React.FC = () => {
                             <div className=" card-header success border rounded-top-4 px-3 pt-n  text-end fw-bolder text-success  py-3"
                                 style={{
                                     fontSize: "1.35em",
-
                                 }}
                             >
-
                                 Reportar pago
                             </div>
 
-                            <div className=" px-2 py-2 ">
+                            <div className=" px-2 py-2 d-flex justify-content-between mx-1">
                                 <h5 className="card-title ms-3  text-default" style={{
                                     fontSize: "15px"
                                 }} >  Pagar Factura</h5>
-                                <p className="card-text"></p>
+                                <h5 className="card-title  text-default" style={{
+                                    fontSize: "15px"
+                                }} > Inpagas: {datos.facturacion.facturas_nopagadas}</h5>
                             </div>
 
                         </div>
                     </div>
-                    <div className='options col-12 col-sm-6 col-md-6 col-lg-4  col-xl-3 py-1 ' onClick={() => console.log("clik")}>
+                    <div className='options col-12 col-sm-6 col-md-6 col-lg-4  col-xl-3 py-1 ' onClick={() => history.push("/page/Soporte")}>
                         <div className='  mb-1    ms-3 card rounded-4 shadow' style={{
                             width: "60px",
                             height: "60px",
@@ -120,13 +119,15 @@ const Inicipage: React.FC = () => {
                                 Soporte Técnico
                             </div>
 
-                            <div className=" px-2 py-2 ">
+                            <div className=" px-2 py-2 d-flex justify-content-between mx-1">
 
 
                                 <h5 className="card-title ms-3  text-default" style={{
                                     fontSize: "15px"
                                 }} >  Reportar inconveniente</h5>
-                                <p className="card-text"></p>
+                                <h5 className="card-title ms-3  text-default" style={{
+                                    fontSize: "15px"
+                                }} > {datos.mantenimiento ?"":""}</h5>
                             </div>
 
                         </div>

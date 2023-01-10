@@ -22,7 +22,7 @@ import {
 } from 'ionicons/icons';
 import './Menu.css';
 import logo from "../imagen/logo.png"
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setlogin } from '../StoreRedux/Slice/UserSlice';
 interface AppPage {
   url: string;
@@ -74,6 +74,7 @@ const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
 const Menu: React.FC = () => {
   const location = useLocation();
+  let nombres = useSelector((state: any) => state.usuario)
 
 
   return (
@@ -86,8 +87,8 @@ const Menu: React.FC = () => {
               width: "auto"
             }}
           ></img>
-          <IonListHeader className='text-white'>Usuario logeado</IonListHeader>
-          <IonNote>hi@comnet.com</IonNote>
+          <IonListHeader className='text-white text-lowercase '>{nombres.user.nombre}</IonListHeader>
+          <IonNote className=' text-lowercase'>{nombres.user.correo}</IonNote>
         </IonHeader>
 
         <div className='container pt-3'>
