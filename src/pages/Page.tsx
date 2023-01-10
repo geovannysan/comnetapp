@@ -1,11 +1,11 @@
 import {
   IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton,
   IonProgressBar,
-  IonTitle, IonToolbar
+  IonTitle, IonToolbar, IonSelect, IonSelectOption, IonItem, IonPopover, IonList, IonLabel
 } from '@ionic/react';
 import { Route, Switch } from 'react-router';
 import {
-  settingsOutline, close
+  settingsOutline, close, wifiOutline, ellipsisVertical
 } from 'ionicons/icons';
 import './Page.css';
 import routes from './route.js'
@@ -45,8 +45,10 @@ const Page: React.FC = () => {
             <i className="bi bi-person-circle"> </i> Bienvenido
           </IonTitle>
           <IonButtons slot='end'>
-            <IonButton>
-              <IonIcon ios={settingsOutline} md={settingsOutline} />
+            <IonButton id="popover-button" >
+              <IonIcon ios={ellipsisVertical} md={ellipsisVertical} />
+
+
             </IonButton>
             <IonButton onClick={salir}>
               <IonIcon ios={close} md={close} />
@@ -55,7 +57,17 @@ const Page: React.FC = () => {
           <IonProgressBar type="indeterminate" ></IonProgressBar>
         </IonToolbar>
       </IonHeader>
+      <IonPopover trigger="popover-button" dismissOnSelect={true}>
+        <IonList lines='none'>
+          <IonItem button >
+            <IonLabel>
+              Actualizar
+            </IonLabel>
+            <IonIcon md={wifiOutline}></IonIcon>
+          </IonItem>
+        </IonList>
 
+      </IonPopover>
       <div >
 
         <Switch>

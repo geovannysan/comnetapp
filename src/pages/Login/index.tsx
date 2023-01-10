@@ -1,16 +1,16 @@
-import { IonButtons, IonContent, IonHeader, IonImg, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { useParams ,useHistory } from 'react-router';
+import { IonItem, IonLabel, IonInput } from '@ionic/react';
+import { useParams, useHistory } from 'react-router';
 import logo from "../../imagen/logo.png"
 
 import { useDispatch } from 'react-redux';
-import { setDatosuser,setlogin } from '../../StoreRedux/Slice/UserSlice';
+import { setDatosuser, setlogin } from '../../StoreRedux/Slice/UserSlice';
 
 const Page: React.FC = () => {
-let usedispat = useDispatch()
-let history = useHistory()
+    let usedispat = useDispatch()
+    let history = useHistory()
     const { name } = useParams<{ name: string; }>();
-    function logearse(){
-        usedispat(setlogin({ estado :true}))
+    function logearse() {
+        usedispat(setlogin({ estado: true }))
         history.push("/page/inicio")
 
     }
@@ -18,10 +18,10 @@ let history = useHistory()
     return (
 
         <div className='container-fluid  h-100  d-flex justify-content-center align-items-center'
-        
-        style={{
-            backgroundColor:"#10063e"  
-        }}
+
+            style={{
+                backgroundColor: "#10063e"
+            }}
         >
 
 
@@ -53,8 +53,8 @@ let history = useHistory()
                     </div>
                     <div className='mt-2 d-flex justify-content-center'>
                         <div className="form-check form-switch">
-                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
-                                <label className="form-check-label text-white" > Mantener activa la sesión </label>                       </div>
+                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
+                            <label className="form-check-label text-white" > Mantener activa la sesión </label>                       </div>
                     </div>
                 </div>
             </div>
