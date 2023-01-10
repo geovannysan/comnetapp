@@ -16,7 +16,6 @@ window.JSZip = JSZip;
 class DataTableBos extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             data: [],
             estdo: ""
