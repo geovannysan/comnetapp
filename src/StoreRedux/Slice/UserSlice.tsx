@@ -6,6 +6,7 @@ const initialState = {
         email:"",
         cedula:"",
     },
+    plan:[],
     authb: false,
     progres:false,
 }
@@ -21,8 +22,11 @@ const userSlice = createSlice({
         },
         setProg:(state,action)=>{
             state.progres=action.payload.progres
+        },
+        setPlan:(state,action)=>{
+            state.plan= action.payload
         }
     }
 })
-export const { setDatosuser, setlogin,setProg } = userSlice.actions;
+export const { setDatosuser, setlogin,setProg ,setPlan} = userSlice.actions;
 export default userSlice.reducer;

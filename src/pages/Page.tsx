@@ -10,7 +10,7 @@ import {
 import './Page.css';
 import routes from './route.js'
 import { useDispatch, useSelector } from 'react-redux';
-import { setDatosuser, setlogin, setProg } from '../StoreRedux/Slice/UserSlice';
+import { setDatosuser, setlogin, setPlan, setProg } from '../StoreRedux/Slice/UserSlice';
 import { useEffect } from 'react';
 import { ListarFactura } from '../utils/Queryuser';
 const Page: React.FC = () => {
@@ -56,6 +56,7 @@ const Page: React.FC = () => {
     ListarFactura(prog.usuario.user.id).then(ouput=>{
       let datos = ouput
       console.log(datos.items[0].descrp.split("\r\n"))
+      usedispatch(setPlan(datos.items[0].descrp.split("\r\n")))
     }).catch(err=>{
       console.log(err)
     })
