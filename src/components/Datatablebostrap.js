@@ -77,9 +77,9 @@ class DataTableBos extends React.Component {
                         })
 
                     }
-                    this.setState({ estdo: "d-none" })
-                },10000)
-                    
+                   
+                },1000)
+                this.setState({ estdo: "d-none" })
                
             }
             ).catch(err => {
