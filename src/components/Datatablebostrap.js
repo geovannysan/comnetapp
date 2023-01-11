@@ -25,16 +25,11 @@ class DataTableBos extends React.Component {
         fetch("https://jsonplaceholder.typicode.com/users").then(response => response.json())
             .then(response => {
                 this.setState({ data: response })
-             
-                    if ($.fn.dataTable.isDataTable('#doc')) {
-                        $('#table').DataTable().clear();
-                        $('#table').DataTable().destroy();
-                        $('#table').empty();
-                        $('#table').css("width", "100%")
-                    }
-                    if (!$.fn.DataTable.isDataTable("#doc")) {
+                
+                setTimeout(function () {                 
+                    if (!$.fn.DataTable.isDataTable("#nuevo")) {
                         $(document).ready(function () {
-                            var table = $("#doc").dataTable({
+                            $("#nuevo").dataTable({
                                 pageLength: 10,
                                 stateSave: true,
                                 responsive: true,
@@ -82,10 +77,15 @@ class DataTableBos extends React.Component {
                         })
 
                     }
-                this.setState({ estdo: "d-none" })
+                    this.setState({ estdo: "d-none" })
+                },10000)
+                    
                
             }
-            ).catch(err => console.log(err))
+            ).catch(err => {
+                console.log(err)
+                this.setState({ estdo: "d-none" })
+            })
        
     }
     showDatos = () => {
@@ -119,7 +119,7 @@ class DataTableBos extends React.Component {
                 }}>
 
                 </div>
-                <div className="container "
+                <div className="container-fluid "
                 >
                     <h5>Documentos</h5>
                     <div className="bg-white border">
@@ -132,7 +132,7 @@ class DataTableBos extends React.Component {
                             <div className={"  p-0 pb-2"}
 
                             >
-                                <table id="doc" className="table table-bordered nowrap"
+                                <table id="nuevo" className="table table-bordered nowrap"
                                     style={{
                                         width: "100%",
 

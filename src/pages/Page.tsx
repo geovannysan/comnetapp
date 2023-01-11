@@ -50,18 +50,12 @@ const Page: React.FC = () => {
     }, 1000)
   }
 
-  useEffect(()=>{
+  /*useEffect(()=>{
      // console.log("change")
     cargar()
-    ListarFactura(prog.usuario.user.id).then(ouput=>{
-      let datos = ouput
-      console.log(datos.items[0].descrp.split("\r\n"))
-      usedispatch(setPlan(datos.items[0].descrp.split("\r\n")))
-    }).catch(err=>{
-      console.log(err)
-    })
+   
 
-  },[location.pathname])
+  },[location.pathname])*/
   return (
     <IonContent fullscreen>
       <IonHeader className="ion-no-border " >
@@ -71,7 +65,7 @@ const Page: React.FC = () => {
           </IonButtons>
           <IonTitle>
             <i className="bi bi-person-circle "> </i> Bienvenido 
-            <span className='d-none d-sm-block text-lowercase'
+            <span className='d-none d-sm-block text-lowercase  '
             >{prog.usuario.user.nombre}</span> 
           </IonTitle>
           <IonButtons slot='end'>

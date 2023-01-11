@@ -4,6 +4,7 @@ import InformeViews from "./Informes";
 import Soportviews from "./Soporte";
 import TableViews from "../components/Datatable";
 import DataTableBos from "../components/Datatablebostrap";
+import FacturaViews from "./Comprobantes/Facturas";
 const route = [
     {
         path: "/inicio",
@@ -34,6 +35,12 @@ const route = [
         layout: "/page",
         name: "Soporte",
         component: Soportviews,
+    },
+    {
+        path: "/Puntos",
+        layout: "/page",
+        name: "Puntos",
+        component: FacturaViews,
     },
 
 ]

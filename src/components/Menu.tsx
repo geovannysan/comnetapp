@@ -87,8 +87,10 @@ const Menu: React.FC = () => {
               width: "auto"
             }}
           ></img>
-          <IonListHeader className='text-white text-lowercase '>{nombres.user.nombre}</IonListHeader>
+
           <IonNote className=' text-lowercase'>{nombres.user.correo}</IonNote>
+          <IonListHeader className='text-white text-info '>{nombres.user.nombre}</IonListHeader>
+         
         </IonHeader>
 
         <div className='container pt-3'>

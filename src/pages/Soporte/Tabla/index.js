@@ -41,11 +41,23 @@ abrir=()=>{
           this.setState({ modal: true })
       }
         ListarTicket(datos.id).then(response => {
+            console.log(response)
             if(response.estado!="exito"){
-                $('#table').DataTable().clear();
+                $('#doc').DataTable({
+                    "bDestroy": true,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+                        "info": "Mostrando page _PAGE_ de _PAGES_",
+                        'paginate': {
+                            'previous': '<span class="prev-icon"><i class="bi bi-arrow-left-square"> </i> </span>',
+                            'next': '<span class="next-icon"> <i class="bi bi-arrow-right-square"> </i></span>'
+                        }
+                    },
+                });
                 $('#table').DataTable().destroy();
                 $('#table').empty();
                 $('#table').css("width", "100%")
+                this.setState({ estdo: "d-none" })
                 return
             }
           
@@ -110,7 +122,10 @@ abrir=()=>{
             this.setState({ estdo: "d-none" })
 
         }
-        ).catch(err => console.log(err))
+        ).catch(err => {
+            console.log(err)
+            this.setState({ estdo: "d-none" })
+        })
 
     }
 
@@ -189,7 +204,7 @@ abrir=()=>{
                 }}>
 
                 </div>
-                <div className="container "
+                <div className="container-fluid "
                 >
                    
                     <div className="bg-white border shadow">
@@ -212,10 +227,10 @@ abrir=()=>{
 
                                     }}
                                 >
-                                    <thead className="border pt-2">
-                                        <tr className="border pt-2">
+                                    <thead className="">
+                                        <tr className="border ">
                                             <th className=" text-center" >ver</th>
-                                            <th >No</th>
+                                            <th className="sorting" >No</th>
                                             <th >Asunto</th>
                                             <th >Fecha</th>
                                             <th >Estado</th>

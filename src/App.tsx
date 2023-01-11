@@ -26,9 +26,11 @@ import './theme/variables.css';
 import './theme/animate.css';
 import "./theme/style.css";
 import "./theme/tablas.css";
+import "./theme/rizes.css";
 import { useEffect } from 'react';
 import { userlog } from './utils/User';
-import { setDatosuser, setlogin } from './StoreRedux/Slice/UserSlice';
+import { setDatosuser, setlogin, setPlan } from './StoreRedux/Slice/UserSlice';
+import { ListarFactura } from './utils/Queryuser';
 
 setupIonicReact();
 
@@ -38,18 +40,11 @@ const App: React.FC = () => {
   let userdispach = useDispatch()
   useEffect(() => {
     let datos = userlog()
-    //console.log(datos)
-    //1316523727
+    console.log(datos)
     if (datos !=null) {
-
       userdispach(setlogin({ estado: true }))
       userdispach(setDatosuser({ ...datos }))
-     // history.push("/page/inicio")
-
-
     }
-    //console.log(usuario())
-    //console.log(user.authb)
   }, [])
 
   return (

@@ -134,19 +134,37 @@ ion-item.selected> ion-icon {
     div.dataTables_wrapper div.dataTables_paginate ul.pagination {
         -ms-flex-pack: center !important;
         justify-content: center !important;
-        margin-top: 1rem;
+        margin-top: 1rem !important;
+       
     }
+        
+         
 }
+ul,
+li {
+    list-style-type: none;
+    padding: 1px;
+}
+
+.invoice .invoice-date .date,
+.invoice .invoice-from strong,
+ h5.invoice,
+.invoice .invoice-to strong
+{
+    font-size: 16px !important;
+    font-weight: 500 !important;
+}
+
 
 table.collapsed td.dtr-control {
     background: url('mas.svg') no-repeat center;
     cursor: pointer !important;
 }
-
-
-
 tr.dt-hasChild.parent td.dtr-control {
     background: url('minus.svg') no-repeat center;
+}
+.invoice .table-invoice {
+    font-size: 13px;
 }
 
 .dataTables_filter {
@@ -158,6 +176,7 @@ tr.dt-hasChild.parent td.dtr-control {
 
 table {
     border-top: 1px solid black;
+    font-size: 13px;
 }
 
 .dataTables_filter label {
@@ -202,3 +221,23 @@ ion-toast.custom-toast::part(button) {
     color: #030207;
     font-size: 15px;
 }
+.items-precios{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important; 
+    font-size: 20px !important;
+    font-weight: bold !important;
+}
+.note {
+    color: #474747 !important;
+    margin-top: 80px !important;
+    font-size: 11px !important;
+    line-height: 1.75 !important;
+}
+.note-sm
+ {
+     color: #474747 !important;
+     margin-top: 30px !important;
+     font-size: 11px !important;
+     line-height: 1.75 !important;
+ }

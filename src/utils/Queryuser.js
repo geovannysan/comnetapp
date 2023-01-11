@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { token } from './variables';
 let Host = "https://portal.comnet.ec/api/v1/"
 
-
+ 
 export const autenticar =async(parms)=>{
     try {
         let { data } = await axios.post(Host+"GetClientsDetails",
@@ -33,12 +34,16 @@ export const ListarFactura = async (parms)=>{
             "idcliente": parms
         })
         if (data.estado === "exito"){
+        
+            let id = await data.facturas[0].id
+           // console.log(id,parms)
             let datos = await axios.post(Host +"GetInvoice",
                 {
                     "token": "SzFpNm04STlFNkhDRE9mcFBaZWlEdz09",
-                    "idfactura": data.facturas[0].id
+                    "idfactura": id
                 })
-            return datos.data
+            let arr = datos.data.items[0].descrp.split("\r\n")
+            return arr
 
         }
         
@@ -46,5 +51,19 @@ export const ListarFactura = async (parms)=>{
         return error
         
     }
+}
+export const MostrarFacturas = async(parms)=>{
+    try {
+        let { data } = await axios.post(Host + "GetInvoices", {
+            "token": token,
+            
+            "idcliente": parms
+        })
+        return data
+        
+    } catch (error) {
+        return error        
+    }
+    
 
 }

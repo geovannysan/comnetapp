@@ -111,3 +111,7 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 } 
+.text-info{
+  font-size:14px ;
+  position: relative;
+}
