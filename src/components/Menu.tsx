@@ -1,5 +1,4 @@
-import {
-  IonContent,
+import {  
   IonHeader,
   IonIcon,
   IonItem,
@@ -10,10 +9,9 @@ import {
   IonMenuToggle,
   IonNote,
 } from '@ionic/react';
-
 import { useLocation } from 'react-router-dom';
 import {
-  archiveOutline, archiveSharp, locateOutline, locateSharp,
+  archiveOutline, archiveSharp, 
   homeSharp,
   homeOutline,
   documentsOutline, documentSharp,
@@ -22,8 +20,7 @@ import {
 } from 'ionicons/icons';
 import './Menu.css';
 import logo from "../imagen/logo.png"
-import { useDispatch, useSelector } from 'react-redux';
-import { setlogin } from '../StoreRedux/Slice/UserSlice';
+import { useSelector } from 'react-redux';
 interface AppPage {
   url: string;
   iosIcon: string;
@@ -70,7 +67,7 @@ const appPages: AppPage[] = [
 ];
 
 
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+//const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
 const Menu: React.FC = () => {
   const location = useLocation();
@@ -88,7 +85,7 @@ const Menu: React.FC = () => {
             }}
           ></img>
 
-          <IonNote className=' text-lowercase'>{nombres.user.correo}</IonNote>
+          <IonNote className=' text-lowercase'></IonNote>
           <IonListHeader className='text-white text-info '>{nombres.user.nombre}</IonListHeader>
          
         </IonHeader>

@@ -11,14 +11,12 @@ const Page: React.FC = () => {
     let usedispat = useDispatch()
     let history = useHistory()
     const [present] = useIonToast();
-
     const [datos, setDatos] = useState({
         cedula: "",
         codigo: ""
     })
-
     function logearse() {
-        if(datos.cedula.trim()!= ""&& datos.codigo.trim()!= ""){
+        if(datos.cedula.trim()!== ""&& datos.codigo.trim()!== ""){
             autenticar(datos.cedula).then(e => {
                 if (e.estado === "exito") {
                     if (datos.codigo === e.datos[0].codigo) {

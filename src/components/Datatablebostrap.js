@@ -24,8 +24,7 @@ class DataTableBos extends React.Component {
     componentDidMount() {
         fetch("https://jsonplaceholder.typicode.com/users").then(response => response.json())
             .then(response => {
-                this.setState({ data: response })
-                
+                this.setState({ data: response })                
                 setTimeout(function () {                 
                     if (!$.fn.DataTable.isDataTable("#nuevo")) {
                         $(document).ready(function () {
@@ -93,7 +92,7 @@ class DataTableBos extends React.Component {
         try {
             return this.state.data.map((item, index) => {
                 return (
-                    <tr key={index}>
+                    <tr key={"tabla-"+index}>
                         <td className="">
                         </td>
                         <td className="text-xs font-weight-bold">{item.name}</td>

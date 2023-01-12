@@ -1,5 +1,5 @@
 import React from "react";
-import { IonModal,IonHeader,IonToolbar,IonButtons,IonButton,IonTitle,IonItem,IonLabel,IonContent,IonInput } from "@ionic/react";
+import { IonModal,IonHeader,IonToolbar,IonButtons,IonButton,IonTitle,IonContent } from "@ionic/react";
 import "jquery/dist/jquery.slim"
 import "jszip"
 import "pdfmake"
@@ -14,7 +14,6 @@ import "datatables.net-buttons/js/buttons.print"
 import "datatables.net-responsive-dt/js/responsive.dataTables.min.mjs"
 import "datatables.net-responsive-dt"
 import $ from "jquery"
-import { useSelector, useStore } from "react-redux";
 import { userlog } from "../../../utils/User";
 import { ListarTicket } from "../../../utils/Queryuser";
 //window.JSZip = JSZip;
@@ -37,12 +36,10 @@ abrir=()=>{
     componentDidMount() {
         let datos= userlog()
       // this.abrir()
-      function nuevos(){
-          this.setState({ modal: true })
-      }
+ 
         ListarTicket(datos.id).then(response => {
             console.log(response)
-            if(response.estado!="exito"){
+            if(response.estado!=="exito"){
                 $('#doc').DataTable({
                     "bDestroy": true,
                     "language": {
@@ -70,7 +67,7 @@ abrir=()=>{
             }
             if (!$.fn.DataTable.isDataTable("#doc")) {
                 $(document).ready(function () {
-                    var table = $("#doc").dataTable({
+             $("#doc").dataTable({
                         pageLength: 10,
                         stateSave: true,
                         responsive: true,
@@ -259,7 +256,6 @@ abrir=()=>{
                             bottom: '0',
                             width: '100%',
                             backgroundColor: '#fff',
-                            display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
                             zIndex: '3'

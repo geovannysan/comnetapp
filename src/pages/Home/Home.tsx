@@ -1,4 +1,4 @@
-import {  IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonPopover, IonTitle, IonToolbar } from '@ionic/react';
+import {  IonItem,  IonList } from '@ionic/react';
 import {  useHistory } from 'react-router';
 import { useDispatch,useSelector } from 'react-redux';
 import Collapse from "react-bootstrap/Collapse"
@@ -8,11 +8,11 @@ import { setPlan } from '../../StoreRedux/Slice/UserSlice';
 const Inicipage: React.FC = () => {
     let history = useHistory()
     let usedispach= useDispatch()
-    let datos = useSelector((state:any)=>state.usuario.user)
+    const datos = useSelector((state:any)=>state.usuario.user)
     let info = useSelector((state: any) => state.usuario.plan)
     const [open, setOpen] = useState<boolean>(false);
     //console.log(datos)
-    function kbToMb(KB: string) { return parseInt(KB) / 1024; }
+    //function kbToMb(KB: string) { return parseInt(KB) / 1024; }
     useEffect(()=>{
         ListarFactura(datos.id).then(ouput => {
             let datos = ouput
@@ -56,7 +56,7 @@ const Inicipage: React.FC = () => {
 
                                             }}
                                         >
-                                            <span className={datos.estado == "ACTIVO" ? "text-success" : " text-danger"}>{datos.estado == "ACTIVO" ? " Servicio Activo" : "Servicio cancelado"}</span>
+                                            <span className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"}>{datos.estado === "ACTIVO" ? " Servicio Activo" : "Servicio cancelado"}</span>
                                         </div>
                                         <div className=" px-2 py-2 d-flex justify-content-between mx-1">
                                             <h5 className="card-title ms-3  text-default" style={{

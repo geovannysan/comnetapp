@@ -1,10 +1,25 @@
-import { IonButton, IonContent, IonInput } from "@ionic/react";
-import React from "react";
-import { isPlatform,getPlatforms } from "@ionic/react";
+import { IonButton, IonContent } from "@ionic/react";
+import { getPlatforms } from "@ionic/react";
+import { useEffect, useState } from "react";
+import { MostrarFacturas } from "../../utils/Queryuser";
+import { userlog } from "../../utils/User";
 
 export default function InformeViews() {
+    let user = userlog()
     console.log(getPlatforms().some(e => "desktop"))
-    function dato (){}
+    const[list,seTlist]=useState([])
+   useEffect(()=>{
+    MostrarFacturas(user.id).then(ouput=>{
+        if (ouput.estado=="exito"){
+        seTlist(ouput.facturas)
+    }
+      
+    }).catch(err=>{
+        console.log(err)
+    })
+
+
+   },[])
     return (
         <IonContent  fullscreen={true}>
         <div className="container ">
@@ -84,7 +99,15 @@ export default function InformeViews() {
                             <div className="form-group row">
                                 <label className="col-sm-4  col-form-label text-md-end">Factura a pagar</label>
                                <div className="col-sm-8">
-                                    <select className=" form-select "></select>
+                                    <select className=" form-select ">
+                                        {list.length>0? 
+                                        list.map((elm:any,id:number)=>{
+                                            return(
+                                                <option key={id}>{elm.id + " / " + elm.emitido + " $" + elm.total }</option>
+                                            )
+                                        })
+                                        :""}
+                                    </select>
                                     <span className="font-weight-light">Seleccionar factura</span>
                                </div>                                
                             </div>

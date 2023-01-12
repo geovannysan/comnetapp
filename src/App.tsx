@@ -30,12 +30,10 @@ import "./theme/rizes.css";
 import { useEffect } from 'react';
 import { userlog } from './utils/User';
 import { setDatosuser, setlogin, setPlan } from './StoreRedux/Slice/UserSlice';
-import { ListarFactura } from './utils/Queryuser';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  let history = useHistory()
     let user = useSelector((state: any) => state.usuario)
   let userdispach = useDispatch()
   useEffect(() => {

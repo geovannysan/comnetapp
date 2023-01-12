@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { Facturaid } from "../../utils/Queryuser";
 import { userlog } from "../../utils/User";
+import moment from "moment";
+import "moment"
+import 'moment/locale/es';
+import JsBarcode from "jsbarcode"
 
 export default function FacturaViews() {
     let user = userlog()
-    console.log(user)
+    //console.log(user) 
+    const {id}  = useParams();
+    const [Factura,setFactur]= useState({
+        factura:{},
+        items:[]
+    })
+    //console.log(moment("2023-12-05").format('LL'))
+    useEffect(()=>{
+        Facturaid(parseInt(id)).then(ouput => {
+            if(ouput.estado==="exito"){
+                setFactur({
+                    factura:ouput.factura,
+                    items:ouput.items
+                })
+            console.log(ouput)}
+        }).catch(err => {
+            console.log(console.error(err))
+        })
+        JsBarcode(".barcode").init();
+     
+    },[])
     return (
         <div className=" container-fluid pt-1 px-3">
             <div className=" bg-light-sm border">
@@ -17,25 +43,20 @@ export default function FacturaViews() {
                                     }}
                                 >{user.nombre}</h4>
                                 <div>
-                                    <span className="label label-danger">Vencido</span>
+                                    <span className="label label-danger">{(new Date(Factura.factura.vencimiento + "00:00:00") > new Date())?"Por Pagar":"Vencida"}</span>
                                 </div>
-
                             </div>
-
                         </div>
                         <div className="col-12 col-md-6 d-flex  text-center justify-content-md-end  align-items-center">
                             <div className="px-2">
                                 <div className="btn-group" >
                                     <a className=" btn btn-default btn-md" ><i className="bi bi-credit-card-2-front"></i> Pagar </a>
                                     <a className=" btn btn-default btn-md " ><i className="bi bi-file-earmark-pdf text-danger"></i> Descargar </a>
-                                    <a className=" btn btn-default btn-md " ><i className="bi bi-printer"></i> Imprimir </a>
+                                    <a className=" btn btn-default btn-md " href={Factura.factura.urlpdf?Factura.factura.urlpdf :""} target="_blank" ><i className="bi bi-printer"></i> Imprimir </a>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
-
                 </div>
                 <div className="d-flex flex-wrap pt-3 datos px-0">
                     <div className="col-12 col-md-4 border-bottom p-3">
@@ -51,7 +72,6 @@ export default function FacturaViews() {
                                 </small>
                             </div>
                         </div>
-
                     </div>
                     <div className="col-12 col-md-4 border-bottom p-3" >
                         <div className="invoice-from">
@@ -65,19 +85,16 @@ export default function FacturaViews() {
                                 </small>
                             </div>
                         </div>
-
                     </div>
                     <div className="col-12 col-md-4 text-md-end border-bottom p-3 ">
                         <div className="invoice-date">
                             <small>Vencimiento</small>
                             <div className="m-t-5 m-b-5">
-                                <small className="text-inverse">16 de Diciembre del 2022</small><br></br>
-                                #00149389 <br></br>
+                                <small className="text-inverse">{Factura.factura.vencimiento ? moment(Factura.factura.vencimiento).format('LL'):""}</small><br></br>
+                                #{id.padStart(8, 0)} <br></br>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
                 <div className="w-100 h-100 bg-white">
                     <div className="w-100 px-3 ">
@@ -93,13 +110,17 @@ export default function FacturaViews() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Concierto de Mike bahiala camtidad de boletos1</td>
-                                        <td className="text-center">$ 1.00</td>
-                                        <td className="text-center">1</td>
-                                        <td className="text-center">0.00</td>
-                                        <td className="text-right">$ 1.00</td>
+                                   {Factura.items.length>0? Factura.items.map((item,i)=>{
+                                    return(
+                                    <tr key={i}>
+                                            <td>{item.descrp}</td>
+                                        <td className="text-center">$ {item.precio}</td>
+                                        <td className="text-center"> {item.unidades} </td>
+                                        <td className="text-center">{item.imp}</td>
+                                        <td className="text-right">${item.total}</td>
                                     </tr>
+                                    )
+                                   }):''}
                                 </tbody>
                             </table>
                         </div>
@@ -109,7 +130,7 @@ export default function FacturaViews() {
                                     <span>Subtotal</span>
                                     <div className="items-precios">
                                         <small>$</small>
-                                        <span >51.00</span>
+                                        <span >{Factura.factura.subtotal? Factura.factura.subtotal:""}</span>
                                     </div>
                                 </div>
                                 
@@ -117,7 +138,7 @@ export default function FacturaViews() {
                                     <span>Inpuesto</span>
                                     <div className="items-precios">
                                         <small>$</small>
-                                        <span >51.00</span>
+                                        <span >{Factura.factura.impuesto ? Factura.factura.impuesto : ""}</span>
                                     </div>
                                 </div>
                             </div>
@@ -127,18 +148,12 @@ export default function FacturaViews() {
                                     fontWeight:"bold",
                                     fontSize:"20px"
                                 }}
-
                                 >
                                     <small>TOTAL</small>
                                     <span >
-                                        $ 1.00</span>
-
-
+                                        $ {Factura.factura.total ? Factura.factura.total : ""}</span>
                                 </div>
-
                             </div>
-
-
                         </div>
                         <div className="note  px-3">
                             * Si el pago es vía transferencia bancaria recuerde que debe informarlo desde <b>
@@ -147,10 +162,13 @@ export default function FacturaViews() {
                             * Si tiene alguna pregunta sobre esta factura, comuníquese con nosotros.
 
                             <div className="note-sm d-flex flex-column col-2 text-center ">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" fill="currentColor" className="bi bi-upc" viewBox="0 0 16 16">
-                                    <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                <svg className="barcode"
+                                    
+                                    jsbarcode-value={id.padStart(8,0)}
+                                    jsbarcode-textmargin="0"
+                                    jsbarcode-fontoptions="bold">
                                 </svg>
-                                <span>123554</span>
+                               
                             </div>
                             <div className="mt-2 pt-2  border-top text-center ">
                                 <span > CONTACTANOS </span>

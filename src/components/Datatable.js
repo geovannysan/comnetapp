@@ -74,16 +74,6 @@ class TableViews extends React.Component {
               className: "btn btn-secondary ",
             },
           ],
-
-          fnRowCallback: function (
-            nRow,
-            aData,
-            iDisplayIndex,
-            iDisplayIndexFull
-          ) {
-
-          },
-
           lengthMenu: [
             [10, 20, 30, 50, -1],
             [10, 20, 30, 50, "All"],
@@ -105,7 +95,7 @@ class TableViews extends React.Component {
     try {
       return datos.map((item, index) => {
         return (
-          <tr key={index}>
+          <tr key={"nuevao"+index}>
             <td className="">
 
             </td>

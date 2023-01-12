@@ -3,5 +3,11 @@
   "integrations": {
     "capacitor": {}
   },
+  "representantes": [
+    {
+      "ruta": "/api/v1/",
+      "proxyUrl": "'https://portal.comnet.ec"
+    }
+  ],
   "type": "react"
 }

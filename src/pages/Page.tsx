@@ -10,9 +10,9 @@ import {
 import './Page.css';
 import routes from './route.js'
 import { useDispatch, useSelector } from 'react-redux';
-import { setDatosuser, setlogin, setPlan, setProg } from '../StoreRedux/Slice/UserSlice';
+import { setDatosuser, setlogin, setProg } from '../StoreRedux/Slice/UserSlice';
 import { useEffect } from 'react';
-import { ListarFactura } from '../utils/Queryuser';
+
 const Page: React.FC = () => {
   let history = useHistory()
   //const { name } = useParams<{ name: string; }>();
@@ -24,10 +24,8 @@ const Page: React.FC = () => {
     usedispatch(setDatosuser({}))
     sessionStorage.removeItem("USERLOGIN")
     history.push("/page/inicio")
-    //useDispatch(setProg)
-  }
   
-
+  } 
   const getRoutes = (routes: any) => {
     return routes.map((prop: any, key: any) => {
       if (prop.layout === "/page") {
@@ -49,13 +47,10 @@ const Page: React.FC = () => {
       usedispatch(setProg({ progres: false }))
     }, 1000)
   }
+  useEffect(()=>{     
+    cargar()  
 
-  /*useEffect(()=>{
-     // console.log("change")
-    cargar()
-   
-
-  },[location.pathname])*/
+  },[location.pathname])
   return (
     <IonContent fullscreen>
       <IonHeader className="ion-no-border " >
@@ -66,10 +61,15 @@ const Page: React.FC = () => {
           <IonTitle>
             <i className="bi bi-person-circle "> </i> Bienvenido 
             <span className='d-none d-sm-block text-lowercase  '
-            >{prog.usuario.user.nombre}</span> 
+            ></span> 
           </IonTitle>
           <IonButtons slot='end'>
-            <IonButton id="popover-button" >
+            <IonButton className='d-none d-sm-none d-md-block'>
+              { prog.usuario.user.nombre }
+            </IonButton>
+            <IonButton id="popover-button" 
+            
+            >
               <IonIcon ios={ellipsisVertical} md={ellipsisVertical} />
             </IonButton>
             <IonButton onClick={salir}>
@@ -90,6 +90,7 @@ const Page: React.FC = () => {
         </IonList>
 
       </IonPopover>
+      
       <div className='' >
 
         <Switch>
