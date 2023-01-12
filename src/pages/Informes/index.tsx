@@ -6,19 +6,30 @@ import { userlog } from "../../utils/User";
 
 export default function InformeViews() {
     let user = userlog()
-    console.log(getPlatforms().some(e => "desktop"))
+    console.log(getPlatforms().some(e => e=="desktop"))
     const[list,seTlist]=useState([])
+    const [datos,setDatos]= useState({
+        total:"",
+        transacion:"",
+        lugarpago:"",
+        asunto:"",
+        fecha:"",
+        tipo:"",
+        Factura:"",
+        linkimagen:""
+    })
+    function handelChange(e:any){
+        console.log(e.value)
+
+    }
    useEffect(()=>{
     MostrarFacturas(user.id).then(ouput=>{
         if (ouput.estado=="exito"){
         seTlist(ouput.facturas)
-    }
-      
+    }      
     }).catch(err=>{
         console.log(err)
     })
-
-
    },[])
     return (
         <IonContent  fullscreen={true}>
@@ -49,7 +60,7 @@ export default function InformeViews() {
                             <div className="form-group row">
                                 <label className="col-sm-4 col-form-label  text-md-end "> Asunto</label>
                                 <div className="col-sm-8">
-                                    <input className="form-control" />
+                                        <input className="form-control" onChange={(e) => handelChange(e.target)} />
                                     <span className="font-weight-light">Título del mensaje</span>
                                 </div>
                             </div>
@@ -58,7 +69,7 @@ export default function InformeViews() {
                             <div className=" form-group row">
                                 <label className="col-sm-4 col-form-label text-md-end"> Fecha de pago </label>
                                 <div className="col-sm-8">
-                                    <input className="form-control" type="date" />
+                                        <input className="form-control" type="date" onChange={(e) => handelChange(e.target)} />
                                     <span className="font-weight-light">Donde realizó el pago</span>
                                 </div>
                             </div>
@@ -90,7 +101,7 @@ export default function InformeViews() {
                             <div className=" form-group row">
                                 <label className="col-sm-4 col-form-label text-md-end">No Transacción </label>
                                 <div className="col-sm-8">
-                                    <input className="form-control" />
+                                        <input className="form-control" onChange={(e) => handelChange(e.target)} />
                                     <span className="font-weight-light">Número de referencia</span>
                                 </div>
                             </div>
@@ -125,7 +136,7 @@ export default function InformeViews() {
                             <div className="form-group row">
                                 <label className="col-sm-4  col-form-label text-md-end">Adjunto</label>
                                 <div className="col-sm-8">
-                                    <input className=" form-control" type="file" />
+                                        <input className=" form-control" type="file" onChange={(e) => handelChange(e.target)} />
                                     <span className="font-weight-light">Adjuntar archivo (Max. 2048M)</span>
                                 </div>
                             </div>

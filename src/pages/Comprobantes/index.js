@@ -183,7 +183,7 @@ function ComprovanteViews() {
             </div>
             <div className={cargar}
                 style={{
-                    display: 'none',
+                   
                     position: 'fixed',
                     height: "100%",
                     left: '0',
