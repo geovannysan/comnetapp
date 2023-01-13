@@ -1,35 +1,25 @@
-import React from "react";
+
+
+import "jquery/dist/jquery.slim"
+import "jszip"
+import "pdfmake"
+import "datatables.net/js/jquery.dataTables"
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import "datatables.net-buttons/js/dataTables.buttons"
+import "datatables.net-buttons/js/buttons.html5"
+import "datatables.net-buttons/js/buttons.colVis"
+import "datatables.net-buttons/js/buttons.flash"
+import "datatables.net-buttons/js/buttons.print"
+import "datatables.net-responsive-dt/js/responsive.dataTables.min.mjs"
+import "datatables.net-responsive-dt"
+//import $ from "jquery"
 import Datatablesoporte from "./Tabla";
-
 export default function Soportviews() {
+
     return (
-        <div className="container-fluid ">
-            <h5></h5>
-
-            <div className="">
-                <Datatablesoporte />
-                <div className="d-none"
-                    style={{
-                        display: 'flex',
-                        position: 'fixed',
-                        height: "100%",
-                        left: '0',
-                        bottom: '0',
-                        width: '100%',
-                        backgroundColor: '#fff',
-
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: '5'
-                    }}
-                >
-                    <div className="spinner-border" >
-                        <span className="sr-only"></span>
-                    </div>
-                </div>
-            </div>
-           
-
+        <div className="container-fluid">           
+           <Datatablesoporte/>
         </div>
     )
 }

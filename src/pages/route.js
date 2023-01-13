@@ -2,8 +2,8 @@ import ComprovanteViews from "./Comprobantes";
 import Inicipage from "./Home/Home";
 import InformeViews from "./Informes";
 import Soportviews from "./Soporte";
-import DataTableBos from "../components/Datatablebostrap";
 import FacturaViews from "./Comprobantes/Facturas";
+import DocuumentosViews from "./Documentos";
 const route = [
     {
         path: "/inicio",
@@ -15,7 +15,7 @@ const route = [
         path: "/Documentos",
         layout: "/page",
         name: "Documentos",
-        component: DataTableBos,
+        component: DocuumentosViews,
     },
     {
         path: "/Comprobantes",

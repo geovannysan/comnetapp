@@ -157,7 +157,10 @@ export default function FacturaViews() {
                         </div>
                         <div className="note  px-3">
                             * Si el pago es vía transferencia bancaria recuerde que debe informarlo desde <b>
-                                <a >Aquí</a></b><br></br>
+                                <a className=" nav-item  text-primary"
+                                 
+                                
+                                >Aquí</a></b><br></br>
                             * Esta factura vence el <b>16 de Diciembre del 2022</b><br></br>
                             * Si tiene alguna pregunta sobre esta factura, comuníquese con nosotros.
 

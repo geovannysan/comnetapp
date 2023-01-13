@@ -130,21 +130,7 @@ ion-item.selected> ion-icon {
 
 
 
-@media (max-width: 767px) {
-    div.dataTables_wrapper div.dataTables_paginate ul.pagination {
-        -ms-flex-pack: center !important;
-        justify-content: center !important;
-        margin-top: 1rem !important;
-       
-    }
-        
-         
-}
-ul,
-li {
-    list-style-type: none;
-    padding: 1px;
-}
+
 
 .invoice .invoice-date .date,
 .invoice .invoice-from strong,
@@ -156,56 +142,10 @@ li {
 }
 
 
-table.collapsed td.dtr-control {
-    background: url('mas.svg') no-repeat center;
-    cursor: pointer !important;
-}
-tr.dt-hasChild.parent td.dtr-control {
-    background: url('minus.svg') no-repeat center;
-}
 .invoice .table-invoice {
     font-size: 13px;
 }
 
-.dataTables_filter {
-    width: 70%;
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 5px;
-}
-
-table {
-    border-top: 1px solid black;
-    font-size: 13px;
-}
-
-.dataTables_filter label {
-    width: 50%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content:  flex-end;
-    align-content: space-between;
-
-
-}
-
-.dataTables_filter input {
-    margin-top: 2px;
-}
-
-/*a.paginate_button.current {
-    background-color: rgb(0, 47, 255) !important;
-
-}*/
-li.paginate_button :hover {
-    background: "red" !important;
-    background-color: #3691ef;
-}
-
-li.paginate_button {
-
-    padding: 1px !important;
-}
 ion-toast.custom-toast {
     --background: #F4F4FA;
     --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);

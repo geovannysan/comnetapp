@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { MostrarFacturas } from "../../utils/Queryuser";
 import { userlog } from "../../utils/User";
-
 import "jquery/dist/jquery.slim"
 import "jszip"
 import "pdfmake"
@@ -20,9 +19,9 @@ function ComprovanteViews() {
     const [cargar, setCargar] = useState("")
     const [expand, setExpand] = useState("")
     let history = useHistory()
-    let user = userlog()
+   // let user = userlog()
     useEffect(() => {
-        MostrarFacturas(user.id).then(ouput => {
+        MostrarFacturas(userlog().id).then(ouput => {
            console.info(ouput)
             if (ouput.estado === "exito") {
                 setCargar("")
@@ -77,10 +76,22 @@ function ComprovanteViews() {
                                 ],
                                 columnDefs: [
                                     {
+
+                                        "responsivePriority": 1,
                                         className:"",
-                                        targets: 9,
+                                        targets: 10,
                                         visible: true,
                                         "responsive":false
+                                        
+                                    },
+                                     {
+
+                                        "responsivePriority": 1,
+                                        className:"",
+                                        targets: 8,
+                                        visible: true,
+                                        "responsive":false
+                                        
                                     },
                                     {
                                         "targets": 2,
@@ -130,9 +141,9 @@ function ComprovanteViews() {
                         <td>$ {item.subtotal2}</td>
                         <td>$  {item.total}</td>
                         <td>{item.estado === "vencido" ? <span className="label label-danger">{item.estado}</span> : <span className="badge bg-secondary border">{item.estado}</span>}</td>
-                        <td className="">
+                        <td className="all">
                             <a className=" btn btn-default btn-sm" onClick={() => enviar(item) } >
-                                <i className="bi bi-credit-card-2-front"></i> Pagar </a> </td>
+                                <i className="bi bi-eye"></i> Ver </a> </td>
                     </tr>
                 )
             });
@@ -149,7 +160,7 @@ function ComprovanteViews() {
                     </div>
                     <div className="text-white px-3" >
 
-                        {expand != "" ?
+                        {expand !== "" ?
                             <i className="bi bi-fullscreen-exit" onClick={() => setExpand("")}></i>
                             : <i className="bi bi-fullscreen" onClick={() => setExpand("panel-fullscreen")}></i>}
                     </div>
