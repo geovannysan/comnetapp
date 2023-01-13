@@ -2,20 +2,15 @@
     background: none;
     color: #3691ef !important;
     border: none;
-
 }
-
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-
     border: none;
-
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:active {
     background: none;
     color: #3691ef !important;
 }
-
 .buttons-excel {
     display: inline-block;
     font-weight: 400;
@@ -29,7 +24,6 @@
     color: #fff;
     background-color: #198754;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-    
 }
 table.dataTable thead .sorting,
 table.dataTable thead .sorting_asc,
@@ -229,6 +223,21 @@ thead {
     line-height: 1.4;
     border-radius: 2px;
 }
-
-
-
+.paging_full_numbers span.paginate_button {
+    background:  repeat-x scroll 50% 50% #0078AE;
+    border: 1px solid #77D5F7;
+    color: #FFFFFF;
+    font-weight: normal;
+}
+.paging_full_numbers span.paginate_button:hover {
+    background:  repeat-x scroll 50% 50% #79C9EC;
+    border: 1px solid #448DAE;
+    color: #fff;
+    font-weight: normal;
+}
+.paging_full_numbers span.paginate_active {
+    background: repeat-x scroll 50% 50% #6EAC2C;
+    border: 1px solid #ACDD4A;
+    color: #FFFFFF;
+    font-weight: normal;
+}

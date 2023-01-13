@@ -19,10 +19,9 @@ function ComprovanteViews() {
     const [cargar, setCargar] = useState("")
     const [expand, setExpand] = useState("")
     let history = useHistory()
-   // let user = userlog()
     useEffect(() => {
         MostrarFacturas(userlog().id).then(ouput => {
-           console.info(ouput)
+            console.info(ouput)
             if (ouput.estado === "exito") {
                 setCargar("")
                 setDatos(ouput.facturas)
@@ -38,7 +37,6 @@ function ComprovanteViews() {
                                     'next': '<span class="next-icon"> <i class="bi bi-arrow-right-square"> </i></span>'
                                 }
                             },
-
                         });
                         $('#table').empty();
                         $('#table').css("width", "100%")
@@ -69,6 +67,7 @@ function ComprovanteViews() {
                                         extend: "excelHtml5",
                                         className: "btn btn-default btn-sm",
                                     },
+                                    
                                 ],
                                 lengthMenu: [
                                     [10, 20, 30, 50, -1],
@@ -105,10 +104,7 @@ function ComprovanteViews() {
 
                                     }],
                                 order: [3, 'asc'],
-
-
                             });
-
                         });
                     }
                     setCargar("d-none")
@@ -125,7 +121,6 @@ function ComprovanteViews() {
         history.push("/page/Factura/" + e.id)
     }
     const showDatos = () => {
-
         try {
             return datos.map((item, index) => {
                 return (
@@ -137,9 +132,9 @@ function ComprovanteViews() {
                         <td>{item.emitido}</td>
                         <td>{item.vencimiento}</td>
                         <td>{item.fechapago}</td>
-                        <td>${item.subtotal}  </td>
-                        <td>$ {item.subtotal2}</td>
-                        <td>$  {item.total}</td>
+                        <td>$ {item.subtotal}  </td>
+                        <td>{item.subtotal2}</td>
+                        <td>$ {item.total}</td>
                         <td>{item.estado === "vencido" ? <span className="label label-danger">{item.estado}</span> : <span className="badge bg-secondary border">{item.estado}</span>}</td>
                         <td className="all">
                             <a className=" btn btn-default btn-sm" onClick={() => enviar(item) } >
