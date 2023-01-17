@@ -1,8 +1,9 @@
 import {
   IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton,
   IonProgressBar,
-  IonTitle, IonToolbar, IonItem, IonPopover, IonList, IonLabel
+  IonTitle, IonToolbar, IonItem, IonPopover, IonList, IonLabel, IonCardSubtitle, IonMenu
 } from '@ionic/react';
+
 import { Route, Switch,useHistory,useLocation } from 'react-router';
 import {
    close, wifiOutline, ellipsisVertical
@@ -12,6 +13,7 @@ import routes from './route.js'
 import { useDispatch, useSelector } from 'react-redux';
 import { setDatosuser, setlogin, setProg } from '../StoreRedux/Slice/UserSlice';
 import { useEffect } from 'react';
+import Menu from '../components/Menu';
 
 const Page: React.FC = () => {
   let history = useHistory()
@@ -52,53 +54,72 @@ const Page: React.FC = () => {
 
   },[location.pathname])
   return (
-    <IonContent fullscreen>
-      <IonHeader className="ion-no-border " >
-        <IonToolbar className='ion-toolbar-transparent' >
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>
-            <i className="bi bi-person-circle "> </i> Bienvenido 
-            <span className='d-none d-sm-block text-lowercase  '
-            ></span> 
-          </IonTitle>
-          <IonButtons slot='end'>
-            <IonButton className='d-none d-sm-none d-md-block'>
-              { prog.usuario.user.nombre }
-            </IonButton>
-            <IonButton id="popover-button" 
-            
-            >
-              <IonIcon ios={ellipsisVertical} md={ellipsisVertical} />
-            </IonButton>
-            <IonButton onClick={salir}>
+    <>
+    <IonMenu type="overlay" contentId="main-content" className=''>
+        <Menu/>
+      </IonMenu>
+      <IonContent fullscreen id="main-content">
+
+        <IonHeader className="ion-no-border  " >
+          <IonToolbar className='ion-toolbar-transparent' >
+            <IonButtons slot="start">
+              <IonMenuButton />
+            </IonButtons>
+            <IonTitle>
+              <i className="bi bi-person-circle "> </i> Bienvenido
+              <span className='d-none d-sm-block text-lowercase  '
+              ></span>
+            </IonTitle>
+            <IonButtons slot='end'>
+              <IonCardSubtitle className='d-none  d-sm-none d-md-block'
+                style={{
+                  size: 5
+                }}
+              >
+                {prog.usuario.user.nombre}
+              </IonCardSubtitle>
+             
+              <IonButton id="popover-button"
+
+              >
+                <IonIcon ios={ellipsisVertical} md={ellipsisVertical} />
+              </IonButton>
+              <IonButton onClick={salir}>
+               
+              </IonButton>
+            </IonButtons>
+            {prog.usuario.progres ? <IonProgressBar type="indeterminate" ></IonProgressBar> : ''}
+          </IonToolbar>
+        </IonHeader>
+        <IonPopover trigger="popover-button" dismissOnSelect={true}>
+          <IonList lines='none'>
+            <IonItem button >
+              <IonLabel>
+                Actualizar
+              </IonLabel>
+              <IonIcon md={wifiOutline}></IonIcon>
+            </IonItem>
+           
+            <IonItem button onClick={salir}>
+              <IonLabel>
+                Salir
+              </IonLabel>
               <IonIcon ios={close} md={close} />
-            </IonButton>
-          </IonButtons>
-         {prog.usuario.progres ?<IonProgressBar type="indeterminate" ></IonProgressBar>:''}
-        </IonToolbar>
-      </IonHeader>
-      <IonPopover trigger="popover-button" dismissOnSelect={true}>
-        <IonList lines='none'>
-          <IonItem button >
-            <IonLabel>
-              Actualizar
-            </IonLabel>
-            <IonIcon md={wifiOutline}></IonIcon>
-          </IonItem>
-        </IonList>
+            </IonItem>
+          </IonList>
 
-      </IonPopover>
-      
-      <div className='' >
+        </IonPopover>
 
-        <Switch>
-          {getRoutes(routes)}
-        </Switch>
+        <div className='' >
 
-      </div>
-    </IonContent>
+          <Switch>
+            {getRoutes(routes)}
+          </Switch>
+
+        </div>
+      </IonContent>
+    </>
+   
   );
 };
 

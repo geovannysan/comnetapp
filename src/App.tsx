@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
+import { IonApp, IonButton, IonButtons, IonCardSubtitle, IonHeader, IonMenuButton, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -51,31 +51,24 @@ const App: React.FC = () => {
         {user.authb ?
           <IonSplitPane contentId="main"
             className=''
-          >
-            <Menu />
+          >  
+           
             <IonRouterOutlet id="main">
               <Switch>
                 <Route path="/page"
                 >
                   <Page />
                 </Route>
-
-
                 <Route path="/" >
                   <Redirect to="/page/Inicio" />
                 </Route>
-
               </Switch>
-
-
             </IonRouterOutlet>
           </IonSplitPane> :
           <IonRouterOutlet id="main">
-
             <Route path="/" >
               <Inicio />
             </Route>
-
             <Route path="*">
               <Redirect to="/" />
             </Route>

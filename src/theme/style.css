@@ -65,10 +65,32 @@ ion-item.selected> ion-icon {
 .info {
     background-color: var(--bg-wifi) !important;
 }
+.img-fluid-sm{
+    opacity: 0.2px !important;
+    background-color: #030207 !important;
+   
+    
+}
+.header{
+    text-align: center !important;
+}
+.text-info{
+    text-transform: capitalize !important;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 13px !important;
+}
+.header .img-fluid-sm:hover {
+    filter: blur(0.05rem) !important;
+}
 
 .border-activo {
     background-color: #4649460e;
     color: #67a958 !important;
+    border: none !important;
+}
+.card-header{
+    border: none !important;
 }
 
 .icon-app {
@@ -93,10 +115,11 @@ ion-item.selected> ion-icon {
 .options {
     cursor: pointer;
     transition: 1.3s;
+   
 }
 
 .options:hover {
-    transform: scale(1.07);
+    transform: scale(1.02);
 }
 
 .shadow {

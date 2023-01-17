@@ -1,4 +1,4 @@
-import {  
+import {
   IonHeader,
   IonIcon,
   IonItem,
@@ -10,8 +10,9 @@ import {
   IonNote,
 } from '@ionic/react';
 import { useLocation } from 'react-router-dom';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import {
-  archiveOutline, archiveSharp, 
+  archiveOutline, archiveSharp,
   homeSharp,
   homeOutline,
   documentsOutline, documentSharp,
@@ -75,42 +76,47 @@ const Menu: React.FC = () => {
 
 
   return (
-    <IonMenu contentId="main" type="push" className='col-lg-2 '>
-      <div className=''>
-        <IonHeader className=' py-3 ion-no-border info-user bg-dark'>
-          <img className='py-2  px-2' src={logo}
-            style={{
-              height: "70px",
-              width: "auto"
-            }}
-          ></img>
 
-          <IonNote className=' text-lowercase'></IonNote>
-          <IonListHeader className='text-white text-info '>{nombres.user.nombre}</IonListHeader>
-         
-        </IonHeader>
+    <div>
+      <IonHeader className=''>
+        <div className='header'>
+          <img className='img-fluid-sm' src='https://portal.comnet.ec/admin/images/login-bg/login-bg-9.jpg'
 
-        <div className='container pt-3'>
+          >
+          </img>
+          <div className=' info-user'>
+
+
+            <IonNote className=' text-lowercase'></IonNote>
+            <IonListHeader className='text-white text-info '>{nombres.user.nombre}</IonListHeader>
+
+          </div>
+
+        </div>
+
+
+        <div className='container pt-5'>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
+                <IonItem className={location.pathname === appPage.url ? 'selected' : '' + " nav-item"} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
                   <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
                   <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             );
           })}
-
-
-          <IonList id="labels-list">
-            <IonListHeader>Utilidades</IonListHeader>
-
-
-          </IonList>
         </div>
-      </div>
-    </IonMenu>
+        <div>
+
+        </div>
+      
+     
+              
+               </IonHeader>
+    </div>
+
+
   );
 };
 

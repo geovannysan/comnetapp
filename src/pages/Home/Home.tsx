@@ -31,9 +31,9 @@ const Inicipage: React.FC = () => {
             <div className='container-fluid mt-4 d-flex  justify-content-center'>
                 <div className='row col-12 col-md-10 col-lg-12 px-0  '>
                     <div className=' col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3  py-1  '>
-                        <div>
+                        <div className='options'>
                             <a onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="example-collapse-text">
-                                <div className='options   ' >
+                                <div className='animate__pulse   ' >
                                     <div className='   bg-dark  ms-3 mb-1 card rounded-4 shadow' style={{
                                         width: "60px",
                                         height: "60px",
@@ -45,7 +45,7 @@ const Inicipage: React.FC = () => {
                                             }} ></i>
                                         </div>
                                     </div>
-                                    <div className="card  mb-3 mt-n5  rounded-4  shadow-xs" style={{
+                                    <div className="card   mb-3 mt-n5  rounded-4  shadow-xs" style={{
                                         position: "relative",
                                         zIndex: 1
                                     }} >
@@ -93,61 +93,8 @@ const Inicipage: React.FC = () => {
                             </Collapse>
                         </div>
                     </div>
-                    {/*<div id="popover" className=' options col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 py-1   ' >
-                        <div className='   bg-dark  ms-3 mb-1 card rounded-4 shadow' style={{
-                            width: "60px",
-                            height: "60px",
-                            zIndex: 2
-                        }}>
-                            <div className='m-auto'>
-                                <i className="bi bi-info-circle text-white " style={{
-                                    fontSize: 35
-                                }} ></i>
-                            </div>
-                        </div>
-                        <div className="card  mb-3 mt-n5  rounded-4  shadow-xs" style={{
-                            position: "relative",
-                            zIndex: 1
-                        }} >
-                            <div className=" card-header    border-activo rounded-top-4 px-3 pt-n  text-end fw-bolder text-white  py-3"
-                                style={{
-                                    fontSize: "1.35em",
-
-
-                                }}
-                            >
-                                <span className={datos.estado == "ACTIVO" ? "text-success" : " text-danger"}>{datos.estado == "ACTIVO" ? " Servicio Activo" : "Servicio cancelado"}</span>
-                            </div>
-                            <div className=" px-2 py-2 d-flex justify-content-between mx-1">
-                                <h5 className="card-title ms-3  text-default" style={{
-                                    fontSize: "15px"
-                                }} >  </h5>
-                                <h5 className=' card-title ms-3 text-default'
-                                    style={{
-                                        fontSize: "15px"
-                                    }}
-                                >
-                                    {datos.servicios ? datos.servicios[0].perfil : ""}
-                                </h5>
-
-                            </div>
-                        </div>
-                    </div>
                     
-                    <IonPopover trigger="popover" dismissOnSelect={true}>
-                        <IonList lines='none'>
-                           
-                               {info.map((e:string,i:number)=>{
-                                   return (<IonItem button ><IonLabel>
-                                       {e}
-                                   </IonLabel>
-                                   </IonItem>)
-                               })    }                           
-                           
-                        </IonList>
-
-                    </IonPopover>*/}
-                    <div className='options   col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 py-1 ' onClick={() => history.push("/page/Informe")}>
+                    <div className='  options  col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 py-1 ' onClick={() => history.push("/page/Informe")}>
                         <div className=' mb-1    bg-success ms-3 card rounded-4 shadow' style={{
                             width: "60px",
                             height: "60px",
@@ -167,7 +114,7 @@ const Inicipage: React.FC = () => {
                             zIndex: 1
                         }} >
 
-                            <div className=" card-header success border rounded-top-4 px-3 pt-n  text-end fw-bolder text-success  py-3"
+                            <div className=" card-header success  rounded-top-4 px-3 pt-n  text-end fw-bolder text-success  py-3"
                                 style={{
                                     fontSize: "1.35em",
                                 }}

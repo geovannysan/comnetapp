@@ -1,30 +1,39 @@
+:root {
+    --white: #fff;
+    --celeste: #3691ef;
+    --dark: #212529;
+}
+
+
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
     background: none;
-    color: #3691ef !important;
+    color: var(--celeste) !important;
     border: none;
 }
+
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     border: none;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:active {
     background: none;
-    color: #3691ef !important;
+    color: var(--celeste) !important;
 }
+
 .buttons-excel {
     display: inline-block;
     font-weight: 400;
-    color: #212529;
+    color: var(--dark);
     text-align: center;
     border: 1px solid transparent;
     padding: .375rem .75rem;
     font-size: 1rem;
     line-height: 1.5;
     border-radius: .05rem;
-    color: #fff;
     background-color: #198754;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 }
+
 table.dataTable thead .sorting,
 table.dataTable thead .sorting_asc,
 table.dataTable thead .sorting_desc,
@@ -33,11 +42,13 @@ table.dataTable thead .sorting_desc_disabled {
     cursor: pointer !important;
     position: relative !important;
 }
+
 table.dataTable .label {
     font-weight: 700 !important;
     font-size: 8.5px;
     padding: 3px 6px;
 }
+
 .label {
     display: inline;
     padding: 3px 6px 4px;
@@ -49,26 +60,29 @@ table.dataTable .label {
     -webkit-border-radius: 2px;
     border-radius: 2px;
 }
-.label.label-danger{
-        background: #f44336 !important;
-        }
-    
-        .label-danger {
-            background-color: #ff5b57 !important;
-        }
-.dt-button-ligth{
-        display: inline-block;
-        font-weight: 400;
-        color: #212529;
-        text-align: center;
-        border: 1px solid transparent;
-        padding: .375rem .75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        border-radius: .05rem;
-        color: #000;
-        background-color: #f8f9fa;
+
+.label.label-danger {
+    background: #f44336 !important;
 }
+
+.label-danger {
+    background-color: #ff5b57 !important;
+}
+
+.dt-button-ligth {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .05rem;
+    color: #000;
+    background-color: #f8f9fa;
+}
+
 .table>tbody>tr>td,
 .table>tbody>tr>th,
 .table>tfoot>tr>td,
@@ -77,19 +91,23 @@ table.dataTable .label {
 .table>thead>tr>th {
     vertical-align: middle;
 }
+
 .table-bordered,
 .table-bordered td,
 .table-bordered th {
     border: 1px solid #d4d4d4;
 }
+
 .table thead tr th {
     font-weight: 500;
     border-bottom: 1px solid #adadad;
 }
+
 table.dataTable.nowrap th,
 table.dataTable.nowrap td {
     white-space: nowrap;
 }
+
 table.dataTable thead>tr>th.sorting_asc,
 table.dataTable thead>tr>th.sorting_desc,
 table.dataTable thead>tr>th.sorting,
@@ -100,10 +118,12 @@ table.dataTable thead>tr>td.sorting {
     text-transform: uppercase;
     font-size: 11px;
 }
+
 table.table-bordered.dataTable th,
 table.table-bordered.dataTable td {
     border-left-width: 0;
 }
+
 .dataTables_wrapper.dt-bootstrap .dataTables_filter label .form-control,
 .dataTables_wrapper.dt-bootstrap4 .dataTables_filter label .form-control {
     display: block;
@@ -111,23 +131,26 @@ table.table-bordered.dataTable td {
     width: 260px;
     height: 34px;
 }
+
 .dataTables_wrapper.dt-bootstrap .dataTables_info,
 .dataTables_wrapper.dt-bootstrap4 .dataTables_info {
     font-weight: 500;
     color: #6e6e6e;
 }
+
 div.dataTables_wrapper div.dataTables_info {
     padding-top: 0.85em;
     white-space: nowrap;
 }
-.dt-button-ligth:hover{
-background-color: #dfdfdf;
+
+.dt-button-ligth:hover {
+    background-color: #dfdfdf;
 }
 
 .buttons-excel:hover {
     background-color: #1e9960;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-    
+
 
 }
 
@@ -140,6 +163,7 @@ background-color: #dfdfdf;
     background: #ffffff;
     border-color: #d9dfe2;
 }
+
 table.collapsed td.dtr-control {
     background: url('mas.svg') no-repeat center;
     cursor: pointer !important;
@@ -147,6 +171,19 @@ table.collapsed td.dtr-control {
 
 tr.dt-hasChild.parent td.dtr-control {
     background: url('minus.svg') no-repeat center;
+}
+
+
+.img-fluid-sm {
+    position: relative !important;
+
+
+}
+
+.info-user {
+    position: relative !important;
+
+    margin-top: -40% !important;
 }
 
 .dataTables_filter {
@@ -182,40 +219,56 @@ table {
         margin-top: 1rem !important;
 
     }
+
 }
+
+@media(min-width:768px) {
+    ion-menu-button {
+        display: none !important;
+    }
+
+}
+
 ul,
 li {
     list-style-type: none;
     padding: 1px;
 }
+
 /*a.paginate_button.current {
     background-color: rgb(0, 47, 255) !important;
 }*/
 li.paginate_button :hover {
     background: "red" !important;
-    background-color: #3691ef;
+    background-color: #3691ef !important;
 }
+
 li.paginate_button {
     padding: 1px !important;
 }
+
 .btn-default,
 .btn-default:hover {
     color: #212529;
     background-color: #fff;
     border-color: rgb(175, 175, 175);
 }
+
 .btn-default {
     -webkit-box-shadow: 0;
     box-shadow: 0;
 }
+
 body table.dataTable {
     border-collapse: collapse !important;
 }
+
 thead {
     display: table-header-group;
     vertical-align: middle;
     border-color: inherit;
 }
+
 .btn-group-sm>.btn,
 .btn-sm {
     padding: 0.3125rem 0.625rem;
@@ -223,21 +276,24 @@ thead {
     line-height: 1.4;
     border-radius: 2px;
 }
+
 .paging_full_numbers span.paginate_button {
-    background:  repeat-x scroll 50% 50% #0078AE;
+    background: repeat-x scroll 50% 50% #0078AE;
     border: 1px solid #77D5F7;
-    color: #FFFFFF;
-    font-weight: normal;
+    color: #FFFFFF !important;
+    font-weight: normal !important;
 }
+
 .paging_full_numbers span.paginate_button:hover {
-    background:  repeat-x scroll 50% 50% #79C9EC;
-    border: 1px solid #448DAE;
-    color: #fff;
-    font-weight: normal;
+    background: repeat-x scroll 50% 50% #79C9EC !important;
+    border: 1px solid #448DAE !important;
+    color: var(--white) !important;
+    font-weight: normal !important;
 }
+
 .paging_full_numbers span.paginate_active {
-    background: repeat-x scroll 50% 50% #6EAC2C;
-    border: 1px solid #ACDD4A;
-    color: #FFFFFF;
-    font-weight: normal;
+    background: repeat-x scroll 50% 50% #6EAC2C !important;
+    border: 1px solid #ACDD4A !important;
+    color: #FFFFFF !important;
+    font-weight: normal !important;
 }

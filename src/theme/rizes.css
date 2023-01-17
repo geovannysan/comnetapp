@@ -7,7 +7,7 @@
     color: #333;
 }
 .panel-fullscreen {
-    display: absolute;
+    display: relative;
     z-index: 9999;
     position: fixed;
     width: 100%;

@@ -20,28 +20,20 @@ import { ListarTicket } from "../../../utils/Queryuser";
 //window.JSZip = JSZip;
 
 export default function Datatablesoporte() {
-
     const [spiner, setSpiner] = useState("")
     const [datos, setDatos] = useState([])
-
     const abrir = () => {
         console.log("datos")
     }
-    // console.log(moment( "2022-11-14 11:07:59").diff(new Date(), 'days'))
     useEffect(() => {
         let datos = userlog()
-        // this.abrir()
         setSpiner("")
         ListarTicket(datos.id).then(response => {
             console.log(response)
-            //setDatos(response.data.tickets)
             if (response.estado == "exito") {
                 setDatos(response.data.tickets)
             }
-
             setTimeout(function () {
-
-
                 //this.setState({ data: response.data.tickets })
                 if ($.fn.dataTable.isDataTable('#doc')) {
                     $('#table').DataTable().clear();
