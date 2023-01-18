@@ -9,6 +9,10 @@ const initialState = {
     plan:[],
     authb: false,
     progres:false,
+    modal:{
+        nombre:"",
+        payloa:""
+    }
 }
 const userSlice = createSlice({
     name: 'usuario',
@@ -25,8 +29,11 @@ const userSlice = createSlice({
         },
         setPlan:(state,action)=>{
             state.plan= action.payload
+        },
+        setModal:(state,action)=>{
+            state.modal= {...action.payload}
         }
     }
 })
-export const { setDatosuser, setlogin,setProg ,setPlan} = userSlice.actions;
+export const { setDatosuser, setlogin,setProg ,setPlan,setModal} = userSlice.actions;
 export default userSlice.reducer;

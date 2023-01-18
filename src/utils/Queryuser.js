@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { token } from './variables';
-let Host = "https://portal.comnet.ec/api/v1/"
-
-
+let Host = "https://private-anon-255f043898-mikrowisp.apiary-mock.com/api/v1/"
 export const autenticar = async (parms) => {
     try {
         let { data } = await axios.post(Host + "GetClientsDetails",
@@ -15,6 +13,7 @@ export const autenticar = async (parms) => {
                 'Content-Type': 'application/json',
             },
         })
+        console.log(data)
         return data
     } catch (error) {
         return error
@@ -89,12 +88,10 @@ export const MostrarFacturas = async (parms) => {
     } catch (error) {
         return error
     }
-
-
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.post("https://portal.comnet.ec/api/v1/GetInvoice",
+        let { data } = await axios.post(Host+"GetInvoice",
             {
                 "token":token,
                 "idfactura": parms

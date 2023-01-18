@@ -1,0 +1,15 @@
+.text-bange{
+    font-weight: bold !important;
+    color: rgba(0, 0, 0, 0.555);
+}
+.subindice li{
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.664);
+}
+.opciones{
+    cursor: pointer;
+}
+.opciones h5{
+    font-weight: bold;
+}

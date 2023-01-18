@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IonModal, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent } from "@ionic/react";
+import { IonModal, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonIcon } from "@ionic/react";
 import "jquery/dist/jquery.slim"
 import "jszip"
 import "pdfmake"
@@ -14,16 +14,23 @@ import "datatables.net-buttons/js/buttons.print"
 import "datatables.net-responsive-dt/js/responsive.dataTables.min.mjs"
 import "datatables.net-responsive-dt"
 import $ from "jquery"
+import { close } from "ionicons/icons";
 import * as moment from "moment"
 import { userlog } from "../../../utils/User";
 import { ListarTicket } from "../../../utils/Queryuser";
+import { useDispatch, useSelector } from "react-redux";
+import { setModal } from "../../../StoreRedux/Slice/UserSlice";
 //window.JSZip = JSZip;
 
 export default function Datatablesoporte() {
+    let usedispatch=  useDispatch()
+    let modal = useSelector((state) => state.usuario.modal)
     const [spiner, setSpiner] = useState("")
     const [datos, setDatos] = useState([])
+   // console.log(modal)
     const abrir = () => {
-        console.log("datos")
+        usedispatch(setModal({ nombre: "Soporte", payloa: "" }))
+       // console.log("datos")
     }
     useEffect(() => {
         let datos = userlog()
@@ -34,7 +41,6 @@ export default function Datatablesoporte() {
                 setDatos(response.data.tickets)
             }
             setTimeout(function () {
-                //this.setState({ data: response.data.tickets })
                 if ($.fn.dataTable.isDataTable('#doc')) {
                     $('#table').DataTable().clear();
                     $('#table').DataTable().destroy();
@@ -61,6 +67,7 @@ export default function Datatablesoporte() {
                             select: {
                                 style: "single",
                             },
+                            
                             buttons: [
                                 {
                                     extend: "excelHtml5",
@@ -68,7 +75,7 @@ export default function Datatablesoporte() {
                                 },
                                 {
                                   
-                                    text: "Nuevo ticket",
+                                    text: "<span><i class='bi bi-plus-lg'></i>Nuevo ticket</span>",
                                     className: "btn btn-default btn-sm",
                                     action: function (e, dt, node, config) {
                                         abrir()
@@ -84,10 +91,9 @@ export default function Datatablesoporte() {
 
                                     "responsivePriority": 1,
                                     className: "",
-                                    targets: 5,
+                                    targets: 6,
                                     visible: true,
                                     "responsive": false
-
                                 },
                                 {
                                     className: 'dtr-control',
@@ -103,13 +109,9 @@ export default function Datatablesoporte() {
                 }
                 setSpiner("d-none")
             }, 1000)
-
-
-
         }
         ).catch(err => {
             console.log(err)
-            //setSpiner("d-none")
         })
 
     }, [])
@@ -144,7 +146,7 @@ export default function Datatablesoporte() {
                         <td className="text-xs font-weight-bold">
                             {fecha(item.lastdate)}</td>
                         <td className="text-xs font-weight-bold">
-                            <a className="btn btn-default btn-sm"> <i className=" bi bi-pencil"> </i></a>
+                            <a className="btn btn-default btn-sm" > <i className=" bi bi-pencil"> </i></a>
                         </td>
 
                     </tr>
@@ -154,34 +156,61 @@ export default function Datatablesoporte() {
     }
     const showModal = () => {
         try {
-            return (<IonModal isOpen={this.state.modal}
+            return (<IonModal isOpen={modal.nombre==="Soporte"}
                 backdropDismiss={false}
             >
-                <IonHeader>
-                    <IonToolbar>
+                <IonHeader className=" ion-toolbar-transparent border-0">
+                    <IonToolbar >
                         <IonButtons slot="start">
-                            <IonButton onClick={() => this.setState({ modal: false })}>Cancel</IonButton>
+                            <IonButton className="d-none" onClick={() => usedispatch(setModal({nombre:"",payloa:""}))}>
+                                Cancel
+                                </IonButton>
                         </IonButtons>
                         <IonTitle></IonTitle>
                         <IonButtons slot="end">
-                            <IonButton onClick={() => this.setState({ modal: false })}>
-                                Confirm
+                            <IonButton onClick={() => usedispatch(setModal({ nombre: "", payloa: "" }))}>
+                                <IonIcon md={close} />
                             </IonButton>
                         </IonButtons>
                     </IonToolbar>
                 </IonHeader>
-                <IonContent className="ion-padding">
-                    <div className="row   bg-primary1">
-                        <div className=" col-12 bg-danger   border"
+                <IonContent >
+                    <div className=" text-center px-3">
+                        <h4 style={{
+                            fontWeight:"bold"
+                        }}>Seleccione el Departamento correcto para una mejor atención</h4>
+
+                    </div>
+                    <div className="row  h-75 px-5 pb-5 bg-primary1 ">
+                        <div className="opciones col-12 m-2  px-2 rounded-3  bg-danger m-2 "
                         >
-                            ss
-
+                            <h5 className="px-2">
+                                Soporte Técnico
+                            </h5>
+                            <ul className="px-2 subindice">
+                                <li>Lunes a Sabados 9 am a 6 pm </li>
+                                <li>Domingo Cerrado</li>
+                            </ul>
+    
                         </div>
-                        <div className="col-12">
-
+                        <div className="opciones col-12  rounded-3 bg-primary m-2">
+                            <h5 className="px-2">
+                                Ventas
+                            </h5>
+                            <ul className="px-2 subindice">
+                                <li>Lunes a Sabados 9 am a 6 pm </li>
+                                <li>Domingo Cerrado</li>
+                            </ul>
                         </div>
-                        <div className="col-12">
-
+                        <div className=" opciones col-12 rounded-3 bg-warning m-2" >
+                            <h5 className="px-2" >
+                                Facturación
+                            </h5>
+                            <ul className="px-2  ">
+                                <li className=" text-bange"
+                               
+                                >Reporte de pago, Reactivación de servicios, Cambios de fecha de pagos </li>
+                            </ul>
                         </div>
                     </div>
 
@@ -230,7 +259,7 @@ export default function Datatablesoporte() {
                         </div>
 
                     </div>
-
+                    {showModal()}
                 </div>
 
                 <div className={spiner}
