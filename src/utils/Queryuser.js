@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { token } from './variables';
-let Host = "https://private-anon-255f043898-mikrowisp.apiary-mock.com/api/v1/"
+let Host = "http://45.224.96.50/api/v1/"
 export const autenticar = async (parms) => {
     try {
         let { data } = await axios.post(Host + "GetClientsDetails",
@@ -75,7 +75,7 @@ export const MostrarFacturas = async (parms) => {
     try {
         let { data } = await axios.post(Host + "GetInvoices", {
             "token": token,
-
+            "estado": 1,
             "idcliente": parms
         }, {
             headers: {
@@ -91,11 +91,13 @@ export const MostrarFacturas = async (parms) => {
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.post(Host+"GetInvoice",
+        let { data } = await axios.post(Host + "GetInvoice",
             {
-                "token":token,
+                "token": token,
                 "idfactura": parms
-            })           
+            }
+            
+            )
         return data
 
     } catch (error) {
