@@ -116,3 +116,60 @@ export const  Creafactura = async(parms)=>{
         return error
     }
 }
+/**
+{
+  "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+  "fecha_emision": "{{CURRENT_DATE}}",
+  "tipo_documento": "FAC",
+  "documento": "004-004-00000{{NUMEROFACTURA}}",
+  "estado": "G",
+  "electronico": true,
+  "autorizacion": null,
+  "caja_id": null,
+  "cliente": {
+    "ruc": null,
+    "cedula": "{{CEDULA}}",
+    "razon_social": "{{NOMBRES}}",
+    "telefonos": "{{PLATFORM_ID}}",
+    "direccion": "{{DIRECCION_CLIENTE}}",
+    "tipo": "N",
+    "email": "{{MAIL}}",
+    "es_extranjero": false
+  },
+  "vendedor": {
+    "ruc": "0992782129001",
+    "razon_social": "COMPUTECNICSNET S.A",
+    "telefonos": "5104910",
+    "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+    "tipo": "J",
+    "email": "facturacion@speed.ec",
+    "es_extranjero": false
+  },
+  "descripcion": "{{DATOS_SERVICIO_SRI}}",
+  "subtotal_0": 0,
+  "subtotal_12": "{{SUBTOTAL}}",
+  "iva": "{{IMPUESTO}}",
+  "total": "{{TOTAL_FACTURA}}",
+  "detalles": [
+    {
+      "producto_id": "{{IDPRODUCTO}}",
+      "cantidad": "{{QTY_FACTURAS}}",
+      "precio": "{{SUBTOTAL}}",
+      "porcentaje_iva": 12,
+      "porcentaje_descuento": 0,
+      "base_cero": 0,
+      "base_gravable": "{{SUBTOTAL}}",
+      "base_no_gravable": 0
+    }
+  ],
+  "cobros": [
+    {
+      "forma_cobro": "TRA",
+      "monto": "{{TOTAL_FACTURA}}",
+      "cuenta_bancaria_id": "{{IDCUENTA}}",
+      "numero_comprobante": "{{DOCUMENTO}}",
+      "fecha": "{{CURRENT_DATE}}"
+    }
+  ]
+}
+ */
