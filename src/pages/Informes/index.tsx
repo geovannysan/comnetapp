@@ -324,6 +324,12 @@ export default function InformeViews() {
                 }
                 PagoFacturacomnet(datosdefactura).then(fact=>{
                    console.log(fact)
+                    if (fact.estado=="exito"){
+                        //crea factura
+                    }
+                    if (fact.estado == "erro"){
+                        //muestra mensaje de errror
+                    }
                 }).catch(err=>{
                     console.log(err)
                 })
