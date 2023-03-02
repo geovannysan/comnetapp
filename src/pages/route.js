@@ -4,14 +4,20 @@ import InformeViews from "./Informes";
 import Soportviews from "./Soporte";
 import FacturaViews from "./Comprobantes/Facturas";
 import DocuumentosViews from "./Documentos";
+/*    {
+        path: "/inicio",
+        layout: "/page",
+        name: "Inicio",
+        component: Inicipage,
+    },*/
 const route = [
     {
         path: "/inicio",
         layout: "/page",
         name: "Inicio",
-        component: Inicipage,
+        component: InformeViews,
     },
-    {
+    /*{
         path: "/Documentos",
         layout: "/page",
         name: "Documentos",
@@ -46,7 +52,7 @@ const route = [
         layout: "/page",
         name: "Puntos",
         component: FacturaViews,
-    },
+    },*/
 
 ]
 export default route

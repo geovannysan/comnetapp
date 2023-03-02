@@ -36,7 +36,7 @@ const appPages: AppPage[] = [
     iosIcon: homeSharp,
     mdIcon: homeOutline
   },
-  {
+/*  {
     title: 'Mis comprobantes',
     url: '/page/Comprobantes',
     iosIcon: documentsOutline,
@@ -64,7 +64,7 @@ const appPages: AppPage[] = [
     url: '/page/Puntos',
     iosIcon: locationOutline,
     mdIcon: location
-  }
+  }*/
 ];
 
 
@@ -78,7 +78,7 @@ const Menu: React.FC = () => {
   return (
 
     <div>
-      <IonHeader className=''>
+      <IonHeader className='h-100'>
         <div className='header'>
           <img className='img-fluid-sm' src='https://portal.comnet.ec/admin/images/login-bg/login-bg-9.jpg'
 
@@ -95,7 +95,7 @@ const Menu: React.FC = () => {
         </div>
 
 
-        <div className='container pt-5'>
+        <div className='container pt-5 pb-5'>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>

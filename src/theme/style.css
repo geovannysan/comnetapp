@@ -100,7 +100,11 @@ ion-item.selected> ion-icon {
 
 .reporte {
     background-color: #3692ef1e !important;
-    color: #3691ef !important;
+    color
+    : #3691ef !important;
+}
+.custom-toast-danger{
+    --border-color:var(--bg-wifi)
 }
 
 .wifi {

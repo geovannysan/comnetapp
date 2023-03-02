@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setDatosuser, setlogin } from '../../StoreRedux/Slice/UserSlice';
 import { useState } from 'react';
 import { autenticar } from '../../utils/Queryuser';
+import { usuarioTocken } from '../../utils/variables';
 
 const Page: React.FC = () => {
     let usedispat = useDispatch()
@@ -17,7 +18,44 @@ const Page: React.FC = () => {
     })
     function logearse() {
         if(datos.cedula.trim()!== ""&& datos.codigo.trim()!== ""){
-            autenticar(datos.cedula).then(e => {
+           let usuario=  usuarioTocken.some(e=>e.usuario== datos.cedula)
+           let pass = usuarioTocken.some(e=>e.password==datos.codigo)
+           console.log(usuario,pass)
+           if(usuario&&pass){
+               sessionStorage.setItem("USERLOGIN", JSON.stringify({ ...usuarioTocken.find(e => e.usuario === datos.cedula) }))
+               usedispat(setDatosuser(usuarioTocken.find(e=>e.usuario=== datos.cedula)))
+               usedispat(setlogin({ estado: true }))
+               history.push("/page/inicio")
+           }else if(!usuario){
+               present({
+                   message: 'Usuario incorrecto',
+                   cssClass: 'custom-toast',
+                   duration: 1500,
+                   position: "top",
+                   buttons:[
+                    {
+                        text:"cerrar",
+                        role:"cancel",
+
+                    }
+                   ]
+               });
+           }else if(!pass){
+               present({
+                   message: 'Contraseña incorrecto',
+                   cssClass: 'custom-toast',
+                   duration: 1500,
+                   position: "top",
+                   buttons: [
+                       {
+                           text: "cerrar",
+                           role: "cancel",
+
+                       }
+                   ]
+               });
+           }
+           /* autenticar(datos.cedula).then(e => {
                 if (e.estado === "exito") {
                     if (datos.codigo === e.datos[0].codigo) {
                         present({
@@ -50,7 +88,7 @@ const Page: React.FC = () => {
                 }
             }).catch(err => {
                 console.error(err)
-            })
+            })*/
         }
         else{
         present({
