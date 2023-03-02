@@ -99,12 +99,9 @@ export const CreaProducto = async(parms)=>{
 }
 
 export const PagoFacturacomnet=async(parms)=>{
+    console.log(parms)
     try {
-        let { data } = await axios.get("http://45.224.96.50/api/v1/PaidInvoice",parms,
-        {
-            headers:token
-
-        })
+        let { data } = await axios.post("http://45.224.96.50/api/v1/PaidInvoice",parms)
         return data
     } catch (error) {
         
@@ -113,7 +110,7 @@ export const PagoFacturacomnet=async(parms)=>{
 
 export const  Creafactura = async(parms)=>{
     try {
-        let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/documento/")
+        let { data } = await axios.post("https://api.contifico.com/sistema/api/v1/documento", parms)
         return data
     } catch (error) {
         return error

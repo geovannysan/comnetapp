@@ -5,7 +5,7 @@ import { autenticar, Facturaid, MostrarFacturas } from "../../utils/Queryuser";
 import { userlog } from "../../utils/User";
 import Selectopction from "../../components/Selectshear";
 import InputViews from "../../components/Input";
-import { BuscaclienteContifico, BuscarProductoContific, CreaProducto, CrearClienteContifico } from "../../utils/Contifico";
+import { BuscaclienteContifico, BuscarProductoContific, Creafactura, CreaProducto, CrearClienteContifico, PagoFacturacomnet } from "../../utils/Contifico";
 
 export default function InformeViews() {
     const [present] = useIonToast();
@@ -293,7 +293,7 @@ export default function InformeViews() {
         })
     }
     function RegistrarPago() {
-        console.log(cedula, total, lugar.value, banco.value)
+        console.log(cedula, total, lugar.value, banco.value, singleSelect.value)
         console.log()
         if (lugar.label.includes("Deposito")) {
             console.log(banco.value)
@@ -314,20 +314,28 @@ export default function InformeViews() {
             }
             else {
                 console.log(datos.asunto, datos.mensaje)
+                let datosdefactura = {
+                    "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
+                    "idfactura": singleSelect.value,
+                    "pasarela": "" + lugar.value ,
+                    "cantidad": total ,
+                    "idtransaccion": datos.asunto,
+                    "nota": banco.label+"/"+ datos.mensaje
+                }
+                PagoFacturacomnet(datosdefactura).then(fact=>{
+                   console.log(fact)
+                }).catch(err=>{
+                    console.log(err)
+                })
+
+
             }
 
         }
 
 
     }
-    let datosdefactura = {
-        "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
-        "idfactura": "{{ID_FACTURA_P}}",
-        "pasarela": "SpeedMan {{ENTIDAD}}",
-        "cantidad": "{{VALORPAGADO}}",
-        "idtransaccion": "{{DOCUMENTO}}",
-        "nota": "{{PROTOCOL}} / {{COMENTARIO}}"
-    }
+  
 
     useEffect(() => {
 
