@@ -5,13 +5,15 @@ import { autenticar, Facturaid, MostrarFacturas } from "../../utils/Queryuser";
 import { userlog } from "../../utils/User";
 import Selectopction from "../../components/Selectshear";
 import InputViews from "../../components/Input";
-import { BuscaclienteContifico, BuscarProductoContific, Creafactura, CreaProducto, CrearClienteContifico, PagoFacturacomnet } from "../../utils/Contifico";
+import { BuscaclienteContifico, BuscarProductoContific, Creafactura, CreaProducto, CrearClienteContifico, IncremetoFactura, PagoFacturacomnet } from "../../utils/Contifico";
 
 export default function InformeViews() {
     const [present] = useIonToast();
     const [list, seTlist] = useState([])
     const [singleSelect, setSingleSelect] = useState({ value: "", label: "", });
     const [lugar, setLugar] = useState({ value: "", label: "" })
+   // { value: "Q9pdBBVzt6yqd8KE", label: "CTA CTE BCO PICHINCHA 2100106995 COMPUTECNICS" },
+
     const [banco, setBanco] = useState({ value: "", label: "" })
     const [metodd, setmetodo] = useState({ value: "", label: "" })
     const [datos, setDatos] = useState({
@@ -38,6 +40,9 @@ export default function InformeViews() {
         nombre: "",
         estado: "",
         cedula: "",
+        correo: "",
+        direccion_principal: "",
+        movil: "",
         facturacion: {
             facturas_nopagadas: 0,
             total_facturas: "0000"
@@ -104,6 +109,8 @@ export default function InformeViews() {
             })
         }
     }
+    let [contifico, setContifico] = useState([])
+
     /** regsitra clinete obtine cliente porta y contifico obtiene productos contifico*/
     function buscar() {
         if (cedula.trim().length < 7) {
@@ -153,6 +160,7 @@ export default function InformeViews() {
                         })
                     }
                     else if (ouputs.length > 0) {
+                        setContifico(ouputs)
                         BuscarProductoContific(ouput.datos[0].servicios[0].idperfil).then(salida => {
                             if (salida.length > 0) {
                                 let estado = salida[0].estado;
@@ -161,7 +169,7 @@ export default function InformeViews() {
                                     setValor({
                                         total: valor,
                                         estado: estado,
-                                        id: salida[0].estado,
+                                        id: salida[0].id,
                                     })
                                 }
 
@@ -229,6 +237,9 @@ export default function InformeViews() {
                         nombre: ouput.datos[0].nombre,
                         estado: ouput.datos[0].estado,
                         cedula: ouput.datos[0].cedula,
+                        movil: ouput.datos[0].movil,
+                        direccion_principal: ouput.datos[0].direccion_principal,
+                        correo: ouput.datos[0].correo,
                         facturacion: {
                             ...ouput.datos[0].facturacion
                         },
@@ -241,6 +252,9 @@ export default function InformeViews() {
                         nombre: ouput.datos[0].nombre,
                         estado: ouput.datos[0].estado,
                         cedula: ouput.datos[0].cedula,
+                        movil: ouput.datos[0].movil,
+                        direccion_principal: ouput.datos[0].direccion_principal,
+                        correo: ouput.datos[0].correo,
                         facturacion: {
                             ...ouput.datos[0].facturacion
                         },
@@ -253,6 +267,9 @@ export default function InformeViews() {
                         nombre: ouput.datos[0].nombre,
                         estado: ouput.datos[0].estado,
                         cedula: ouput.datos[0].cedula,
+                        movil: ouput.datos[0].movil,
+                        direccion_principal: ouput.datos[0].direccion_principal,
+                        correo: ouput.datos[0].correo,
                         facturacion: {
                             ...ouput.datos[0].facturacion
                         }
@@ -281,6 +298,9 @@ export default function InformeViews() {
                     nombre: "",
                     estado: "",
                     cedula: "",
+                    movil: "",
+                    direccion_principal: "",
+                    correo: "",
                     facturacion: {
                         facturas_nopagadas: 0,
                         total_facturas: "0000"
@@ -292,9 +312,20 @@ export default function InformeViews() {
             //console.log(err)
         })
     }
+    function FormaPago() {
+        if (lugar.value.includes("Efectivo")) {
+            return ""
+        }
+        if (lugar.value.includes("TC-Oficina")) {
+            return ""
+        }
+        if (lugar.value.includes("Deposito")) {
+            return "TRA"
+        }
+    }
     function RegistrarPago() {
         console.log(cedula, total, lugar.value, banco.value, singleSelect.value)
-        console.log()
+        //console.log()
         if (lugar.label.includes("Deposito")) {
             console.log(banco.value)
             if (datos.asunto.trim().length == 0 && banco.label.trim() == "") {
@@ -317,31 +348,350 @@ export default function InformeViews() {
                 let datosdefactura = {
                     "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
                     "idfactura": singleSelect.value,
-                    "pasarela": "" + lugar.value ,
-                    "cantidad": total ,
+                    "pasarela": "" + lugar.value,
+                    "cantidad": total,
                     "idtransaccion": datos.asunto,
-                    "nota": banco.label+"/"+ datos.mensaje
+                    "nota": banco.label + "/" + datos.mensaje
                 }
-                PagoFacturacomnet(datosdefactura).then(fact=>{
-                   console.log(fact)
-                    if (fact.estado=="exito"){
-                        //crea factura
-                    }
-                    if (fact.estado == "erro"){
-                        //muestra mensaje de errror
-                    }
-                }).catch(err=>{
-                    console.log(err)
-                })
+                let fac = {
+                    "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+                    "fecha_emision": new Date(),
+                    "tipo_documento": "FAC",
+                    "documento": "004-004-00000" + 1,
+                    "estado": "G",
+                    "electronico": true,
+                    "autorizacion": null,
+                    "caja_id": null,
+                    "cliente": {
+                        "ruc": null,
+                        "cedula": usuario.cedula,
+                        "razon_social": usuario.nombre,
+                        "telefonos": usuario.movil,
+                        "direccion": usuario.direccion_principal,
+                        "tipo": "N",
+                        "email": usuario.correo,
+                        "es_extranjero": false
+                    },
+                    "vendedor": {
+                        "ruc": "0992782129001",
+                        "razon_social": "COMPUTECNICSNET S.A",
+                        "telefonos": "5104910",
+                        "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+                        "tipo": "J",
+                        "email": "facturacion@speed.ec",
+                        "es_extranjero": false
+                    },
+                    //contifico[0].
+                    "descripcion": "{{DATOS_SERVICIO_SRI}}",
+                    "subtotal_0": 0,
+                    "subtotal_12": (totalcon.total) / 1.12,
+                    "iva": (totalcon.total * 0.12).toFixed(2),
+                    "total": totalcon.total.toFixed(2),
+                    "detalles": [
+                        {
+                            "producto_id": totalcon.id,
+                            "cantidad": 1,
+                            "precio": (totalcon.total) / 1.12,
+                            "porcentaje_iva": 12,
+                            "porcentaje_descuento": 0,
+                            "base_cero": 0,
+                            "base_gravable": (totalcon.total) / 1.12,
+                            "base_no_gravable": 0
+                        }
+                    ],
+                    "cobros": [
+                        {
+                            "forma_cobro": lugar.value.split("-")[0],
+                            "monto": totalcon.total.toFixed(2),
+                            "cuenta_bancaria_id": banco.value,
+                            "numero_comprobante": datos.asunto,
+                            "fecha": new Date().toLocaleDateString("en-US")
+                        }
+                    ]
+                }
+                console.log(datosdefactura,fac)
+                /*
+                                PagoFacturacomnet(datosdefactura).then(fact => {
+                                    console.log(fact)
+                                    if (fact.estado == "exito") {
+                                        IncremetoFactura().then(num => {
+                                            if (num.status) {
+                                                let facnum = num.result[0].contadores
+                                               
+                                                let datos = {
+                                                    "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+                                                    "fecha_emision": new Date(),
+                                                    "tipo_documento": "FAC",
+                                                    "documento": "004-004-00000" + facnum,
+                                                    "estado": "G",
+                                                    "electronico": true,
+                                                    "autorizacion": null,
+                                                    "caja_id": null,
+                                                    "cliente": {
+                                                        "ruc": null,
+                                                        "cedula": usuario.cedula,
+                                                        "razon_social": usuario.nombre,
+                                                        "telefonos": usuario.movil,
+                                                        "direccion": usuario.direccion_principal,
+                                                        "tipo": "N",
+                                                        "email": usuario.correo,
+                                                        "es_extranjero": false
+                                                    },
+                                                    "vendedor": {
+                                                        "ruc": "0992782129001",
+                                                        "razon_social": "COMPUTECNICSNET S.A",
+                                                        "telefonos": "5104910",
+                                                        "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+                                                        "tipo": "J",
+                                                        "email": "facturacion@speed.ec",
+                                                        "es_extranjero": false
+                                                    },
+                                                    //contifico[0].
+                                                    "descripcion": "{{DATOS_SERVICIO_SRI}}",
+                                                    "subtotal_0": 0,
+                                                    "subtotal_12": (totalcon.total) / 1.12,
+                                                    "iva": (totalcon.total * 0.12).toFixed(2),
+                                                    "total": totalcon.total,
+                                                    "detalles": [
+                                                        {
+                                                            "producto_id": totalcon.id,
+                                                            "cantidad": 1,
+                                                            "precio": (totalcon.total) / 1.12,
+                                                            "porcentaje_iva": 12,
+                                                            "porcentaje_descuento": 0,
+                                                            "base_cero": 0,
+                                                            "base_gravable": (totalcon.total) / 1.12,
+                                                            "base_no_gravable": 0
+                                                        }
+                                                    ],
+                                                    "cobros": [
+                                                        {
+                                                            "forma_cobro": FormaPago(),
+                                                            "monto": totalcon.total,
+                                                            "cuenta_bancaria_id": "{{IDCUENTA}}",
+                                                            "numero_comprobante": "{{DOCUMENTO}}",
+                                                            "fecha": new Date()
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }).catch(err => {
+                
+                                        })
+                                        //crea factura
+                                      
+                                    }
+                                    if (fact.estado == "erro") {
+                                        //muestra mensaje de errror
+                                    }
+                                }).catch(err => {
+                                    console.log(err)
+                                })*/
 
 
             }
 
         }
-
-
+        if(lugar.label.includes("CHEQUE")){
+            let datosdefactura = {
+                "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
+                "idfactura": singleSelect.value,
+                "pasarela": "" + lugar.value,
+                "cantidad": total,
+                "idtransaccion": datos.asunto,
+                "nota": banco.label + "/" + datos.mensaje
+            }
+            let fac = {
+                "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+                "fecha_emision": new Date(),
+                "tipo_documento": "FAC",
+                "documento": "004-004-00000" + 1,
+                "estado": "G",
+                "electronico": true,
+                "autorizacion": null,
+                "caja_id": null,
+                "cliente": {
+                    "ruc": null,
+                    "cedula": usuario.cedula,
+                    "razon_social": usuario.nombre,
+                    "telefonos": usuario.movil,
+                    "direccion": usuario.direccion_principal,
+                    "tipo": "N",
+                    "email": usuario.correo,
+                    "es_extranjero": false
+                },
+                "vendedor": {
+                    "ruc": "0992782129001",
+                    "razon_social": "COMPUTECNICSNET S.A",
+                    "telefonos": "5104910",
+                    "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+                    "tipo": "J",
+                    "email": "facturacion@speed.ec",
+                    "es_extranjero": false
+                },
+                //contifico[0].
+                "descripcion": "{{DATOS_SERVICIO_SRI}}",
+                "subtotal_0": 0,
+                "subtotal_12": (totalcon.total) / 1.12,
+                "iva": (totalcon.total * 0.12).toFixed(2),
+                "total": totalcon.total.toFixed(2),
+                "detalles": [
+                    {
+                        "producto_id": totalcon.id,
+                        "cantidad": 1,
+                        "precio": (totalcon.total) / 1.12,
+                        "porcentaje_iva": 12,
+                        "porcentaje_descuento": 0,
+                        "base_cero": 0,
+                        "base_gravable": (totalcon.total) / 1.12,
+                        "base_no_gravable": 0
+                    }
+                ],
+                "cobros": [
+                    {
+                        "forma_cobro": lugar.value.split("-")[0],
+                        "monto": totalcon.total.toFixed(2),
+                        "cuenta_bancaria_id": banco.value,
+                        "numero_comprobante": datos.asunto,
+                        "fecha": new Date()
+                    }
+                ]
+            }
+            console.log(datosdefactura, fac)
+        }
+        if(lugar.label.includes("TARJETA")){
+            let datosdefactura = {
+                "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
+                "idfactura": singleSelect.value,
+                "pasarela": "" + lugar.value,
+                "cantidad": total,
+                "idtransaccion": datos.asunto,
+                "nota": banco.label + "/" + datos.mensaje
+            }
+            let fac = {
+                "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+                "fecha_emision": new Date().toLocaleDateString("en-US"),
+                "tipo_documento": "FAC",
+                "documento": "004-004-00000" + 1,
+                "estado": "G",
+                "electronico": true,
+                "autorizacion": null,
+                "caja_id": null,
+                "cliente": {
+                    "ruc": null,
+                    "cedula": usuario.cedula,
+                    "razon_social": usuario.nombre,
+                    "telefonos": usuario.movil,
+                    "direccion": usuario.direccion_principal,
+                    "tipo": "N",
+                    "email": usuario.correo,
+                    "es_extranjero": false
+                },
+                "vendedor": {
+                    "ruc": "0992782129001",
+                    "razon_social": "COMPUTECNICSNET S.A",
+                    "telefonos": "5104910",
+                    "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+                    "tipo": "J",
+                    "email": "facturacion@speed.ec",
+                    "es_extranjero": false
+                },
+                //contifico[0].
+                "descripcion": "{{DATOS_SERVICIO_SRI}}",
+                "subtotal_0": 0,
+                "subtotal_12": (totalcon.total) / 1.12,
+                "iva": (totalcon.total * 0.12).toFixed(2),
+                "total": totalcon.total.toFixed(2),
+                "detalles": [
+                    {
+                        "producto_id": totalcon.id,
+                        "cantidad": 1,
+                        "precio": (totalcon.total) / 1.12,
+                        "porcentaje_iva": 12,
+                        "porcentaje_descuento": 0,
+                        "base_cero": 0,
+                        "base_gravable": (totalcon.total) / 1.12,
+                        "base_no_gravable": 0
+                    }
+                ],
+                "cobros": [
+                    {
+                        "forma_cobro": lugar.value.split("-")[0],
+                        "monto": totalcon.total.toFixed(2),
+                        "tipo_ping": "D",
+                        "fecha": new Date().toLocaleDateString("en-US")
+                    }
+                ]
+            }
+            console.log(datosdefactura, fac)
+        }
+        if(lugar.label.includes("Efectivo")){
+            let datosdefactura = {
+                "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
+                "idfactura": singleSelect.value,
+                "pasarela": "" + lugar.value,
+                "cantidad": total,
+                "idtransaccion": datos.asunto,
+                "nota": banco.label + "/" + datos.mensaje
+            }
+            let fac = {
+                "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+                "fecha_emision": new Date().toLocaleDateString("en-US"),
+                "tipo_documento": "FAC",
+                "documento": "004-004-00000" + 1,
+                "estado": "G",
+                "electronico": true,
+                "autorizacion": null,
+                "caja_id": null,
+                "cliente": {
+                    "ruc": null,
+                    "cedula": usuario.cedula,
+                    "razon_social": usuario.nombre,
+                    "telefonos": usuario.movil,
+                    "direccion": usuario.direccion_principal,
+                    "tipo": "N",
+                    "email": usuario.correo,
+                    "es_extranjero": false
+                },
+                "vendedor": {
+                    "ruc": "0992782129001",
+                    "razon_social": "COMPUTECNICSNET S.A",
+                    "telefonos": "5104910",
+                    "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+                    "tipo": "J",
+                    "email": "facturacion@speed.ec",
+                    "es_extranjero": false
+                },
+                //contifico[0].
+                "descripcion": "{{DATOS_SERVICIO_SRI}}",
+                "subtotal_0": 0,
+                "subtotal_12": (totalcon.total) / 1.12,
+                "iva": (totalcon.total * 0.12).toFixed(2),
+                "total": totalcon.total.toFixed(2),
+                "detalles": [
+                    {
+                        "producto_id": totalcon.id,
+                        "cantidad": 1,
+                        "precio": (totalcon.total) / 1.12,
+                        "porcentaje_iva": 12,
+                        "porcentaje_descuento": 0,
+                        "base_cero": 0,
+                        "base_gravable": (totalcon.total) / 1.12,
+                        "base_no_gravable": 0
+                    }
+                ],
+                "cobros": [
+                    {
+                        "forma_cobro": lugar.value.split("-")[0],
+                        "monto": totalcon.total.toFixed(2),                                             
+                        "fecha": new Date().toLocaleDateString("en-US")
+                    }
+                ]
+            }
+            console.log(datosdefactura,fac)
+        }
     }
-  
+
 
     useEffect(() => {
 
@@ -437,15 +787,15 @@ export default function InformeViews() {
                                         <Selectopction
                                             name="Forma"
                                             options={[
-                                                { value: "Efectivo Oficina/Matriz", label: "Efectivo Oficina/Matriz" },
-                                                { value: "TC-Oficina/Matriz", label: "TC Oficina/Matriz" },
-                                                { value: "Deposito Oficina/Matriz", label: "Deposito Oficina/Matriz" },
-                                                { value: "Efectivo Oficina/Ecocity", label: "Efectivo Oficina/Ecocity" },
-                                                { value: "TC Oficina/Ecocity", label: "TC Oficina/Ecocity" },
-                                                { value: "Deposito Oficina/Ecocity", label: "Deposito Oficina/Ecocity" }
+                                                { value: "EF-Oficina/Matriz", label: "Efectivo Oficina/Matriz" },
+                                                { value: "EF-Oficina/Ecocity", label: "Efectivo Oficina/Ecocity" },
+                                                { value: "TC-Oficina/Matriz", label: "TARJETA Oficina/Matriz" },
+                                                { value: "TC-Oficina/Ecocity", label: "TARJETA Oficina/Ecocity" },                                               
+                                                { value: "TRA-Oficina/Matriz", label: "Deposito Oficina/Matriz" },
+                                                { value: "TRA-Oficina/Ecocity", label: "Deposito Oficina/Ecocity" }
                                             ]}
                                             value={lugar}
-                                            placeholder="Forma "
+                                            placeholder="Forma"
                                             onChange={setLugar}
                                         />
                                         <span className="font-weight-light"></span>
@@ -453,11 +803,11 @@ export default function InformeViews() {
                                 </div>
                             </div>
                             <div className="col-lg-6 mb-3">
-                                {lugar.value != "" && lugar.value.includes("Deposito") || lugar.value.includes("TC") ?
+                                {lugar.value != "" && lugar.value.includes("TRA") || lugar.value.includes("TC") ?
                                     <div className="form-group row">
                                         <label className="col-sm-4 col-form-label  text-md-end ">
-                                            {lugar.value != "" && lugar.value.includes("Deposito") ? "N° Transacción" : ""}
-                                            {lugar.value != "" && lugar.value.includes("TC") ? "N° Lote" : ""}
+                                            {lugar.value != "" && lugar.value.includes("TRA") ? "N° Transacción" : ""}
+                                            {lugar.value != "" && lugar.value.includes("TC") ? "N° Autorización" : ""}
                                         </label>
                                         <div className="col-sm-8">
                                             <div className=" input-group">
@@ -472,7 +822,7 @@ export default function InformeViews() {
                                     </div> : ""}
                             </div>
                             <div className="col-lg-6 mb-3">
-                                {lugar.value.includes("Deposito") ? <div className="form-group row mb-3">
+                                {lugar.value.includes("TRA") ? <div className="form-group row mb-3">
                                     <label className="col-sm-4  col-form-label text-md-end">Banco</label>
                                     <div className="col-12 col-lg-8">
                                         <div className="">
@@ -480,13 +830,14 @@ export default function InformeViews() {
                                                 name="Banco"
                                                 options={[
                                                     { value: "", label: "" },
+
                                                     { value: "Q9pdBBVzt6yqd8KE", label: "CTA CTE BCO PICHINCHA 2100106995 COMPUTECNICS" },
-                                                    { value: "vj6e9QgXc3DneWBV", label: "CTA CTE BCO PRUBANCO 1058194005 COMPUTECNICS" },
+                                                    { value: "vj6e9QgXc3DneWBV", label: "CTA CTE BCO PRODUBANCO 1058194005 COMPUTECNICS" },
                                                     { value: "5gQbWnq5S9V3a6w2", label: "CTA CTE BCO GUAYAQUIL 18018624 COMPUTECNICS" },
                                                     { value: "xGge0VLoTopvbADR", label: "CTA CTE BCO PACIFICO 8069530 COMPUTECNICS" },
                                                 ]}
-                                                value={banco.value}
-                                                placeholder="Banco "
+                                                value={banco}
+                                                placeholder="Banco"
                                                 onChange={setBanco}
                                             />
                                         </div>
