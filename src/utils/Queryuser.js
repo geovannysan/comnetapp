@@ -96,17 +96,30 @@ export const Facturaid = async (parms) => {
                 "token": token,
                 "idfactura": parms
             }
-            
-            )
+
+        )
         return data
 
     } catch (error) {
         return error
     }
-
-
 }
+export const CreaLaFacturapor = async (parms) => {
+    try {
 
+        let { data } = await axios({
+            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/documento/', data: parms, headers: {
+                'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
+            }
+        })
+        return data
+
+    } catch (error) {
+        console.log(parms, error)
+        return error
+
+    }
+}
 
 /**
  * 

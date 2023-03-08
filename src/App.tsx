@@ -48,7 +48,7 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        {user.authb ?
+        {!user.authb ?
           <IonSplitPane contentId="main"
             className=''
           >  

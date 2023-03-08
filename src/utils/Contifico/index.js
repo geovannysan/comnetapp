@@ -25,9 +25,9 @@ try {
  */
 export const CrearClienteContifico=async(parms)=>{
     try {
-        let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?pos=4511aa3d-fce0-4441-a3e1-0961bd3357af",parms, parms, {
-            headers: {
-                "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+        let { data } = await axios({
+            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/persona/?pos=4511aa3d-fce0-4441-a3e1-0961bd3357af', data: parms, headers: {
+                'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
             }
         })
         return data
@@ -58,9 +58,12 @@ export const BuscarProductoContific = async(parms)=>{
  * devuelve contador
  * @returns 
  */
-export const IncremetoFactura = async()=>{
+export const IncremetoFacturaS = async()=>{
     try {
-        let { data } = await axios.get("https://brisana.netbot.ec/js/numerofactura.php")
+       
+        let { data } = await axios({
+            method: 'get', url: 'https://brisana.netbot.ec/js/incrementov.php'
+        })
         return data
     } catch (error) {
         return error
@@ -101,7 +104,12 @@ export const CreaProducto = async(parms)=>{
 export const PagoFacturacomnet=async(parms)=>{
     console.log(parms)
     try {
-        let { data } = await axios.post("http://45.224.96.50/api/v1/PaidInvoice",parms)
+        let { data } = await axios.post("http://45.224.96.50/api/v1/PaidInvoice",parms
+            , {
+                headers: {
+                    "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+                }
+            })
         return data
     } catch (error) {
         
@@ -110,7 +118,12 @@ export const PagoFacturacomnet=async(parms)=>{
 
 export const  Creafactura = async(parms)=>{
     try {
-        let { data } = await axios.post("https://api.contifico.com/sistema/api/v1/documento", parms)
+        let { data } = await axios.post("https://api.contifico.com/sistema/api/v1/documento", parms
+            , {
+                headers: {
+                    "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+                }
+            })
         return data
     } catch (error) {
         return error
