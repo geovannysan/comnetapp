@@ -62,7 +62,7 @@ export const IncremetoFacturaS = async()=>{
     try {
        
         let { data } = await axios({
-            method: 'get', url: 'https://brisana.netbot.ec/js/incrementov.php'
+            method: 'post', url: 'https://brisana.netbot.ec/js/incrementov.php'
         })
         return data
     } catch (error) {

@@ -6,14 +6,15 @@ import { userlog } from "../../utils/User";
 import Selectopction from "../../components/Selectshear";
 import InputViews from "../../components/Input";
 import { BuscaclienteContifico, BuscarProductoContific, Creafactura, CreaProducto, CrearClienteContifico, IncremetoFacturaS, PagoFacturacomnet } from "../../utils/Contifico";
-
+import * as $ from "jquery"
+import { useHistory } from "react-router";
 export default function InformeViews() {
     const [present] = useIonToast();
     const [list, seTlist] = useState([])
     const [singleSelect, setSingleSelect] = useState({ value: "", label: "", });
     const [lugar, setLugar] = useState({ value: "", label: "" })
     // { value: "Q9pdBBVzt6yqd8KE", label: "CTA CTE BCO PICHINCHA 2100106995 COMPUTECNICS" },
-
+    let history = useHistory()
     const [banco, setBanco] = useState({ value: "", label: "" })
     const [metodd, setmetodo] = useState({ value: "", label: "" })
     const [datos, setDatos] = useState({
@@ -28,7 +29,7 @@ export default function InformeViews() {
         linkimagen: "",
         mensaje: ""
     })
-    const handelChange = (e: any) => {
+    const handelChange = (e) => {
         setDatos({
             ...datos,
             [e.name]: e.value
@@ -60,17 +61,17 @@ export default function InformeViews() {
         estado: "",
         id: "",
     })
-    function handelChangeT(e: any) {
+    function handelChangeT(e) {
         settotal(e.target.value)
 
     }
-    function lugarchange(e: any) {
+    function lugarchange(e) {
         setLugar(e)
         settotal(e.label ? e.label.split(" ")[1].replace("(", "").replace(")", "") : "")
         console.log(e)
     }
     /** Verificar la cuenta a pagar con el producto contifico (crea producto contifico de ser nesesario)  */
-    function comprobante(e: any) {
+    function comprobante(e) {
         setSingleSelect(e)
         if (e.value != "") {
             Facturaid(e.value).then(ouput => {
@@ -109,19 +110,27 @@ export default function InformeViews() {
         }
     }
     let [presentlo, dismiss] = useIonLoading()
-    let [contifico, setContifico] =  useState<any>([])
+    let [contifico, setContifico] = useState([])
 
     /** regsitra clinete obtine cliente porta y contifico obtiene productos contifico*/
     function buscar() {
         if (cedula.trim().length < 7) {
             return
         }
-        autenticar(cedula).then(ouput => {
+        presentlo({
+            message: 'Busacando Cliente en el Portal ',
+            cssClass: 'custom-loading'
+        })
+        autenticar(cedula.trim()).then(ouput => {
             console.log(ouput)
             if (ouput.estado === "exito") {
-               seTlist([])
-                
+                seTlist([])
                 setSingleSelect({ value: "", label: "" })
+                dismiss()
+                presentlo({
+                    message: 'Busacando Cliente en Contifico ',
+                    cssClass: 'custom-loading'
+                })
                 BuscaclienteContifico(cedula.trim()).then(ouputs => {
                     console.log(ouputs)
                     if (ouputs.length == 0) {
@@ -142,20 +151,76 @@ export default function InformeViews() {
 
                         }
                         console.log(datos)
+                        dismiss()
+                        presentlo({
+                            message: 'Creando Cliente en Contifico ',
+                            cssClass: 'custom-loading'
+                        })
                         CrearClienteContifico(datos).then(crea => {
-                          
+
                             //mostrar mensaje de registro
-                          //  console.log(e)
-                          if(Object.keys(crea).length>1){
-                            setContifico([crea])
-                        }
+                            //  console.log(e)
+                            if (Object.keys(crea).length > 1) {
+                                dismiss()
+                                setContifico([crea])
+                                presentlo({
+                                    message: 'Busacndo facturas inpagas ',
+                                    cssClass: 'custom-loading'
+                                })
+                                MostrarFacturas(ouput.datos[0].id).then(ouput => {
+                                    if (ouput.estado === "exito") {
+                                        dismiss()
+
+                                        console.log(ouput)
+                                        let datos = ouput.facturas.map((el, index) => {
+                                            return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
+                                        })
+                                        datos.unshift({ value: "", label: "Selecione Factura" })
+                                        seTlist(datos)
+                                        //setSingleSelect({ value: "", label: "Selecione Factura" })
+                                        comprobante({ value: "", label: "Selecione Factura" })
+                                    } else {
+                                        dismiss()
+                                    }
+                                }).catch(err => {
+                                    console.log(err)
+                                    dismiss()
+                                    present({
+                                        message: "Hubo un error inesperado",
+                                        cssClass: '',
+                                        duration: 2500,
+                                        position: "top",
+                                        buttons: [
+                                            {
+                                                text: "cerrar",
+                                                role: "cancel",
+
+                                            }
+                                        ]
+                                    })
+                                })
+                            } else {
+                                dismiss()
+                                present({
+                                    message: "Erro No se creo cliente contifico",
+                                    cssClass: '',
+                                    duration: 2500,
+                                    position: "top",
+                                    buttons: [
+                                        {
+                                            text: "cerrar",
+                                            role: "cancel",
+
+                                        }
+                                    ]
+                                })
+                            }
                         }).catch(err => {
-                            //mostrar mensaje de no lo registro
-                           // console.log(err)
+                            dismiss()
                             present({
-                                message: "Hubo un error inesperado sl crear cliente contifico",
+                                message: "Hubo un error inesperado al crear cliente contifico",
                                 cssClass: '',
-                                duration: 1800,
+                                duration: 2500,
                                 position: "top",
                                 buttons: [
                                     {
@@ -167,7 +232,29 @@ export default function InformeViews() {
                         })
                     }
                     else if (ouputs.length > 0) {
+                        console.log(ouput)
+                        if (ouput.datos[0].servicios == undefined) {
+                            dismiss()
+                            present({
+                                message: "Este usuario no tiene servicio registrado en el Perfil",
+                                cssClass: '',
+                                duration: 2500,
+                                position: "top",
+                                buttons: [
+                                    {
+                                        text: "cerrar",
+                                        role: "cancel",
+                                    }
+                                ]
+                            })
+                            return
+                        }
                         setContifico(ouputs)
+                        dismiss()
+                        presentlo({
+                            message: 'Busacando Producto en Contifico ',
+                            cssClass: 'custom-loading'
+                        })
                         BuscarProductoContific(ouput.datos[0].servicios[0].idperfil).then(salida => {
                             if (salida.length > 0) {
                                 let estado = salida[0].estado;
@@ -178,15 +265,58 @@ export default function InformeViews() {
                                         estado: estado,
                                         id: salida[0].id,
                                     })
-                                }                                
+                                    dismiss()
+                                    presentlo({
+                                        message: 'Busacando Facturas por pagar',
+                                        cssClass: 'custom-loading'
+                                    })
+                                    MostrarFacturas(ouput.datos[0].id).then(ouput => {
+                                        if (ouput.estado === "exito") {
+                                            dismiss()
+                                            console.log(ouput)
+                                            let datos = ouput.facturas.map((el, index) => {
+                                                return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
+                                            })
+                                            datos.unshift({ value: "", label: "Selecione Factura" })
+                                            seTlist(datos)
+                                            comprobante({ value: "", label: "Selecione Factura" })
+                                        }else{
+                                            dismiss()
+                                        }
+                                    }).catch(err => {
+                                        console.log(err)
+                                        dismiss()
+                                        present({
+                                            message: "Hubo un error inesperado",
+                                            cssClass: '',
+                                            duration: 2500,
+                                            position: "top",
+                                            buttons: [
+                                                {
+                                                    text: "cerrar",
+                                                    role: "cancel",
+
+                                                }
+                                            ]
+                                        })
+                                    })
+                                }
                                 console.log(salida)
+                                return
                             }
+                            dismiss()
+                            presentlo({
+                                message: 'No se encontro Producto Contifico ',
+                                cssClass: 'custom-loading'
+                            })
+
                         }).catch(err => {
                             console.log(err)
+                            dismiss()
                             present({
-                                message: "Hubo un error inesperado",
+                                message: "Hubo un error inesperado al Buscar Producto Contifico",
                                 cssClass: '',
-                                duration: 1800,
+                                duration: 2500,
                                 position: "top",
                                 buttons: [
                                     {
@@ -196,50 +326,26 @@ export default function InformeViews() {
                                 ]
                             })
                         })
-                    }
-                }).catch(err => {
-                    console.log(err)
-                    present({
-                        message: "Hubo un error inesperado",
-                        cssClass: '',
-                        duration: 1800,
-                        position: "top",
-                        buttons: [
-                            {
-                                text: "cerrar",
-                                role: "cancel",
-                            }
-                        ]
-                    })
-                })
-                MostrarFacturas(ouput.datos[0].id).then(ouput => {
-                    if (ouput.estado === "exito") {
-                       
-                        console.log(ouput)
-                        let datos = ouput.facturas.map((el: any, index: number) => {
-                            return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
-                        })
-                        datos.unshift({ value: "", label: "Selecione Factura" })
-                        seTlist(datos)
-                        //setSingleSelect({ value: "", label: "Selecione Factura" })
-                        comprobante({ value: "", label: "Selecione Factura" })
-                    }
-                }).catch(err => {
-                    console.log(err)
-                    present({
-                        message: "Hubo un error inesperado",
-                        cssClass: '',
-                        duration: 1800,
-                        position: "top",
-                        buttons: [
-                            {
-                                text: "cerrar",
-                                role: "cancel",
+                        // ouput.datos[0].servicios == undefined ? seTlist([{ value: "", label: "Selecione Factura" }]) :
 
+                    }
+                }).catch(err => {
+                    console.log(err)
+                    dismiss()
+                    present({
+                        message: "Hubo un error inesperado",
+                        cssClass: '',
+                        duration: 2500,
+                        position: "top",
+                        buttons: [
+                            {
+                                text: "cerrar",
+                                role: "cancel",
                             }
                         ]
                     })
                 })
+
                 if (ouput.datos[0].estado === "ACTIVO") {
                     let datos = {
                         nombre: ouput.datos[0].nombre,
@@ -288,10 +394,11 @@ export default function InformeViews() {
                 }
             }
             if (ouput.estado === "error") {
+                dismiss()
                 present({
                     message: ouput.mensaje,
                     cssClass: '-danger',
-                    duration: 1800,
+                    duration: 2500,
                     position: "top",
                     buttons: [
                         {
@@ -301,6 +408,7 @@ export default function InformeViews() {
                         }
                     ]
                 });
+
                 console.log("err")
                 setUser({
                     nombre: "",
@@ -317,6 +425,20 @@ export default function InformeViews() {
                 })
             }
         }).catch(err => {
+            /* dismiss()
+             present({
+                 message: err,
+                 cssClass: '-danger',
+                 duration: 2500,
+                 position: "top",
+                 buttons: [
+                     {
+                         text: "cerrar",
+                         role: "cancel",
+ 
+                     }
+                 ]
+             });*/
             //console.log(err)
         })
     }
@@ -333,6 +455,14 @@ export default function InformeViews() {
     }
     /** registra factura en portal obtiene numero incremento crea factura contifico */
     function RegistrarPago() {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        let mm = today.getMonth() + 1; // Months start at 0!
+        let dd = today.getDate();
+
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+        const formattedToday = dd + '/' + mm + '/' + yyyy;
         console.log(cedula, total, lugar.value, banco.value, singleSelect.value)
         //console.log()
 
@@ -346,7 +476,7 @@ export default function InformeViews() {
                 present({
                     message: "Ingrese número de comprobante o seleccione cuenta",
                     cssClass: '-',
-                    duration: 1800,
+                    duration: 2500,
                     position: "top",
                     buttons: [
                         {
@@ -358,7 +488,7 @@ export default function InformeViews() {
             }
             else {
                 presentlo({
-                    message: 'Registrando factura',
+                    message: 'Pagando Factura en portal ',
                     cssClass: 'custom-loading'
                 })
                 console.log(datos.asunto, datos.mensaje)
@@ -374,13 +504,20 @@ export default function InformeViews() {
                 //  console.log(datosdefactura,fac)
                 PagoFacturacomnet(datosdefactura).then(fact => {
                     console.log(fact)
+                   
                     if (fact.estado == "exito") {
+                        dismiss()
+                        presentlo({
+                            message: 'Agregando numero de Factura',
+                            cssClass: 'custom-loading'
+                        })
                         IncremetoFacturaS().then(num => {
                             if (num.status) {
+                                dismiss()
                                 let facnum = num.result[0].contadores
                                 let fac = {
                                     "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
-                                    "fecha_emision": new Date(),
+                                      "fecha_emision":formattedToday,
                                     "tipo_documento": "FAC",
                                     "documento": "001-001-00000" + facnum,
                                     "estado": "G",
@@ -430,17 +567,22 @@ export default function InformeViews() {
                                             "monto": totalcon.total.toFixed(2),
                                             "cuenta_bancaria_id": banco.value,
                                             "numero_comprobante": datos.asunto,
-                                            "fecha": new Date().toLocaleDateString("en-US")
+                                            "fecha":formattedToday,
                                         }
                                     ]
                                 }
+                                presentlo({
+                                    message: "Creando factura Contifico"
+                                })
                                 CreaLaFacturapor(fac).then(salida => {
                                     console.log(salida)
+                                    let fat = "001-001-00000" + facnum
+                                    if (salida.documento === fat){
                                     dismiss()
                                     present({
                                         message: "Factura creada con éxito",
                                         cssClass: '-',
-                                        duration: 1800,
+                                        duration: 2500,
                                         position: "top",
                                         buttons: [
                                             {
@@ -449,15 +591,28 @@ export default function InformeViews() {
                                             }
                                         ]
                                     })
+                                    history.goBack()}
                                 }).catch(error => {
                                     console.log(error)
+                                    present({
+                                        message: "Hubo un error no se Genero Factura en Contifico",
+                                        cssClass: '-',
+                                        duration: 2500,
+                                        position: "top",
+                                        buttons: [
+                                            {
+                                                text: "cerrar",
+                                                role: "cancel",
+                                            }
+                                        ]
+                                    })
                                 })
                             } else {
                                 dismiss()
                                 present({
                                     message: "No se Genero el numero incremental de la factura",
                                     cssClass: '-',
-                                    duration: 1800,
+                                    duration: 2500,
                                     position: "top",
                                     buttons: [
                                         {
@@ -469,7 +624,20 @@ export default function InformeViews() {
 
                             }
                         }).catch(err => {
+                            console.log(err)
                             dismiss()
+                            present({
+                                message: "No se Genero el numero incremental de la factura",
+                                cssClass: '-',
+                                duration: 2500,
+                                position: "top",
+                                buttons: [
+                                    {
+                                        text: "cerrar",
+                                        role: "cancel",
+                                    }
+                                ]
+                            })
                         })
                         //crea factura
 
@@ -477,9 +645,22 @@ export default function InformeViews() {
                     if (fact.estado == "erro") {
                         //muestra mensaje de errror
                         dismiss()
+                        present({
+                            message: "No se pago la factura en el portal",
+                            cssClass: '-',
+                            duration: 2500,
+                            position: "top",
+                            buttons: [
+                                {
+                                    text: "cerrar",
+                                    role: "cancel",
+                                }
+                            ]
+                        })
                         console.log(fact)
                     }
                 }).catch(err => {
+                    dismiss()
                     console.log(err)
                 })
 
@@ -492,7 +673,7 @@ export default function InformeViews() {
                 present({
                     message: "Ingrese número de Autorización",
                     cssClass: '-',
-                    duration: 1800,
+                    duration: 2500,
                     position: "top",
                     buttons: [
                         {
@@ -511,15 +692,23 @@ export default function InformeViews() {
                 "idtransaccion": datos.asunto,
                 "nota": banco.label + "/" + datos.mensaje
             }
+            presentlo({
+                message: 'Registrando factura en el portal',
+                cssClass: 'custom-loading'
+            })
             PagoFacturacomnet(datosdefactura).then(fact => {
                 if (fact.estado == "exito") {
+                    presentlo({
+                        message: 'Obteniendo número factura',
+                        cssClass: 'custom-loading'
+                    })
                     IncremetoFacturaS().then(num => {
                         if (!num.status) {
                             dismiss()
                             present({
                                 message: "No se Genero el número incremental de la factura",
                                 cssClass: '-',
-                                duration: 1800,
+                                duration: 2500,
                                 position: "top",
                                 buttons: [
                                     {
@@ -534,7 +723,7 @@ export default function InformeViews() {
                         let facnum = num.result[0].contadores
                         let fac = {
                             "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
-                            "fecha_emision": new Date().toLocaleDateString("en-US"),
+                              "fecha_emision":formattedToday,
                             "tipo_documento": "FAC",
                             "documento": "001-001-00000" + facnum,
                             "estado": "G",
@@ -561,115 +750,6 @@ export default function InformeViews() {
                                 "es_extranjero": false
                             },
                             //contifico[0].
-                            "descripcion": "{{DATOS_SERVICIO_SRI}}",
-                            "subtotal_0": 0,
-                            "subtotal_12": (totalcon.total) / 1.12,
-                            "iva": (totalcon.total * 0.12).toFixed(2),
-                            "total": totalcon.total.toFixed(2),
-                            "detalles": [
-                                {
-                                    "producto_id": totalcon.id,
-                                    "cantidad": 1,
-                                    "precio": (totalcon.total) / 1.12,
-                                    "porcentaje_iva": 12,
-                                    "porcentaje_descuento": 0,
-                                    "base_cero": 0,
-                                    "base_gravable": (totalcon.total) / 1.12,
-                                    "base_no_gravable": 0
-                                }
-                            ],
-                            "cobros": [
-                                {
-                                    "forma_cobro": lugar.value.split("-")[0],
-                                    "monto": totalcon.total.toFixed(2),
-                                    "tipo_ping": "D",
-                                    "fecha": new Date().toLocaleDateString("en-US")
-                                }
-                            ]
-                        }
-                        CreaLaFacturapor(fac).then(salida => {
-                            dismiss()
-                            console.log(salida)
-                        }).catch(error => {
-                            dismiss()
-                            console.log(error)
-
-                        })
-                    }).catch(err => {
-                        console.log(err)
-
-                    })
-
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-
-            //console.log(datosdefactura, fac)
-        }
-        if (lugar.label.includes("Efectivo")) {
-            let datosdefactura = {
-                "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
-                "idfactura": singleSelect.value,
-                "pasarela": "" + lugar.value,
-                "cantidad": total,
-                "idtransaccion": datos.asunto,
-                "nota": banco.label + "/" + datos.mensaje
-            }
-            presentlo({
-                message: 'Registrando factura',
-                cssClass: 'custom-loading'
-            })
-            PagoFacturacomnet(datosdefactura).then(fact => {
-                if (fact.estado == "exito") {
-                    IncremetoFacturaS().then(num => {
-                        console.log(num)
-                        if (!num.status) {
-                            dismiss()
-                            present({
-                                message: "No se Genero el número incremental de la factura",
-                                cssClass: '-',
-                                duration: 1800,
-                                position: "top",
-                                buttons: [
-                                    {
-                                        text: "cerrar",
-                                        role: "cancel",
-                                    }
-                                ]
-                            })
-
-                            return;
-                        }
-                        let facnum = num.result[0].contadores
-                        let fac = {
-                            "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
-                            "fecha_emision": new Date().toLocaleDateString("en-US"),
-                            "tipo_documento": "FAC",
-                            "documento": "001-001-00000" + facnum,
-                            "estado": "G",
-                            "electronico": true,
-                            "autorizacion": null,
-                            "caja_id": null,
-                            "cliente": {
-                                "ruc": null,
-                                "cedula": usuario.cedula,
-                                "razon_social": usuario.nombre,
-                                "telefonos": usuario.movil,
-                                "direccion": usuario.direccion_principal,
-                                "tipo": "N",
-                                "email": usuario.correo,
-                                "es_extranjero": false
-                            },
-                            "vendedor": {
-                                "ruc": "0992782129001",
-                                "razon_social": "COMPUTECNICSNET S.A",
-                                "telefonos": "5104910",
-                                "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
-                                "tipo": "J",
-                                "email": "facturacion@speed.ec",
-                                "es_extranjero": false
-                            },
                             "descripcion": descri.items[0]["descrp"],
                             "subtotal_0": 0,
                             "subtotal_12": (totalcon.total) / 1.12,
@@ -691,52 +771,291 @@ export default function InformeViews() {
                                 {
                                     "forma_cobro": lugar.value.split("-")[0],
                                     "monto": totalcon.total.toFixed(2),
-                                    "fecha": new Date().toLocaleDateString("en-US")
+                                    "tipo_ping": "D",
+                                    "fecha":formattedToday,
                                 }
                             ]
                         }
-                        console.log(facnum, fac)
-                        var myHeaders = new Headers();
-                        myHeaders.append("Authorization", "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w");
-                        myHeaders.append("Content-Type", "application/json");
-                        var requestOptions:any = {
-                            method: 'GET',
-                            headers: myHeaders,
-                            body: JSON.stringify(fac),
-                            redirect: 'follow'
-                        };
-
-                        CreaLaFacturapor(fac).then(salida => {
-                            dismiss()
-                           /* if(salida.length>0){
-                                let data = salida.filter((f: any) => f.documento == "001-001-00000" + facnum)
-                                console.log(data)
-                            }*/
-                            console.log(salida)
-                            sessionStorage.setItem("facturas", JSON.stringify(salida))
-                        }).catch(error => {
-                            dismiss()
-                            console.log(error)
+                        dismiss()
+                        presentlo({
+                            message: 'Creando factura electrónica',
+                            cssClass: 'custom-loading'
                         })
-                       /* fetch("https://api.contifico.com/sistema/api/v1/documento/", requestOptions)
-                            .then(response => response.text())
-                            .then(result => console.log(result))
-                            .catch(error => {console.log('error', error)
-                                
-                        });*/
-                       /* CreaLaFacturapor(fac).then(salida => {
-                            dismiss()
+                        CreaLaFacturapor(fac).then(salida => {
+                            //dismiss()
+                            let fat = "001-001-00000" + facnum
+                            if (salida.documento === fat) {
+                                dismiss()
+                                present({
+                                    message: "Factura creada con éxito",
+                                    cssClass: '-',
+                                    duration: 2500,
+                                    position: "top",
+                                    buttons: [
+                                        {
+                                            text: "cerrar",
+                                            role: "cancel",
+                                        }
+                                    ]
+                                })
+                                history.goBack()
+                            }
                             console.log(salida)
                         }).catch(error => {
                             dismiss()
+                            present({
+                                message: "Hubo un error no se registro la factura electrónica",
+                                cssClass: '-',
+                                duration: 2500,
+                                position: "top",
+                                buttons: [
+                                    {
+                                        text: "cerrar",
+                                        role: "cancel",
+                                    }
+                                ]
+                            })
                             console.log(error)
-                        })*/
+
+                        })
                     }).catch(err => {
                         console.log(err)
+
                     })
 
                 }
             }).catch(err => {
+                dismiss()
+                present({
+                    message: "Hubo un error al registrar la factura en el portal",
+                    cssClass: '-',
+                    duration: 2500,
+                    position: "top",
+                    buttons: [
+                        {
+                            text: "cerrar",
+                            role: "cancel",
+                        }
+                    ]
+                })
+                console.log(err)
+            })
+
+            //console.log(datosdefactura, fac)
+        }
+        if (lugar.label.includes("Efectivo")) {
+            let datosdefactura = {
+                "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
+                "idfactura": singleSelect.value,
+                "pasarela": "" + lugar.value,
+                "cantidad": total,
+                "idtransaccion": datos.asunto,
+                "nota": banco.label + "/" + datos.mensaje
+            }
+            presentlo({
+                message: 'Registrando factura',
+                cssClass: 'custom-loading'
+            })
+            PagoFacturacomnet(datosdefactura).then(fact => {
+                if (fact.estado == "exito") {
+                    /*  $.get("demo.asp", function (data, status) {
+                          alert("Data: " + data + "\nStatus: " + status);
+                      });*/
+                    presentlo({
+                        message: 'Obteniendo numero de factura ',
+                        cssClass: 'custom-loading'
+                    })
+                    $.ajax({
+                        type: "post",
+                        url: "https://brisana.netbot.ec/js/incrementov.php",
+                        success: function (num) {
+                            if (num.status) {
+                                console.log(num)
+                                if (!num.status) {
+                                    dismiss()
+                                    present({
+                                        message: "No se Genero el número incremental de la factura",
+                                        cssClass: '-',
+                                        duration: 2500,
+                                        position: "top",
+                                        buttons: [
+                                            {
+                                                text: "cerrar",
+                                                role: "cancel",
+                                            }
+                                        ]
+                                    })
+
+                                    return;
+                                }
+                                presentlo({
+                                    message: 'Creando Factura Electrónica ',
+                                    cssClass: 'custom-loading'
+                                })
+                                let facnum = num.result[0].contadores
+                                let fac = {
+                                    "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+                                      "fecha_emision":formattedToday,
+                                    "tipo_documento": "FAC",
+                                    "documento": "001-001-00000" + facnum,
+                                    "estado": "G",
+                                    "electronico": true,
+                                    "autorizacion": null,
+                                    "caja_id": null,
+                                    "cliente": {
+                                        "ruc": null,
+                                        "cedula": usuario.cedula,
+                                        "razon_social": usuario.nombre,
+                                        "telefonos": usuario.movil,
+                                        "direccion": usuario.direccion_principal,
+                                        "tipo": "N",
+                                        "email": usuario.correo,
+                                        "es_extranjero": false
+                                    },
+                                    "vendedor": {
+                                        "ruc": "0992782129001",
+                                        "razon_social": "COMPUTECNICSNET S.A",
+                                        "telefonos": "5104910",
+                                        "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+                                        "tipo": "J",
+                                        "email": "facturacion@speed.ec",
+                                        "es_extranjero": false
+                                    },
+                                    "descripcion": descri.items[0]["descrp"],
+                                    "subtotal_0": 0,
+                                    "subtotal_12": (totalcon.total) / 1.12,
+                                    "iva": (totalcon.total * 0.12).toFixed(2),
+                                    "total": totalcon.total.toFixed(2),
+                                    "detalles": [
+                                        {
+                                            "producto_id": totalcon.id,
+                                            "cantidad": 1,
+                                            "precio": (totalcon.total) / 1.12,
+                                            "porcentaje_iva": 12,
+                                            "porcentaje_descuento": 0,
+                                            "base_cero": 0,
+                                            "base_gravable": (totalcon.total) / 1.12,
+                                            "base_no_gravable": 0
+                                        }
+                                    ],
+                                    "cobros": [
+                                        {
+                                            "forma_cobro": lugar.value.split("-")[0],
+                                            "monto": totalcon.total.toFixed(2),
+                                            "fecha":formattedToday,
+                                        }
+                                    ]
+                                }
+                                console.log(facnum, fac)
+                                var myHeaders = new Headers();
+                                myHeaders.append("Authorization", "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w");
+                                myHeaders.append("Content-Type", "application/json");
+                                var requestOptions = {
+                                    method: 'GET',
+                                    headers: myHeaders,
+                                    body: JSON.stringify(fac),
+                                    redirect: 'follow'
+                                };
+
+                                CreaLaFacturapor(fac).then(salida => {
+                                    dismiss()
+                                    let fat = "001-001-00000" + facnum
+                                    if (salida.documento === fat) {
+                                        dismiss()
+                                        present({
+                                            message: "Factura creada con éxito",
+                                            cssClass: '-',
+                                            duration: 2500,
+                                            position: "top",
+                                            buttons: [
+                                                {
+                                                    text: "cerrar",
+                                                    role: "cancel",
+                                                }
+                                            ]
+                                        })
+                                        history.goBack()
+                                    }
+                                    console.log(salida)
+                                   // sessionStorage.setItem("facturas", JSON.stringify(salida))
+                                }).catch(error => {
+                                    dismiss()
+                                    present({
+                                        message: "Hubo un error no se genero la factura Electrónica",
+                                        cssClass: '-',
+                                        duration: 2500,
+                                        position: "top",
+                                        buttons: [
+                                            {
+                                                text: "cerrar",
+                                                role: "cancel",
+                                            }
+                                        ]
+                                    })
+                                    console.log(error)
+                                })
+                                /* fetch("https://api.contifico.com/sistema/api/v1/documento/", requestOptions)
+                                              .then(response => response.text())
+                                              .then(result => console.log(result))
+                                              .catch(error => {console.log('error', error)
+                                                  
+                                          });*/
+                                /* CreaLaFacturapor(fac).then(salida => {
+                                     dismiss()
+                                     console.log(salida)
+                                 }).catch(error => {
+                                     dismiss()
+                                     console.log(error)
+                                 })*/
+
+                                console.log(num)
+                                // console.log(datos)  (async () => {
+
+                                console.log(datos)
+                            }
+
+                            else {
+                                console.log(num)
+                            }
+                        },
+                        error: function (error) {
+                            dismiss()
+                            present({
+                                message: "No se Genero el Numero de Factura",
+                                cssClass: '-',
+                                duration: 2500,
+                                position: "top",
+                                buttons: [
+                                    {
+                                        text: "cerrar",
+                                        role: "cancel",
+                                    }
+                                ]
+                            })
+                            console.log(error)
+
+                        }
+                    })
+                    /* IncremetoFacturaS().then(num => {
+                     }).catch(err => {
+                         console.log(err)
+                     })*/
+
+                }
+            }).catch(err => {
+                dismiss()
+                present({
+                    message: "Erro al crear Factura en portal",
+                    cssClass: '-',
+                    duration: 2500,
+                    position: "top",
+                    buttons: [
+                        {
+                            text: "cerrar",
+                            role: "cancel",
+                        }
+                    ]
+                })
                 console.log(err)
             })
 
@@ -822,13 +1141,13 @@ export default function InformeViews() {
                                 <div className="form-group row">
                                     <label className="col-sm-4  col-form-label text-md-end">Factura a pagar</label>
                                     <div className="col-sm-8">
-                                        {list.length>0? <Selectopction
+                                        {list.length > 0 ? <Selectopction
                                             name="factura"
                                             options={list}
                                             value={singleSelect}
                                             placeholder="Factura"
-                                            onChange={(e: any) => comprobante(e)}
-                                        />:""}
+                                            onChange={(e) => comprobante(e)}
+                                        /> : ""}
                                     </div>
                                 </div>
                             </div>
@@ -866,7 +1185,7 @@ export default function InformeViews() {
                                                 <input className="form-control"
                                                     name="asunto"
                                                     value={datos.asunto}
-                                                    onChange={(e: any) => handelChange(e.target)}
+                                                    onChange={(e) => handelChange(e.target)}
                                                 />
                                             </div>
                                             <span className="font-weight-light"></span>
@@ -920,7 +1239,7 @@ export default function InformeViews() {
                                         <textarea className=" form-control" id="exampleFormControlTextarea1" rows={3}
                                             name="mensaje"
                                             value={datos.mensaje}
-                                            onChange={(e: any) => handelChange(e.target)}>
+                                            onChange={(e) => handelChange(e.target)}>
 
                                         </textarea>
                                     </div>

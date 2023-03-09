@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { token } from './variables';
-let Host = "http://45.224.96.50/api/v1/"
+let Host = "https://45.224.96.50/api/v1/"
 export const autenticar = async (parms) => {
     try {
         let { data } = await axios.post(Host + "GetClientsDetails",
