@@ -104,13 +104,13 @@ export const CreaProducto = async(parms)=>{
 export const PagoFacturacomnet=async(parms)=>{
     console.log(parms)
     try {
-        let { data } = await axios.post("http://45.224.96.50/api/v1/PaidInvoice",parms
-            , {
-                headers: {
-                    "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
-                }
-            })
-        return data
+        //http://portalfac.netbot.ec/consultas.php
+        //http://45.224.96.50/api/v1/PaidInvoice
+        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php",{...parms
+            , "url":"https://portal.comnet.ec/api/v1/PaidInvoice"
+    }
+            )
+        return JSON.parse( data)
     } catch (error) {
         
     }
