@@ -25,7 +25,7 @@ export const ListarTicket = async (parm) => {
             "url": Host + "ListTicket",
             "idcliente": parm
         })
-        return data
+        return JSON.parse( data)
     } catch (error) {
         return error
     }
