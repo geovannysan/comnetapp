@@ -1,34 +1,29 @@
 import axios from 'axios';
 import { token } from './variables';
-let Host = "https://45.224.96.50/api/v1/"
+let Host = "https://portal.comnet.ec/api/v1/"
 export const autenticar = async (parms) => {
     try {
-        let { data } = await axios.post(Host + "GetClientsDetails",
+        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php",
             {
-                "token": token,
-                "cedula": parms
+                "cedula": parms,
+                "url": "https://portal.comnet.ec/api/v1/GetClientsDetails"
             }, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
             },
         })
-        console.log(data)
-        return data
+        console.log(JSON.parse(data))
+        return JSON.parse(data)
     } catch (error) {
         return error
     }
 }
 export const ListarTicket = async (parm) => {
     try {
-        let { data } = await axios.post(Host + "ListTicket", {
-            "token": token,
+        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php", {
+            "url": Host + "ListTicket",
             "idcliente": parm
-        }, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
         })
         return data
     } catch (error) {
@@ -37,31 +32,21 @@ export const ListarTicket = async (parm) => {
 }
 export const ListarFactura = async (parms) => {
     try {
-        let { data } = await axios.post(Host + "GetInvoices", {
-            "token": token,
+        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php", {
+            "url": Host + "GetInvoices",
             "limit": 1,
             "idcliente": parms
-        }, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
         })
-        if (data.estado === "exito") {
+        if (JSON.parse(data).estado === "exito") {
 
-            let id = await data.facturas[0].id
+            let id = await JSON.parse(data).facturas[0].id
             // console.log(id,parms)
-            let datos = await axios.post(Host + "GetInvoice",
+            let datos = await axios.post("http://portalfac.netbot.ec/consultas.php",
                 {
-                    "token": token,
+                    "url": Host + "GetInvoice",
                     "idfactura": id
-                }, {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json',
-                },
-            })
-            let arr = datos.data.items[0].descrp.split("\r\n")
+                })
+            let arr = JSON.parse(datos).data.items[0].descrp.split("\r\n")
             return arr
 
         }
