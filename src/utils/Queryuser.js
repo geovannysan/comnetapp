@@ -58,8 +58,8 @@ export const ListarFactura = async (parms) => {
 }
 export const MostrarFacturas = async (parms) => {
     try {
-        let { data } = await axios.post(Host + "GetInvoices", {
-            "token": token,
+        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php", {
+            "url": Host + "GetInvoices",
             "estado": 1,
             "idcliente": parms
         }, {
@@ -68,7 +68,7 @@ export const MostrarFacturas = async (parms) => {
                 'Content-Type': 'application/json',
             },
         })
-        return data
+        return JSON.parse(data)
 
     } catch (error) {
         return error
@@ -76,14 +76,14 @@ export const MostrarFacturas = async (parms) => {
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.post(Host + "GetInvoice",
+        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php",
             {
-                "token": token,
+                "url": Host + "GetInvoice",
                 "idfactura": parms
             }
 
         )
-        return data
+        return JSON.parse(data)
 
     } catch (error) {
         return error
