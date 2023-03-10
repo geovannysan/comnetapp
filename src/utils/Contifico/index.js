@@ -62,7 +62,7 @@ export const IncremetoFacturaS = async()=>{
     try {
        
         let { data } = await axios({
-            method: 'post', url: 'https://brisana.netbot.ec/js/incrementov.php'
+            method: 'post', url: 'https://portalfac.netbot.ec/incrementov.php'
         })
         return data
     } catch (error) {
@@ -90,7 +90,7 @@ export const IncremetoFacturaS = async()=>{
  */
 export const CreaProducto = async(parms)=>{
     try {
-        let { data } = await axios.get("https://0992782129001.contifico.com/sistema/api/v1/producto/"+parms,{
+        let { data } = await axios.post("https://0992782129001.contifico.com/sistema/api/v1/producto/",parms,{
             headers:{
                 "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
             }
@@ -104,9 +104,9 @@ export const CreaProducto = async(parms)=>{
 export const PagoFacturacomnet=async(parms)=>{
     console.log(parms)
     try {
-        //http://portalfac.netbot.ec/consultas.php
+        //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php",{...parms
+        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php",{...parms
             , "url":"https://portal.comnet.ec/api/v1/PaidInvoice"
     }
             )
@@ -127,6 +127,20 @@ export const  Creafactura = async(parms)=>{
         return data
     } catch (error) {
         return error
+    }
+}
+export const Verificar = async (parms)=>{
+    try {
+        let { data } = await axios.post("https://api.contifico.com/sistema/api/v1/documento", parms
+            , {
+                headers: {
+                    "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+                }
+            })
+        return data
+    } catch (error) {
+        return error
+        
     }
 }
 /**

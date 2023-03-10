@@ -83,13 +83,13 @@ export default function InformeViews() {
                     setDescrip({ items: ouput.items })
                     settotal(ouput.factura.total)
                     console.log(totalcon.total.toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
-                    console.log((totalcon.total.toFixed(2) === parseFloat(ouput.factura.total).toFixed(2)))
-                    if (totalcon.estado != "A" && totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
+                    console.log(totalcon.estado != "A" && (totalcon.total.toFixed(2) === parseFloat(ouput.factura.total).toFixed(2)))
+                    if ( totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
                         CreaProducto({
                             "codigo_barra": null,
                             "porcentaje_iva": "12",
                             "categoria_id": "91qdGvZgXhY6nbN8",
-                            "pvp1": ouput.factura.total,
+                            "pvp1": parseFloat(ouput.factura.total).toFixed(2),
                             "tipo": "SER",
                             "para_supereasy": false,
                             "para_comisariato": false,
@@ -188,8 +188,8 @@ export default function InformeViews() {
                                     present({
                                         message: "Hubo un error inesperado",
                                         cssClass: '',
-                                        duration: 2500,
-                                        position: "top",
+                                         duration: 4500,
+                                        position: "middle",
                                         buttons: [
                                             {
                                                 text: "cerrar",
@@ -204,8 +204,8 @@ export default function InformeViews() {
                                 present({
                                     message: "Erro No se creo cliente contifico",
                                     cssClass: '',
-                                    duration: 2500,
-                                    position: "top",
+                                     duration: 4500,
+                                    position: "middle",
                                     buttons: [
                                         {
                                             text: "cerrar",
@@ -220,8 +220,8 @@ export default function InformeViews() {
                             present({
                                 message: "Hubo un error inesperado al crear cliente contifico",
                                 cssClass: '',
-                                duration: 2500,
-                                position: "top",
+                                 duration: 4500,
+                                position: "middle",
                                 buttons: [
                                     {
                                         text: "cerrar",
@@ -238,8 +238,8 @@ export default function InformeViews() {
                             present({
                                 message: "Este usuario no tiene servicio registrado en el Perfil",
                                 cssClass: '',
-                                duration: 2500,
-                                position: "top",
+                                 duration: 4500,
+                                position: "middle",
                                 buttons: [
                                     {
                                         text: "cerrar",
@@ -289,8 +289,8 @@ export default function InformeViews() {
                                         present({
                                             message: "Hubo un error inesperado",
                                             cssClass: '',
-                                            duration: 2500,
-                                            position: "top",
+                                             duration: 4500,
+                                            position: "middle",
                                             buttons: [
                                                 {
                                                     text: "cerrar",
@@ -316,8 +316,8 @@ export default function InformeViews() {
                             present({
                                 message: "Hubo un error inesperado al Buscar Producto Contifico",
                                 cssClass: '',
-                                duration: 2500,
-                                position: "top",
+                                 duration: 4500,
+                                position: "middle",
                                 buttons: [
                                     {
                                         text: "cerrar",
@@ -335,8 +335,8 @@ export default function InformeViews() {
                     present({
                         message: "Hubo un error inesperado",
                         cssClass: '',
-                        duration: 2500,
-                        position: "top",
+                         duration: 4500,
+                        position: "middle",
                         buttons: [
                             {
                                 text: "cerrar",
@@ -398,8 +398,8 @@ export default function InformeViews() {
                 present({
                     message: ouput.mensaje,
                     cssClass: '-danger',
-                    duration: 2500,
-                    position: "top",
+                     duration: 4500,
+                    position: "middle",
                     buttons: [
                         {
                             text: "cerrar",
@@ -429,8 +429,8 @@ export default function InformeViews() {
              present({
                  message: err,
                  cssClass: '-danger',
-                 duration: 2500,
-                 position: "top",
+                  duration: 4500,
+                 position: "middle",
                  buttons: [
                      {
                          text: "cerrar",
@@ -476,8 +476,8 @@ export default function InformeViews() {
                 present({
                     message: "Ingrese número de comprobante o seleccione cuenta",
                     cssClass: '-',
-                    duration: 2500,
-                    position: "top",
+                     duration: 4500,
+                    position: "middle",
                     buttons: [
                         {
                             text: "cerrar",
@@ -580,10 +580,11 @@ export default function InformeViews() {
                                     if (salida.documento === fat){
                                     dismiss()
                                     present({
-                                        message: "Factura creada con éxito",
+                                        
+                                        message:  "Factura número001-001-00000" + facnum+" creada con éxito",
                                         cssClass: '-',
-                                        duration: 2500,
-                                        position: "top",
+                                         duration: 4500,
+                                        position: "middle",
                                         buttons: [
                                             {
                                                 text: "cerrar",
@@ -591,14 +592,17 @@ export default function InformeViews() {
                                             }
                                         ]
                                     })
-                                    history.goBack()}
+                                    setTimeout(function(){
+                                          window.location.reload()
+                                      },3000)
+                                }
                                 }).catch(error => {
                                     console.log(error)
                                     present({
                                         message: "Hubo un error no se Genero Factura en Contifico",
                                         cssClass: '-',
-                                        duration: 2500,
-                                        position: "top",
+                                         duration: 4500,
+                                        position: "middle",
                                         buttons: [
                                             {
                                                 text: "cerrar",
@@ -612,8 +616,8 @@ export default function InformeViews() {
                                 present({
                                     message: "No se Genero el numero incremental de la factura",
                                     cssClass: '-',
-                                    duration: 2500,
-                                    position: "top",
+                                     duration: 4500,
+                                    position: "middle",
                                     buttons: [
                                         {
                                             text: "cerrar",
@@ -629,8 +633,8 @@ export default function InformeViews() {
                             present({
                                 message: "No se Genero el numero incremental de la factura",
                                 cssClass: '-',
-                                duration: 2500,
-                                position: "top",
+                                 duration: 4500,
+                                position: "middle",
                                 buttons: [
                                     {
                                         text: "cerrar",
@@ -642,14 +646,14 @@ export default function InformeViews() {
                         //crea factura
 
                     }
-                    if (fact.estado == "erro") {
+                    if (fact.estado == "error") {
                         //muestra mensaje de errror
                         dismiss()
                         present({
-                            message: "No se pago la factura en el portal",
+                            message: fact.mensaje,
                             cssClass: '-',
-                            duration: 2500,
-                            position: "top",
+                             duration: 4500,
+                            position: "middle",
                             buttons: [
                                 {
                                     text: "cerrar",
@@ -673,8 +677,8 @@ export default function InformeViews() {
                 present({
                     message: "Ingrese número de Autorización",
                     cssClass: '-',
-                    duration: 2500,
-                    position: "top",
+                     duration: 4500,
+                    position: "middle",
                     buttons: [
                         {
                             text: "cerrar",
@@ -708,8 +712,8 @@ export default function InformeViews() {
                             present({
                                 message: "No se Genero el número incremental de la factura",
                                 cssClass: '-',
-                                duration: 2500,
-                                position: "top",
+                                 duration: 4500,
+                                position: "middle",
                                 buttons: [
                                     {
                                         text: "cerrar",
@@ -784,13 +788,14 @@ export default function InformeViews() {
                         CreaLaFacturapor(fac).then(salida => {
                             //dismiss()
                             let fat = "001-001-00000" + facnum
+                            console.log(salida)
                             if (salida.documento === fat) {
                                 dismiss()
                                 present({
-                                    message: "Factura creada con éxito",
+                                    message:  "Factura número001-001-00000" + facnum+" creada con éxito",
                                     cssClass: '-',
-                                    duration: 2500,
-                                    position: "top",
+                                     duration: 4500,
+                                    position: "middle",
                                     buttons: [
                                         {
                                             text: "cerrar",
@@ -798,7 +803,9 @@ export default function InformeViews() {
                                         }
                                     ]
                                 })
-                                history.goBack()
+                                setTimeout(function(){
+                                          window.location.reload()
+                                      },3000)
                             }
                             console.log(salida)
                         }).catch(error => {
@@ -806,8 +813,8 @@ export default function InformeViews() {
                             present({
                                 message: "Hubo un error no se registro la factura electrónica",
                                 cssClass: '-',
-                                duration: 2500,
-                                position: "top",
+                                 duration: 4500,
+                                position: "middle",
                                 buttons: [
                                     {
                                         text: "cerrar",
@@ -829,8 +836,8 @@ export default function InformeViews() {
                 present({
                     message: "Hubo un error al registrar la factura en el portal",
                     cssClass: '-',
-                    duration: 2500,
-                    position: "top",
+                     duration: 4500,
+                    position: "middle",
                     buttons: [
                         {
                             text: "cerrar",
@@ -867,7 +874,7 @@ export default function InformeViews() {
                     })
                     $.ajax({
                         type: "post",
-                        url: "https://brisana.netbot.ec/js/incrementov.php",
+                        url: "https://portalfac.netbot.ec/incrementov.php",
                         success: function (num) {
                             if (num.status) {
                                 console.log(num)
@@ -876,8 +883,8 @@ export default function InformeViews() {
                                     present({
                                         message: "No se Genero el número incremental de la factura",
                                         cssClass: '-',
-                                        duration: 2500,
-                                        position: "top",
+                                         duration: 4500,
+                                        position: "middle",
                                         buttons: [
                                             {
                                                 text: "cerrar",
@@ -956,17 +963,18 @@ export default function InformeViews() {
                                     body: JSON.stringify(fac),
                                     redirect: 'follow'
                                 };
-
+                                
                                 CreaLaFacturapor(fac).then(salida => {
                                     dismiss()
                                     let fat = "001-001-00000" + facnum
+                                    console.log(salida)
                                     if (salida.documento === fat) {
                                         dismiss()
                                         present({
-                                            message: "Factura creada con éxito",
+                                            message:  "Factura número001-001-00000" + facnum+" creada con éxito",
                                             cssClass: '-',
-                                            duration: 2500,
-                                            position: "top",
+                                             duration: 4500,
+                                            position: "middle",
                                             buttons: [
                                                 {
                                                     text: "cerrar",
@@ -974,7 +982,11 @@ export default function InformeViews() {
                                                 }
                                             ]
                                         })
-                                        history.goBack()
+                                      setTimeout(function(){
+                                          window.location.reload()
+                                      },3000)
+                                      
+
                                     }
                                     console.log(salida)
                                    // sessionStorage.setItem("facturas", JSON.stringify(salida))
@@ -983,8 +995,8 @@ export default function InformeViews() {
                                     present({
                                         message: "Hubo un error no se genero la factura Electrónica",
                                         cssClass: '-',
-                                        duration: 2500,
-                                        position: "top",
+                                         duration: 4500,
+                                        position: "middle",
                                         buttons: [
                                             {
                                                 text: "cerrar",
@@ -1023,8 +1035,8 @@ export default function InformeViews() {
                             present({
                                 message: "No se Genero el Numero de Factura",
                                 cssClass: '-',
-                                duration: 2500,
-                                position: "top",
+                                 duration: 4500,
+                                position: "middle",
                                 buttons: [
                                     {
                                         text: "cerrar",
@@ -1047,8 +1059,8 @@ export default function InformeViews() {
                 present({
                     message: "Erro al crear Factura en portal",
                     cssClass: '-',
-                    duration: 2500,
-                    position: "top",
+                     duration: 4500,
+                    position: "middle",
                     buttons: [
                         {
                             text: "cerrar",

@@ -3,17 +3,12 @@ import { token } from './variables';
 let Host = "https://portal.comnet.ec/api/v1/"
 export const autenticar = async (parms) => {
     try {
-        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php",
+        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php",
             {
                 "cedula": parms,
                 "url": "https://portal.comnet.ec/api/v1/GetClientsDetails"
-            }, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-        })
-        console.log(JSON.parse(data))
+            })
+        console.log(data)
         return JSON.parse(data)
     } catch (error) {
         return error
@@ -21,7 +16,7 @@ export const autenticar = async (parms) => {
 }
 export const ListarTicket = async (parm) => {
     try {
-        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php", {
+        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
             "url": Host + "ListTicket",
             "idcliente": parm
         })
@@ -32,7 +27,7 @@ export const ListarTicket = async (parm) => {
 }
 export const ListarFactura = async (parms) => {
     try {
-        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php", {
+        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
             "url": Host + "GetInvoices",
             "limit": 1,
             "idcliente": parms
@@ -41,7 +36,7 @@ export const ListarFactura = async (parms) => {
 
             let id = await JSON.parse(data).facturas[0].id
             // console.log(id,parms)
-            let datos = await axios.post("http://portalfac.netbot.ec/consultas.php",
+            let datos = await axios.post("https://portalfac.netbot.ec/consultas.php",
                 {
                     "url": Host + "GetInvoice",
                     "idfactura": id
@@ -58,7 +53,7 @@ export const ListarFactura = async (parms) => {
 }
 export const MostrarFacturas = async (parms) => {
     try {
-        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php", {
+        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
             "url": Host + "GetInvoices",
             "estado": 1,
             "idcliente": parms
@@ -76,7 +71,7 @@ export const MostrarFacturas = async (parms) => {
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php",
+        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php",
             {
                 "url": Host + "GetInvoice",
                 "idfactura": parms
