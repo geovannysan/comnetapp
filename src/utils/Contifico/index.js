@@ -143,7 +143,71 @@ export const Verificar = async (parms)=>{
         
     }
 }
+export const ObtenerFacturas = async()=>{
+    let dias = -15
+    let fin = new Date()
+    fin.setDate(fin.getDate() + dias);
+    let fechainicios = new Date(JSON.stringify(fin).replace('"', '').replace('"', '')).toLocaleDateString("en-US")
+    let fechafinal = new Date().toLocaleDateString("en-US")
+    try {
+       
+        let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/documento?tipo=FAC&fecha_inicial="+fechainicios+"&fecha_final="+fechafinal,
+            {
+                headers: {
+                    "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+                }
+            })
+            return data
+    } catch (error) {
+        return error
+    }
+}
+export const ObtenerFactura = async () => {
+    let dias = -15
+    let fin = new Date()
+    fin.setDate(fin.getDate() + dias);
+    let fechainicios = new Date(JSON.stringify(fin).replace('"', '').replace('"', '')).toLocaleDateString("en-US")
+    let fechafinal = new Date().toLocaleDateString("en-US")
+    try {
+
+        let { data } = await axios.get("https://portalfac.netbot.ec/contifico.php",
+            {
+              
+                "url": "https://api.contifico.com/sistema/api/v1/documento?tipo=FAC&fecha_inicial=" + fechainicios + "&fecha_final=" + fechafinal
+            }
+        )
+        return data
+    } catch (error) {
+        return error
+    }
+}
 /**
+ * 
+ * 
+ * export const ObtenerFacturas = async () => {
+    let dias = -15
+    let fin = new Date()
+    fin.setDate(fin.getDate() + dias);
+    let fechainicios = new Date(JSON.stringify(fin).replace('"', '').replace('"', '')).toLocaleDateString("en-US")
+    let fechafinal = new Date().toLocaleDateString("en-US")
+    try {
+
+        let { data } = await axios.get("https://portalfac.netbot.ec/consultas.php",
+            {
+                "url": "contifico",
+                "page": "https://api.contifico.com/sistema/api/v1/documento?tipo=FAC&fecha_inicial=" + fechainicios + "&fecha_final=" + fechafinal
+            }
+        )
+        return data
+    } catch (error) {
+        return error
+    }
+}
+ 
+
+ * 
+ * 
+ * 
 {
   "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
   "fecha_emision": "{{CURRENT_DATE}}",

@@ -4,6 +4,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonContent,
   IonListHeader,
   IonMenu,
   IonMenuToggle,
@@ -36,6 +37,12 @@ const appPages: AppPage[] = [
     iosIcon: homeSharp,
     mdIcon: homeOutline
   },
+  {
+    title: 'Documentos',
+    url: '/page/Documentos',
+    iosIcon: archiveOutline,
+    mdIcon: archiveSharp
+  }
 /*  {
     title: 'Mis comprobantes',
     url: '/page/Comprobantes',
@@ -77,10 +84,11 @@ const Menu: React.FC = () => {
 
   return (
 
-    <div>
-      <IonHeader className='h-100'>
-        <div className='header'>
-          <img className='img-fluid-sm' src='https://portal.comnet.ec/admin/images/login-bg/login-bg-9.jpg'
+    <IonMenu contentId="main" type="push" className='col-lg-2 '>
+      
+      <IonHeader className=''>
+        <div className='header px-0 pb-3'>
+          <img className='img-fluid' src='https://portal.comnet.ec/admin/images/login-bg/login-bg-9.jpg'
 
           >
           </img>
@@ -95,7 +103,7 @@ const Menu: React.FC = () => {
         </div>
 
 
-        <div className='container pt-5 pb-5'>
+        <div className='container h-100 pt-5 pb-5'>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
@@ -114,7 +122,8 @@ const Menu: React.FC = () => {
      
               
                </IonHeader>
-    </div>
+     
+    </IonMenu>
 
 
   );

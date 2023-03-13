@@ -17,6 +17,12 @@ const route = [
         name: "Inicio",
         component: InformeViews,
     },
+    {
+        path: "/Documentos",
+        layout: "/page",
+        name: "Documentos",
+        component: DocuumentosViews,
+    }
     /*{
         path: "/Documentos",
         layout: "/page",

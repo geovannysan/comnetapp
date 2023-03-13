@@ -84,7 +84,7 @@ export default function InformeViews() {
                     settotal(ouput.factura.total)
                     console.log(totalcon.total.toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
                     console.log(totalcon.estado != "A" && (totalcon.total.toFixed(2) === parseFloat(ouput.factura.total).toFixed(2)))
-                    if ( totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
+                    if (totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
                         CreaProducto({
                             "codigo_barra": null,
                             "porcentaje_iva": "12",
@@ -188,7 +188,7 @@ export default function InformeViews() {
                                     present({
                                         message: "Hubo un error inesperado",
                                         cssClass: '',
-                                         duration: 4500,
+                                        duration: 4500,
                                         position: "middle",
                                         buttons: [
                                             {
@@ -204,7 +204,7 @@ export default function InformeViews() {
                                 present({
                                     message: "Erro No se creo cliente contifico",
                                     cssClass: '',
-                                     duration: 4500,
+                                    duration: 4500,
                                     position: "middle",
                                     buttons: [
                                         {
@@ -220,7 +220,7 @@ export default function InformeViews() {
                             present({
                                 message: "Hubo un error inesperado al crear cliente contifico",
                                 cssClass: '',
-                                 duration: 4500,
+                                duration: 4500,
                                 position: "middle",
                                 buttons: [
                                     {
@@ -233,12 +233,245 @@ export default function InformeViews() {
                     }
                     else if (ouputs.length > 0) {
                         console.log(ouput)
+                        if (ouput.datos[1]!=undefined&& ouput.datos[1].servicios != undefined){
+                            setContifico(ouputs)
+                            dismiss()
+                            presentlo({
+                                message: 'Busacando Producto en Contifico ',
+                                cssClass: 'custom-loading'
+                            })
+                            BuscarProductoContific(ouput.datos[1].servicios[0].idperfil).then(salida => {
+                                if (salida.length > 0) {
+                                    let estado = salida[0].estado;
+                                    let valor = parseFloat(salida[0].pvp1) * 1.12;
+                                    if (estado == "A") {
+                                        setValor({
+                                            total: valor,
+                                            estado: estado,
+                                            id: salida[0].id,
+                                        })
+                                        dismiss()
+                                        presentlo({
+                                            message: 'Busacando Facturas por pagar',
+                                            cssClass: 'custom-loading'
+                                        })
+                                        MostrarFacturas(ouput.datos[1].id).then(ouput => {
+                                            if (ouput.estado === "exito") {
+                                                dismiss()
+                                                console.log(ouput)
+                                                let datos = ouput.facturas.map((el, index) => {
+                                                    return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
+                                                })
+                                                datos.unshift({ value: "", label: "Selecione Factura" })
+                                                seTlist(datos)
+                                                comprobante({ value: "", label: "Selecione Factura" })
+                                            } else {
+                                                dismiss()
+                                            }
+                                        }).catch(err => {
+                                            console.log(err)
+                                            dismiss()
+                                            present({
+                                                message: "Hubo un error inesperado",
+                                                cssClass: '',
+                                                duration: 4500,
+                                                position: "middle",
+                                                buttons: [
+                                                    {
+                                                        text: "cerrar",
+                                                        role: "cancel",
+
+                                                    }
+                                                ]
+                                            })
+                                        })
+                                    }
+                                    console.log(salida)
+                                    return
+                                }
+                                dismiss()
+                                presentlo({
+                                    message: 'No se encontro Producto Contifico ',
+                                    cssClass: 'custom-loading'
+                                })
+
+                            }).catch(err => {
+                                console.log(err)
+                                dismiss()
+                                present({
+                                    message: "Hubo un error inesperado al Buscar Producto Contifico",
+                                    cssClass: '',
+                                    duration: 4500,
+                                    position: "middle",
+                                    buttons: [
+                                        {
+                                            text: "cerrar",
+                                            role: "cancel",
+                                        }
+                                    ]
+                                })
+                            })
+                            return
+                        }
+                        if (ouput.datos[1] != undefined && ouput.datos[1].servicios!=undefined){
+                            setContifico(ouputs)
+                            dismiss()
+                            presentlo({
+                                message: 'Busacando Producto en Contifico ',
+                                cssClass: 'custom-loading'
+                            })
+                            BuscarProductoContific(ouput.datos[1].servicios[0].idperfil).then(salida => {
+                                if (salida.length > 0) {
+                                    let estado = salida[0].estado;
+                                    let valor = parseFloat(salida[0].pvp1) * 1.12;
+                                    if (estado == "A") {
+                                        setValor({
+                                            total: valor,
+                                            estado: estado,
+                                            id: salida[0].id,
+                                        })
+                                        dismiss()
+                                        presentlo({
+                                            message: 'Busacando Facturas por pagar',
+                                            cssClass: 'custom-loading'
+                                        })
+                                        MostrarFacturas(ouput.datos[1].id).then(ouput => {
+                                            if (ouput.estado === "exito") {
+                                                dismiss()
+                                                console.log(ouput)
+                                                let datos = ouput.facturas.map((el, index) => {
+                                                    return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
+                                                })
+                                                datos.unshift({ value: "", label: "Selecione Factura" })
+                                                seTlist(datos)
+                                                comprobante({ value: "", label: "Selecione Factura" })
+                                            } else {
+                                                dismiss()
+                                            }
+                                        }).catch(err => {
+                                            console.log(err)
+                                            dismiss()
+                                            present({
+                                                message: "Hubo un error inesperado",
+                                                cssClass: '',
+                                                duration: 4500,
+                                                position: "middle",
+                                                buttons: [
+                                                    {
+                                                        text: "cerrar",
+                                                        role: "cancel",
+
+                                                    }
+                                                ]
+                                            })
+                                        })
+                                    }
+                                    console.log(salida)
+                                    return
+                                }
+                                dismiss()
+                                presentlo({
+                                    message: 'No se encontro Producto Contifico ',
+                                    cssClass: 'custom-loading'
+                                })
+
+                            }).catch(err => {
+                                console.log(err)
+                                dismiss()
+                                present({
+                                    message: "Hubo un error inesperado al Buscar Producto Contifico",
+                                    cssClass: '',
+                                    duration: 4500,
+                                    position: "middle",
+                                    buttons: [
+                                        {
+                                            text: "cerrar",
+                                            role: "cancel",
+                                        }
+                                    ]
+                                })
+                            })
+                            return
+                        }
+                        if(ouput.datos[0].servicios!=undefined){
+                            BuscarProductoContific(ouput.datos[0].servicios[0].idperfil).then(salida => {
+                                if (salida.length > 0) {
+                                    let estado = salida[0].estado;
+                                    let valor = parseFloat(salida[0].pvp1) * 1.12;
+                                    if (estado == "A") {
+                                        setValor({
+                                            total: valor,
+                                            estado: estado,
+                                            id: salida[0].id,
+                                        })
+                                        dismiss()
+                                        presentlo({
+                                            message: 'Busacando Facturas por pagar',
+                                            cssClass: 'custom-loading'
+                                        })
+                                        MostrarFacturas(ouput.datos[0].id).then(ouput => {
+                                            if (ouput.estado === "exito") {
+                                                dismiss()
+                                                console.log(ouput)
+                                                let datos = ouput.facturas.map((el, index) => {
+                                                    return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
+                                                })
+                                                datos.unshift({ value: "", label: "Selecione Factura" })
+                                                seTlist(datos)
+                                                comprobante({ value: "", label: "Selecione Factura" })
+                                            } else {
+                                                dismiss()
+                                            }
+                                        }).catch(err => {
+                                            console.log(err)
+                                            dismiss()
+                                            present({
+                                                message: "Hubo un error inesperado",
+                                                cssClass: '',
+                                                duration: 4500,
+                                                position: "middle",
+                                                buttons: [
+                                                    {
+                                                        text: "cerrar",
+                                                        role: "cancel",
+
+                                                    }
+                                                ]
+                                            })
+                                        })
+                                    }
+                                    console.log(salida)
+                                    return
+                                }
+                                dismiss()
+                                presentlo({
+                                    message: 'No se encontro Producto Contifico ',
+                                    cssClass: 'custom-loading'
+                                })
+
+                            }).catch(err => {
+                                console.log(err)
+                                dismiss()
+                                present({
+                                    message: "Hubo un error inesperado al Buscar Producto Contifico",
+                                    cssClass: '',
+                                    duration: 4500,
+                                    position: "middle",
+                                    buttons: [
+                                        {
+                                            text: "cerrar",
+                                            role: "cancel",
+                                        }
+                                    ]
+                                })
+                            })
+                        }
                         if (ouput.datos[0].servicios == undefined) {
                             dismiss()
                             present({
                                 message: "Este usuario no tiene servicio registrado en el Perfil",
                                 cssClass: '',
-                                 duration: 4500,
+                                duration: 4500,
                                 position: "middle",
                                 buttons: [
                                     {
@@ -249,83 +482,7 @@ export default function InformeViews() {
                             })
                             return
                         }
-                        setContifico(ouputs)
-                        dismiss()
-                        presentlo({
-                            message: 'Busacando Producto en Contifico ',
-                            cssClass: 'custom-loading'
-                        })
-                        BuscarProductoContific(ouput.datos[0].servicios[0].idperfil).then(salida => {
-                            if (salida.length > 0) {
-                                let estado = salida[0].estado;
-                                let valor = parseFloat(salida[0].pvp1) * 1.12;
-                                if (estado == "A") {
-                                    setValor({
-                                        total: valor,
-                                        estado: estado,
-                                        id: salida[0].id,
-                                    })
-                                    dismiss()
-                                    presentlo({
-                                        message: 'Busacando Facturas por pagar',
-                                        cssClass: 'custom-loading'
-                                    })
-                                    MostrarFacturas(ouput.datos[0].id).then(ouput => {
-                                        if (ouput.estado === "exito") {
-                                            dismiss()
-                                            console.log(ouput)
-                                            let datos = ouput.facturas.map((el, index) => {
-                                                return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
-                                            })
-                                            datos.unshift({ value: "", label: "Selecione Factura" })
-                                            seTlist(datos)
-                                            comprobante({ value: "", label: "Selecione Factura" })
-                                        }else{
-                                            dismiss()
-                                        }
-                                    }).catch(err => {
-                                        console.log(err)
-                                        dismiss()
-                                        present({
-                                            message: "Hubo un error inesperado",
-                                            cssClass: '',
-                                             duration: 4500,
-                                            position: "middle",
-                                            buttons: [
-                                                {
-                                                    text: "cerrar",
-                                                    role: "cancel",
-
-                                                }
-                                            ]
-                                        })
-                                    })
-                                }
-                                console.log(salida)
-                                return
-                            }
-                            dismiss()
-                            presentlo({
-                                message: 'No se encontro Producto Contifico ',
-                                cssClass: 'custom-loading'
-                            })
-
-                        }).catch(err => {
-                            console.log(err)
-                            dismiss()
-                            present({
-                                message: "Hubo un error inesperado al Buscar Producto Contifico",
-                                cssClass: '',
-                                 duration: 4500,
-                                position: "middle",
-                                buttons: [
-                                    {
-                                        text: "cerrar",
-                                        role: "cancel",
-                                    }
-                                ]
-                            })
-                        })
+                    
                         // ouput.datos[0].servicios == undefined ? seTlist([{ value: "", label: "Selecione Factura" }]) :
 
                     }
@@ -335,7 +492,7 @@ export default function InformeViews() {
                     present({
                         message: "Hubo un error inesperado",
                         cssClass: '',
-                         duration: 4500,
+                        duration: 4500,
                         position: "middle",
                         buttons: [
                             {
@@ -345,7 +502,56 @@ export default function InformeViews() {
                         ]
                     })
                 })
+                if (ouput.datos.length == 2) {
+                    if (ouput.datos[1].estado === "ACTIVO") {
+                        let datos = {
+                            nombre: ouput.datos[1].nombre,
+                            estado: ouput.datos[1].estado,
+                            cedula: ouput.datos[1].cedula,
+                            movil: ouput.datos[1].movil,
+                            direccion_principal: ouput.datos[1].direccion_principal,
+                            correo: ouput.datos[1].correo,
+                            facturacion: {
+                                ...ouput.datos[1].facturacion
+                            },
+                            servicios: ouput.datos[1].servicios
+                        }
+                        setUser({ ...datos })
+                    }
 
+                    if (ouput.datos[1].estado === "SUSPENDIDO") {
+                        let datos = {
+                            nombre: ouput.datos[1].nombre,
+                            estado: ouput.datos[1].estado,
+                            cedula: ouput.datos[1].cedula,
+                            movil: ouput.datos[1].movil,
+                            direccion_principal: ouput.datos[1].direccion_principal,
+                            correo: ouput.datos[1].correo,
+                            facturacion: {
+                                ...ouput.datos[1].facturacion
+                            },
+                            servicios: ouput.datos[1].servicios
+                        }
+                        setUser({ ...datos })
+                    }
+                    if (ouput.datos.estado[1] === "RETIRADO") {
+                        let datos = {
+                            nombre: ouput.datos[1].nombre,
+                            estado: ouput.datos[1].estado,
+                            cedula: ouput.datos[1].cedula,
+                            movil: ouput.datos[1].movil,
+                            direccion_principal: ouput.datos[1].direccion_principal,
+                            correo: ouput.datos[1].correo,
+                            facturacion: {
+                                ...ouput.datos[1].facturacion
+                            }
+                            , servicios: ouput.datos[1].servicios
+                        }
+
+                        setUser({ ...datos })
+                    }
+                    return
+                }
                 if (ouput.datos[0].estado === "ACTIVO") {
                     let datos = {
                         nombre: ouput.datos[0].nombre,
@@ -361,6 +567,7 @@ export default function InformeViews() {
                     }
                     setUser({ ...datos })
                 }
+              
                 if (ouput.datos[0].estado === "SUSPENDIDO") {
                     let datos = {
                         nombre: ouput.datos[0].nombre,
@@ -398,7 +605,7 @@ export default function InformeViews() {
                 present({
                     message: ouput.mensaje,
                     cssClass: '-danger',
-                     duration: 4500,
+                    duration: 4500,
                     position: "middle",
                     buttons: [
                         {
@@ -476,7 +683,7 @@ export default function InformeViews() {
                 present({
                     message: "Ingrese número de comprobante o seleccione cuenta",
                     cssClass: '-',
-                     duration: 4500,
+                    duration: 4500,
                     position: "middle",
                     buttons: [
                         {
@@ -504,7 +711,7 @@ export default function InformeViews() {
                 //  console.log(datosdefactura,fac)
                 PagoFacturacomnet(datosdefactura).then(fact => {
                     console.log(fact)
-                   
+
                     if (fact.estado == "exito") {
                         dismiss()
                         presentlo({
@@ -517,7 +724,7 @@ export default function InformeViews() {
                                 let facnum = num.result[0].contadores
                                 let fac = {
                                     "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
-                                      "fecha_emision":formattedToday,
+                                    "fecha_emision": formattedToday,
                                     "tipo_documento": "FAC",
                                     "documento": "001-001-00000" + facnum,
                                     "estado": "G",
@@ -567,7 +774,7 @@ export default function InformeViews() {
                                             "monto": totalcon.total.toFixed(2),
                                             "cuenta_bancaria_id": banco.value,
                                             "numero_comprobante": datos.asunto,
-                                            "fecha":formattedToday,
+                                            "fecha": formattedToday,
                                         }
                                     ]
                                 }
@@ -577,31 +784,31 @@ export default function InformeViews() {
                                 CreaLaFacturapor(fac).then(salida => {
                                     console.log(salida)
                                     let fat = "001-001-00000" + facnum
-                                    if (salida.documento === fat){
-                                    dismiss()
-                                    present({
-                                        
-                                        message:  "Factura número001-001-00000" + facnum+" creada con éxito",
-                                        cssClass: '-',
-                                         duration: 4500,
-                                        position: "middle",
-                                        buttons: [
-                                            {
-                                                text: "cerrar",
-                                                role: "cancel",
-                                            }
-                                        ]
-                                    })
-                                    setTimeout(function(){
-                                          window.location.reload()
-                                      },3000)
-                                }
+                                    if (salida.documento === fat) {
+                                        dismiss()
+                                        present({
+
+                                            message: "Factura número001-001-00000" + facnum + " creada con éxito",
+                                            cssClass: '-',
+                                            duration: 4500,
+                                            position: "middle",
+                                            buttons: [
+                                                {
+                                                    text: "cerrar",
+                                                    role: "cancel",
+                                                }
+                                            ]
+                                        })
+                                        setTimeout(function () {
+                                            window.location.reload()
+                                        }, 3000)
+                                    }
                                 }).catch(error => {
                                     console.log(error)
                                     present({
                                         message: "Hubo un error no se Genero Factura en Contifico",
                                         cssClass: '-',
-                                         duration: 4500,
+                                        duration: 4500,
                                         position: "middle",
                                         buttons: [
                                             {
@@ -616,7 +823,7 @@ export default function InformeViews() {
                                 present({
                                     message: "No se Genero el numero incremental de la factura",
                                     cssClass: '-',
-                                     duration: 4500,
+                                    duration: 4500,
                                     position: "middle",
                                     buttons: [
                                         {
@@ -633,7 +840,7 @@ export default function InformeViews() {
                             present({
                                 message: "No se Genero el numero incremental de la factura",
                                 cssClass: '-',
-                                 duration: 4500,
+                                duration: 4500,
                                 position: "middle",
                                 buttons: [
                                     {
@@ -652,7 +859,7 @@ export default function InformeViews() {
                         present({
                             message: fact.mensaje,
                             cssClass: '-',
-                             duration: 4500,
+                            duration: 4500,
                             position: "middle",
                             buttons: [
                                 {
@@ -677,7 +884,7 @@ export default function InformeViews() {
                 present({
                     message: "Ingrese número de Autorización",
                     cssClass: '-',
-                     duration: 4500,
+                    duration: 4500,
                     position: "middle",
                     buttons: [
                         {
@@ -712,7 +919,7 @@ export default function InformeViews() {
                             present({
                                 message: "No se Genero el número incremental de la factura",
                                 cssClass: '-',
-                                 duration: 4500,
+                                duration: 4500,
                                 position: "middle",
                                 buttons: [
                                     {
@@ -727,7 +934,7 @@ export default function InformeViews() {
                         let facnum = num.result[0].contadores
                         let fac = {
                             "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
-                              "fecha_emision":formattedToday,
+                            "fecha_emision": formattedToday,
                             "tipo_documento": "FAC",
                             "documento": "001-001-00000" + facnum,
                             "estado": "G",
@@ -776,7 +983,7 @@ export default function InformeViews() {
                                     "forma_cobro": lugar.value.split("-")[0],
                                     "monto": totalcon.total.toFixed(2),
                                     "tipo_ping": "D",
-                                    "fecha":formattedToday,
+                                    "fecha": formattedToday,
                                 }
                             ]
                         }
@@ -792,9 +999,9 @@ export default function InformeViews() {
                             if (salida.documento === fat) {
                                 dismiss()
                                 present({
-                                    message:  "Factura número001-001-00000" + facnum+" creada con éxito",
+                                    message: "Factura número001-001-00000" + facnum + " creada con éxito",
                                     cssClass: '-',
-                                     duration: 4500,
+                                    duration: 4500,
                                     position: "middle",
                                     buttons: [
                                         {
@@ -803,9 +1010,9 @@ export default function InformeViews() {
                                         }
                                     ]
                                 })
-                                setTimeout(function(){
-                                          window.location.reload()
-                                      },3000)
+                                setTimeout(function () {
+                                    window.location.reload()
+                                }, 3000)
                             }
                             console.log(salida)
                         }).catch(error => {
@@ -813,7 +1020,7 @@ export default function InformeViews() {
                             present({
                                 message: "Hubo un error no se registro la factura electrónica",
                                 cssClass: '-',
-                                 duration: 4500,
+                                duration: 4500,
                                 position: "middle",
                                 buttons: [
                                     {
@@ -836,7 +1043,7 @@ export default function InformeViews() {
                 present({
                     message: "Hubo un error al registrar la factura en el portal",
                     cssClass: '-',
-                     duration: 4500,
+                    duration: 4500,
                     position: "middle",
                     buttons: [
                         {
@@ -883,7 +1090,7 @@ export default function InformeViews() {
                                     present({
                                         message: "No se Genero el número incremental de la factura",
                                         cssClass: '-',
-                                         duration: 4500,
+                                        duration: 4500,
                                         position: "middle",
                                         buttons: [
                                             {
@@ -902,7 +1109,7 @@ export default function InformeViews() {
                                 let facnum = num.result[0].contadores
                                 let fac = {
                                     "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
-                                      "fecha_emision":formattedToday,
+                                    "fecha_emision": formattedToday,
                                     "tipo_documento": "FAC",
                                     "documento": "001-001-00000" + facnum,
                                     "estado": "G",
@@ -949,7 +1156,7 @@ export default function InformeViews() {
                                         {
                                             "forma_cobro": lugar.value.split("-")[0],
                                             "monto": totalcon.total.toFixed(2),
-                                            "fecha":formattedToday,
+                                            "fecha": formattedToday,
                                         }
                                     ]
                                 }
@@ -963,7 +1170,7 @@ export default function InformeViews() {
                                     body: JSON.stringify(fac),
                                     redirect: 'follow'
                                 };
-                                
+
                                 CreaLaFacturapor(fac).then(salida => {
                                     dismiss()
                                     let fat = "001-001-00000" + facnum
@@ -971,9 +1178,9 @@ export default function InformeViews() {
                                     if (salida.documento === fat) {
                                         dismiss()
                                         present({
-                                            message:  "Factura número001-001-00000" + facnum+" creada con éxito",
+                                            message: "Factura número001-001-00000" + facnum + " creada con éxito",
                                             cssClass: '-',
-                                             duration: 4500,
+                                            duration: 4500,
                                             position: "middle",
                                             buttons: [
                                                 {
@@ -982,20 +1189,20 @@ export default function InformeViews() {
                                                 }
                                             ]
                                         })
-                                      setTimeout(function(){
-                                          window.location.reload()
-                                      },3000)
-                                      
+                                        setTimeout(function () {
+                                            window.location.reload()
+                                        }, 3000)
+
 
                                     }
                                     console.log(salida)
-                                   // sessionStorage.setItem("facturas", JSON.stringify(salida))
+                                    // sessionStorage.setItem("facturas", JSON.stringify(salida))
                                 }).catch(error => {
                                     dismiss()
                                     present({
                                         message: "Hubo un error no se genero la factura Electrónica",
                                         cssClass: '-',
-                                         duration: 4500,
+                                        duration: 4500,
                                         position: "middle",
                                         buttons: [
                                             {
@@ -1035,7 +1242,7 @@ export default function InformeViews() {
                             present({
                                 message: "No se Genero el Numero de Factura",
                                 cssClass: '-',
-                                 duration: 4500,
+                                duration: 4500,
                                 position: "middle",
                                 buttons: [
                                     {
@@ -1059,7 +1266,7 @@ export default function InformeViews() {
                 present({
                     message: "Erro al crear Factura en portal",
                     cssClass: '-',
-                     duration: 4500,
+                    duration: 4500,
                     position: "middle",
                     buttons: [
                         {

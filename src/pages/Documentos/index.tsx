@@ -1,18 +1,50 @@
 import React, { useEffect, useState } from "react";
+import { ObtenerFactura, ObtenerFacturas } from "../../utils/Contifico";
 import TablasViwe from "./Tablasdoc";
 
 export default function DocuumentosViews(){
     const [datos,setDatos]=useState([])
+    async function abreir(){
+       
+        var settings :any = {
+            "url": "https://api.contifico.com/sistema/api/v1/documento?tipo=FAC&fecha_inicial=13/03/2023&fecha_final=13/03/2023",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+            },
+            "processData": false,
+            "mimeType": "multipart/form-data",
+            "contentType": false,
+           
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+        });
+     
+            
+    }
+    useEffect(()=>{
+        ObtenerFactura().then(salida =>{
+            console.log(salida)
+        }).catch(err=>{
+            console.log(err)
+        })
+      
+        abreir()
+  
+    },[])
     const thead =()=>{
         return(
             <thead className="">
                 <tr className="border ">
                     <th className=" text-center" ></th>
                     <th className="sorting" >No</th>
-                    <th >Asunto</th>
+                    <th >Cédula</th>
                     <th >Fecha</th>
-                    <th >Estado</th>
-                    <th >Última Rspta.</th>
+                    <th >Telefóno</th>
+                    <th >Vendedor</th>
                     <th ></th>
 
                 </tr>
@@ -29,13 +61,13 @@ export default function DocuumentosViews(){
                         <td className="dtr-hidde">
                         </td>
 
-                        <td className="text-xs font-weight-bold">{item.id}</td>
-                        <td className="text-xs font-weight-bold">{item.asunto}</td>
-                        <td className="text-xs font-weight-bold">{item.fecha_soporte}</td>
+                        <td className="text-xs font-weight-bold">{item.documento}</td>
+                        <td className="text-xs font-weight-bold">{item.persona["cedula"]}</td>
+                        <td className="text-xs font-weight-bold">{item.fecha_emision}</td>
 
-                        <td className="text-xs font-weight-bold">{item.estado}</td>
+                        <td className="text-xs font-weight-bold">{item.person["telefonos"]}</td>
                         <td className="text-xs font-weight-bold">
-                          { item.lastdate}</td>
+                            {item.vendedor["razon_social"]}</td>
                         <td className="text-xs font-weight-bold">
                             <a className="btn btn-default btn-sm"> <i className=" bi bi-pencil"> </i></a>
                         </td>

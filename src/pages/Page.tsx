@@ -1,7 +1,7 @@
 import {
   IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton,
   IonProgressBar,
-  IonTitle, IonToolbar, IonItem, IonPopover, IonList, IonLabel, IonCardSubtitle, IonMenu
+  IonTitle, IonToolbar, IonItem, IonPopover, IonList, IonLabel, IonCardSubtitle, IonMenu, IonPage
 } from '@ionic/react';
 
 import { Route, Switch,useHistory,useLocation } from 'react-router';
@@ -55,10 +55,8 @@ const Page: React.FC = () => {
   },[location.pathname])
   return (
     <>
-    <IonMenu type="overlay" contentId="main-content" className=''>
-        <Menu/>
-      </IonMenu>
-      <IonContent fullscreen id="main-content">
+    
+     
 
         <IonHeader className="ion-no-border  " >
           <IonToolbar className='ion-toolbar-transparent' >
@@ -117,7 +115,7 @@ const Page: React.FC = () => {
           </Switch>
 
         </div>
-      </IonContent>
+   
     </>
    
   );

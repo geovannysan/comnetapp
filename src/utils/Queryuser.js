@@ -55,14 +55,10 @@ export const MostrarFacturas = async (parms) => {
     try {
         let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
             "url": Host + "GetInvoices",
-            "estado": 1,
+            "estado": 0,
             "idcliente": parms
-        }, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-        })
+        }
+        )
         return JSON.parse(data)
 
     } catch (error) {

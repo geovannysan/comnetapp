@@ -51,8 +51,8 @@ const App: React.FC = () => {
         {user.authb ?
           <IonSplitPane contentId="main"
             className=''
-          >  
-           
+          >                
+            <Menu/>
             <IonRouterOutlet id="main">
               <Switch>
                 <Route path="/page"
