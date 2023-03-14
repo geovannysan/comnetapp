@@ -84,8 +84,8 @@ const Menu: React.FC = () => {
 
   return (
 
-    <IonMenu contentId="main" type="push" className='col-lg-2 '>
-      
+    <IonMenu contentId="main" type="push" className='col-12 col-lg-2 '>
+    <IonContent  >
       <IonHeader className=''>
         <div className='header px-0 pb-3'>
           <img className='img-fluid' src='https://portal.comnet.ec/admin/images/login-bg/login-bg-9.jpg'
@@ -122,7 +122,7 @@ const Menu: React.FC = () => {
      
               
                </IonHeader>
-     
+      </IonContent>
     </IonMenu>
 
 

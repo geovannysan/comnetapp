@@ -163,19 +163,16 @@ export const ObtenerFacturas = async()=>{
     }
 }
 export const ObtenerFactura = async () => {
-    let dias = -15
+    let dias = -7
     let fin = new Date()
     fin.setDate(fin.getDate() + dias);
-    let fechainicios = new Date(JSON.stringify(fin).replace('"', '').replace('"', '')).toLocaleDateString("en-US")
-    let fechafinal = new Date().toLocaleDateString("en-US")
+    let fechainicios = new Date(JSON.stringify(fin).replace('"', '').replace('"', '')).toLocaleDateString("en-GB")
+    let fechafinal = new Date().toLocaleDateString("en-GB")
+    console.log(fechainicios,fechafinal)
     try {
 
-        let { data } = await axios.get("https://portalfac.netbot.ec/contifico.php",
-            {
-              
-                "url": "https://api.contifico.com/sistema/api/v1/documento?tipo=FAC&fecha_inicial=" + fechainicios + "&fecha_final=" + fechafinal
-            }
-        )
+        let { data } = await axios.get("https://portalfac.netbot.ec/contifico.php")
+        console.log(data)
         return data
     } catch (error) {
         return error

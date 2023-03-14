@@ -5,8 +5,9 @@ import logo from "../../imagen/logo.png"
 import { useDispatch } from 'react-redux';
 import { setDatosuser, setlogin } from '../../StoreRedux/Slice/UserSlice';
 import { useState } from 'react';
-import { autenticar } from '../../utils/Queryuser';
+import { autenticar, Loginadmin } from '../../utils/Queryuser';
 import { usuarioTocken } from '../../utils/variables';
+import axios from 'axios';
 
 const Page: React.FC = () => {
     let usedispat = useDispatch()
@@ -103,6 +104,36 @@ const Page: React.FC = () => {
             [e.name]: e.value
         })
     }
+    const [credenciales, setnombre] = useState({
+        username: '',
+        password: '',
+    });
+    const handleSubmit = async (event:any) => {
+        event.preventDefault();
+        if (credenciales.username.trim() !== '' && credenciales.password.trim() !== '') {
+            try {
+                const data = await Loginadmin({ username: credenciales.username.trim(), password: credenciales.password.trim() })
+                const { success, token } = data
+                if (success) {
+                    //console.log("success-->",data)
+                   // setDatosUser(token)
+                  //  setShow(true)
+                   // setmessage("Inicio de session exitoso")
+                    history.push('/admin/inicio')
+                }
+                else {
+                   // setShow(true)
+                   // setmessage("Usuario o contraeña incorrecta")
+                    console.log("mensage de alvertencia", data)
+                }
+            } catch (error) {
+                //setmessage("Hubo un error intente de nuevo o verifique mas tarde")
+                console.log("error Logincredet-->", error)
+            }
+            //setShow(true)
+        }
+       // setShow(true)
+    };
 
 
     return (

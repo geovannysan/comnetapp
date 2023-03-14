@@ -1290,10 +1290,10 @@ export default function InformeViews() {
     return (
         <IonContent fullscreen={true}>
 
-            <div className="container-fluid px-0 ">
+            <div className="container-fluid px-5 ">
 
-                <div className=" card  h-100">
-                    <div className=" w-100 py-3 bg-dark mx-auto">
+                <div className="card  h-100">
+                    <div className=" w-100 py-3 bg-dark mx-auto px-2">
 
                         <div className=" d-flex px-1 ">
                             <div className="col-12 row">
@@ -1304,20 +1304,33 @@ export default function InformeViews() {
                                     </h5>
 
                                 </div>
-                                <div className="col-12 col-md-4">
-                                    <div className="  input-group">
-                                        <input className="form-control form-control-sm"
+                                <div className=" col-12 col-md-4 ">
+                                    <form className="form" action="">
+                                        <input className="input" 
+                                          
                                             placeholder="Cédula cliente"
-                                            type={"number"}
+                                            type={"search"}
                                             value={cedula}
-                                            onChange={(e) => setCedul(e.target.value)}
+                                            onChange={(e) => setCedul(e.target.value)} />
+                                        <a onClick={buscar}><i className="fas bi bi-search"  >
+                                            </i></a>
+                                        
+                                    </form>
+                                    
+                                </div>
+                                <div className="col-12 col-md-4 d-none">
+                                    <div className="input-group">
+                                        <input className="form-control "
+                                            
                                         ></input>
+                                        <div className="input-group-append">
                                         <button className="btn btn-primary" id="inputGroupPrepend"
-                                            onClick={buscar}
+                                            
                                         >
                                             <i className=" bi bi-search"></i>
 
                                         </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -1433,21 +1446,26 @@ export default function InformeViews() {
                                         </div>
                                     </div>
                                 </div> : ""}
-                                <div className="form-group row mt-3">
+                                <div>
+                                    <div>
+                                <div className="form-group row mt-3 ">
                                     <label className="col-sm-4  col-form-label text-md-end">Total a pagar</label>
                                     <div className="col-12 col-lg-8">
-                                        <div className=" input-group">
-                                            <input className="form-control"
+                                        <div className=" text-center ">
+                                                <input className="form-control "
                                                 name="valor"
                                                 value={total}
                                                 onChange={handelChangeT}
                                             />
-                                            <button className=" btn-primary p-2  btn-sm"
+                                            <button className=" btn-primary m-1 p-2  btn"
                                                 onClick={RegistrarPago}
                                             >
                                                 Registrar Pago
                                             </button>
                                         </div>
+                                    </div>
+                                </div>
+
                                     </div>
                                 </div>
                             </div>

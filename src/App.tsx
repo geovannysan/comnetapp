@@ -49,9 +49,7 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         {user.authb ?
-          <IonSplitPane contentId="main"
-            className=''
-          >                
+          <IonSplitPane contentId="main">                
             <Menu/>
             <IonRouterOutlet id="main">
               <Switch>

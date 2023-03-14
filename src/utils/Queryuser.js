@@ -96,6 +96,15 @@ export const CreaLaFacturapor = async (parms) => {
 
     }
 }
+export const Loginadmin = async (parms) => {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_admin", parms, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        }
+    })
+    return data
+}
 
 /**
  * 

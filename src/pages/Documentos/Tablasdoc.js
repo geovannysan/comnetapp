@@ -19,14 +19,15 @@ export default function TablasViwe({...props}){
     const [spiner,setSpiner]=useState("")
     useEffect(()=>{
         setSpiner("")
-        setTimeout(function(){
+        if (props.datos.length>0) {  
+            setTimeout(function(){
            
             if (!$.fn.DataTable.isDataTable("#doc")) {
                 $(document).ready(function () {
                     $("#doc").dataTable({
                         stateSave: true,
                         responsive: true,
-                        "pageLength": 15,
+                        "pageLength": 10,
                         "bDestroy": true,
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando page _PAGE_ de _PAGES_",
@@ -65,13 +66,18 @@ export default function TablasViwe({...props}){
                                 targets: 0,
                                 "orderable": false,
                             }],
-                        order: [[1, 'desc']],
+                        order: [[0, 'desc']],
 
                     });
                 })
+                setSpiner("d-none")
+                return
             }
-            setSpiner("d-none")
-        },1000)
+           // setSpiner("d-none")
+        },500)}
+        else{
+            setSpiner("")
+        }
     },[])
     return(
         <>
