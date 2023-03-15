@@ -42,6 +42,7 @@ export default function DocuumentosViews(){
                     <th >Fecha</th>
                     <th >Nombre</th>
                     <th >Valor</th>
+                    <th >Imprimer fact. </th>
                    
 
                 </tr>
@@ -66,6 +67,8 @@ export default function DocuumentosViews(){
                         <td className="text-xs font-weight-bold">{item.persona.nombre_comercial}</td>
                         <td className="text-xs font-weight-bold">
                             {item.detalles[0].precio}</td>
+                        <td className="text-xs font-weight-bold">
+                            <a className="btn-sm btn-default " href={item.url_ride } target="_blank"> </a>  </td>
                         
 
                     </tr>

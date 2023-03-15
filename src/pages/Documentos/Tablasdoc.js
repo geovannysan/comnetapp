@@ -24,7 +24,7 @@ export default function TablasViwe({...props}){
            
             if (!$.fn.DataTable.isDataTable("#doc")) {
                 $(document).ready(function () {
-                    $("#doc").dataTable({
+                    $("#doc").DataTable({
                         stateSave: true,
                         responsive: true,
                         "pageLength": 10,
@@ -74,7 +74,7 @@ export default function TablasViwe({...props}){
                 return
             }
            // setSpiner("d-none")
-        },500)}
+        },1000)}
         else{
             setSpiner("")
         }
