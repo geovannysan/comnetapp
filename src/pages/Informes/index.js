@@ -7,7 +7,9 @@ import Selectopction from "../../components/Selectshear";
 import InputViews from "../../components/Input";
 import { BuscaclienteContifico, BuscarProductoContific, Creafactura, CreaProducto, CrearClienteContifico, IncremetoFacturaS, PagoFacturacomnet } from "../../utils/Contifico";
 import * as $ from "jquery"
+import jsPDF from "jspdf"
 import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
 export default function InformeViews() {
     const [present] = useIonToast();
     const [list, seTlist] = useState([])
@@ -29,6 +31,8 @@ export default function InformeViews() {
         linkimagen: "",
         mensaje: ""
     })
+  //  let nombres = useSelector((state) => state.usuario)
+    let nombres = userlog()
     const handelChange = (e) => {
         setDatos({
             ...datos,
@@ -37,6 +41,7 @@ export default function InformeViews() {
         })
         //console.log(e.value)
     }
+   
     let [usuario, setUser] = useState({
         nombre: "",
         estado: "",
@@ -56,6 +61,46 @@ export default function InformeViews() {
     let [descri, setDescrip] = useState({
         items: []
     })
+    function creaComprobante() {
+        const result2 = new Date().toLocaleString('en-GB', {
+            hour12: false,
+        });
+        var opciones = {
+            orientation: 'p',
+            unit: 'mm',
+            format: [240, 400]
+        };
+
+        var doc = new jsPDF(opciones);
+        let pagnum = 80
+        doc.setFontSize(7);
+        doc.text(3, 3, 'COMNET - SPEED - T-ICKETS (COMPUTECNICSNET');
+        doc.text(18, 8, '                S.A.)')
+        doc.text(20, 12, 'RUC 092782129001')
+        doc.text(15, 15, 'Edifico City Officce Oficina 310')
+        doc.text(3, 18, 'Fecha:' + result2)
+        doc.text(3, 21, '*******************************************************************');
+        doc.text(25, 23, 'DESCRIPCIÓN')
+        doc.text(3, 26, '*******************************************************************');
+        doc.text(3, 29, "Servicio de intennet")
+       // doc.text(3, 32, descri.items[0]["descrp"])
+        /*  doc.text(3, 25, 'Fecha Registro');
+          doc.text(3, 30, '_______________________________');
+          doc.text(3, 80, 'Recibí conforme');
+          doc.text(3, 85, 'Concierto       LOC	CANT.');
+         /* JSON.parse(nombres.info_concierto).map(e => {
+              doc.text(10, pagnum + 5, "" + LocalidadPrecio(e.idespaciolocalida, e.id_localidad) + "       " + parseInt(e.cantidad) * parseFloat(ListarPrecio(e.idespaciolocalida, e.id_localidad))
+              );
+          })*/
+
+        doc.text(10, 90, '..');
+
+
+        // doc.save('comprobante.pdf');
+        //doc.autoPrint();
+
+        doc.output('dataurlnewwindow');
+    }
     let [totalcon, setValor] = useState({
         total: 0,
         estado: "",
@@ -65,10 +110,12 @@ export default function InformeViews() {
         settotal(e.target.value)
 
     }
+    let [valorport,setValorportal]=useState("")
     function lugarchange(e) {
         setLugar(e)
         settotal(e.label ? e.label.split(" ")[1].replace("(", "").replace(")", "") : "")
         console.log(e)
+
     }
     /** Verificar la cuenta a pagar con el producto contifico (crea producto contifico de ser nesesario)  */
     function comprobante(e) {
@@ -83,8 +130,8 @@ export default function InformeViews() {
                     setDescrip({ items: ouput.items })
                     settotal(ouput.factura.total)
                     console.log(totalcon.total.toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
-                    console.log(totalcon.estado != "A" && (totalcon.total.toFixed(2) === parseFloat(ouput.factura.total).toFixed(2)))
-                    if (totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
+                    console.log((totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)))
+                    if (totalcon.total.toFixed(2) < parseFloat(ouput.factura.total).toFixed(2)) {
                         CreaProducto({
                             "codigo_barra": null,
                             "porcentaje_iva": "12",
@@ -700,9 +747,9 @@ export default function InformeViews() {
                 })
                 console.log(datos.asunto, datos.mensaje)
                 let datosdefactura = {
-                    "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
+                    "token": nombres.telefono,
                     "idfactura": singleSelect.value,
-                    "pasarela": "" + lugar.value,
+                    "pasarela": lugar.label,
                     "cantidad": total,
                     "idtransaccion": datos.asunto,
                     "nota": banco.label + "/" + datos.mensaje
@@ -896,9 +943,9 @@ export default function InformeViews() {
                 })
             }
             let datosdefactura = {
-                "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
+                "token": nombres.telefono,
                 "idfactura": singleSelect.value,
-                "pasarela": "" + lugar.value,
+                "pasarela": lugar.label,
                 "cantidad": total,
                 "idtransaccion": datos.asunto,
                 "nota": banco.label + "/" + datos.mensaje
@@ -1059,9 +1106,9 @@ export default function InformeViews() {
         }
         if (lugar.label.includes("Efectivo")) {
             let datosdefactura = {
-                "token": "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09",
+                "token": nombres.telefono,
                 "idfactura": singleSelect.value,
-                "pasarela": "" + lugar.value,
+                "pasarela": lugar.label,
                 "cantidad": total,
                 "idtransaccion": datos.asunto,
                 "nota": banco.label + "/" + datos.mensaje
@@ -1284,7 +1331,7 @@ export default function InformeViews() {
 
 
     useEffect(() => {
-
+       // creaComprobante()
     }, [])
     // console.log(singleSelect)
     return (
@@ -1406,11 +1453,11 @@ export default function InformeViews() {
                                 </div>
                             </div>
                             <div className="col-lg-6 mb-3">
-                                {lugar.value != "" && lugar.value.includes("TRA") || lugar.value.includes("TC") ?
+                               
                                     <div className="form-group row">
                                         <label className="col-sm-4 col-form-label  text-md-end ">
-                                            {lugar.value != "" && lugar.value.includes("TRA") ? "N° Transacción" : ""}
-                                            {lugar.value != "" && lugar.value.includes("TC") ? "N° Autorización" : ""}
+                                             N° Transacción
+                                            
                                         </label>
                                         <div className="col-sm-8">
                                             <div className=" input-group">
@@ -1422,7 +1469,7 @@ export default function InformeViews() {
                                             </div>
                                             <span className="font-weight-light"></span>
                                         </div>
-                                    </div> : ""}
+                                    </div> 
                             </div>
                             <div className="col-lg-6 mb-3">
                                 {lugar.value.includes("TRA") ? <div className="form-group row mb-3">
@@ -1438,7 +1485,8 @@ export default function InformeViews() {
                                                     { value: "vj6e9QgXc3DneWBV", label: "CTA CTE BCO PRODUBANCO 1058194005 COMPUTECNICS" },
                                                     { value: "5gQbWnq5S9V3a6w2", label: "CTA CTE BCO GUAYAQUIL 18018624 COMPUTECNICS" },
                                                     { value: "xGge0VLoTopvbADR", label: "CTA CTE BCO PACIFICO 8069530 COMPUTECNICS" },
-                                                   
+                                                    { value: "1mBdJqpkurVOb0J6", label:"CTA BCO PACIFICO PERSONAL 1051475596"},
+                                                    { value: "Q9jaKZqohE6Kek5K", label:"CTA BCO PICHINCHA 6164998400"}
                                                 ]}
                                                 value={banco}
                                                 placeholder="Banco"

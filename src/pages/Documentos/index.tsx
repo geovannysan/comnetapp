@@ -68,7 +68,11 @@ export default function DocuumentosViews(){
                         <td className="text-xs font-weight-bold">
                             {item.detalles[0].precio}</td>
                         <td className="text-xs font-weight-bold">
-                            <a className="btn-sm btn-default " href={item.url_ride } target="_blank"> </a>  </td>
+                            <a className="btn  btn-default" href={item.url_ride.replace("api", "0992782129001") +"/?imprimir=1" } target="_blank">
+                                <i className="bi bi-printer"></i> 
+                                 </a> 
+                           
+                             </td>
                         
 
                     </tr>

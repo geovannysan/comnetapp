@@ -38,7 +38,7 @@ const App: React.FC = () => {
   let userdispach = useDispatch()
   useEffect(() => {
     let datos = userlog()
-    console.log(datos)
+    //console.log(datos)
     if (datos !=null) {
       userdispach(setlogin({ estado: true }))
       userdispach(setDatosuser({ ...datos }))

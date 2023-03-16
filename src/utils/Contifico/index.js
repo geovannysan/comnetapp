@@ -90,11 +90,9 @@ export const IncremetoFacturaS = async()=>{
  */
 export const CreaProducto = async(parms)=>{
     try {
-        let { data } = await axios.post("https://0992782129001.contifico.com/sistema/api/v1/producto/",parms,{
-            headers:{
-                "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
-            }
-        })
+        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php",{
+            "url":"crearcon",    
+        parms})
         return data
     } catch (error) {
         return error
