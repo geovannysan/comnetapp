@@ -75,14 +75,35 @@ export default function InformeViews() {
         let pagnum = 80
         doc.setFontSize(7);
         doc.text(3, 3, 'COMNET - SPEED - T-ICKETS (COMPUTECNICSNET');
-        doc.text(18, 8, '                S.A.)')
-        doc.text(20, 12, 'RUC 092782129001')
-        doc.text(15, 15, 'Edifico City Officce Oficina 310')
-        doc.text(3, 18, 'Fecha:' + result2)
+        doc.text(18, 8, '                S.A.)');
+        doc.text(20, 12, 'RUC 092782129001');
+        doc.text(15, 15, 'Edifico City Officce Oficina 310');
+        doc.text(3, 18, 'Fecha:' + result2);
         doc.text(3, 21, '*******************************************************************');
-        doc.text(25, 23, 'DESCRIPCIÓN')
+        doc.text(25, 23, 'DESCRIPCIÓN');
         doc.text(3, 26, '*******************************************************************');
-        doc.text(3, 29, "Servicio de intennet")
+        doc.text(3, 29, "Servicio de intennet");
+        doc.text(3, 34,"Plan internet :");
+        doc.text(3, 38, "facturación del ");
+       
+        doc.text(3,45,"Mes:");
+        doc.text(3, 49,"*******************************************************************");
+        doc.text(35,54,"DESCUENTO $0.00");
+        doc.text(40,58,"TOTAL: ");
+        doc.text(40,62,"SALDO: ");
+        doc.text(3, 65,"*******************************************************************");
+        doc.text(20,69,"CLIENTE")
+        doc.text(3, 73, "VALENCIA MICOLTA GISSELA MARIA")
+        doc.text(3, 76, "direción")
+        doc.text(3,79,"cedula")
+        doc.text(3,84,"Fecha corte: ")
+        doc.text(3, 88, "*******************************************************************");
+        doc.text(3, 94, "Operador");
+        doc.text(3, 98, "Impresión:" +result2);
+        doc.text(3, 105, "*******************************************************************");
+
+
+
        // doc.text(3, 32, descri.items[0]["descrp"])
         /*  doc.text(3, 25, 'Fecha Registro');
           doc.text(3, 30, '_______________________________');
@@ -93,7 +114,7 @@ export default function InformeViews() {
               );
           })*/
 
-        doc.text(10, 90, '..');
+        
 
 
         // doc.save('comprobante.pdf');
