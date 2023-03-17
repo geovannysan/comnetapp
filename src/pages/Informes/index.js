@@ -10,6 +10,7 @@ import * as $ from "jquery"
 import jsPDF from "jspdf"
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
+import { Mes } from "../../utils/variables";
 export default function InformeViews() {
     const [present] = useIonToast();
     const [list, seTlist] = useState([])
@@ -59,12 +60,16 @@ export default function InformeViews() {
     let [cedula, setCedul] = useState("")
     let [total, settotal] = useState("")
     let [descri, setDescrip] = useState({
+        factura:"",
         items: []
     })
     function creaComprobante() {
+       // console.log(usuario,descri)
         const result2 = new Date().toLocaleString('en-GB', {
             hour12: false,
         });
+        const hoy = new Date(descri.factura.vencimiento).getMonth()
+       
         var opciones = {
             orientation: 'p',
             unit: 'mm',
@@ -83,24 +88,24 @@ export default function InformeViews() {
         doc.text(25, 23, 'DESCRIPCIÓN');
         doc.text(3, 26, '*******************************************************************');
         doc.text(3, 29, "Servicio de intennet");
-        doc.text(3, 34,"Plan internet :");
-        doc.text(3, 38, "facturación del ");
+        doc.text(3, 34, "Plan internet :" + usuario.servicios[0]["perfil"]);
+        doc.text(3, 38, "facturación del " + descri.factura.emitido + " " + descri.factura.vencimiento);
        
-        doc.text(3,45,"Mes:");
+        doc.text(3, 43, "Mes: " + Mes[hoy]);
         doc.text(3, 49,"*******************************************************************");
         doc.text(35,54,"DESCUENTO $0.00");
-        doc.text(40,58,"TOTAL: ");
-        doc.text(40,62,"SALDO: ");
+        doc.text(40, 58, "TOTAL: " + descri.items[0]["total2"]);
+        doc.text(40, 62,"SALDO: $0.00");
         doc.text(3, 65,"*******************************************************************");
         doc.text(20,69,"CLIENTE")
-        doc.text(3, 73, "VALENCIA MICOLTA GISSELA MARIA")
-        doc.text(3, 76, "direción")
-        doc.text(3,79,"cedula")
-        doc.text(3,84,"Fecha corte: ")
+        doc.text(3, 73, ""+usuario.nombre)
+        doc.text(3, 76, ""+usuario.direccion_principal)
+        doc.text(3,79,""+usuario.cedula)
+        doc.text(3, 84, "Fecha corte: "+descri.factura.emitido)
         doc.text(3, 88, "*******************************************************************");
-        doc.text(3, 94, "Operador");
+        doc.text(3, 94, "Operador " + nombres.usuario);
         doc.text(3, 98, "Impresión:" +result2);
-        doc.text(3, 105, "___________________________________________________________________");
+        doc.text(3, 105, "______________________________________________");
 
 
 
@@ -148,7 +153,7 @@ export default function InformeViews() {
                     setFactura({
                         ...ouput.factura
                     })
-                    setDescrip({ items: ouput.items })
+                    setDescrip({ factura:{...ouput.factura}, items: ouput.items })
                     settotal(ouput.factura.total)
                     console.log(totalcon.total.toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
                     console.log((totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)))
@@ -478,6 +483,7 @@ export default function InformeViews() {
                                             cssClass: 'custom-loading'
                                         })
                                         MostrarFacturas(ouput.datos[0].id).then(ouput => {
+                                            console.log(ouput)
                                             if (ouput.estado === "exito") {
                                                 dismiss()
                                                 console.log(ouput)
@@ -734,18 +740,13 @@ export default function InformeViews() {
         const yyyy = today.getFullYear();
         let mm = today.getMonth() + 1; // Months start at 0!
         let dd = today.getDate();
-
         if (dd < 10) dd = '0' + dd;
         if (mm < 10) mm = '0' + mm;
         const formattedToday = dd + '/' + mm + '/' + yyyy;
         console.log(cedula, total, lugar.value, banco.value, singleSelect.value)
-        //console.log()
-
-        /*setTimeout(function(){
-            dismiss();
-        },3000)*/
-        if (false) return
-        if (lugar.label.includes("Deposito")) {
+       // creaComprobante() 
+       // if(true) return
+        if (lugar.label.includes("CALL")) {
             console.log(banco.value)
             if (datos.asunto.trim().length == 0 && banco.label.trim() == "") {
                 present({
@@ -852,7 +853,9 @@ export default function InformeViews() {
                                 CreaLaFacturapor(fac).then(salida => {
                                     console.log(salida)
                                     let fat = "001-001-00000" + facnum
+
                                     if (salida.documento === fat) {
+                                        creaComprobante()
                                         dismiss()
                                         present({
 
@@ -1065,6 +1068,7 @@ export default function InformeViews() {
                             let fat = "001-001-00000" + facnum
                             console.log(salida)
                             if (salida.documento === fat) {
+                                creaComprobante()
                                 dismiss()
                                 present({
                                     message: "Factura número001-001-00000" + facnum + " creada con éxito",
@@ -1244,6 +1248,7 @@ export default function InformeViews() {
                                     let fat = "001-001-00000" + facnum
                                     console.log(salida)
                                     if (salida.documento === fat) {
+                                        creaComprobante()
                                         dismiss()
                                         present({
                                             message: "Factura número001-001-00000" + facnum + " creada con éxito",
@@ -1348,6 +1353,9 @@ export default function InformeViews() {
 
             //  console.log(datosdefactura, fac)
         }
+    }
+    function cuentas(label){
+
     }
 
 
@@ -1462,8 +1470,14 @@ export default function InformeViews() {
                                                 { value: "EF-Oficina/Ecocity", label: "Efectivo Oficina/Ecocity" },
                                                 { value: "TC-Oficina/Matriz", label: "TARJETA Oficina/Matriz" },
                                                 { value: "TC-Oficina/Ecocity", label: "TARJETA Oficina/Ecocity" },
-                                                { value: "TRA-Oficina/Matriz", label: "Deposito Oficina/Matriz" },
-                                                { value: "TRA-Oficina/Ecocity", label: "Deposito Oficina/Ecocity" }
+                                                { value: "TRA-Oficina/Matriz", label: "CALL PRODUBANCO" },
+                                                { value: "TRA-Oficina/Ecocity", label: "CALL BANCO PICHINCHA EMP" },
+                                                { value: "TRA-Ecocity", label: "CALL BANCO PICHINCHA PRS" },
+                                                { value: "TRA-Ecoty", label: "CALL BANCO GUAYAQUIL PRS" },
+                                                { value: "TRA-bancoguay", label: "CALL BANCO GUAYAQUIL EMP" },
+                                                { value: "TRA-bancopac", label: "CALL BANCO PACIFICO PRS" },
+                                                { value: "TRA-pacifico", label: "CALL BANCO PACIFICO EMP" },
+                                                
                                             ]}
                                             value={lugar}
                                             placeholder="Forma"
