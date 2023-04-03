@@ -100,7 +100,7 @@ export default function InformeViews() {
         doc.text(20,69,"CLIENTE")
         doc.text(3, 73, ""+usuario.nombre)
         doc.text(3, 76, ""+usuario.direccion_principal)
-        doc.text(3,79,""+usuario.cedula)
+        doc.text(3,79,""+usuario.cedula.trim())
         doc.text(3, 84, "Fecha corte: "+descri.factura.emitido)
         doc.text(3, 88, "*******************************************************************");
         doc.text(3, 94, "Operador " + nombres.usuario);
@@ -187,15 +187,20 @@ export default function InformeViews() {
 
     /** regsitra clinete obtine cliente porta y contifico obtiene productos contifico*/
     function buscar() {
+        setBusca(true)
         if (cedula.trim().length < 7) {
+            setBusca(false)
             return
         }
+        setBusca(false)
         presentlo({
             message: 'Busacando Cliente en el Portal ',
             cssClass: 'custom-loading'
         })
+        settotal("")
         autenticar(cedula.trim()).then(ouput => {
             console.log(ouput)
+            setimpri(false)
             if (ouput.estado === "exito") {
                 seTlist([])
                 setSingleSelect({ value: "", label: "" })
@@ -734,8 +739,12 @@ export default function InformeViews() {
             return "TRA"
         }
     }
+    const [impri,setimpri] = useState(false)
+    const [busca,setBusca]= useState(false)
+    //const []
     /** registra factura en portal obtiene numero incremento crea factura contifico */
-    function RegistrarPago() {
+    function RegistrarPago(e) {
+        e.preventDefault()
         const today = new Date();
         const yyyy = today.getFullYear();
         let mm = today.getMonth() + 1; // Months start at 0!
@@ -802,7 +811,7 @@ export default function InformeViews() {
                                     "caja_id": null,
                                     "cliente": {
                                         "ruc": null,
-                                        "cedula": usuario.cedula,
+                                        "cedula": usuario.cedula.trim().trim(),
                                         "razon_social": usuario.nombre,
                                         "telefonos": usuario.movil,
                                         "direccion": usuario.direccion_principal,
@@ -855,11 +864,13 @@ export default function InformeViews() {
                                     let fat = "001-001-00000" + facnum
 
                                     if (salida.documento === fat) {
-                                        creaComprobante()
+                                       // creaComprobante()
+                                        setimpri(true)
+                                        document.getElementById("pagos").reset();
                                         dismiss()
                                         present({
 
-                                            message: "Factura número001-001-00000" + facnum + " creada con éxito",
+                                            message: "Factura número 001-001-00000" + facnum + " creada con éxito",
                                             cssClass: '-',
                                             duration: 4500,
                                             position: "middle",
@@ -870,9 +881,9 @@ export default function InformeViews() {
                                                 }
                                             ]
                                         })
-                                        setTimeout(function () {
+                                       /* setTimeout(function () {
                                             window.location.reload()
-                                        }, 3000)
+                                        }, 3000)*/
                                     }
                                 }).catch(error => {
                                     console.log(error)
@@ -1014,7 +1025,7 @@ export default function InformeViews() {
                             "caja_id": null,
                             "cliente": {
                                 "ruc": null,
-                                "cedula": usuario.cedula,
+                                "cedula": usuario.cedula.trim(),
                                 "razon_social": usuario.nombre,
                                 "telefonos": usuario.movil,
                                 "direccion": usuario.direccion_principal,
@@ -1068,7 +1079,8 @@ export default function InformeViews() {
                             let fat = "001-001-00000" + facnum
                             console.log(salida)
                             if (salida.documento === fat) {
-                                creaComprobante()
+                                //creaComprobante()
+                                document.getElementById("pagos").reset();
                                 dismiss()
                                 present({
                                     message: "Factura número001-001-00000" + facnum + " creada con éxito",
@@ -1190,7 +1202,7 @@ export default function InformeViews() {
                                     "caja_id": null,
                                     "cliente": {
                                         "ruc": null,
-                                        "cedula": usuario.cedula,
+                                        "cedula": usuario.cedula.trim(),
                                         "razon_social": usuario.nombre,
                                         "telefonos": usuario.movil,
                                         "direccion": usuario.direccion_principal,
@@ -1248,7 +1260,9 @@ export default function InformeViews() {
                                     let fat = "001-001-00000" + facnum
                                     console.log(salida)
                                     if (salida.documento === fat) {
-                                        creaComprobante()
+                                       // creaComprobante()
+                                        setimpri(true)
+                                        document.getElementById("pagos").reset();
                                         dismiss()
                                         present({
                                             message: "Factura número001-001-00000" + facnum + " creada con éxito",
@@ -1262,16 +1276,16 @@ export default function InformeViews() {
                                                 }
                                             ]
                                         })
-                                        setTimeout(function () {
+                                       /* setTimeout(function () {
                                             window.location.reload()
-                                        }, 3000)
+                                        }, 3000)*/
 
 
                                     }
                                     console.log(salida)
                                     // sessionStorage.setItem("facturas", JSON.stringify(salida))
                                 }).catch(error => {
-                                    dismiss()
+                                  //  dismiss()
                                     present({
                                         message: "Hubo un error no se genero la factura Electrónica",
                                         cssClass: '-',
@@ -1311,7 +1325,7 @@ export default function InformeViews() {
                             }
                         },
                         error: function (error) {
-                            dismiss()
+                          //  dismiss()
                             present({
                                 message: "No se Genero el Numero de Factura",
                                 cssClass: '-',
@@ -1381,7 +1395,7 @@ export default function InformeViews() {
 
                                 </div>
                                 <div className=" col-12 col-md-4 ">
-                                    <form className="form" action="">
+                                    <form  className="form" action="">
                                         <input className="input" 
                                           
                                             placeholder="Cédula cliente"
@@ -1430,7 +1444,18 @@ export default function InformeViews() {
                             }
                         </div>}
                         <div className="row container-fluid d-flex justify-content-center ">
+                            <div className=" container text-center
+                             ">
+                                <span>id contifico {totalcon.id}</span>
+                               <br></br>
+                                <span>Estado Contifico {totalcon.estado}</span>
+                                <br></br>
+                                <span>Total producto Contifico {parseFloat(totalcon.total).toFixed(2)}</span>
+                                <br></br>
+                                <span>{JSON.stringify(impri)}</span>
+                                </div>
                             <div className=" container text-center mb-2">
+                                
                                 <span className=""
                                     style={{
                                         fontWeight: "bold"
@@ -1443,8 +1468,14 @@ export default function InformeViews() {
                                         <i className="px-2 bi bi-file-earmark-pdf"></i>
                                     </a>
                                     : <i className="px-2 bi bi-file-earmark-pdf"></i>}
+                                {!impri ?"":<a className=" btn btn-defaul" 
+                                    onClick={creaComprobante}
+                                >
+                                    <i className=" px-3 bi bi-printer-fill"></i>Imprimir Comprobante
+                                    </a>}
 
                             </div>
+                            {!busca?   <form id="pagos">
                             <div className="col-md-12 col-lg-8 mb-3">
                                 <div className="form-group row">
                                     <label className="col-sm-4  col-form-label text-md-end">Factura a pagar</label>
@@ -1542,7 +1573,8 @@ export default function InformeViews() {
                                                 onChange={handelChangeT}
                                             />
                                             <button className=" btn-primary m-1 p-2  btn"
-                                                onClick={RegistrarPago}
+                                            disabled={impri}
+                                                onClick={(e)=>RegistrarPago(e)}
                                             >
                                                 Registrar Pago
                                             </button>
@@ -1569,7 +1601,7 @@ export default function InformeViews() {
 
                             </div>
 
-
+                            </form>:""}
 
                         </div>
 
