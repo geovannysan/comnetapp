@@ -1,15 +1,15 @@
 import axios from 'axios';
 import { token } from './variables';
-let Host = "https://portal.comnet.ec/api/v1/"
+import { userlog } from './User';
+let Host = "https://portal.comnet.ec/api/v1/";
+let nombres = JSON.parse(sessionStorage.getItem("USERLOGIN"))
+
 export const autenticar = async (parms) => {
+    console.log(nombres)
     try {
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php",
-            {
-                "cedula": parms,
-                "url": "https://portal.comnet.ec/api/v1/GetClientsDetails"
-            })
+        let { data } = await axios.get("http://localhost:5200/PortalApi/GetClientsDetails/" + parms + "/" + nombres.password)
         console.log(data)
-        return JSON.parse(data)
+        return data
     } catch (error) {
         return error
     }
@@ -20,18 +20,15 @@ export const ListarTicket = async (parm) => {
             "url": Host + "ListTicket",
             "idcliente": parm
         })
-        return JSON.parse( data)
+        console.log("Listar ricketsaqi")
+        return JSON.parse(data)
     } catch (error) {
         return error
     }
 }
 export const ListarFactura = async (parms) => {
     try {
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
-            "url": Host + "GetInvoices",
-            "limit": 1,
-            "idcliente": parms
-        })
+        let { data } = await axios.get("http://localhost:5200/PortalApi/GetInvoices/"+parms+"/"+nombres.password)
         if (JSON.parse(data).estado === "exito") {
 
             let id = await JSON.parse(data).facturas[0].id
@@ -52,14 +49,10 @@ export const ListarFactura = async (parms) => {
     }
 }
 export const MostrarFacturas = async (parms) => {
+   
     try {
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
-            "url": Host + "GetInvoices",
-            "estado": 0,
-            "idcliente": parms
-        }
-        )
-        return JSON.parse(data)
+        let { data } = await axios.get("http://localhost:5200/PortalApi/GetInvoices/" + parms + "/" + nombres.password)
+        return data
 
     } catch (error) {
         return error
@@ -67,14 +60,8 @@ export const MostrarFacturas = async (parms) => {
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php",
-            {
-                "url": Host + "GetInvoice",
-                "idfactura": parms
-            }
-
-        )
-        return JSON.parse(data)
+        let { data } = await axios.get("http://localhost:5200/PortalApi/GetInvoice/"+parms+"/"+nombres.password)
+        return data
 
     } catch (error) {
         return error

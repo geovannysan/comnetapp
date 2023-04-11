@@ -101,11 +101,7 @@ export const IncremetoCon = async () => {
  */
 export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
-            ...parms,
-            "url": "crearcon",
-
-        })
+        let { data } = await axios.post("http://localhost:5200/FactuApi/Crearpro", {...parms,})
         return data
     } catch (error) {
         return error
@@ -113,16 +109,15 @@ export const CreaProducto = async (parms) => {
 }
 
 export const PagoFacturacomnet = async (parms) => {
-    console.log(parms)
+    let nombres = JSON.parse(sessionStorage.getItem("USERLOGIN"))
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
-            ...parms
-            , "url": "https://portal.comnet.ec/api/v1/PaidInvoice"
-        }
+        let { data } = await axios.post("http://localhost:5200/PortalApi/PagosdelPortal/" + nombres.password  , 
+            parms
+        
         )
-        return JSON.parse(data)
+        return data
     } catch (error) {
 
     }
