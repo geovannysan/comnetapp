@@ -6,24 +6,24 @@ import { token } from "../variables";
  * @param {*} parms 
  * @returns 
  */
-export const BuscaclienteContifico= async (parms)=>{
-try {
-    let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?cedula="+parms,{
-        headers:{
-            "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
-        }
-    })
-    return data
-} catch (error) {
-    return error
-}
+export const BuscaclienteContifico = async (parms) => {
+    try {
+        let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?cedula=" + parms, {
+            headers: {
+                "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
 }
 /**
  * crea cliente en contifico
  * @param {*} parms 
  * @returns 
  */
-export const CrearClienteContifico=async(parms)=>{
+export const CrearClienteContifico = async (parms) => {
     try {
         let { data } = await axios({
             method: 'post', url: 'https://api.contifico.com/sistema/api/v1/persona/?pos=4511aa3d-fce0-4441-a3e1-0961bd3357af', data: parms, headers: {
@@ -41,10 +41,10 @@ export const CrearClienteContifico=async(parms)=>{
  * @returns 
  */
 
-export const BuscarProductoContific = async(parms)=>{
+export const BuscarProductoContific = async (parms) => {
     try {
-        let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/producto/?codigo="+parms,{
-            headers:{
+        let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/producto/?codigo=" + parms, {
+            headers: {
                 "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
             }
         })
@@ -58,11 +58,22 @@ export const BuscarProductoContific = async(parms)=>{
  * devuelve contador
  * @returns 
  */
-export const IncremetoFacturaS = async()=>{
+export const IncremetoFacturaS = async () => {
     try {
-       
+
         let { data } = await axios({
             method: 'post', url: 'https://portalfac.netbot.ec/incrementov.php'
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const IncremetoCon = async () => {
+    try {
+
+        let { data } = await axios({
+            method: 'post', url: 'https://brisana.netbot.ec/js/incremento.php'
         })
         return data
     } catch (error) {
@@ -88,33 +99,36 @@ export const IncremetoFacturaS = async()=>{
  * @param {*} parms 
  * @returns 
  */
-export const CreaProducto = async(parms)=>{
+export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php",{
-            "url":"crearcon",    
-        parms})
+        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
+            ...parms,
+            "url": "crearcon",
+
+        })
         return data
     } catch (error) {
         return error
     }
 }
 
-export const PagoFacturacomnet=async(parms)=>{
+export const PagoFacturacomnet = async (parms) => {
     console.log(parms)
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php",{...parms
-            , "url":"https://portal.comnet.ec/api/v1/PaidInvoice"
-    }
-            )
-        return JSON.parse( data)
+        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
+            ...parms
+            , "url": "https://portal.comnet.ec/api/v1/PaidInvoice"
+        }
+        )
+        return JSON.parse(data)
     } catch (error) {
-        
+
     }
 }
 
-export const  Creafactura = async(parms)=>{
+export const Creafactura = async (parms) => {
     try {
         let { data } = await axios.post("https://api.contifico.com/sistema/api/v1/documento", parms
             , {
@@ -127,7 +141,7 @@ export const  Creafactura = async(parms)=>{
         return error
     }
 }
-export const Verificar = async (parms)=>{
+export const Verificar = async (parms) => {
     try {
         let { data } = await axios.post("https://api.contifico.com/sistema/api/v1/documento", parms
             , {
@@ -138,24 +152,24 @@ export const Verificar = async (parms)=>{
         return data
     } catch (error) {
         return error
-        
+
     }
 }
-export const ObtenerFacturas = async()=>{
+export const ObtenerFacturas = async () => {
     let dias = -15
     let fin = new Date()
     fin.setDate(fin.getDate() + dias);
     let fechainicios = new Date(JSON.stringify(fin).replace('"', '').replace('"', '')).toLocaleDateString("en-US")
     let fechafinal = new Date().toLocaleDateString("en-US")
     try {
-       
-        let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/documento?tipo=FAC&fecha_inicial="+fechainicios+"&fecha_final="+fechafinal,
+
+        let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/documento?tipo=FAC&fecha_inicial=" + fechainicios + "&fecha_final=" + fechafinal,
             {
                 headers: {
                     "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
                 }
             })
-            return data
+        return data
     } catch (error) {
         return error
     }
@@ -166,7 +180,7 @@ export const ObtenerFactura = async () => {
     fin.setDate(fin.getDate() + dias);
     let fechainicios = new Date(JSON.stringify(fin).replace('"', '').replace('"', '')).toLocaleDateString("en-GB")
     let fechafinal = new Date().toLocaleDateString("en-GB")
-    console.log(fechainicios,fechafinal)
+    console.log(fechainicios, fechafinal)
     try {
 
         let { data } = await axios.get("https://portalfac.netbot.ec/contifico.php")

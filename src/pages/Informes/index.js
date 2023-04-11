@@ -5,7 +5,7 @@ import { autenticar, CreaLaFacturapor, Facturaid, MostrarFacturas } from "../../
 import { userlog } from "../../utils/User";
 import Selectopction from "../../components/Selectshear";
 import InputViews from "../../components/Input";
-import { BuscaclienteContifico, BuscarProductoContific, Creafactura, CreaProducto, CrearClienteContifico, IncremetoFacturaS, PagoFacturacomnet } from "../../utils/Contifico";
+import { BuscaclienteContifico, BuscarProductoContific, Creafactura, CreaProducto, CrearClienteContifico, IncremetoCon, IncremetoFacturaS, PagoFacturacomnet } from "../../utils/Contifico";
 import * as $ from "jquery"
 import jsPDF from "jspdf"
 import { useHistory } from "react-router";
@@ -157,23 +157,58 @@ export default function InformeViews() {
                     settotal(ouput.factura.total)
                     console.log(totalcon.total.toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
                     console.log((totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)))
-                    if (totalcon.total.toFixed(2) < parseFloat(ouput.factura.total).toFixed(2)) {
-                        CreaProducto({
-                            "codigo_barra": null,
-                            "porcentaje_iva": "12",
-                            "categoria_id": "91qdGvZgXhY6nbN8",
-                            "pvp1": parseFloat(ouput.factura.total).toFixed(2),
-                            "tipo": "SER",
-                            "para_supereasy": false,
-                            "para_comisariato": false,
-                            "minimo": "0.0",
-                            "descripcion": "Servicio de Internet Banda ancha",
-                            "nombre": usuario.servicios[0]["perfil"],
-                            "codigo": usuario.servicios[0]["idperfil"],
-                            "estado": "A"
-                        }).then(produ => {
-                            console.log(produ)
+                    console.log({
+                        "codigo_barra": null,
+                        "porcentaje_iva": "12",
+                        "categoria_id": "91qdGvZgXhY6nbN8",
+                        "pvp1": parseFloat(ouput.factura.total).toFixed(2),
+                        "tipo": "SER",
+                        "para_supereasy": false,
+                        "para_comisariato": false,
+                        "minimo": "0.0",
+                        "descripcion": "Servicio de Internet Banda ancha",
+                        "nombre": usuario.servicios[0]["perfil"],
+                        "codigo": usuario.servicios[0]["idperfil"],
+                        "estado": "A"
+                    })
+                    if (totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
+                        IncremetoCon().then(salida=>{
+                            console.log(salida)
+                            if (salida.status) {
+                                let facnum = salida.result[0].contadores
+                            CreaProducto({
+                                "codigo_barra": null,
+                                "porcentaje_iva": "12",
+                                "categoria_id": "91qdGvZgXhY6nbN8",
+                                "pvp1": parseFloat(ouput.factura.total).toFixed(2),
+                                "tipo": "SER",
+                                "para_supereasy": false,
+                                "para_comisariato": false,
+                                "minimo": "0.0",
+                                "descripcion": "Servicio de Internet Banda ancha",
+                                "nombre": usuario.servicios[0]["perfil"],
+                                "codigo": facnum+""+usuario.servicios[0]["idperfil"],
+                                "estado": "A"
+                            }).then(produ => {
+                                console.log(JSON.parse(produ))
+                                let estado = JSON.parse(produ).estado;
+                                let valor = parseFloat(JSON.parse(produ).pvp1) * 1.12;
+                               /* console.log({
+                                    total: valor,
+                                    estado: estado,
+                                    id: JSON.parse(produ).id,
+                                })*/
+                                setValor({
+                                    total: valor,
+                                    estado: estado,
+                                    id: JSON.parse(produ).id,
+                                })
+                                dismiss()
+                            })}
+                        }).catch(err=>{
+                            console.log(err)
                         })
+                      
                     }
                 }
 
