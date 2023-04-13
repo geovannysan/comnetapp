@@ -73,7 +73,7 @@ export const IncremetoCon = async () => {
     try {
 
         let { data } = await axios({
-            method: 'post', url: 'https://brisana.netbot.ec/js/incremento.php'
+            method: 'post', url: 'http://brisana.netbot.ec/js/incremento.php'
         })
         return data
     } catch (error) {
@@ -101,7 +101,7 @@ export const IncremetoCon = async () => {
  */
 export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("http://localhost:5200/FactuApi/Crearpro", {...parms,})
+        let { data } = await axios.post("http://portapi.somee.com/FactuApi/Crearpro", {...parms,})
         return data
     } catch (error) {
         return error
@@ -113,7 +113,7 @@ export const PagoFacturacomnet = async (parms) => {
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("http://localhost:5200/PortalApi/PagosdelPortal/" + nombres.password  , 
+        let { data } = await axios.post("http://portapi.somee.com/PortalApi/PagosdelPortal/" + nombres.password  , 
             parms
         
         )

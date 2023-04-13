@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { token } from './variables';
 import { userlog } from './User';
-let Host = "https://portal.comnet.ec/api/v1/";
-let nombres = JSON.parse(sessionStorage.getItem("USERLOGIN"))
+let Host = "http://portal.comnet.ec/api/v1/";
+//let userlog() = JSON.parse(sessionStorage.getItem("USERLOGIN"))
 
 export const autenticar = async (parms) => {
-    console.log(nombres)
+    console.log(userlog())
     try {
-        let { data } = await axios.get("http://localhost:5200/PortalApi/GetClientsDetails/" + parms + "/" + nombres.password)
+        let { data } = await axios.get("http://portapi.somee.com/PortalApi/GetClientsDetails/" + parms + "/" + userlog().password)
         console.log(data)
         return data
     } catch (error) {
@@ -16,7 +16,7 @@ export const autenticar = async (parms) => {
 }
 export const ListarTicket = async (parm) => {
     try {
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
+        let { data } = await axios.post("http://portalfac.netbot.ec/consultas.php", {
             "url": Host + "ListTicket",
             "idcliente": parm
         })
@@ -28,12 +28,12 @@ export const ListarTicket = async (parm) => {
 }
 export const ListarFactura = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:5200/PortalApi/GetInvoices/"+parms+"/"+nombres.password)
+        let { data } = await axios.get("http://portapi.somee.com/PortalApi/GetInvoices/"+parms+"/"+userlog().password)
         if (JSON.parse(data).estado === "exito") {
 
             let id = await JSON.parse(data).facturas[0].id
             // console.log(id,parms)
-            let datos = await axios.post("https://portalfac.netbot.ec/consultas.php",
+            let datos = await axios.post("http://portalfac.netbot.ec/consultas.php",
                 {
                     "url": Host + "GetInvoice",
                     "idfactura": id
@@ -51,7 +51,7 @@ export const ListarFactura = async (parms) => {
 export const MostrarFacturas = async (parms) => {
    
     try {
-        let { data } = await axios.get("http://localhost:5200/PortalApi/GetInvoices/" + parms + "/" + nombres.password)
+        let { data } = await axios.get("http://portapi.somee.com/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
         return data
 
     } catch (error) {
@@ -60,7 +60,7 @@ export const MostrarFacturas = async (parms) => {
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:5200/PortalApi/GetInvoice/"+parms+"/"+nombres.password)
+        let { data } = await axios.get("http://portapi.somee.com/PortalApi/GetInvoice/"+parms+"/"+userlog().password)
         return data
 
     } catch (error) {
@@ -71,7 +71,7 @@ export const CreaLaFacturapor = async (parms) => {
     try {
 
         let { data } = await axios({
-            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/documento/', data: parms, headers: {
+            method: 'post', url: 'http://api.contifico.com/sistema/api/v1/documento/', data: parms, headers: {
                 'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
             }
         })
@@ -84,7 +84,7 @@ export const CreaLaFacturapor = async (parms) => {
     }
 }
 export const Loginadmin = async (parms) => {
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_admin", parms, {
+    const { data } = await axios.post("http://rec.netbot.ec/ms_login/api/v1/auth_admin", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
