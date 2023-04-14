@@ -5,9 +5,10 @@ let Host = "http://portal.comnet.ec/api/v1/";
 //let userlog() = JSON.parse(sessionStorage.getItem("USERLOGIN"))
 
 export const autenticar = async (parms) => {
+    //portapi.somee.com
     console.log(userlog())
     try {
-        let { data } = await axios.get("http://portapi.somee.com/PortalApi/GetClientsDetails/" + parms + "/" + userlog().password)
+        let { data } = await axios.post("http://portapi.somee.com/PortalApi/GetClientsDetails/" + userlog().password, { cedula:parms })
         console.log(data)
         return data
     } catch (error) {

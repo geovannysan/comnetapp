@@ -7,6 +7,22 @@ import { token } from "../variables";
  * @returns 
  */
 export const BuscaclienteContifico = async (parms) => {
+    console.log(parms)
+    if (parms.length>10){
+
+        try {
+            let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?ruc=" + parms, {
+                headers: {
+                    "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+                }
+            })
+            return data
+        } catch (error) {
+            return error
+        }
+
+    }
+    else{
     try {
         let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?cedula=" + parms, {
             headers: {
@@ -16,17 +32,19 @@ export const BuscaclienteContifico = async (parms) => {
         return data
     } catch (error) {
         return error
-    }
+    }}
 }
 /**
  * crea cliente en contifico
  * @param {*} parms 
  * @returns 
  */
+
+//no encuentra por ruc ni crea por ruc
 export const CrearClienteContifico = async (parms) => {
     try {
         let { data } = await axios({
-            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/persona/?pos=4511aa3d-fce0-4441-a3e1-0961bd3357af', data: parms, headers: {
+            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/persona/', data: parms, headers: {
                 'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
             }
         })
