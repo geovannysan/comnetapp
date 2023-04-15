@@ -8,7 +8,7 @@ export const autenticar = async (parms) => {
     //portapi.somee.com
     console.log(userlog())
     try {
-        let { data } = await axios.post("http://portapi.somee.com/PortalApi/GetClientsDetails/" + userlog().password, { cedula:parms })
+        let { data } = await axios.post("https://portalapicon.somee.com/PortalApi/GetClientsDetails/" + userlog().password, { cedula:parms })
         console.log(data)
         return data
     } catch (error) {
@@ -29,7 +29,7 @@ export const ListarTicket = async (parm) => {
 }
 export const ListarFactura = async (parms) => {
     try {
-        let { data } = await axios.get("http://portapi.somee.com/PortalApi/GetInvoices/"+parms+"/"+userlog().password)
+        let { data } = await axios.get("https://portalapicon.somee.com/PortalApi/GetInvoices/"+parms+"/"+userlog().password)
         if (JSON.parse(data).estado === "exito") {
 
             let id = await JSON.parse(data).facturas[0].id
@@ -52,7 +52,7 @@ export const ListarFactura = async (parms) => {
 export const MostrarFacturas = async (parms) => {
    
     try {
-        let { data } = await axios.get("http://portapi.somee.com/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
+        let { data } = await axios.get("https://portalapicon.somee.com/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
         return data
 
     } catch (error) {
@@ -61,7 +61,7 @@ export const MostrarFacturas = async (parms) => {
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.get("http://portapi.somee.com/PortalApi/GetInvoice/"+parms+"/"+userlog().password)
+        let { data } = await axios.get("https://portalapicon.somee.com/PortalApi/GetInvoice/"+parms+"/"+userlog().password)
         return data
 
     } catch (error) {

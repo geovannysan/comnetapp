@@ -270,7 +270,23 @@ export default function InformeViews() {
                             cssClass: 'custom-loading'
                         })
                         CrearClienteContifico(datos).then(crea => {
-
+                            if(crea.response.status==400){
+                                setimpri(true)
+                                dismiss()
+                                present({
+                                    message: "El cliente no se creo en contifico" +crea.response.data["mensaje"],
+                                    cssClass: '',
+                                    duration: 4500,
+                                    position: "middle",
+                                    buttons: [
+                                        {
+                                            text: "cerrar",
+                                            role: "cancel",
+                                        }
+                                    ]
+                                })
+                                return
+                            }
                             //mostrar mensaje de registro
                             //  console.log(e)
                             if (Object.keys(crea).length > 1) {
@@ -330,8 +346,9 @@ export default function InformeViews() {
                             }
                         }).catch(err => {
                             dismiss()
+                            console.log(err.response.data);
                             present({
-                                message: "Hubo un error inesperado al crear cliente contifico",
+                                message: "Hubo un error inesperado al crear cliente contifico no se creo" + err,
                                 cssClass: '',
                                 duration: 4500,
                                 position: "middle",

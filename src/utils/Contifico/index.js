@@ -44,12 +44,15 @@ export const BuscaclienteContifico = async (parms) => {
 export const CrearClienteContifico = async (parms) => {
     try {
         let { data } = await axios({
-            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/persona/', data: parms, headers: {
+            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/persona/?pos=4511aa3d-fce0-4441-a3e1-0961bd3357af', data: parms, headers: {
                 'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
             }
         })
+        console.log(data.response.data)
         return data
+
     } catch (error) {
+        console.log(error.response.data);
         return error
     }
 }
@@ -119,7 +122,7 @@ export const IncremetoCon = async () => {
  */
 export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("http://portapi.somee.com/FactuApi/Crearpro", {...parms,})
+        let { data } = await axios.post("https://portalapicon.somee.com/FactuApi/Crearpro", {...parms,})
         return data
     } catch (error) {
         return error
@@ -131,7 +134,7 @@ export const PagoFacturacomnet = async (parms) => {
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("http://portapi.somee.com/PortalApi/PagosdelPortal/" + nombres.password  , 
+        let { data } = await axios.post("https://portalapicon.somee.com/PortalApi/PagosdelPortal/" + nombres.password  , 
             parms
         
         )
