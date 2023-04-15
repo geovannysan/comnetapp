@@ -7,6 +7,22 @@ import { token } from "../variables";
  * @returns 
  */
 export const BuscaclienteContifico = async (parms) => {
+    console.log(parms)
+    if (parms.length>10){
+
+        try {
+            let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?ruc=" + parms, {
+                headers: {
+                    "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+                }
+            })
+            return data
+        } catch (error) {
+            return error
+        }
+
+    }
+    else{
     try {
         let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?cedula=" + parms, {
             headers: {
@@ -16,17 +32,19 @@ export const BuscaclienteContifico = async (parms) => {
         return data
     } catch (error) {
         return error
-    }
+    }}
 }
 /**
  * crea cliente en contifico
  * @param {*} parms 
  * @returns 
  */
+
+//no encuentra por ruc ni crea por ruc
 export const CrearClienteContifico = async (parms) => {
     try {
         let { data } = await axios({
-            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/persona/?pos=4511aa3d-fce0-4441-a3e1-0961bd3357af', data: parms, headers: {
+            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/persona/', data: parms, headers: {
                 'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
             }
         })
@@ -73,7 +91,7 @@ export const IncremetoCon = async () => {
     try {
 
         let { data } = await axios({
-            method: 'post', url: 'https://brisana.netbot.ec/js/incremento.php'
+            method: 'post', url: 'http://brisana.netbot.ec/js/incremento.php'
         })
         return data
     } catch (error) {
@@ -101,11 +119,7 @@ export const IncremetoCon = async () => {
  */
 export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
-            ...parms,
-            "url": "crearcon",
-
-        })
+        let { data } = await axios.post("http://portapi.somee.com/FactuApi/Crearpro", {...parms,})
         return data
     } catch (error) {
         return error
@@ -113,16 +127,15 @@ export const CreaProducto = async (parms) => {
 }
 
 export const PagoFacturacomnet = async (parms) => {
-    console.log(parms)
+    let nombres = JSON.parse(sessionStorage.getItem("USERLOGIN"))
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("https://portalfac.netbot.ec/consultas.php", {
-            ...parms
-            , "url": "https://portal.comnet.ec/api/v1/PaidInvoice"
-        }
+        let { data } = await axios.post("http://portapi.somee.com/PortalApi/PagosdelPortal/" + nombres.password  , 
+            parms
+        
         )
-        return JSON.parse(data)
+        return data
     } catch (error) {
 
     }
