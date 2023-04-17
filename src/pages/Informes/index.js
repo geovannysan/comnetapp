@@ -190,9 +190,9 @@ export default function InformeViews() {
                                 "codigo": facnum+""+usuario.servicios[0]["idperfil"],
                                 "estado": "A"
                             }).then(produ => {
-                                console.log(JSON.parse(produ))
-                                let estado = JSON.parse(produ).estado;
-                                let valor = parseFloat(JSON.parse(produ).pvp1) * 1.12;
+                                //console.log(JSON.parse(produ))
+                                let estado = produ.estado;
+                                let valor = parseFloat(produ.pvp1) * 1.12;
                                /* console.log({
                                     total: valor,
                                     estado: estado,

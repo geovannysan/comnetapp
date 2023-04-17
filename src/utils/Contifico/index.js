@@ -94,7 +94,7 @@ export const IncremetoCon = async () => {
     try {
 
         let { data } = await axios({
-            method: 'post', url: 'http://brisana.netbot.ec/js/incremento.php'
+            method: 'post', url: 'https://portalfac.netbot.ec/incremento.php'
         })
         return data
     } catch (error) {
