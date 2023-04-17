@@ -122,7 +122,7 @@ export const IncremetoCon = async () => {
  */
 export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("https://portalapicon.somee.com/FactuApi/Crearpro", {...parms,})
+        let { data } = await axios.post("https://portalapicon.somee.com/FactuApi/Crearpro", {...parms})
         return data
     } catch (error) {
         return error

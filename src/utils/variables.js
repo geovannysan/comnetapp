@@ -19,7 +19,7 @@ export const usuarioTocken= [
     }
     ,{
         "usuario": "scajape",
-        "password": "2400090532",
+        "password": "0999999999",
         "nombre": "Cuenta Combros",
         "correo": "scajape@comnet.ec",
         "telefono": "",
