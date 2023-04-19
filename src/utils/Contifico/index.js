@@ -122,7 +122,7 @@ export const IncremetoCon = async () => {
  */
 export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("https://portalapicon.somee.com/FactuApi/Crearpro", {...parms})
+        let { data } = await axios.post("https://rec.netbot.ec/mikroti/FactuApi/Crearpro", {...parms})
         return data
     } catch (error) {
         return error
@@ -134,7 +134,7 @@ export const PagoFacturacomnet = async (parms) => {
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("https://portalapicon.somee.com/PortalApi/PagosdelPortal/" + nombres.password  , 
+        let { data } = await axios.post("https://rec.netbot.ec/mikroti/PortalApi/PagosdelPortal/" + nombres.password  , 
             parms
         
         )
