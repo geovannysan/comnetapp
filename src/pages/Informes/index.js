@@ -172,27 +172,55 @@ export default function InformeViews() {
                         "estado": "A"
                     })
                     if (totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
+                        dismiss()
+                        presentlo({
+                            message: 'Creando producto en Contifico ',
+                            cssClass: 'custom-loading'
+                        })
                         IncremetoCon().then(salida=>{
                             console.log(salida)
                             if (salida.status) {
                                 let facnum = salida.result[0].contadores
                             CreaProducto({
-                                "codigo_barra": null,
-                                "porcentaje_iva": "12",
-                                "categoria_id": "91qdGvZgXhY6nbN8",
-                                "pvp1": parseFloat(ouput.factura.total).toFixed(2),
-                                "tipo": "SER",
-                                "para_supereasy": false,
-                                "para_comisariato": false,
-                                "minimo": "0.0",
-                                "descripcion": "Servicio de Internet Banda ancha",
+                                "pvp1": parseFloat(ouput.factura.subtotal).toFixed(2),                
                                 "nombre": usuario.servicios[0]["perfil"],
-                                "codigo": facnum+""+usuario.servicios[0]["idperfil"],
-                                "estado": "A"
+                                "codigo": facnum+""+usuario.servicios[0]["idperfil"]
                             }).then(produ => {
-                                console.log(JSON.parse(produ))
-                                let estado = JSON.parse(produ).estado;
-                                let valor = parseFloat(JSON.parse(produ).pvp1) * 1.12;
+                                console.log(produ)
+                                /*if (produ.response.data.status != 200) {
+                                    setimpri(true)
+                                    dismiss()
+                                    present({
+                                        message: "El PRODUCTO no se creo en contifico" + produ.response.data["mensaje"],
+                                        cssClass: '',
+                                        duration: 4500,
+                                        position: "middle",
+                                        buttons: [
+                                            {
+                                                text: "cerrar",
+                                                role: "cancel",
+                                            }
+                                        ]
+                                    })
+                                    return
+                                }*/
+                                console.log({
+                                    "codigo_barra": null,
+                                    "porcentaje_iva": "12",
+                                    "categoria_id": "91qdGvZgXhY6nbN8",
+                                    "pvp1": parseFloat(ouput.factura.subtotal).toFixed(2),
+                                    "tipo": "SER",
+                                    "para_supereasy": false,
+                                    "para_comisariato": false,
+                                    "minimo": "0.0",
+                                    "descripcion": "Servicio de Internet Banda ancha",
+                                    "nombre": usuario.servicios[0]["perfil"],
+                                    "codigo": facnum + "" + usuario.servicios[0]["idperfil"],
+                                    "estado": "A"
+                                })
+                                console.log(produ)
+                                let estado = produ.estado;
+                                let valor = parseFloat(produ.pvp1).toFixed(2) * 1.12;
                                /* console.log({
                                     total: valor,
                                     estado: estado,
@@ -201,12 +229,39 @@ export default function InformeViews() {
                                 setValor({
                                     total: valor,
                                     estado: estado,
-                                    id: JSON.parse(produ).id,
+                                    id: produ.id,
                                 })
                                 dismiss()
-                            })}
+                            }).catch(err=>{
+                                console.log(err)
+                                present({
+                                    message: "Hubo un error inesperado al crear producto contifico " + err.status,
+                                    cssClass: '',
+                                    duration: 4500,
+                                    position: "middle",
+                                    buttons: [
+                                        {
+                                            text: "cerrar",
+                                            role: "cancel",
+                                        }
+                                    ]
+                                })
+                            })
+                        }
                         }).catch(err=>{
                             console.log(err)
+                            present({
+                                message: "Hubo un error inesperado al crear producto contifico no se creo" + err,
+                                cssClass: '',
+                                duration: 4500,
+                                position: "middle",
+                                buttons: [
+                                    {
+                                        text: "cerrar",
+                                        role: "cancel",
+                                    }
+                                ]
+                            })
                         })
                       
                     }
@@ -270,7 +325,23 @@ export default function InformeViews() {
                             cssClass: 'custom-loading'
                         })
                         CrearClienteContifico(datos).then(crea => {
-
+                            if(crea.response.status==400){
+                                setimpri(true)
+                                dismiss()
+                                present({
+                                    message: "El cliente no se creo en contifico" +crea.response.data["mensaje"],
+                                    cssClass: '',
+                                    duration: 4500,
+                                    position: "middle",
+                                    buttons: [
+                                        {
+                                            text: "cerrar",
+                                            role: "cancel",
+                                        }
+                                    ]
+                                })
+                                return
+                            }
                             //mostrar mensaje de registro
                             //  console.log(e)
                             if (Object.keys(crea).length > 1) {
@@ -330,8 +401,9 @@ export default function InformeViews() {
                             }
                         }).catch(err => {
                             dismiss()
+                            console.log(err.response.data);
                             present({
-                                message: "Hubo un error inesperado al crear cliente contifico",
+                                message: "Hubo un error inesperado al crear cliente contifico no se creo" + err,
                                 cssClass: '',
                                 duration: 4500,
                                 position: "middle",
@@ -874,6 +946,8 @@ export default function InformeViews() {
             //console.log(err)
         })
     }
+    let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+
     function FormaPago() {
         if (lugar.value.includes("Efectivo")) {
             return ""
@@ -960,7 +1034,7 @@ export default function InformeViews() {
                                         "cedula": usuario.cedula.trim().trim(),
                                         "razon_social": usuario.nombre,
                                         "telefonos": usuario.movil,
-                                        "direccion": usuario.direccion_principal,
+                                         "direccion": !emailRegex.test(usuario.direccion_principal)?"": usuario.direccion_principal,
                                         "tipo": "N",
                                         "email": usuario.correo,
                                         "es_extranjero": false
@@ -978,7 +1052,7 @@ export default function InformeViews() {
                                     "descripcion": descri.items[0]["descrp"],
                                     "subtotal_0": 0,
                                     "subtotal_12": (totalcon.total) / 1.12,
-                                    "iva": (totalcon.total * 0.12).toFixed(2),
+                                    "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
                                     "total": totalcon.total.toFixed(2),
                                     "detalles": [
                                         {
@@ -1170,7 +1244,7 @@ export default function InformeViews() {
                                 "cedula": usuario.cedula.trim(),
                                 "razon_social": usuario.nombre,
                                 "telefonos": usuario.movil,
-                                "direccion": usuario.direccion_principal,
+                                 "direccion": !emailRegex.test(usuario.direccion_principal)?"": usuario.direccion_principal,
                                 "tipo": "N",
                                 "email": usuario.correo,
                                 "es_extranjero": false
@@ -1188,7 +1262,7 @@ export default function InformeViews() {
                             "descripcion": descri.items[0]["descrp"],
                             "subtotal_0": 0,
                             "subtotal_12": (totalcon.total) / 1.12,
-                            "iva": (totalcon.total * 0.12).toFixed(2),
+                            "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
                             "total": totalcon.total.toFixed(2),
                             "detalles": [
                                 {
@@ -1345,7 +1419,7 @@ export default function InformeViews() {
                                         "cedula": usuario.cedula.trim(),
                                         "razon_social": usuario.nombre,
                                         "telefonos": usuario.movil,
-                                        "direccion": usuario.direccion_principal,
+                                         "direccion": !emailRegex.test(usuario.direccion_principal)?"": usuario.direccion_principal,
                                         "tipo": "N",
                                         "email": usuario.correo,
                                         "es_extranjero": false
@@ -1362,7 +1436,7 @@ export default function InformeViews() {
                                     "descripcion": descri.items[0]["descrp"],
                                     "subtotal_0": 0,
                                     "subtotal_12": (totalcon.total) / 1.12,
-                                    "iva": (totalcon.total * 0.12).toFixed(2),
+                                    "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
                                     "total": totalcon.total.toFixed(2),
                                     "detalles": [
                                         {
@@ -1395,7 +1469,7 @@ export default function InformeViews() {
                                     redirect: 'follow'
                                 };
 
-                                CreaLaFacturapor(fac).then(salida => {
+                             CreaLaFacturapor(fac).then(salida => {
                                     dismiss()
                                     let fat = "001-001-00000" + facnum
                                     console.log(salida)
@@ -1416,9 +1490,7 @@ export default function InformeViews() {
                                                 }
                                             ]
                                         })
-                                       /* setTimeout(function () {
-                                            window.location.reload()
-                                        }, 3000)*/
+                                      
 
 
                                     }
@@ -1440,19 +1512,7 @@ export default function InformeViews() {
                                     })
                                     console.log(error)
                                 })
-                                /* fetch("https://api.contifico.com/sistema/api/v1/documento/", requestOptions)
-                                              .then(response => response.text())
-                                              .then(result => console.log(result))
-                                              .catch(error => {console.log('error', error)
-                                                  
-                                          });*/
-                                /* CreaLaFacturapor(fac).then(salida => {
-                                     dismiss()
-                                     console.log(salida)
-                                 }).catch(error => {
-                                     dismiss()
-                                     console.log(error)
-                                 })*/
+                                
 
                                 console.log(num)
                                 // console.log(datos)  (async () => {
@@ -1578,10 +1638,11 @@ export default function InformeViews() {
                     </div>
                     <div className="bg-ligth container-fluid   h-auto py-3">
                         {usuario.nombre == "" ? "" : <div className="container-fluid  bg-danger text-center py-2 rounded-2">
-                            {
+                         <span className=" text-white">   {
                                 "El cliente cuenta con " + usuario.facturacion.facturas_nopagadas + " Facturas vencidas (Total:" + usuario.facturacion.total_facturas + ")"
 
                             }
+                            </span>
                         </div>}
                         <div className="row container-fluid d-flex justify-content-center ">
                             <div className=" container text-center
