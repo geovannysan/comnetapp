@@ -289,7 +289,7 @@ export default function InformeViews() {
         })
         settotal("")
         autenticar(cedula.trim()).then(ouput => {
-            console.log(ouput.datos[0])
+            console.log(ouput)
             setimpri(false)
             if (ouput.estado === "exito") {
                 seTlist([])
@@ -1276,7 +1276,7 @@ export default function InformeViews() {
                     })
                     $.ajax({
                         type: "post",
-                        url: "https://portalfac.netbot.ec/incrementov.php",
+                        url: "https://flash.t-ickets.com/mikroti/FactuApi/incrementodos",
                         success: function (num) {
                             if (num.status) {
                                 console.log(num)
