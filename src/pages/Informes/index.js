@@ -425,7 +425,9 @@ export default function InformeViews() {
                                 message: 'Busacando Producto en Contifico ',
                                 cssClass: 'custom-loading'
                             })
-                            BuscarProductoContific(ouput.datos[1].servicios[0].idperfil).then(salida => {
+                            let info = ouput.datos.find(dato=>dato.estado="ACTIVO")
+                            console.log(info)
+                            BuscarProductoContific(info.servicios[0].idperfil).then(salida => {
                                 if (salida.length > 0) {
                                     let estado = salida[0].estado;
                                     let valor = parseFloat(salida[0].pvp1) * 1.12;
@@ -440,7 +442,7 @@ export default function InformeViews() {
                                             message: 'Busacando Facturas por pagar',
                                             cssClass: 'custom-loading'
                                         })
-                                        MostrarFacturas(ouput.datos[1].id).then(ouput => {
+                                        MostrarFacturas(info.id).then(ouput => {
                                             if (ouput.estado === "exito") {
                                                 dismiss()
                                                 console.log(ouput)
@@ -1379,7 +1381,7 @@ export default function InformeViews() {
                     })
                     $.ajax({
                         type: "post",
-                        url: "https://portalfac.netbot.ec/incrementov.php",
+                        url: "https://flash.t-ickets.com/mikroti/FactuApi/incrementodos",
                         success: function (num) {
                             if (num.status) {
                                 console.log(num)
