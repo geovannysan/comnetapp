@@ -35,6 +35,17 @@ export const BuscaclienteContifico = async (parms) => {
     }}
 }
 /**
+ * 
+ */
+export const Consultarcedula= async(parms)=>{
+    try {
+        let { data } = await axios.get("https://rec.netbot.ec/ms_login/cedula/"+parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+/**
  * crea cliente en contifico
  * @param {*} parms 
  * @returns 

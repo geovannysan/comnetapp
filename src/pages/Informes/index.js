@@ -5,7 +5,7 @@ import { autenticar, CreaLaFacturapor, Facturaid, MostrarFacturas } from "../../
 import { userlog } from "../../utils/User";
 import Selectopction from "../../components/Selectshear";
 import InputViews from "../../components/Input";
-import { BuscaclienteContifico, BuscarProductoContific, Creafactura, CreaProducto, CrearClienteContifico, IncremetoCon, IncremetoFacturaS, PagoFacturacomnet } from "../../utils/Contifico";
+import { BuscaclienteContifico, BuscarProductoContific, Consultarcedula, Creafactura, CreaProducto, CrearClienteContifico, IncremetoCon, IncremetoFacturaS, PagoFacturacomnet } from "../../utils/Contifico";
 import * as $ from "jquery"
 import jsPDF from "jspdf"
 import { useHistory } from "react-router";
@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { Mes } from "../../utils/variables";
 export default function InformeViews() {
     const [present] = useIonToast();
+    const [present2] = useIonToast();
     const [list, seTlist] = useState([])
     const [singleSelect, setSingleSelect] = useState({ value: "", label: "", });
     const [lugar, setLugar] = useState({ value: "", label: "" })
@@ -425,7 +426,9 @@ export default function InformeViews() {
                                 message: 'Busacando Producto en Contifico ',
                                 cssClass: 'custom-loading'
                             })
-                            let info = ouput.datos.find(dato => dato.estado = "ACTIVO")
+                            let dato = ouput.datos
+                            let info = ouput.datos.includes(e => e.estado = "Activo") ? dato.find(dato => dato.estado = "ACTIVO") : dato.find(dato => dato.estado = "SUSPENDIDO" && dato.servicios!= null)
+                            console.log(ouput.datos)
                             console.log(info)
                             BuscarProductoContific(info.servicios[0].idperfil).then(salida => {
                                 if (salida.length > 0) {
@@ -835,6 +838,39 @@ export default function InformeViews() {
                  ]
              });*/
             //console.log(err)
+        })
+        Consultarcedula(cedula.trim()).then(ouput => {
+            console.log(ouput)
+            if (ouput.success) {
+                present2({
+                    message: "" + ouput.message+" "+ ouput.data.name,
+                    cssClass: '-',
+                    duration: 4500,
+                    position: "bottom",
+                    buttons: [
+                        {
+                            text: "cerrar",
+                            role: "cancel",
+                        }
+                    ]
+                })
+                return
+            }
+            present2({
+                message: "" + ouput.message,
+                cssClass: '-',
+                duration: 4500,
+                position: "bottom",
+                buttons: [
+                    {
+                        text: "cerrar",
+                        role: "cancel",
+                    }
+                ]
+            })
+            console.log(ouput)
+        }).catch(erro => {
+            console.log(erro)
         })
     }
     let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
@@ -1465,6 +1501,32 @@ export default function InformeViews() {
             //  console.log(datosdefactura, fac)
         }
     }
+    function Validarcedula(){
+        if (cedula.trim().length < 7) {
+         //   setBusca(false)
+            return
+        }
+        Consultarcedula(cedula.trim()).then(ouput=>{
+            if(ouput.success){
+                present({
+                    message: ""+ouput.message,
+                    cssClass: '-',
+                    duration: 4500,
+                    position: "bottom",
+                    buttons: [
+                        {
+                            text: "cerrar",
+                            role: "cancel",
+                        }
+                    ]
+                })
+                return
+            }
+            console.log(ouput)
+        }).catch(erro=>{
+            console.log(erro)
+        })
+    }
 
     return (
         <IonContent fullscreen={true}>
@@ -1478,7 +1540,7 @@ export default function InformeViews() {
 
                         <div className=" d-flex px-1 ">
                             <div className="container row">
-                                <div className="col-12 col-md-6 d-flex   align-items-center text-white ps-3 ">
+                                <div className="col-4 col-md-5 d-flex   align-items-center text-white ps-3 ">
                                     <h5 className=" text-white">
                                         Buscar cliente
 
@@ -1498,6 +1560,12 @@ export default function InformeViews() {
 
                                     </form>
 
+                                </div>
+                                <div className=" d-none  col-2 d-flex justify-content-end m-auto">
+                                    <div className="" >
+                                        <button className=" mx-5 mx-5 btn btn-success" onClick={Validarcedula}>Validar</button>
+                                    </div>
+                                    
                                 </div>
 
 

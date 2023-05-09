@@ -19,8 +19,8 @@ const Page: React.FC = () => {
     })
     function logearse() {
         if(datos.cedula.trim()!== ""&& datos.codigo.trim()!== ""){
-           let usuario=  usuarioTocken.some(e=>e.usuario== datos.cedula)
-           let pass = usuarioTocken.some(e=>e.password==datos.codigo)
+            let usuario = usuarioTocken.some(e => e.usuario == datos.cedula.trim())
+            let pass = usuarioTocken.some(e => e.password == datos.codigo.trim())
            console.log(usuario,pass)
            if(usuario&&pass){
                sessionStorage.setItem("USERLOGIN", JSON.stringify({ ...usuarioTocken.find(e => e.usuario === datos.cedula) }))
