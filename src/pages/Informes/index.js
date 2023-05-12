@@ -303,7 +303,7 @@ export default function InformeViews() {
                 BuscaclienteContifico(cedula.trim()).then(ouputs => {
                     console.log(ouputs)
                     if (ouputs.length == 0) {
-                        let datos = {
+                        let datos = ouput.datos[0].cedula.length==10? {
                             "tipo": "N",
                             "personaasociada_id": null,
                             "nombre_comercial": ouput.datos[0].nombre,
@@ -315,6 +315,22 @@ export default function InformeViews() {
                             "origen": "Panel de Facturacion",
                             "email": ouput.datos[0].correo,
                             "cedula": ouput.datos[0].cedula,
+                            "Provincia": "Guayaquil",
+                            "adicional1_cliente": "Cliente de Internet"
+
+                        } : {
+                            "tipo": "N",
+                            "personaasociada_id": null,
+                            "nombre_comercial": ouput.datos[0].nombre,
+                            "telefonos": ouput.datos[0].movil,
+                            "razon_social": ouput.datos[0].nombre,
+                            "direccion": ouput.datos[0].direccion_principal,
+                            "porcentaje_descuento": "0",
+                            "es_cliente": true,
+                            "origen": "Panel de Facturacion",
+                                "cedula": ouput.datos[0].cedula,
+                            "email": ouput.datos[0].correo,
+                            "ruc": ouput.datos[0].cedula,
                             "Provincia": "Guayaquil",
                             "adicional1_cliente": "Cliente de Internet"
 
@@ -341,6 +357,108 @@ export default function InformeViews() {
                                         }
                                     ]
                                 })
+                               
+                                if (ouput.datos[0].cedula.length > 10){
+                                    presentlo({
+                                        message: 'Creando Cliente Juridico en Contifico ',
+                                        cssClass: 'custom-loading'
+                                    })
+                                    CrearClienteContifico({
+                                        "tipo": "J",
+                                        "personaasociada_id": null,
+                                        "nombre_comercial": ouput.datos[0].nombre,
+                                        "telefonos": ouput.datos[0].movil,
+                                        "razon_social": ouput.datos[0].nombre,
+                                        "direccion": ouput.datos[0].direccion_principal,
+                                        "porcentaje_descuento": "0",
+                                        "es_cliente": true,
+                                        "origen": "Panel de Facturacion",
+                                        "cedula": "",
+                                        "email": ouput.datos[0].correo,
+                                        "ruc": ouput.datos[0].cedula,
+                                        "Provincia": "Guayaquil",
+                                        "adicional1_cliente": "Cliente de Internet"
+
+                                    }).then(creas => {
+                                        if (crea.response.status == 400) {
+                                            setimpri(true)
+                                            dismiss()
+                                            present({
+                                                message: "El cliente Juridico no se creo en contifico" + crea.response.data["mensaje"],
+                                                cssClass: '',
+                                                duration: 4500,
+                                                position: "middle",
+                                                buttons: [
+                                                    {
+                                                        text: "cerrar",
+                                                        role: "cancel",
+                                                    }
+                                                ]
+                                            })
+                                            return;
+                                        }
+                                        if (Object.keys(creas).length > 1) {
+                                            dismiss()
+                                            setContifico([creas])
+                                            presentlo({
+                                                message: 'Busacndo facturas inpagas ',
+                                                cssClass: 'custom-loading'
+                                            })
+                                            MostrarFacturas(ouput.datos[0].id).then(ouput => {
+                                                if (ouput.estado === "exito") {
+                                                    dismiss()
+
+                                                    console.log(ouput)
+                                                    let datos = ouput.facturas.map((el, index) => {
+                                                        return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
+                                                    })
+                                                    datos.unshift({ value: "", label: "Selecione Factura" })
+                                                    seTlist(datos)
+                                                    //setSingleSelect({ value: "", label: "Selecione Factura" })
+                                                    comprobante({ value: "", label: "Selecione Factura" })
+                                                } else {
+                                                    dismiss()
+                                                }
+                                            }).catch(err => {
+                                                console.log(err)
+                                                dismiss()
+                                                present({
+                                                    message: "Hubo un error inesperado",
+                                                    cssClass: '',
+                                                    duration: 4500,
+                                                    position: "middle",
+                                                    buttons: [
+                                                        {
+                                                            text: "cerrar",
+                                                            role: "cancel",
+
+                                                        }
+                                                    ]
+                                                })
+                                            })
+                                        } else {
+                                            dismiss()
+                                            present({
+                                                message: "Erro No se creo cliente contifico",
+                                                cssClass: '',
+                                                duration: 4500,
+                                                position: "middle",
+                                                buttons: [
+                                                    {
+                                                        text: "cerrar",
+                                                        role: "cancel",
+
+                                                    }
+                                                ]
+                                            })
+                                        }
+
+                                    }).catch(err => {
+                                        console.log(err)
+                                    })
+                                }
+                                 
+                            
                                 return
                             }
                             //mostrar mensaje de registro
@@ -1312,7 +1430,7 @@ export default function InformeViews() {
                     })
                     $.ajax({
                         type: "post",
-                        url: "https://flash.t-ickets.com/mikroti/FactuApi/incrementodos",
+                        url: "https://rec.netbot.ec/mikroti/FactuApi/incrementodos",
                         success: function (num) {
                             if (num.status) {
                                 console.log(num)

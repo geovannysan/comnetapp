@@ -13,7 +13,7 @@ export const usuarioTocken= [
     {
         "usuario": "COMNETCARRERA",
         "password": "0930570395",
-        "nombre": "MARÍA BELEN CARRERA",
+        "nombre": "MARÍA BELÉN CARRERA",
         "correo": "computencnisnet.com",
         "telefono": "",
     }
