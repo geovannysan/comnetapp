@@ -25,10 +25,10 @@ export const usuarioTocken= [
         "telefono": "",
     }
     ,{
-        "usuario": "abazan",
-        "password": "0926653197",
-        "nombre": "Alan Bazan",
-        "correo": "abazan@comnet.ec",
+        "usuario": "furresta",
+        "password": "0920111333",
+        "nombre": "Fernando Urresta",
+        "correo": "furresta@comnet.ec",
         "telefono": "",
     },{
         "usuario": "mazanza",
