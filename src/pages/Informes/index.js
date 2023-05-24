@@ -172,6 +172,9 @@ export default function InformeViews() {
                         "codigo": usuario.servicios[0]["idperfil"],
                         "estado": "A"
                     })
+                    if(cedula.trim().length<10){
+                        return
+                    }
                     if (totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
                         dismiss()
                         presentlo({
@@ -279,8 +282,215 @@ export default function InformeViews() {
     /** regsitra clinete obtine cliente porta y contifico obtiene productos contifico*/
     function buscar() {
         setBusca(true)
-        if (cedula.trim().length < 7) {
+        if (cedula.trim().length < 10) {
             setBusca(false)
+            presentlo({
+                message: 'Busacando Clinete portal ',
+                cssClass: 'custom-loading'
+            })
+            autenticar(cedula.trim()).then(ouput => {
+                console.log(ouput)
+                setimpri(false)
+                if (ouput.estado === "exito") {
+                    presentlo({
+                        message: 'Busacando Facturas comnet',
+                        cssClass: 'custom-loading'
+                    })
+                    seTlist([])
+                    setSingleSelect({ value: "", label: "" })
+                    let infor = ouput.datos.find(e => e.estado == "ACTIVO")
+                    console.log(infor.id)
+                    MostrarFacturas(infor.id).then(ouput => {
+                        console.log(ouput)
+                        if (ouput.estado === "exito") {
+                            dismiss()
+                            console.log(ouput)
+                            let datos = ouput.facturas.map((el, index) => {
+                                return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
+                            })
+                            datos.unshift({ value: "", label: "Selecione Factura" })
+                            seTlist(datos)
+                            comprobante({ value: "", label: "Selecione Factura" })
+                        } else {
+                            dismiss()
+                            present({
+                                message: "No hay facturas pendientes",
+                                cssClass: '',
+                                duration: 4500,
+                                position: "middle",
+                                buttons: [
+                                    {
+                                        text: "cerrar",
+                                        role: "cancel",
+
+                                    }
+                                ]
+                            })
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                        dismiss()
+                        present({
+                            message: "Hubo un error inesperado",
+                            cssClass: '',
+                            duration: 4500,
+                            position: "middle",
+                            buttons: [
+                                {
+                                    text: "cerrar",
+                                    role: "cancel",
+
+                                }
+                            ]
+                        })
+                    })
+                   
+                    if (ouput.datos.length == 2) {
+                        if (ouput.datos[1].estado === "ACTIVO") {
+                            let datos = {
+                                nombre: ouput.datos[1].nombre,
+                                estado: ouput.datos[1].estado,
+                                cedula: ouput.datos[1].cedula,
+                                movil: ouput.datos[1].movil,
+                                direccion_principal: ouput.datos[1].direccion_principal,
+                                correo: ouput.datos[1].correo,
+                                facturacion: {
+                                    ...ouput.datos[1].facturacion
+                                },
+                                servicios: ouput.datos[1].servicios
+                            }
+                            setUser({ ...datos })
+                        }
+
+                        if (ouput.datos[1].estado === "SUSPENDIDO") {
+                            let datos = {
+                                nombre: ouput.datos[1].nombre,
+                                estado: ouput.datos[1].estado,
+                                cedula: ouput.datos[1].cedula,
+                                movil: ouput.datos[1].movil,
+                                direccion_principal: ouput.datos[1].direccion_principal,
+                                correo: ouput.datos[1].correo,
+                                facturacion: {
+                                    ...ouput.datos[1].facturacion
+                                },
+                                servicios: ouput.datos[1].servicios
+                            }
+                            setUser({ ...datos })
+                        }
+                        if (ouput.datos.estado[1] === "RETIRADO") {
+                            let datos = {
+                                nombre: ouput.datos[1].nombre,
+                                estado: ouput.datos[1].estado,
+                                cedula: ouput.datos[1].cedula,
+                                movil: ouput.datos[1].movil,
+                                direccion_principal: ouput.datos[1].direccion_principal,
+                                correo: ouput.datos[1].correo,
+                                facturacion: {
+                                    ...ouput.datos[1].facturacion
+                                }
+                                , servicios: ouput.datos[1].servicios
+                            }
+
+                            setUser({ ...datos })
+                        }
+                        return
+                    }
+                    if (ouput.datos[0].estado === "ACTIVO") {
+                        let datos = {
+                            nombre: ouput.datos[0].nombre,
+                            estado: ouput.datos[0].estado,
+                            cedula: ouput.datos[0].cedula,
+                            movil: ouput.datos[0].movil,
+                            direccion_principal: ouput.datos[0].direccion_principal,
+                            correo: ouput.datos[0].correo,
+                            facturacion: {
+                                ...ouput.datos[0].facturacion
+                            },
+                            servicios: ouput.datos[0].servicios
+                        }
+                        setUser({ ...datos })
+                    }
+
+                    if (ouput.datos[0].estado === "SUSPENDIDO") {
+                        let datos = {
+                            nombre: ouput.datos[0].nombre,
+                            estado: ouput.datos[0].estado,
+                            cedula: ouput.datos[0].cedula,
+                            movil: ouput.datos[0].movil,
+                            direccion_principal: ouput.datos[0].direccion_principal,
+                            correo: ouput.datos[0].correo,
+                            facturacion: {
+                                ...ouput.datos[0].facturacion
+                            },
+                            servicios: ouput.datos[0].servicios
+                        }
+                        setUser({ ...datos })
+                    }
+                    if (ouput.datos.estado[0] === "RETIRADO") {
+                        let datos = {
+                            nombre: ouput.datos[0].nombre,
+                            estado: ouput.datos[0].estado,
+                            cedula: ouput.datos[0].cedula,
+                            movil: ouput.datos[0].movil,
+                            direccion_principal: ouput.datos[0].direccion_principal,
+                            correo: ouput.datos[0].correo,
+                            facturacion: {
+                                ...ouput.datos[0].facturacion
+                            }
+                            , servicios: ouput.datos[0].servicios
+                        }
+
+                        setUser({ ...datos })
+                    }
+                }
+                if (ouput.estado === "error") {
+                    dismiss()
+                    present({
+                        message: ouput.mensaje,
+                        cssClass: '-danger',
+                        duration: 4500,
+                        position: "middle",
+                        buttons: [
+                            {
+                                text: "cerrar",
+                                role: "cancel",
+
+                            }
+                        ]
+                    });
+
+                    console.log("err")
+                    setUser({
+                        nombre: "",
+                        estado: "",
+                        cedula: "",
+                        movil: "",
+                        direccion_principal: "",
+                        correo: "",
+                        facturacion: {
+                            facturas_nopagadas: 0,
+                            total_facturas: "0000"
+                        }
+                        , servicios: []
+                    })
+                }
+            }).catch(err => {
+                /* dismiss()
+                 present({
+                     message: err,
+                     cssClass: '-danger',
+                      duration: 4500,
+                     position: "middle",
+                     buttons: [
+                         {
+                             text: "cerrar",
+                             role: "cancel",
+     
+                         }
+                     ]
+                 });*/
+                //console.log(err)
+            })
             return
         }
         setBusca(false)
@@ -993,17 +1203,7 @@ export default function InformeViews() {
     }
     let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
-    function FormaPago() {
-        if (lugar.value.includes("Efectivo")) {
-            return ""
-        }
-        if (lugar.value.includes("TC-Oficina")) {
-            return ""
-        }
-        if (lugar.value.includes("Deposito")) {
-            return "TRA"
-        }
-    }
+    
     const [impri, setimpri] = useState(false)
     const [busca, setBusca] = useState(false)
     //const []
@@ -1057,6 +1257,23 @@ export default function InformeViews() {
 
                     if (fact.estado == "exito") {
                         dismiss()
+                        
+                        if(cedula.trim().length <10){
+                            setimpri(true)
+                            present({
+                                message: "pagado en el portal",
+                                cssClass: '-',
+                                duration: 4500,
+                                position: "middle",
+                                buttons: [
+                                    {
+                                        text: "cerrar",
+                                        role: "cancel",
+                                    }
+                                ]
+                            })
+                            return
+                        }
                         presentlo({
                             message: 'Agregando numero de Factura',
                             cssClass: 'custom-loading'
@@ -1256,6 +1473,22 @@ export default function InformeViews() {
             })
             PagoFacturacomnet(datosdefactura).then(fact => {
                 if (fact.estado == "exito") {
+                    if (cedula.trim().length < 10) {
+                        setimpri(true)
+                        present({
+                            message: "pagado en el portal",
+                            cssClass: '-',
+                            duration: 4500,
+                            position: "middle",
+                            buttons: [
+                                {
+                                    text: "cerrar",
+                                    role: "cancel",
+                                }
+                            ]
+                        })
+                        return
+                    }
                     presentlo({
                         message: 'Obteniendo número factura',
                         cssClass: 'custom-loading'
@@ -1424,7 +1657,24 @@ export default function InformeViews() {
                     /*  $.get("demo.asp", function (data, status) {
                           alert("Data: " + data + "\nStatus: " + status);
                       });*/
-                    presentlo({
+                    if (cedula.trim().length < 10) {
+                        setimpri(true)
+                        present({
+                            message: "pagado en el portal",
+                            cssClass: '-',
+                            duration: 4500,
+                            position: "middle",
+                            buttons: [
+                                {
+                                    text: "cerrar",
+                                    role: "cancel",
+                                }
+                            ]
+                        })
+                        return
+                    }
+                    if(!cedula.trim().length<10){
+                        presentlo({
                         message: 'Obteniendo numero de factura ',
                         cssClass: 'custom-loading'
                     })
@@ -1592,7 +1842,10 @@ export default function InformeViews() {
                             console.log(error)
 
                         }
-                    })
+                    })}
+                    else{
+                        setimpri(true)
+                    }
                     /* IncremetoFacturaS().then(num => {
                      }).catch(err => {
                          console.log(err)
@@ -1857,12 +2110,18 @@ export default function InformeViews() {
                                                             value={total}
                                                             onChange={handelChangeT}
                                                         />
+                                                        {cedula.length>=10? 
                                                         <button className=" btn-primary m-1 mt-5 p-2  btn"
                                                             disabled={impri}
                                                             onClick={(e) => RegistrarPago(e)}
                                                         >
                                                             Registrar Pago
-                                                        </button>
+                                                        </button>:
+                                                            <button className=" btn btn-primary m-1 mt-5 p-2 " 
+                                                                disabled={impri}
+                                                                onClick={(e) => RegistrarPago(e)}
+                                                            >Registro Comnet</button>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
