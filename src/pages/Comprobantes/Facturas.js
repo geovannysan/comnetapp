@@ -117,21 +117,11 @@ export default function FacturaViews() {
                                         <td className="text-center">$ {item.precio}</td>
                                         <td className="text-center"> {item.unidades} </td>
                                         <td className="text-center">{item.imp}</td>
-                                        <td className="text-right">${item.total}</td>
+                                            <td className="text-right">${item.total.toFixed(2)}</td>
                                     </tr>
                                     )
                                    }):''}
-                                    {Factura.items.length > 0 ? Factura.items.map((item, i) => {
-                                        return (
-                                            <tr key={i}>
-                                                <td>{item.descrp}</td>
-                                                <td className="text-center">$ {item.precio}</td>
-                                                <td className="text-center"> {item.unidades} </td>
-                                                <td className="text-center">{item.imp}</td>
-                                                <td className="text-right">${item.total}</td>
-                                            </tr>
-                                        )
-                                    }) : ''}
+                                  
                                 </tbody>
                             </table>
                         </div>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { token } from './variables';
-let Host = "https://private-anon-255f043898-mikrowisp.apiary-mock.com/api/v1/"
+let Host = "http://45.224.96.50/api/v1/"
 export const autenticar = async (parms) => {
     try {
         let { data } = await axios.post(Host + "GetClientsDetails",
@@ -49,7 +49,7 @@ export const ListarFactura = async (parms) => {
         })
         if (data.estado === "exito") {
 
-            let id = await data.facturas[0].id
+            let id =  data.facturas[0].id 
             // console.log(id,parms)
             let datos = await axios.post(Host + "GetInvoice",
                 {

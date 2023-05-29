@@ -55,13 +55,14 @@ const Page: React.FC = () => {
   },[location.pathname])
   return (
     <>
-    <IonMenu type="overlay" contentId="main-content" className=''>
+   {/*   <IonMenu type="overlay" contentId="main-content" className='col-12 col-lg-2 '>
         <Menu/>
-      </IonMenu>
+      </IonMenu>*/}
       <IonContent fullscreen id="main-content">
 
         <IonHeader className="ion-no-border  " >
           <IonToolbar className='ion-toolbar-transparent' >
+            
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>

@@ -54,6 +54,8 @@ const App: React.FC = () => {
           >  
            
             <IonRouterOutlet id="main">
+            
+           
               <Switch>
                 <Route path="/page"
                 >

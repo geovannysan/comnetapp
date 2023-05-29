@@ -18,7 +18,9 @@ const Page: React.FC = () => {
     function logearse() {
         if(datos.cedula.trim()!== ""&& datos.codigo.trim()!== ""){
             autenticar(datos.cedula).then(e => {
+                console.log(e)
                 if (e.estado === "exito") {
+
                     if (datos.codigo === e.datos[0].codigo) {
                         present({
                             message: 'Bienvenido',
