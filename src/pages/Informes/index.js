@@ -1680,7 +1680,7 @@ export default function InformeViews() {
                     })
                     $.ajax({
                         type: "post",
-                        url: "https://rec.netbot.ec/mikroti/FactuApi/incrementodos",
+                        url: "https://portalapicon.somee.com/FactuApi/incrementodos",
                         success: function (num) {
                             if (num.status) {
                                 console.log(num)
@@ -1918,8 +1918,8 @@ export default function InformeViews() {
                                     </h5>
 
                                 </div>
-                                <div className=" col-12 col-md-6 ">
-                                    <form className="form" action="">
+                                <div className=" col-12 col-md-6  px-0  ">
+                                    <form className="form d-none" action="">
                                         <input className="input"
 
                                             placeholder="Cédula cliente"
@@ -1931,13 +1931,30 @@ export default function InformeViews() {
 
                                     </form>
 
-                                </div>
-                                <div className=" d-none  col-2 d-flex justify-content-end m-auto">
-                                    <div className="" >
-                                        <button className=" mx-5 mx-5 btn btn-success" onClick={Validarcedula}>Validar</button>
-                                    </div>
                                     
+
+                                        <div className="row px-0  height d-flex justify-content-center align-items-center">
+
+                                            <div className="col-12 col-md-12">
+
+                                                <div className="search">
+                                                    <i className="bi bi-search"></i>
+                                                <input 
+                                                type={"search"}
+                                                    value={cedula}
+                                                    onChange={(e) => setCedul(e.target.value)} className="form-control" placeholder="Cédula cliente"/>
+                                                    <button className=" btn-primary "
+                                                    onClick={buscar}
+                                                        >Buscar</button>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                
+
                                 </div>
+                              
 
 
 

@@ -36,6 +36,13 @@ export const usuarioTocken= [
         "nombre": "Maria Azanza",
         "correo": "mazanza@comnet.ec",
         "telefono": "",
+    },
+    {
+        "usuario": "mmero",
+        "password": "0930429949",
+        "nombre": "Melany Mero",
+        "correo": "mazanza@comnet.ec",
+        "telefono": "",
     }
 ]
 
