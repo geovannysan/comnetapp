@@ -14,7 +14,7 @@ const Inicipage: React.FC = () => {
     //console.log(datos)
     //function kbToMb(KB: string) { return parseInt(KB) / 1024; }
     useEffect(()=>{
-        ListarFactura(datos.id).then(ouput => {
+       /* ListarFactura(datos.id).then(ouput => {
             let datos = ouput
             console.log(datos, ouput)
             if(ouput.length){
@@ -22,7 +22,7 @@ const Inicipage: React.FC = () => {
             }
             }).catch(err => {
             console.log(err)
-        })
+        })*/
     },[])
     
     

@@ -1597,7 +1597,7 @@ export default function InformeViews() {
                                 }, 3000)
                             }
                             console.log(salida)
-                        }).catch(error => {
+                        }).catch(erro => {
                             dismiss()
                             present({
                                 message: "Hubo un error no se registro la factura electrónica",
@@ -1611,7 +1611,7 @@ export default function InformeViews() {
                                     }
                                 ]
                             })
-                            console.log(error)
+                            console.log(erro)
 
                         })
                     }).catch(err => {
@@ -1678,9 +1678,169 @@ export default function InformeViews() {
                         message: 'Obteniendo numero de factura ',
                         cssClass: 'custom-loading'
                     })
-                    $.ajax({
+                        IncremetoFacturaS().then(num=>{
+                            if (num.status) {
+                                console.log(num)
+                                if (!num.status) {
+                                    dismiss()
+                                    present({
+                                        message: "No se Genero el número incremental de la factura",
+                                        cssClass: '-',
+                                        duration: 4500,
+                                        position: "middle",
+                                        buttons: [
+                                            {
+                                                text: "cerrar",
+                                                role: "cancel",
+                                            }
+                                        ]
+                                    })
+
+                                    return;
+                                }
+                                presentlo({
+                                    message: 'Creando Factura Electrónica ',
+                                    cssClass: 'custom-loading'
+                                })
+                                let facnum = num.result[0].contadores
+                                let fac = {
+                                    "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+                                    "fecha_emision": formattedToday,
+                                    "tipo_documento": "FAC",
+                                    "documento": "001-001-00000" + facnum,
+                                    "estado": "G",
+                                    "electronico": true,
+                                    "autorizacion": null,
+                                    "caja_id": null,
+                                    "cliente": {
+                                        "ruc": null,
+                                        "cedula": usuario.cedula.trim(),
+                                        "razon_social": usuario.nombre,
+                                        "telefonos": usuario.movil,
+                                        "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
+                                        "tipo": "N",
+                                        "email": usuario.correo,
+                                        "es_extranjero": false
+                                    },
+                                    "vendedor": {
+                                        "ruc": "0992782129001",
+                                        "razon_social": "COMPUTECNICSNET S.A",
+                                        "telefonos": "5104910",
+                                        "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+                                        "tipo": "J",
+                                        "email": "facturacion@speed.ec",
+                                        "es_extranjero": false
+                                    },
+                                    "descripcion": descri.items[0]["descrp"],
+                                    "subtotal_0": 0,
+                                    "subtotal_12": (totalcon.total) / 1.12,
+                                    "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
+                                    "total": totalcon.total.toFixed(2),
+                                    "detalles": [
+                                        {
+                                            "producto_id": totalcon.id,
+                                            "cantidad": 1,
+                                            "precio": (totalcon.total) / 1.12,
+                                            "porcentaje_iva": 12,
+                                            "porcentaje_descuento": 0,
+                                            "base_cero": 0,
+                                            "base_gravable": (totalcon.total) / 1.12,
+                                            "base_no_gravable": 0
+                                        }
+                                    ],
+                                    "cobros": [
+                                        {
+                                            "forma_cobro": lugar.value.split("-")[0],
+                                            "monto": totalcon.total.toFixed(2),
+                                            "fecha": formattedToday,
+                                        }
+                                    ]
+                                }
+                                console.log(facnum, fac)
+                                var myHeaders = new Headers();
+                                myHeaders.append("Authorization", "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w");
+                                myHeaders.append("Content-Type", "application/json");
+                                var requestOptions = {
+                                    method: 'GET',
+                                    headers: myHeaders,
+                                    body: JSON.stringify(fac),
+                                    redirect: 'follow'
+                                };
+
+                                CreaLaFacturapor(fac).then(salida => {
+                                    dismiss()
+                                    let fat = "001-001-00000" + facnum
+                                    console.log(salida)
+                                    if (salida.documento === fat) {
+                                        // creaComprobante()
+                                        setimpri(true)
+                                        document.getElementById("pagos").reset();
+                                        dismiss()
+                                        present({
+                                            message: "Factura número001-001-00000" + facnum + " creada con éxito",
+                                            cssClass: '-',
+                                            duration: 4500,
+                                            position: "middle",
+                                            buttons: [
+                                                {
+                                                    text: "cerrar",
+                                                    role: "cancel",
+                                                }
+                                            ]
+                                        })
+
+
+
+                                    }
+                                    console.log(salida)
+                                    // sessionStorage.setItem("facturas", JSON.stringify(salida))
+                                }).catch(error => {
+                                    //  dismiss()
+                                    present({
+                                        message: "Hubo un error no se genero la factura Electrónica",
+                                        cssClass: '-',
+                                        duration: 4500,
+                                        position: "middle",
+                                        buttons: [
+                                            {
+                                                text: "cerrar",
+                                                role: "cancel",
+                                            }
+                                        ]
+                                    })
+                                    console.log(error)
+                                })
+
+
+                                console.log(num)
+                                // console.log(datos)  (async () => {
+
+                                console.log(datos)
+                            }
+
+                            else {
+                                console.log(num)
+                            }
+
+                        }).catch(err=>{
+                            dismiss()
+                            present({
+                                message: "No se Genero el Numero de Factura",
+                                cssClass: '-',
+                                duration: 4500,
+                                position: "middle",
+                                buttons: [
+                                    {
+                                        text: "cerrar",
+                                        role: "cancel",
+                                    }
+                                ]
+                            })
+                            console.log(err)
+                        })
+                  /*  $.ajax({
                         type: "post",
-                        url: "https://portalapicon.somee.com/FactuApi/incrementodos",
+                        url: "https://portalfac.netbot.ec/incrementov.php",
                         success: function (num) {
                             if (num.status) {
                                 console.log(num)
@@ -1842,7 +2002,8 @@ export default function InformeViews() {
                             console.log(error)
 
                         }
-                    })}
+                    })*/
+                }
                     else{
                         setimpri(true)
                     }
