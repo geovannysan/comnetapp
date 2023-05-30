@@ -1,4 +1,5 @@
 import {
+  IonContent,
   IonHeader,
   IonIcon,
   IonItem,
@@ -8,6 +9,7 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote,
+  IonPage,
 } from '@ionic/react';
 import { useLocation } from 'react-router-dom';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
@@ -76,46 +78,44 @@ const Menu: React.FC = () => {
 
 
   return (
+    <IonMenu contentId='main' type='push' className='col-12 col-lg-2 px-0'>
+     
+        <IonHeader className=''>
+          <div className=' px-0'>
+            <img src='https://portal.comnet.ec/admin/images/login-bg/login-bg-9.jpg'
+              
+            >
+            </img>
+            <div className='' style={{
+              marginTop:"-100px"
+            }} >
 
-    <div>
-      <IonHeader className=''>
-        <div className='header'>
-          <img className='img-fluid-sm' src='https://portal.comnet.ec/admin/images/login-bg/login-bg-9.jpg'
 
-          >
-          </img>
-          <div className=' info-user'>
-
-
-            <IonNote className=' text-lowercase'></IonNote>
-            <IonListHeader className='text-white text-info '>{nombres.user.nombre}</IonListHeader>
-
+              <IonNote className=' text-lowercase'></IonNote>
+              <IonListHeader className='text-white text-info '>{nombres.user.nombre}</IonListHeader>
+            </div>
+          </div>     
+ <div>
           </div>
 
+        </IonHeader>
+        <div className='h-100 px-0 pt-3'>
+          
+        {appPages.map((appPage, index) => {
+          return (
+            <IonMenuToggle key={index} autoHide={false}>
+              <IonItem className={location.pathname === appPage.url ? 'selected' : '' + " nav-item"} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
+                <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                <IonLabel>{appPage.title}</IonLabel>
+              </IonItem>
+            </IonMenuToggle>
+          );
+        })}
+       
         </div>
-
-
-        <div className='container pt-5'>
-          {appPages.map((appPage, index) => {
-            return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : '' + " nav-item"} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
-                </IonItem>
-              </IonMenuToggle>
-            );
-          })}
-        </div>
-        <div>
-
-        </div>
-      
      
-              
-               </IonHeader>
-    </div>
-
+     
+    </IonMenu>
 
   );
 };

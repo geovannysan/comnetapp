@@ -30,6 +30,7 @@ import "./theme/rizes.css";
 import { useEffect } from 'react';
 import { userlog } from './utils/User';
 import { setDatosuser, setlogin, setPlan } from './StoreRedux/Slice/UserSlice';
+import { ListarFactura } from './utils/Queryuser';
 
 setupIonicReact();
 
@@ -42,6 +43,7 @@ const App: React.FC = () => {
     if (datos !=null) {
       userdispach(setlogin({ estado: true }))
       userdispach(setDatosuser({ ...datos }))
+      
     }
   }, [])
 
@@ -52,7 +54,7 @@ const App: React.FC = () => {
           <IonSplitPane contentId="main"
             className=''
           >  
-           
+           <Menu/>
             <IonRouterOutlet id="main">
             
            

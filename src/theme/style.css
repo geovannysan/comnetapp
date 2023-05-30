@@ -71,15 +71,17 @@ ion-item.selected> ion-icon {
    
     
 }
-.header{
+.header {
     text-align: center !important;
 }
-.text-info{
+
+.text-info {
     text-transform: capitalize !important;
     padding: 5px;
     font-weight: bold;
     font-size: 13px !important;
 }
+
 .header .img-fluid-sm:hover {
     filter: blur(0.05rem) !important;
 }
@@ -89,7 +91,8 @@ ion-item.selected> ion-icon {
     color: #67a958 !important;
     border: none !important;
 }
-.card-header{
+
+.card-header {
     border: none !important;
 }
 

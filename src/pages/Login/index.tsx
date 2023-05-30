@@ -3,9 +3,9 @@ import {  useHistory } from 'react-router';
 import logo from "../../imagen/logo.png"
 
 import { useDispatch } from 'react-redux';
-import { setDatosuser, setlogin } from '../../StoreRedux/Slice/UserSlice';
+import { setDatosuser, setPlan, setlogin } from '../../StoreRedux/Slice/UserSlice';
 import { useState } from 'react';
-import { autenticar } from '../../utils/Queryuser';
+import { ListarFactura, autenticar } from '../../utils/Queryuser';
 
 const Page: React.FC = () => {
     let usedispat = useDispatch()
@@ -29,6 +29,17 @@ const Page: React.FC = () => {
                             position: "bottom"
                         });
                         sessionStorage.setItem("USERLOGIN", JSON.stringify({...e.datos[0]}))
+                        console.log(e.datos[0].id)
+                        ListarFactura(e.datos[0].id).then(ouput => {
+                            let datos = ouput
+                            console.log(datos)
+                            if (ouput.length > 1) {
+                                sessionStorage.setItem("INFOUSER", JSON.stringify(datos.length > 1 ? [datos[0], datos[3], datos[4], datos[5]] : datos))
+                                usedispat(setPlan(datos.length > 1 ? [datos[0], datos[3], datos[4], datos[5]] : datos))
+                            }
+                        }).catch(err => {
+
+                        })
                         usedispat(setDatosuser(e.datos[0]))
                         usedispat(setlogin({ estado: true }))
                         history.push("/page/inicio")
