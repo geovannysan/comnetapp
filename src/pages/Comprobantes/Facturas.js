@@ -117,7 +117,7 @@ export default function FacturaViews() {
                                         <td className="text-center">$ {item.precio}</td>
                                         <td className="text-center"> {item.unidades} </td>
                                         <td className="text-center">{item.imp}</td>
-                                            <td className="text-right">${item.total.toFixed(2)}</td>
+                                            <td className="text-right">${item.total}</td>
                                     </tr>
                                     )
                                    }):''}

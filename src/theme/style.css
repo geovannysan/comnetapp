@@ -189,6 +189,16 @@ ion-toast.custom-toast::part(button) {
 }
 .bi{
     cursor: pointer;
+    /*font-size: 1px !important;*/
+}
+ul.list {
+    list-style-image: url("./mas.svg");
+    list-style-position: inside;
+}
+.content {
+    
+    font-size: small;
+    padding: 20px 25px;
 }
 .items-precios{
     display: flex !important;

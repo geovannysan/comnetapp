@@ -29,7 +29,7 @@ export default function TablasViwe({...props}){
                         "pageLength": 15,
                         "bDestroy": true,
                         "language": {
-                            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando page _PAGE_ de _PAGES_",
+                            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando de_START_ a _END_ de _TOTAL_ Pagina _PAGE_ de _PAGES_",
                             "sSearch": "",
                             "searchPlaceholder": "Buscar...",
                             'paginate': {

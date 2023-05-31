@@ -31,7 +31,7 @@ function ComprovanteViews() {
                         $('#example').DataTable({
                             "bDestroy": true,
                             "language": {
-                                "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando page _PAGE_ de _PAGES_",
+                                "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando de_START_ a _END_ de _TOTAL_ Pagina _PAGE_ de _PAGES_",
                                 'paginate': {
                                     'previous': '<span class="prev-icon"><i class="bi bi-arrow-left-square"> </i> </span>',
                                     'next': '<span class="next-icon"> <i class="bi bi-arrow-right-square"> </i></span>'
@@ -50,7 +50,7 @@ function ComprovanteViews() {
                                 "pageLength": 15,
                                 "bDestroy": true,
                                 "language": {
-                                    "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando page _PAGE_ de _PAGES_",
+                                    "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando de_START_ a _END_ de _TOTAL_ Pagina _PAGE_ de _PAGES_",
                                     "sSearch": "",
                                     "searchPlaceholder": "Buscar...",
                                     'paginate': {
@@ -148,9 +148,12 @@ function ComprovanteViews() {
         <div className="container-fluid" >
             <h5></h5>
 
-            <div className={"panel panel-default  bg-white " + expand}>
-                <div className="w-100 py-3 bg-dark d-flex justify-content-between">
-                    <div className="text-white ps-2">
+            <div className={"panel panel-default card bg-white  " + expand}>
+                <div className="w-100 py-2 bg-dark d-flex justify-content-between">
+                    <div className="text-white ps-3  text-uppercase " style={{
+                        fontWeight:"bold",
+                        fontSize:"14px"
+                    }}>
                         <i className="bi bi-file-earmark-pdf"></i> Comprobantes
                     </div>
                     <div className="text-white px-3" >

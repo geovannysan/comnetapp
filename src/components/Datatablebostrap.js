@@ -36,9 +36,9 @@ class DataTableBos extends React.Component {
                                 "bDestroy": true,
                                 "language": {
                                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
-                                    "info": "Mostrando page _PAGE_ de _PAGES_",
+                                    "info": "Mostrando de_START_ a _END_ de _TOTAL_ Entradas",
                                     'paginate': {
-                                        'previous': '<span class="prev-icon"><i class="bi bi-arrow-left-square"> </i> </span>',
+                                        'previous': '<span class="prev-icon"><i class="bi bi-arrow-left-square "> </i> </span>',
                                         'next': '<span class="next-icon"> <i class="bi bi-arrow-right-square"> </i></span>'
                                     }
                                 },

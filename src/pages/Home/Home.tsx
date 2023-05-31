@@ -1,4 +1,4 @@
-import { IonItem, IonList } from '@ionic/react';
+import { IonPopover , IonContent, IonList, IonItem } from '@ionic/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import Collapse from "react-bootstrap/Collapse"
@@ -45,9 +45,7 @@ const Inicipage: React.FC = () => {
 
             <div className='container-fluid px-0  d-flex  justify-content-center'>
                 <div className='row col-12 col-md-10 col-lg-12 px-0  '>
-                    <OverlayTrigger trigger="click" placement='bottom'  overlay={popover}>
-                    
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="example-collapse-text">
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => setOpen(!open)}  id="trigger-button">
                         <div className="cardt cardt-dark ">
                             <div className='row'>
                                 <div className='col-8'>
@@ -70,12 +68,31 @@ const Inicipage: React.FC = () => {
                             </div>
                             <p className=' text-capitalize'>Servicio: {datos.servicios ? datos.servicios[0].perfil : "User Tickets"}</p>
                             <p className="card__apply">
-                                <a className="card__link" href="#">Info <i className="card_icon   bi bi-eye"></i></a>
+                                <a className="card__link">Info <i className="card_icon   bi bi-eye"></i></a>
                             </p>
                         </div>
                         
                     </div>
-                    </OverlayTrigger> 
+                    <IonPopover  trigger="trigger-button" alignment="center">
+                       
+                            <div className='  col-12  p-2' >
+                                <span className='p-2'> Servicios :</span>
+                                <IonList lines='none'>
+                                    {info.length>0? info.map((e: string, i: number) => {
+                                        return (
+                                            <IonItem className='text-info text-dark' key={i} >
+                                                <span
+                                                >
+                                                    {e}
+                                                </span>
+                                            </IonItem>
+                                        )
+                                    }):""}
+                                </IonList >
+                            </div>
+                        
+                    </IonPopover>
+                  
                     
 
                     <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => history.push("/page/Informe")}>

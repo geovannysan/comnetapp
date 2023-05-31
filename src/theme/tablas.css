@@ -3,7 +3,9 @@
     --celeste: #3691ef;
     --dark: #212529;
 }
-
+.dataTables_wrapper .dataTables_paginate  {
+   margin-top: 5% !important;
+}
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
     background: none;
@@ -13,11 +15,15 @@
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     border: none;
+    border-radius: 15% !important;
+    padding: 0.5em 0.9em !important;
+    
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:active {
     background: none;
     color: var(--celeste) !important;
+    
 }
 
 .buttons-excel {
@@ -99,8 +105,8 @@ table.dataTable .label {
 }
 
 .table thead tr th {
-    font-weight: 500;
-    border-bottom: 1px solid #adadad;
+    font-weight: 400 !important;
+    border-bottom: 1px solid #adadad !important;
 }
 
 table.dataTable.nowrap th,
@@ -118,10 +124,15 @@ table.dataTable thead>tr>td.sorting {
     text-transform: uppercase;
     font-size: 11px;
 }
-
-table.table-bordered.dataTable th,
+/* tbody de la tabla */
+table.table-bordered.dataTable tbody>th,
 table.table-bordered.dataTable td {
-    border-left-width: 0;
+    border-left-width: 0 !important;
+    margin-top: 0 !important;
+    font-size: 12px !important;
+    padding: 3px!important;
+    text-align: center;
+
 }
 
 .dataTables_wrapper.dt-bootstrap .dataTables_filter label .form-control,
@@ -136,11 +147,13 @@ table.table-bordered.dataTable td {
 .dataTables_wrapper.dt-bootstrap4 .dataTables_info {
     font-weight: 500;
     color: #6e6e6e;
+    
 }
 
 div.dataTables_wrapper div.dataTables_info {
     padding-top: 0.85em;
     white-space: nowrap;
+    margin-top: 1% !important;
 }
 
 .dt-button-ligth:hover {
@@ -195,7 +208,8 @@ tr.dt-hasChild.parent td.dtr-control {
 
 table {
     border-top: 1px solid black;
-    font-size: 13px;
+    font-size: 13px !important; 
+   
 }
 
 .dataTables_filter label {
@@ -209,7 +223,20 @@ table {
 }
 
 .dataTables_filter input {
-    margin-top: 2px;
+    margin-top: 2px !important;
+ /*   border: none !important;*/
+        font-size: 16px !important;
+        height: auto !important;
+        margin: 0 !important;
+        outline:  0 !important;
+        padding: 10px !important;
+        width: 100% !important;
+        color: #64696d !important;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset !important;
+        margin-bottom: 30px !important;
+}
+.dataTables_filter input:focus {
+    border: 1px solid #16adf3dc !important;
 }
 
 @media (max-width: 767px) {
@@ -234,10 +261,23 @@ li {
     list-style-type: none;
     padding: 1px;
 }
-
-/*a.paginate_button.current {
-    background-color: rgb(0, 47, 255) !important;
-}*/
+a.paginate_button{
+    
+        background-color: #ffffff !important;
+        border: 0.2px #b3adad solid !important;
+        size: 12px !important;
+        padding: 0% !important;
+        font-size: 15px !important;
+        font-weight: normal !important;
+}
+a.paginate_button.current {
+    background-color: #3691ef !important;
+    border: 0.2px #3691ef solid !important;
+    border: none !important;
+    size: 13px !important;
+  
+    
+}
 li.paginate_button :hover {
     background: "red" !important;
     background-color: #3691ef !important;
@@ -279,7 +319,7 @@ thead {
 
 .paging_full_numbers span.paginate_button {
     background: repeat-x scroll 50% 50% #0078AE;
-    border: 1px solid #77D5F7;
+    border: 1px solid #77D5F7 !important;
     color: #FFFFFF !important;
     font-weight: normal !important;
 }
@@ -296,4 +336,25 @@ thead {
     border: 1px solid #ACDD4A !important;
     color: #FFFFFF !important;
     font-weight: normal !important;
+}
+a.previous,
+a.next
+{
+    
+        border: 0.5px #a4adb4 solid !important;
+        padding: 0.5em 0.5em !important;
+        font-size: 15px  !important;
+}
+a.disabled  {
+
+    border: 0.5px #ddeaf5 solid !important;
+   
+    cursor:not-allowed !important;
+}
+
+a.disabled>span {
+
+  
+
+    cursor: not-allowed !important;
 }

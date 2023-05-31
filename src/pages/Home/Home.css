@@ -239,3 +239,18 @@
     grid-row: 4/5;
     align-self: center;
 }
+ion-popover {
+   
+    --backdrop-opacity: 0.6;
+    --box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6);
+    --color: white;
+    --width: 400px !important;
+}
+
+ion-popover ion-content {
+    --background: rgba(255, 255, 255, 0);
+}
+
+ion-popover::part(backdrop) {
+    background-color: rgba(228, 229, 231, 0);
+}
