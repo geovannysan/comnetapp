@@ -89,6 +89,18 @@ export const MostrarFacturas = async (parms) => {
         return error
     }
 }
+export const MostrarFacturasdeuda = async (parms)=>{
+    try {
+        let {data} = await axios.post(Host+"GetInvoices",{
+            "token":token,
+            "estado": 1,
+            "idcliente": parms
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
 export const Facturaid = async (parms) => {
     try {
         let { data } = await axios.post(Host+"GetInvoice",

@@ -76,8 +76,8 @@ export default function TablasViwe({...props}){
     return(
         <>
             <div className="">
-                <div className="bg-white border shadow">
-                    <div className="w-100 py-3 bg-dark">
+                <div className="bg-white border card shadow">
+                    <div className="w-100 py-3 card-head bg-dark">
                         <div className="text-white ps-2">
                            {props.Titel}
                         </div>

@@ -1,7 +1,7 @@
 import { IonButton, IonContent } from "@ionic/react";
 import { getPlatforms } from "@ionic/react";
 import { useEffect, useState } from "react";
-import { MostrarFacturas } from "../../utils/Queryuser";
+import { MostrarFacturas, MostrarFacturasdeuda } from "../../utils/Queryuser";
 import { userlog } from "../../utils/User";
 import Selectopction from "../../components/Selectshear";
 import InputViews from "../../components/Input";
@@ -46,7 +46,7 @@ export default function InformeViews() {
 
     }
     useEffect(() => {
-        MostrarFacturas(userlog().id).then(ouput => {
+        MostrarFacturasdeuda(userlog().id).then(ouput => {
             if (ouput.estado === "exito") {
                 console.log(ouput)
                 let datos = ouput.facturas.map((el: any, index: number) => {
@@ -63,7 +63,7 @@ export default function InformeViews() {
         <IonContent fullscreen={true}>
             <div className="container-fluid ">
 
-                <div className="card  h-100">
+                {list.length > 0 ? <div className="card  h-100">
                     <div className=" w-100 py-3 bg-dark">
                         <div className=" text-white ps-3">
                             <i className="bi bi-file-earmark-pdf"></i> Reporte
@@ -216,7 +216,18 @@ export default function InformeViews() {
                     </div>
 
 
-                </div>
+                </div> :
+                    <div id="content" className="content text-center"><div className="row"><div className="col-sm-12">
+                        <div className="alert alert-danger">
+
+                            <span className="glyphicon glyphicon-warning-sign"></span> <strong> ALERTA!!</strong>
+                            <hr className="message-inner-separator"/>
+                                <p>
+                                    Su último reporte de pago aun se encuentra en Proceso de verificación.
+                                    <br/>
+                                </p>
+                        </div>
+                    </div></div></div>}
             </div>
         </IonContent>
     )

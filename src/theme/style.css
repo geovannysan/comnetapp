@@ -220,3 +220,16 @@ ul.list {
      font-size: 11px !important;
      line-height: 1.75 !important;
  }
+.full-screen-modal {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.modal-content {
+    height: 100% !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+}

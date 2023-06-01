@@ -1,0 +1,119 @@
+.avatarcliente {
+    border-radius: 50%;
+}
+
+.btnfb {
+    margin-right: 5px;
+    font-size: 10px;
+    padding: 4px 7px;
+}
+.avatarcliente{
+    border-radius: 50% !important;;
+}
+
+.btntwitter {
+    margin-right: 5px;
+    font-size: 10px;
+    padding: 4px 7px;
+}
+
+.btngravatar {
+    margin-right: 5px;
+    font-size: 10px;
+    padding: 4px 7px;
+}
+
+.gritter-without-image a {
+    color: #c5d9ff;
+    text-decoration: none;
+}
+
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem;
+}
+
+.profile-tab li a.nav-link.active,
+.customtab li a.nav-link.active {
+    border-bottom: 2px solid #009efb;
+    color: #009efb;
+}
+label{
+    color: #495057 !important;
+}
+.profile-tab li a.nav-link.active,
+.customtab li a.nav-link.active {
+    border-bottom: 2px solid #009efb !important;
+    color: #009efb;
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #fff;
+    border-color: #ddd #ddd #fff;
+}
+
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
+
+.nav-link {
+    display: block;
+    padding: .5rem 1rem;
+}
+
+.profile-tab li a.nav-link,
+.customtab li a.nav-link {
+    border: 0px;
+    padding: 15px 20px;
+    color: #54667a;
+}
+
+.nav-tabs {
+    background: #FFF;
+}
+
+.form-material .form-control,
+.form-material .form-control.focus,
+.form-material .form-control:focus {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#009efb), to(#009efb)), -webkit-gradient(linear, left top, left bottom, from(#d9d9d9), to(#d9d9d9));
+    background-image: -webkit-linear-gradient(#009efb, #009efb), -webkit-linear-gradient(#d9d9d9, #d9d9d9);
+    background-image: -o-linear-gradient(#009efb, #009efb), -o-linear-gradient(#d9d9d9, #d9d9d9);
+    background-image: linear-gradient(#009efb, #009efb), linear-gradient(#d9d9d9, #d9d9d9);
+    border: 0 none;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    float: none;
+}
+
+.form-material .form-control {
+    background-color: transparent;
+    background-position: center bottom, center calc(100% - 1px);
+    background-repeat: no-repeat;
+    background-size: 0 2px, 100% 1px;
+    padding: 0;
+    -webkit-transition: background 0s ease-out 0s;
+    -o-transition: background 0s ease-out 0s;
+    transition: background 0s ease-out 0s;
+    font-size: 14px;
+    color: #1c84b9;
+}
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
+}

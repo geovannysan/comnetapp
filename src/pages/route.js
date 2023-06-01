@@ -5,6 +5,7 @@ import Soportviews from "./Soporte";
 import FacturaViews from "./Comprobantes/Facturas";
 import DocuumentosViews from "./Documentos";
 import SpeddView from "../components/Spedd";
+import { PerfilView } from "./Perfil";
 export  function Lugar(){
     return(
         <div className="container"> 
@@ -78,22 +79,19 @@ const route = [
         name: "Puntos",
         collapse: false,
         component: FacturaViews,
+    },{
+        path:"/Test",
+        layout:"/page",
+        name:"Test",
+        collapse: true,
+        component:SpeddView
     },
     {
-        path: "/Wifi",
-        layout: "/Utils",
+        path: "/perfil",
+        layout: "/page",
         name: "Utilidades",
         collapse: true,
-        views: [
-            {
-                path: "/Tes",
-                layout: "/Utils",
-                name: "Test",
-                mini: "*",
-                component: FacturaViews,
-                
-            },
-        ]
+        component: PerfilView,
         
     },
 

@@ -49,14 +49,14 @@ export default function DocuumentosViews(){
 
     })
     return(
-        <div className="container">
+        <div className="container-fluid">
             <h5 className="">Documentos</h5>
 
             <TablasViwe
             number={6}
                 thead={thead}
                 showDatos={showDatos}
-                Titel={"nuevo"}
+                Titel={""}
             />
 
         </div>

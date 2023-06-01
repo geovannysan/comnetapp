@@ -171,6 +171,9 @@
     color: #ffffff !important;
 
 }
+.cardt:hover .text-primary{
+    color: #ffffff !important;
+}
 
 .cardt:hover::before .card__link,
 .card__exit,
