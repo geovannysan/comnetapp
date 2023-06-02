@@ -47,6 +47,7 @@ export default function InformeViews() {
     }
     useEffect(() => {
         MostrarFacturasdeuda(userlog().id).then(ouput => {
+            console.log(ouput)
             if (ouput.estado === "exito") {
                 console.log(ouput)
                 let datos = ouput.facturas.map((el: any, index: number) => {

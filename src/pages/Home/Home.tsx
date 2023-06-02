@@ -26,7 +26,7 @@ const Inicipage: React.FC = () => {
     //console.log(datos)
     //function kbToMb(KB: string) { return parseInt(KB) / 1024; }
     useEffect(() => {
-        let datos: any = sessionStorage.getItem("INFOUSER")
+        let datos: any = localStorage.getItem("INFOUSER")
         usedispach(setPlan(JSON.parse(datos)))
         /* ListarFactura(datos.id).then(ouput => {
              let datos = ouput
@@ -45,7 +45,8 @@ const Inicipage: React.FC = () => {
 
             <div className='container-fluid px-0  d-flex  justify-content-center'>
                 <div className='row col-12 col-md-10 col-lg-12 px-0  '>
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => setOpen(!open)}  id="trigger-button">
+                    {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' >
                         <div className="cardt cardt-dark ">
                             <div className='row'>
                                 <div className='col-8'>
@@ -66,9 +67,9 @@ const Inicipage: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <p className=' text-capitalize'>Servicio: {datos.servicios ? datos.servicios[0].perfil : "User Tickets"}</p>
+                            <p className=' text-capitalize'><span className=' fw-bold'>Plan:</span>{datos.servicios ? datos.servicios[0].perfil : "User Tickets"} </p>
                             <p className="card__apply">
-                                <a className="card__link">Info <i className="card_icon   bi bi-eye"></i></a>
+                                <a className="card__link">Información <i className="card_icon   bi bi-eye"></i></a>
                             </p>
                         </div>
                         
@@ -95,7 +96,7 @@ const Inicipage: React.FC = () => {
                   
                     
 
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => history.push("/page/Informe")}>
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => history.push("/page/Informe")} >
                         <div className="cardt  cardt-success">
                             <div className='row'>
                                 <div className='col-8 '>
@@ -118,20 +119,21 @@ const Inicipage: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className=" px-0 d-flex justify-content-between mx-0">
-                                <p className=" text-default" style={{
+                            <div className=" px-0 row mx-0">
+                                <p className=" text-default col-8" style={{
                                     
                                 }} > Facturas</p>
-                                <p className="  text-default" style={{
+                                <p className="  text-default col-3 text-center" style={{
                                    
                                 }} > Inpagas: {datos.facturacion.facturas_nopagadas}</p>
+
                             </div>
                             <p className="card__apply">
-                                <a className="card__link" href="#">Pagar facturas <i className="card_icon   bi bi-cash"></i></a>
+                                <a className="card__link" onClick={() => history.push("/page/Informe")}>Pagar facturas <i className="card_icon   bi bi-cash"></i></a>
                             </p>
                         </div>
                     </div>
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => history.push("/page/Informe")}>
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => history.push("/page/Soporte")} >
                         <div className="cardt cardt-primary ">
                             <div className='row'>
                                 <div className='col-8'>
@@ -156,21 +158,21 @@ const Inicipage: React.FC = () => {
 
                             <p>Reportar inconveniente en el servicio.</p>
                             <p className="card__apply">
-                                <a className="card__link" href="#">Reportar <i className=" m-2 card_icon bi  bi-radioactive"></i></a>
+                                <a className="card__link" onClick={() => history.push("/page/Soporte")}>Reportar <i className=" m-2 card_icon bi  bi-radioactive"></i></a>
                             </p>
                         </div>
                     </div>
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => history.push("/page/Informe")}>
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => console.log("muy pronto")}>
                         <div className="cardt  cardt-red ">
                             <div className='row'>
-                                <div className='col-9'>
+                                <div className='col-8'>
                                     <h4 className=' ' style={{
                                         color: "#cb1656",
                                          fontWeight:"bold"
                                     }}> Opciones Wifi</h4>
                                 </div>
                                 <div className='col-3'>
-                                    <div className=' mb-1    wifi ms-3 card rounded-3 shadow' style={{
+                                    <div className=' mb-1  float-end  wifi ms-3 card rounded-3 shadow' style={{
                                         width: "48px",
                                         height: "48px",
                                         zIndex: 2

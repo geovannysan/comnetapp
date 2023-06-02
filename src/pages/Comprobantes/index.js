@@ -206,7 +206,7 @@ function ComprovanteViews() {
                 }}
             >
                 <div className="spinner-border" >
-                    <span class="sr-only"></span>
+                    <span className="sr-only"></span>
                 </div>
             </div>
 

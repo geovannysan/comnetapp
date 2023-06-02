@@ -26,15 +26,17 @@ const Page: React.FC = () => {
                             message: 'Bienvenido',
                             cssClass: 'custom-toast',
                             duration: 1500,
-                            position: "bottom"
+                            position: "top"
                         });
-                        sessionStorage.setItem("USERLOGIN", JSON.stringify({...e.datos[0]}))
+                        
+                        localStorage.setItem("USERLOGIN", JSON.stringify({...e.datos[0]}))
+                        console.log(e.datos)
                         console.log(e.datos[0].id)
                         ListarFactura(e.datos[0].id).then(ouput => {
                             let datos = ouput
                             console.log(datos)
                             if (ouput.length > 1) {
-                                sessionStorage.setItem("INFOUSER", JSON.stringify(datos.length > 1 ? [datos[0], datos[3], datos[4], datos[5]] : datos))
+                                localStorage.setItem("INFOUSER", JSON.stringify(datos.length > 1 ? [datos[0], datos[3], datos[4], datos[5]] : datos))
                                 usedispat(setPlan(datos.length > 1 ? [datos[0], datos[3], datos[4], datos[5]] : datos))
                                 usedispat(setDatosuser(e.datos[0]))
                                 usedispat(setlogin({ estado: true }))

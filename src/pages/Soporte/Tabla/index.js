@@ -238,7 +238,7 @@ export default function Datatablesoporte() {
     }
     const ShowModalBoos = () => {
         return (
-            <IonModal isOpen={true}
+            <IonModal isOpen={false}
                 backdropDismiss={false}>
                 <IonHeader className=" ion-toolbar-transparent border-0">
                     <IonToolbar >

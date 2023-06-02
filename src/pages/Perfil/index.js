@@ -36,7 +36,7 @@ export function PerfilView() {
                     <div className="card">
 
 
-                        <form id="frm-login" className="form-horizontal form-material" action="ajax/utilidades?action=update" method="post">
+                        <form id="frm-login" className="form-horizontal form-material" method="post">
 
                             <ul className="nav nav-tabs profile-tab" role="tablist">
                                 <li className="nav-item"> <a className="nav-link" data-toggle="tab" href="#datos" role="tab" aria-expanded="true">Mis datos</a> </li>
@@ -81,7 +81,7 @@ export function PerfilView() {
                                         </div>
                                         <div className="form-group">
                                             <div className="col-sm-12 p-2">
-                                                <button className="btn  btn-default" type="submit">Actualizar datos</button>
+                                                <button className="btn  btn-default" type="button">Actualizar datos</button>
                                             </div>
                                         </div>
 

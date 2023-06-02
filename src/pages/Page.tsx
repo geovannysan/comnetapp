@@ -1,12 +1,12 @@
 import {
   IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton,
   IonProgressBar,
-  IonTitle, IonToolbar, IonItem, IonPopover, IonList, IonLabel, IonCardSubtitle, IonMenu
+  IonTitle, IonToolbar, IonItem, IonPopover, IonList, IonLabel, IonCardSubtitle, IonMenu, IonFab, IonFabButton
 } from '@ionic/react';
 
 import { Route, Switch,useHistory,useLocation } from 'react-router';
 import {
-   close, wifiOutline, ellipsisVertical
+   close, wifiOutline, ellipsisVertical, arrowBackCircleOutline, arrowBack, arrowBackOutline, chevronBack, chevronBackCircleOutline
 } from 'ionicons/icons';
 import './Page.css';
 import routes from './route.js'
@@ -24,7 +24,7 @@ const Page: React.FC = () => {
   function salir() {
     usedispatch(setlogin({ estado: false }))
     usedispatch(setDatosuser({}))
-    sessionStorage.removeItem("USERLOGIN")
+    localStorage.removeItem("USERLOGIN")
     history.push("/page/inicio")
   
   } 
@@ -58,6 +58,11 @@ const Page: React.FC = () => {
    {/*   <IonMenu type="overlay" contentId="main-content" className='col-12 col-lg-2 '>
         <Menu/>
       </IonMenu>*/}
+      <IonFab  vertical="bottom" horizontal="end">
+        <IonFabButton size="small">
+          <IonIcon icon={chevronBackCircleOutline}></IonIcon>
+        </IonFabButton>
+      </IonFab>
       <IonContent fullscreen id="main-content">
 
         <IonHeader className="ion-no-border  " >
@@ -111,14 +116,16 @@ const Page: React.FC = () => {
 
         </IonPopover>
 
-        <div className='pt-2' >
+        <div className='pt-1' >
 
           <Switch>
             {getRoutes(routes)}
           </Switch>
 
         </div>
+       
       </IonContent>
+      
     </>
    
   );

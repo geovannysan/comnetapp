@@ -146,7 +146,7 @@ const Menu: React.FC = () => {
           }
           if (appPage.collapse) {
             return (
-              <div>
+              <div key={index}>
                 <IonItem button lines='none'
                   onClick={() => {
                     setIsVisible("utilidades");
@@ -161,10 +161,10 @@ const Menu: React.FC = () => {
 
                 </IonItem>
                 <IonMenuToggle className={!(isVisible === "utilidades") ? "d-none" : ""} autoHide={!(isVisible === "utilidades")}>
-                {appPage.view.map((cont:any,i:number)=>{
+                {appPage.view.map((cont:any,numero:number)=>{
                   return(
                    
-                    <IonItem key={i} className={location.pathname === cont.url ? 'selected' : '' + " nav-item"} routerLink={cont.url} routerDirection="none" lines="none" detail={false}>
+                    <IonItem key={"sub"+numero} className={location.pathname === cont.url ? 'selected' : '' + " nav-item"} routerLink={cont.url} routerDirection="none" lines="none" detail={false}>
                         <IonIcon slot="start" ios={cont.iosIcon} md={cont.mdIcon} />
                         <IonLabel>{cont.title}</IonLabel>
                       </IonItem>

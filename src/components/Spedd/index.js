@@ -28,7 +28,7 @@ export default function SpeddView() {
             <div className="d-none" style={{ textAlign: "right;" }}>
                 <div style={{ minHeight: "300px" }}>
                     <div className="tes">
-                        <iframe className="speed" src="//openspeedtest.com/speedtest"></iframe>
+                        <iframe className="speed" src="https://fast.com"></iframe>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@ export default function SpeddView() {
                     <div className="card p-5 mb-3">
                         <div style={{ minHeight: "300px" }}>
                             <div className="tes">
-                                <iframe className="speed" src="//openspeedtest.com/speedtest"></iframe>
+                                <iframe className="speed" src="https://fast.com"></iframe>
                             </div>
                         </div>
 
