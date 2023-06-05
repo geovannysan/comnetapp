@@ -58,7 +58,7 @@ const Page: React.FC = () => {
    {/*   <IonMenu type="overlay" contentId="main-content" className='col-12 col-lg-2 '>
         <Menu/>
       </IonMenu>*/}
-      <IonFab  vertical="bottom" horizontal="end">
+      <IonFab className='d-none' vertical="bottom" horizontal="end">
         <IonFabButton size="small">
           <IonIcon icon={chevronBackCircleOutline}></IonIcon>
         </IonFabButton>
@@ -85,36 +85,41 @@ const Page: React.FC = () => {
                 {prog.usuario.user.nombre}
               </IonCardSubtitle>
              
-              <IonButton id="popover-button"
-
+              <IonButton id="dropdownMenuLink"  
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
               >
                 <IonIcon ios={ellipsisVertical} md={ellipsisVertical} />
               </IonButton>
-              <IonButton onClick={salir}>
-               
-              </IonButton>
+
             </IonButtons>
             {prog.usuario.progres ? <IonProgressBar type="indeterminate" ></IonProgressBar> : ''}
           </IonToolbar>
-        </IonHeader>
-        <IonPopover trigger="popover-button" dismissOnSelect={true}>
-          <IonList lines='none'>
-            <IonItem button >
-              <IonLabel>
-                Actualizar
-              </IonLabel>
-              <IonIcon md={wifiOutline}></IonIcon>
-            </IonItem>
-           
-            <IonItem button onClick={salir}>
-              <IonLabel>
-                Salir
-              </IonLabel>
-              <IonIcon ios={close} md={close} />
-            </IonItem>
-          </IonList>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a className="dropdown-item" href="#">Action</a>
+            <a className="dropdown-item" href="#">Another action</a>
+            <a className="dropdown-item" href="#">Something else here</a>
+          </div>
+          <IonPopover trigger="popover-button" dismissOnSelect={true} className='col-6'>
+            <IonContent className="ion-padding">
+            <IonList lines='none' >
+              <IonItem button >
+                <IonLabel>
+                  Actualizar
+                </IonLabel>
+                <IonIcon md={wifiOutline}></IonIcon>
+              </IonItem>
 
-        </IonPopover>
+              <IonItem button onClick={salir}>
+                <IonLabel>
+                  Salir
+                </IonLabel>
+                <IonIcon ios={close} md={close} />
+              </IonItem>
+            </IonList>
+</IonContent>
+          </IonPopover>
+        </IonHeader>
+        
 
         <div className='pt-1' >
 
