@@ -91,12 +91,7 @@ export default function SpeddView() {
             </div>
             <IonModal
                 isOpen={showModal}
-                initialBreakpoint={0.75}
-                onDidDismiss={() => setShowModal(false)}
-                cssClass='modal-fullscreen'
-                breakpoints={[0, 0.25, 0.5, 0.75,1]}
-                backdropDismiss={false}
-                handleBehavior="cycle"
+                id="example-modal"
             >
                 <IonHeader className="ion-no-border border-0">
                     <IonToolbar className=" ion-toolbar-transparent">

@@ -24,14 +24,24 @@ import { Editor } from 'react-draft-wysiwyg';
 import "../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import { EditorConvertToHTML } from "./Texarea";
 import { Modal } from "react-bootstrap";
+import axios from "axios";
+import { DetalleOlt, Detalleoltport, EstadoOlt, Estadoluz } from "../../../utils/Querystados";
+import { obtenervaariables } from "../../Home/parsesmart";
 //window.JSZip = JSZip;
 
 export default function Datatablesoporte() {
     let usedispatch = useDispatch()
     let modal = useSelector((state) => state.usuario.modal)
+    const infouser = useSelector((state) => state.usuario.user)
+   // console.log(obtenervaariables(infouser.servicios[0].smartolt))
     const [spiner, setSpiner] = useState("")
     const [datos, setDatos] = useState([])
     const [contentState, setContentState] = useState({})
+    const [señal,setSeñal]=useState({
+        onu_signal_value:"",
+        onu_status:"",
+        onu_signal:""
+    })
     // console.log(modal)
     const abrir = () => {
         usedispatch(setModal({ nombre: "Soporte", payloa: "" }))
@@ -40,6 +50,8 @@ export default function Datatablesoporte() {
     function onContentStateChange(contentState) {
         setContentState(contentState)
     }
+    
+
     useEffect(() => {
         let datos = userlog()
         setSpiner("")
@@ -121,6 +133,40 @@ export default function Datatablesoporte() {
         ).catch(err => {
             console.log(err)
         })
+        EstadoOlt(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput=>{
+            if (ouput.status){
+                //console.log(ouput)
+                Estadoluz(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouputv=>{
+                    if(ouputv.status){
+                        setSeñal({
+                            onu_signal_value: ouput.onu_signal_value,
+                            onu_status: ouputv.onu_status,
+                            onu_signal: ouput.onu_signal
+                        })
+                        //console.log(ouputv)
+                    }
+                })
+            }
+        })
+        Detalleoltport(obtenervaariables(infouser.servicios[0].smartolt).olt_id).then(ouput=>{
+            if(ouput.status){
+                let board = ouput.response.filter(e => e.board == obtenervaariables(infouser.servicios[0].smartolt).board)
+                let estado = board.find(e => e.pon_port == obtenervaariables(infouser.servicios[0].smartolt).port)
+                console.log(estado)
+                return
+            }
+                console.log(ouput)
+        }).catch(err=>{
+            console.log(err)
+        })
+       /* DetalleOlt(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput=>{
+            //console.log(ouput)
+            if(ouput.status){
+                Detalleoltport(ouput.onu_details[""])
+            }
+        })*/
+
+        //console.log(consultaseñal())
         /* var editor = new wysihtml5.Editor('editor', {
              toolbar: 'toolbar', // defined in file parser rules javascript
          });*/
@@ -308,7 +354,42 @@ export default function Datatablesoporte() {
 
     return (
         <>
-            <div className="">
+            <div className="row pb-2">
+                <div className="col-12 col-md-6 pb-1">
+                    <div className="cardt">
+                        <div className='row'>
+                            <div className='col-7'>
+                                <h4 style={{
+                                    textTransform: "capitalize",
+                                    fontSize: "0.9em",
+                                    color: "#3171e0"
+                                }} >Señal </h4>
+
+                            </div>
+                            <div className='col-5  d-flex  justify-content-end'>
+                                <h4 style={{
+                                    fontSize: "1em",
+                                    color: "#3171e0"
+                                }}><i className=" bi  bi-router-fill p-1"></i>{señal.onu_status}  </h4>
+
+                            </div>
+                        </div>
+                        <p  ><span className=' fw-bold'><i className="bi bi-reception-4 px-1"></i></span> {señal.onu_signal_value}  </p>
+
+
+                        <p className="card__apply  float-end">
+                            <a className="card__link " >{señal.onu_signal} <i className=" m-2 card_icon bi bi-hdd-network"></i></a>
+                        </p>
+                    </div>
+                </div>
+                <div className="col-12 col-md-6 pb-1">
+                    <div className="cardt">
+
+                    </div>
+                </div>
+
+            </div>
+            <div className="px-0">
                 <div className="bg-white border shadow ">
                     <div className="w-100 py-3 bg-dark">
                         <div className="text-white ps-2">

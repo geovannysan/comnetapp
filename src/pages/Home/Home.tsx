@@ -1,10 +1,10 @@
-import { IonPopover , IonContent, IonList, IonItem } from '@ionic/react';
+import { IonPopover , IonContent, IonList, IonItem, createAnimation } from '@ionic/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import Collapse from "react-bootstrap/Collapse"
 import { OverlayTrigger } from 'react-bootstrap';
 import { Popover } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ListarFactura } from '../../utils/Queryuser';
 import { setPlan } from '../../StoreRedux/Slice/UserSlice';
 import "./Home.css"
@@ -25,11 +25,22 @@ const Inicipage: React.FC = () => {
     let info = useSelector((state: any) => state.usuario.plan)
     const [open, setOpen] = useState<boolean>(false);
     const [opction,setOption]= useState("");
+
+    const animatedElement: any = useRef(null);
     //console.log(datos)
     //function kbToMb(KB: string) { return parseInt(KB) / 1024; }
     useEffect(() => {
         let datos: any = localStorage.getItem("INFOUSER")
         usedispach(setPlan(JSON.parse(datos)))
+        const animation = createAnimation()
+            .addElement(animatedElement.current)
+            .duration(800)
+            .fromTo('transform', 'translateX(100%)', 'translateX(0)')
+            .fromTo('opacity', '0', '1')
+            .beforeAddClass('animated-element')
+            .afterAddClass('animated-element');
+
+        animation.play();
         /* ListarFactura(datos.id).then(ouput => {
              let datos = ouput
              console.log(datos, ouput)
@@ -39,13 +50,14 @@ const Inicipage: React.FC = () => {
              }).catch(err => {
              console.log(err)
          })*/
-    }, [])
+    }, [opction])
 
 
     return (
         <div className='px-0'>
 
-            {opction ==""?<div className=' container-fluid px-0  d-flex  justify-content-center'>
+            {opction ==""?
+                <div ref={animatedElement} className=' container-fluid px-0  d-flex  justify-content-center'>
                 <div className='row col-12 col-md-10 col-lg-12 px-0  '>
                     {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
                     <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => setOption("Perfil")} >
@@ -102,7 +114,7 @@ const Inicipage: React.FC = () => {
                         <div className="cardt  cardt-success">
                             <div className='row'>
                                 <div className='col-8 '>
-                                    <h4>Reportar Pago</h4>
+                                    <h4 className=' text-success'>Reportar Pago</h4>
                                 </div>
                                 <div className='col-3 '>
                                     <div className=' bg-success float-end  ms-3 mb-1 card rounded-3 shadow' style={{

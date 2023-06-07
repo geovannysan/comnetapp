@@ -224,7 +224,18 @@ ul.list {
     height: 100% !important;
     width: 100% !important;
 }
-
+ion-popover {
+    --width: 320px !important;
+}
+ion-header{
+    background: #fff !important;
+        color: #000 !important;
+}
+/*rgba(239, 242, 245, 0.812)
+.ion-toolbar-transparent {
+    background: #2284e7cf;
+    color:#fff;
+}*/
 .modal-content {
     height: 100% !important;
     width: 100% !important;

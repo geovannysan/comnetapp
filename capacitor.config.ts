@@ -5,7 +5,8 @@ const config: CapacitorConfig = {
   appName: 'portal',
   webDir: 'build',
   bundledWebRuntime: false,
-  "server": { "allowNavigation": ["https://portal.comnet.ec"] }
+  "server": { "allowNavigation": ["https://portal.comnet.ec"] },
+  
 };
 
 export default config;

@@ -132,7 +132,7 @@ const Menu: React.FC = () => {
 
       </IonHeader>
       <div className='h-100 px-0 pt-3'>
-
+          <IonList>
         {appPages.map((appPage: any, index: number) => {
 
           if (!appPage.collapse) {
@@ -180,6 +180,7 @@ const Menu: React.FC = () => {
 
 
         })}
+        </IonList>
        { /*<IonItem button lines='none'
           onClick={() => {
             setIsVisible(true);
