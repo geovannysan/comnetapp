@@ -6,6 +6,13 @@ const config: CapacitorConfig = {
   webDir: 'build',
   bundledWebRuntime: false,
   "server": { "allowNavigation": ["https://portal.comnet.ec"] },
+  plugins: {
+    LocalNotifications: {
+     
+      iconColor: "#488AFF",
+     
+    },
+  },
   
 };
 

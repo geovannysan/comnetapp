@@ -1,4 +1,4 @@
-import { IonApp, IonButton, IonButtons, IonCardSubtitle, IonHeader, IonMenuButton, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
+import { IonApp, IonButton, IonButtons, IonCardSubtitle, IonHeader, IonMenuButton, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar, isPlatform, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -26,41 +26,92 @@ import './theme/animate.css';
 import "./theme/style.css";
 import "./theme/tablas.css";
 import "./theme/rizes.css";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { userlog } from './utils/User';
 import { StatusBar } from '@capacitor/status-bar';
 import { setDatosuser, setlogin, setPlan } from './StoreRedux/Slice/UserSlice';
 import { ListarFactura } from './utils/Queryuser';
 import OneSignal from 'onesignal-cordova-plugin';
+import { initializeOneSignal } from './Onesignajs'
+import { getPlatforms } from '@ionic/react';
+function OneSignalInit(user:any): void {
+  OneSignal.setLogLevel(0, 0);
+  OneSignal.setAppId("849c3d23-45d6-4477-9a2a-e2f964a03c79");
+  OneSignal.setNotificationOpenedHandler(function (jsonData) {
+    console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+  });
 
-// Call this function when your app starts
+  OneSignal.promptForPushNotificationsWithUserResponse(function (accepted) {
+    console.log("User accepted notifications: " + accepted);
+  });
+  const externalUserId = "ID_EXTERNO"; // Reemplaza con tu ID externo único
+  OneSignal.setExternalUserId(user.id, (results: any) => {
+    console.log('Results of setting external user id');
+    console.log(results);
 
+    // Push can be expected in almost every situation with a success status, but
+    // as a pre-caution its good to verify it exists
+    if (results.push && results.push.success) {
+      console.log('Results of setting external user id push status:');
+      console.log(results.push.success);
+    }
+
+    // Verify the email is set or check that the results have an email success status
+    if (results.email && results.email.success) {
+      console.log('Results of setting external user id email status:');
+      console.log(results.email.success);
+    }
+
+    // Verify the number is set or check that the results have an sms success status
+    if (results.sms && results.sms.success) {
+      console.log('Results of setting external user id sms status:');
+      console.log(results.sms.success);
+    }
+  })
+
+}
 
 setupIonicReact();
 
 const App: React.FC = () => {
-    let user = useSelector((state: any) => state.usuario)
+  let user = useSelector((state: any) => state.usuario)
   let userdispach = useDispatch()
- 
- 
+  const [initialized, setInitialized] = useState(false);
 
-  
+
+
 
   useEffect(() => {
-   // StatusBar.setBackgroundColor({ color: '#0000' });
-   // StatusBar.setStyle()
-   // StatusBar.setStyle({ Style.dark: 'dark' });
+    // StatusBar.setBackgroundColor({ color: '#0000' });
+    // StatusBar.setStyle()
+    // StatusBar.setStyle({ Style.dark: 'dark' });
     let datos = userlog()
     console.log(datos)
-    if (datos !=null) {
+    if (datos != null) {
       userdispach(setlogin({ estado: true }))
       userdispach(setDatosuser({ ...datos }))
       // createSingleTaskNotification()
-    //  OneSignalInit();
-      
+      console.log(getPlatforms().length == 1, !getPlatforms().some(e => e = "mobileweb"))
+      if (getPlatforms().some(e => e == "android") && getPlatforms().length == 1) {
+        //OneSignal.setLogLevel(OneSignal.LOG_LEVEL.DEBUG);
+        OneSignalInit(datos)
+        //OneSignal.startInit('TU_APP_ID')
+
+
+        OneSignal.setNotificationOpenedHandler((openedResult) => {
+          // Aquí puedes manejar la apertura de la notificación
+          console.log('Notificación abierta:', openedResult);
+        });
+      } else {
+        // initializeOneSignal();
+        /* ReactOnesigna.setNotificationOpenedHandler((notification:any) => {
+           // Aquí puedes manejar la apertura de la notificación
+           console.log('Notificación abierta:', notification);
+         });*/
+      }
     }
   }, [])
- 
+
   /*const createSingleTaskNotification = async () => {
     // Comprobar si la notificación ya existe
     const { notifications } = await LocalNotifications.getPending();
@@ -90,11 +141,11 @@ const App: React.FC = () => {
         {user.authb ?
           <IonSplitPane contentId="main"
             className=''
-          >  
-           <Menu/>
+          >
+            <Menu />
             <IonRouterOutlet id="main">
-            
-           
+
+
               <Switch>
                 <Route path="/page"
                 >
@@ -120,7 +171,7 @@ const App: React.FC = () => {
         }
       </IonReactRouter>
     </IonApp>
-    
+
   );
 };
 //(window as any).plugins.OneSignal.setAppId("1b5d9596-a75f-4a2d-b38f-4ae7231e48a3");

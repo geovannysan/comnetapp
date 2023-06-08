@@ -85,7 +85,10 @@
     transition: 0.6s ease-in;
 
 }
-
+ ion-modal#example-modal2 {
+     --height: 35%;
+     
+ }
 @media only screen and (max-width: 667px) {
     .cardt {
         border-radius: 10px;
@@ -99,6 +102,10 @@
         overflow: hidden;
         transition: 0.6s ease-in;
     }
+        ion-modal#example-modal2 {
+            --height: 35%;
+            --width: 90%
+        }
 
     .card__apply {
         margin-top: -25px !important;
