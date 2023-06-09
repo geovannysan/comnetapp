@@ -7,6 +7,7 @@ import { arrowBack } from "ionicons/icons"
 import { useEffect, useRef, useState } from "react"
 import { Detalleoltport, EstadoOlt, Estadoluz } from "../../utils/Querystados"
 import { close } from "ionicons/icons";
+import DeviceView from "./Modaldevices"
 export function OpcionesView(props: any) {
     let { setOption, opction } = props
     let user: any = userlog()
@@ -17,8 +18,9 @@ export function OpcionesView(props: any) {
         onu_status: "",
         onu_signal: ""
     })
-    const[ssi,setSsid]= useState("")
+    const [ssi, setSsid] = useState("")
     const [showAlert, setShowAlert] = useState(false);
+    const [showModal, setModal] = useState(false);
     const [wifi, setFifi] = useState(false)
     const datos = useSelector((state: any) => state.usuario.user)
     let infouser: any = obtenervaariables(datos.servicios[0].smartolt)
@@ -104,34 +106,34 @@ export function OpcionesView(props: any) {
         console.log('Cuadro de diálogo de alerta cerrado');
         console.log('Acerca de:', ssi);
     };
-    const handleInputChange = (index:number, event:any) => {
+    const handleInputChange = (index: number, event: any) => {
         const value = event.target.value;
         switch (index) {
             case 0:
                 setSsid(value);
                 break;
-            
+
             default:
                 break;
         }
     };
     const inputs = [
-    
+
         {
             type: 'text',
             placeholder: 'A little about yourself',
             value: ssi,
-            onIonChange: (e:any) => handleInputChange(0, e),
+            onIonChange: (e: any) => handleInputChange(0, e),
         },
     ];
     const ShowModalBoos = () => {
         return (
             <IonModal isOpen={showAlert}
-               
-              >
+
+            >
                 <IonHeader className=" ion-toolbar-transparent border-0">
                     <IonToolbar >
-                        
+
                         <IonButtons slot="end" onClick={() => setShowAlert(false)}>
                             <IonButton onClick={() => setShowAlert(false)}>
                                 <IonIcon md={close} />
@@ -144,11 +146,11 @@ export function OpcionesView(props: any) {
                     <button className="btn btn-secondary" onClick={() => setShowAlert(false)}>cerrado</button>
                     <div>
                         <IonInput
-                        value={ssi}
-                        onIonChange={(e)=>console.log(e)}
+                            value={ssi}
+                            onIonChange={(e) => console.log(e)}
                         />
                     </div>
-                   
+
 
                 </IonContent>
             </IonModal>
@@ -162,6 +164,10 @@ export function OpcionesView(props: any) {
                     <IonIcon icon={arrowBack}></IonIcon>
                 </IonFabButton>
             </IonFab>
+            <DeviceView
+                showModal={showModal}
+                setModal={setModal}
+            />
             <IonModal isOpen={showAlert}
                 id="example-modal2"
             >
@@ -180,7 +186,7 @@ export function OpcionesView(props: any) {
                         <IonItem>
                             <IonLabel position="floating">Nombre WIFI</IonLabel>
                             <IonInput
-                            id="custom-input"
+                                id="custom-input"
 
 
 
@@ -190,7 +196,7 @@ export function OpcionesView(props: any) {
                             />
                         </IonItem>
                         <IonButton expand="full">Cambiar</IonButton>
-                        
+
                     </div>
 
 
@@ -447,7 +453,7 @@ export function OpcionesView(props: any) {
                                         <h4 style={{
                                             textTransform: "capitalize",
                                             fontSize: "0.9em"
-                                        }} >Cambiar Clave{JSON.stringify(showAlert)}</h4>
+                                        }} >Cambiar Clave</h4>
 
                                     </div>
                                     <div className='col-4  d-flex  justify-content-end'>
@@ -460,7 +466,7 @@ export function OpcionesView(props: any) {
                                 <div className="row pt-2">
                                     <div className="col-sm ">
                                         <p className="card__apply ">
-                                            <a className="card__link" ><i className=" bi bi-wifi"></i> Cambiar  <i className=" bi bi-arrow-left-right"></i></a>
+                                            <a className="card__link" onClick={() => setShowAlert(true)} ><i className=" bi bi-wifi"></i> Cambiar  <i className=" bi bi-arrow-left-right"></i></a>
 
                                         </p>
 
@@ -500,10 +506,10 @@ export function OpcionesView(props: any) {
                                 </div>
                                 <div className="d-flex flex-wrap  justify-content-between align-items-center">
                                     <div className="col-sm "
-                                    
-                                    style={{
-                                        marginTop:"-30px"
-                                    }}>
+
+                                        style={{
+                                            marginTop: "-30px"
+                                        }}>
                                         <IonToggle
                                             checked={wifi}
                                             onIonChange={(e: any) => setFifi(e.detail["checked"])}
@@ -515,7 +521,7 @@ export function OpcionesView(props: any) {
                                             <a className="card__link" >Cambiar a red oculta </a>
                                         </p>
                                     </div>
-                                    
+
                                 </div>
 
 
@@ -537,7 +543,7 @@ export function OpcionesView(props: any) {
                                         <h4 style={{
                                             fontSize: "1em",
                                             color: "#3171e0"
-                                        }}><i className=" bi bi-hdd-network"></i> Conectados </h4>
+                                        }} onClick={() => setModal(true)} ><i className=" bi bi-hdd-network"></i> Conectados </h4>
 
                                     </div>
                                 </div>
@@ -545,12 +551,12 @@ export function OpcionesView(props: any) {
 
 
                                 <p className="card__apply  float-end">
-                                    <a className="card__link " >Listar dipositivos <i className=" m-2 card_icon bi  bi-usb-symbol"></i></a>
+                                    <a className="card__link " onClick={() => setModal(true)} >Listar dipositivos <i className=" m-2 card_icon bi  bi-usb-symbol"></i></a>
                                 </p>
                             </div>
                         </div>
                         <div className="col-12 col-md-6 pb-1">
-                            <div className="cardt">
+                            <div className="card-t">
                                 <div className='row'>
                                     <div className='col-7'>
                                         <h4 style={{
@@ -581,7 +587,7 @@ export function OpcionesView(props: any) {
 
 
                 </div> : ""}
-                
+
             </div>
         </>)
 }

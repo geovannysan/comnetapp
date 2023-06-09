@@ -89,6 +89,18 @@
      --height: 35%;
      
  }
+ .card-t {
+    border-radius: 10px;
+        filter: drop-shadow(0 5px 10px 0 #ffffff);
+    
+        height: 180px;
+        background-color: #ffffff;
+        padding: 20px;
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+        transition: 0.6s ease-in;
+ }
 @media only screen and (max-width: 667px) {
     .cardt {
         border-radius: 10px;
@@ -102,8 +114,20 @@
         overflow: hidden;
         transition: 0.6s ease-in;
     }
+    .card-t {
+        border-radius: 10px;
+        filter: drop-shadow(0 5px 10px 0 #ffffff);
+
+        height: 155px;
+        background-color: #ffffff;
+        padding: 20px;
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+        transition: 0.6s ease-in;
+    }
         ion-modal#example-modal2 {
-            --height: 35%;
+            --height: 50%;
             --width: 90%
         }
 

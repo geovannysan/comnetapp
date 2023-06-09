@@ -3,6 +3,8 @@
     --bg-reporte: #31313167;
     --bg-servicio: #31313167;
     --bg-wifi: #cb1656;
+    --secondary: #5e5a5ada;
+        --white: #fff;
 }
 
 ion-toolbar {
@@ -29,6 +31,17 @@ ion-item.selected> ion-icon {
     background-color: #3691ef !important;
     color: #fff !important;
 }*/
+.btn-default,
+.btn-default:hover {
+    color: var(--secondary) !important;
+    background-color: var(--white) !important;
+    border-color: rgb(175, 175, 175) !important;
+}
+
+.btn-default {
+    -webkit-box-shadow: 0 !important;
+    box-shadow: 0 !important;
+}
 
 .font-weight-light {
     font-size: 0.7em;

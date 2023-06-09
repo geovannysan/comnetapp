@@ -45,6 +45,7 @@ function OneSignalInit(user:any): void {
     console.log("User accepted notifications: " + accepted);
   });
   const externalUserId = "ID_EXTERNO"; // Reemplaza con tu ID externo único
+  
   OneSignal.setExternalUserId(user.id, (results: any) => {
     console.log('Results of setting external user id');
     console.log(results);
@@ -91,18 +92,20 @@ const App: React.FC = () => {
       userdispach(setlogin({ estado: true }))
       userdispach(setDatosuser({ ...datos }))
       // createSingleTaskNotification()
-      console.log(getPlatforms().length == 1, !getPlatforms().some(e => e = "mobileweb"))
+     
+      console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"),getPlatforms())
       if (getPlatforms().some(e => e == "android") && getPlatforms().length == 1) {
-        //OneSignal.setLogLevel(OneSignal.LOG_LEVEL.DEBUG);
         OneSignalInit(datos)
+        
         //OneSignal.startInit('TU_APP_ID')
 
 
-        OneSignal.setNotificationOpenedHandler((openedResult) => {
+      /*  OneSignal.setNotificationOpenedHandler((openedResult) => {
           // Aquí puedes manejar la apertura de la notificación
           console.log('Notificación abierta:', openedResult);
-        });
+        });/*/
       } else {
+        
         // initializeOneSignal();
         /* ReactOnesigna.setNotificationOpenedHandler((notification:any) => {
            // Aquí puedes manejar la apertura de la notificación

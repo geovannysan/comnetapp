@@ -1,5 +1,55 @@
+import { useEffect, useState } from "react"
 import "./Perfil.css"
+import { userlog } from "../../utils/User"
+import { UserUpdate } from "../../utils/Queryuser"
+import { IonAvatar, useIonToast } from "@ionic/react";
 export function PerfilView() {
+    const [present] = useIonToast();
+    const [datos,setDatos]= useState({
+        "nombre": "",
+        "correo": "",
+        "telefono": "",
+        "movil": "",
+        "cedula": "",
+        "codigo": "",
+        "direccion_principal": ""
+    })
+    function handle(e){
+            setDatos({
+                ...datos,
+                [e.target.name]:e.target.value
+            })
+    }
+    let dtos = userlog()
+    function Onsubmit(){
+        if(false/*datos.correo.trim()!=""&& datos.telefono.trim()!=""&& datos.movil.trim()!=""*/){
+            UserUpdate({ "idcliente": dtos.id,...datos}).then(e=>{
+        console.log(e)
+      }).catch(erro=>{
+        console.log(erro)
+      })}
+      else{
+            present({
+                message: 'Hubo un error ',                
+                duration: 1500,
+                position: "bottom"
+            });
+
+      }
+    }
+    useEffect(()=>{
+        setDatos({
+            "nombre": dtos.nombre,
+            "correo": dtos.correo,
+            "telefono": dtos.telefono,
+            "movil": dtos.movil,
+            "cedula": dtos.cedula,
+            "codigo": dtos.codigo,
+            "direccion_principal": dtos.direccion_principal
+        })
+
+
+    },[])
     return (
         <div className=" container">
             <div className="row">
@@ -8,12 +58,13 @@ export function PerfilView() {
                     <div className="card">
                         <div className="card-body">
                             <div className="m-t-30  text-center">
-                                <img width="100" height="100" className="avatarcliente miprofile  "
+                                <IonAvatar/>
+                                <img width="100" height="100" className="d-none avatarcliente miprofile  "
                                 style={{
                                     borderRadius:"50%"
                                 }}
-                                data-name="MERO MONTALVAN JOSELITO SABINO"  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHBvaW50ZXItZXZlbnRzPSJub25lIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6IHJnYigyMTUsIDE5MiwgMTM4KTsgd2lkdGg6IDEwMHB4OyBoZWlnaHQ6IDEwMHB4OyBib3JkZXItcmFkaXVzOiAwcHg7Ij48dGV4dCB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB5PSI1MCUiIHg9IjUwJSIgZHk9IjAuMzVlbSIgcG9pbnRlci1ldmVudHM9ImF1dG8iIGZpbGw9IiNmZmZmZmYiIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2FOZXVlLUxpZ2h0LEhlbHZldGljYSBOZXVlIExpZ2h0LEhlbHZldGljYSBOZXVlLEhlbHZldGljYSwgQXJpYWwsTHVjaWRhIEdyYW5kZSwgc2Fucy1zZXJpZiIgc3R5bGU9ImZvbnQtd2VpZ2h0OiA2MDA7IGZvbnQtc2l6ZTogNTBweDsiPk1NPC90ZXh0Pjwvc3ZnPg==" />
-                                <h4 className="card-title m-t-10">MERO MONTALVAN JOSELITO SABINO</h4>
+                                    data-name={dtos.nombre}   />
+                                <h4 className="card-title m-t-10">{dtos.nombre}</h4>
                                 <h6 className="card-subtitle">Administrador</h6>
                                 <br />
                                 <button type="button" className="btnfb btn btn-xs btn-default d-none"  data-original-title="Avatar desde Facebook"><i className="fab fa-facebook-f"></i>Facebook</button>
@@ -48,40 +99,55 @@ export function PerfilView() {
                                         <div className="form-group">
                                             <label className="col-md-12 form-label"><i className="far fa-user-o" aria-hidden="true"></i> Nombres Completos</label>
                                             <div className="col-md-12">
-                                                <input type="text" placeholder="Johnathan Doe" className="form-control form-control-line" name="user-nombre" value="MERO MONTALVAN JOSELITO SABINO" readonly="" />
+                                                <input type="text" placeholder="Johnathan Doe" className="form-control form-control-line" name="nombre" value={datos.nombre} 
+                                                onChange={(e)=>handle(e)}
+                                                readonly="" />
                                             </div>
                                         </div>
 
                                         <div className="form-group">
                                             <label className="col-md-12"><i className="far fa-envelope" aria-hidden="true"></i> Dirección Principal</label>
                                             <div className="col-md-12">
-                                                <input type="text" placeholder="Av. Los geranios 3364" className="form-control form-control-line" name="user[direccion_principal]" value="PANCHO JACOME MZ 305 SL 11" required="" />
+                                                <input type="text" placeholder="Av. Los geranios 3364" className="form-control form-control-line" 
+                                                name="direccion_principal" 
+                                                value={datos.direccion_principal}
+                                                    onChange={(e) => handle(e)}
+                                                 required="" />
                                             </div>
                                         </div>
 
                                         <div className="form-group">
                                             <label className="col-md-12"><i className="far fa-envelope" aria-hidden="true"></i> Email</label>
                                             <div className="col-md-12">
-                                                <input type="text" placeholder="johnathan@admin.com" className="form-control form-control-line" name="user[correo]" value="josemero616@gmail.com" required="" />
+                                                <input type="text" placeholder="johnathan@admin.com" className="form-control form-control-line"
+                                                 name="correo" value={datos.correo}
+                                                 onChange={(e)=>handle(e)}
+                                                 required="" />
                                             </div>
                                         </div>
 
                                         <div className="form-group">
                                             <label className="col-md-12"><i className="fas fa-mobile-alt" aria-hidden="true"></i> Teléfono Móvil</label>
                                             <div className="col-md-12">
-                                                <input type="text" placeholder="1234567890" className="form-control form-control-line" name="user[movil]" value="0958896264" required="" />
+                                                <input type="text" placeholder="1234567890" className="form-control form-control-line"
+                                                 name="movil" value={datos.movil}
+                                                onChange = {(e)=>handle(e)}
+                                                 required="" />
                                             </div>
                                         </div>
 
                                         <div className="form-group">
                                             <label className="col-md-12"><i className="fas fa-phone-volume"></i> Teléfono Fijo</label>
                                             <div className="col-md-12">
-                                                <input type="text" placeholder="1234567890" className="form-control form-control-line" name="user[telefono]" value="0991550150----0991621050" />
+                                                <input type="text" placeholder="1234567890" className="form-control form-control-line" 
+                                                name="telefono" value={datos.telefono}
+                                                    onChange={(e) => handle(e)}
+                                                />
                                             </div>
                                         </div>
                                         <div className="form-group">
                                             <div className="col-sm-12 p-2">
-                                                <button className="btn  btn-default" type="button">Actualizar datos</button>
+                                                <button className="btn  btn-default" type="button" onClick={Onsubmit}>Actualizar datos</button>
                                             </div>
                                         </div>
 

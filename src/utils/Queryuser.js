@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { token,operador } from './variables';
+import { token, operador } from './variables';
 let Host = "http://45.224.96.50/api/v1/"
-let Hostv1 ="https://portalapicon.somee.com"
+let Hostv1 = "https://portalapicon.somee.com"
 export const autenticar = async (parms) => {
     try {
         let { data } = await axios.post(Hostv1 + "/PortalApi/GetClientsDetails",
@@ -41,7 +41,7 @@ export const ListarFactura = async (parms) => {
         let { data } = await axios.post(Hostv1 + "/PortalApi/GetInvoices", {
             //"token": token,
             "limit": "1",
-            "idcliente": parseInt( parms)
+            "idcliente": parseInt(parms)
         }, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -50,11 +50,11 @@ export const ListarFactura = async (parms) => {
         })
         if (data.estado === "exito") {
 
-            let id =  data.facturas[0].id 
-             console.log(id,parms)
+            let id = data.facturas[0].id
+            console.log(id, parms)
             let datos = await axios.post(Hostv1 + "/PortalApi/GetInvoice",
                 {
-                   // "token": token,
+                    // "token": token,
                     "idfactura": id
                 }, {
                 headers: {
@@ -62,7 +62,7 @@ export const ListarFactura = async (parms) => {
                     'Content-Type': 'application/json',
                 },
             })
-            console.log(datos)
+            //console.log(datos)
             let arr = datos.data.items[0].descrp.split("\r\n")
             return arr
 
@@ -91,12 +91,12 @@ export const MostrarFacturas = async (parms) => {
         return error
     }
 }
-export const MostrarFacturasdeuda = async (parms)=>{
+export const MostrarFacturasdeuda = async (parms) => {
     try {
-        let { data } = await axios.post(Hostv1 +"/PortalApi/GetInvoices",{
-           // "token":token,
+        let { data } = await axios.post(Hostv1 + "/PortalApi/GetInvoices", {
+            // "token":token,
             "estado": "1",
-            "idcliente":parseInt( parms)
+            "idcliente": parseInt(parms)
         })
         return data
     } catch (error) {
@@ -105,11 +105,11 @@ export const MostrarFacturasdeuda = async (parms)=>{
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.post(Hostv1 +"/PortalApi/GetInvoice",
+        let { data } = await axios.post(Hostv1 + "/PortalApi/GetInvoice",
             {
                 //"token":token,
-                "idfactura": parseInt( parms)
-            })           
+                "idfactura": parseInt(parms)
+            })
         return data
 
     } catch (error) {
@@ -117,5 +117,14 @@ export const Facturaid = async (parms) => {
     }
 
 
+}
+
+export const UserUpdate = async (parms) => {
+    try {
+        let { data } = await axios.post(Hostv1+"/PortalApi/UpdateUser", parms)
+        return data
+    } catch (error) {
+        return error
+    }
 }
 
