@@ -87,7 +87,7 @@ const Page: React.FC = () => {
           <IonIcon icon={chevronBackCircleOutline}></IonIcon>
         </IonFabButton>
       </IonFab>
-      <IonContent fullscreen id="main-content">
+      <IonContent fullscreen id="main-content" className='px-0'>
 
         <IonHeader className="ion-no-border  " >
           <IonToolbar className='ion-toolbar-transparent ' >
@@ -152,7 +152,7 @@ const Page: React.FC = () => {
           </div>
 
         </IonPopover>
-        <div className='pt-1' >
+        <div className='pt-1 px-0' >
 
           <Switch>
             {getRoutes(routes)}

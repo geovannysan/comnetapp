@@ -20,6 +20,13 @@ ion-content {
 body {
     background-color: rgb(243, 242, 242);
 }
+.green{
+    animation: color 1s infinite;
+}
+@keyframes color {
+    to { fill: #47df25;}
+    from {fill:"#5e5a5ada";}
+}
 
 
 /*

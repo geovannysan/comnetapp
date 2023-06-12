@@ -6,7 +6,9 @@ export default function DeviceView(props) {
     return (
 
         <IonModal isOpen={showModal}
+            onDidDismiss={() => setModal(false)}
             backdropDismiss={false}
+           
         >
             <IonHeader>
                 <IonToolbar>

@@ -1,0 +1,66 @@
+/*.eventoss:hover .btn-hover svg {
+    transition: all .3s ease-in-out;
+    animation: identifier 1.3s linear infinite;
+    transform: translate(0, 10px);
+}*/
+
+ .line1 {
+    animation: path1 1.2s  infinite;
+}
+
+ .line3 {
+    animation: path2 1.2s  infinite;
+}
+
+ .line2 {
+    animation: path3 1.2s  infinite;
+}
+
+@keyframes identifier {
+    0% {
+        fill: #A9ABAE;
+    }
+
+    100% {
+        fill: #3171e0;
+    }
+}
+
+@keyframes path1 {
+    0% {
+            fill: #A9ABAE;
+        }
+    
+        100% {
+            fill: #3171e0;
+        }
+}
+
+@keyframes path3 {
+
+    0% {
+        fill: #E6E7E8;
+    }
+
+    50% {
+        fill: #A9ABAE;
+    }
+
+    100% {
+        fill: #3171e0;
+    }
+}
+
+@keyframes path2 {
+    0% {
+        fill: #D2D3D5;
+    }
+
+    50% {
+        fill: #E6E7E8;
+    }
+
+    100% {
+        fill: #3171e0;
+    }
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IonModal, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonIcon } from "@ionic/react";
+import { IonModal, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonIcon, IonCardSubtitle, getPlatforms, IonList, IonItem, IonLabel } from "@ionic/react";
 import "jquery/dist/jquery.slim"
 import "jszip"
 import "pdfmake"
@@ -354,41 +354,104 @@ export default function Datatablesoporte() {
 
     return (
         <>
-            <div className="row pb-2">
-                <div className="col-12 col-md-6 pb-1">
-                    <div className="cardt">
-                        <div className='row'>
-                            <div className='col-7'>
-                                <h4 style={{
-                                    textTransform: "capitalize",
-                                    fontSize: "0.9em",
-                                    color: "#3171e0"
-                                }} >Señal </h4>
+            
+                <div className="row pb-2 px-0">
+                    <div className="col-12 col-md-6 pb-1">
+                        <div className="card-t">
+                            <div className='row'>
+                                <div className='col-7'>
+                                    <h4 style={{
+                                        textTransform: "capitalize",
+                                        fontSize: "0.9em",
+                                        color: "#3171e0"
+                                    }} >Señal </h4>
 
+                                </div>
+                                <div className='col-5  d-flex  justify-content-end'>
+                                    <h4 style={{
+                                        fontSize: "1em",
+                                        color: "#3171e0"
+                                    }}><i className=" bi  bi-router-fill p-1"></i>{señal.onu_status}  </h4>
+
+                                </div>
                             </div>
-                            <div className='col-5  d-flex  justify-content-end'>
-                                <h4 style={{
-                                    fontSize: "1em",
-                                    color: "#3171e0"
-                                }}><i className=" bi  bi-router-fill p-1"></i>{señal.onu_status}  </h4>
+                            <p  ><span className=' fw-bold'><i className="bi bi-reception-4 px-1"></i></span> {señal.onu_signal_value}  </p>
+
+
+                            <p className="card__apply  float-end">
+                                <a className="card__link " >{señal.onu_signal} <i className=" m-2 card_icon bi bi-hdd-network"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="col-12 col-md-6 pb-1">
+                        <div className="card-t">
+                            <div className="row">
+                                <div className="col-6">
+                                    <div className="">
+                                        <h4 style={{
+                                            textTransform: "capitalize",
+                                            fontSize: "0.9em",
+                                            color: "#3171e0"
+                                        }} >Estado </h4>
+                                    </div>
+                                    <IonCardSubtitle>
+                                        Luz Verde
+                                    </IonCardSubtitle>
+                                    <IonCardSubtitle>
+                                        Activo
+                                    </IonCardSubtitle>
+
+                                </div>
+                                <div className="col-6 m-auto">
+                                    <svg width="90%" height="150px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
+                                    >
+
+                                        <g>
+                                            <g transform="translate(0.000000,511.000000) scale(0.100000,-0.100000)">
+                                                <path className="line3" d="M5449.5,3817.6c-112.9-32.5-419.2-423-568.5-729.3c-103.4-206.7-187.6-446-237.4-670c-47.9-224-47.9-819.3,0-1043.2c105.3-476.6,306.3-882.4,612.5-1234.6c178-202.9,277.5-231.6,402-114.9c40.2,38.3,51.7,67,51.7,130.2c0,70.8-13.4,97.6-124.4,227.8c-235.4,275.6-382.8,536-476.6,832.7c-224,710.2-68.9,1539,390.5,2080.7c189.5,222,210.6,256.5,210.6,329.2c0,88.1-44,151.2-126.3,185.7c-34.5,15.3-67,26.8-68.9,24.9C5510.7,3836.8,5482,3827.2,5449.5,3817.6z" />
+                                                <path className="line3" d="M8910.3,3815.7c-68.9-19.1-137.8-111-137.8-183.8c0-63.2,30.6-112.9,147.4-243.1c403.9-446,618.3-1093,560.8-1688.3c-47.9-511.1-254.6-980-583.8-1326.5c-132.1-137.8-151.2-201-93.8-308.2C8839.4-5,8944.7-54.7,9023.2-37.5c67,15.3,239.3,189.5,382.8,390.5c208.7,292.9,359.9,643.2,442.2,1022.2c59.3,277.6,59.3,763.8,0,1041.3c-107.2,497.7-333.1,939.8-645.1,1261.4C9063.4,3823.4,9015.5,3846.3,8910.3,3815.7z" />
+                                                <path className="line1" d="M5928,3164.9c-178-164.6-382.8-518.7-453.7-790.5c-135.9-509.2-45.9-1058.5,243.1-1489.2c128.3-191.4,266.1-336.9,323.5-342.6c149.3-9.6,252.7,68.9,252.7,193.3c0,51.7-17.2,91.9-57.4,143.6c-32.5,38.3-90,111-130.2,160.8c-101.4,126.3-199.1,331.2-245,520.7c-57.4,227.8-45.9,555.1,28.7,775.2c61.3,183.8,168.4,369.4,287.1,501.5c47.9,53.6,95.7,118.7,107.2,147.4c45.9,124.4-53.6,260.3-193.3,260.3C6029.4,3245.3,5998.8,3231.9,5928,3164.9z" />
+                                                <path className="line1" d="M8269,3199.4c-109.1-101.5-93.8-191.4,65.1-380.9c128.3-151.2,245-377.1,296.7-568.5c51.7-187.6,47.9-539.8-7.6-733.1c-65.1-231.6-176.1-426.9-335-601.1C8161.8,779.9,8179,615.2,8326.4,554c97.6-42.1,176.1-9.6,296.7,126.3c210.6,231.6,384.7,601,436.4,924.5c55.5,346.5-7.7,773.3-164.6,1098.7c-72.8,151.2-262.2,415.4-354.1,491.9C8460.4,3262.5,8339.8,3264.4,8269,3199.4z" />
+                                                <path className="line2" d="M6496.5,2579.2c-352.2-365.6-354.1-1001.1-5.7-1362.9c82.3-84.2,101.4-95.7,170.4-95.7c99.5,0,191.4,70.8,208.6,162.7c11.5,68.9-5.7,114.8-90,220.1c-30.6,36.4-70.8,105.3-91.9,153.1c-101.4,235.4-63.2,423,143.6,708.2c38.3,51.7,45.9,82.3,38.3,134c-15.3,97.6-105.3,172.3-206.7,172.3C6592.2,2671,6573,2659.6,6496.5,2579.2z" />
+                                                <path className="line2" d="M7721.6,2644.3c-59.3-32.5-95.7-101.5-97.6-178c0-42.1,24.9-93.8,86.1-174.2c107.2-143.6,143.6-243.1,143.6-396.2s-36.4-254.6-143.6-398.1c-109.1-145.5-116.8-235.4-30.6-321.6c70.8-68.9,199.1-78.5,275.6-17.2c61.3,49.8,206.7,269.9,248.8,377.1c122.5,313.9,63.2,692.9-151.2,985.8C7949.3,2661.5,7832.6,2705.5,7721.6,2644.3z" />
+                                                <path fill="#5e5a5ada" d="M7155,2073.8c-21-11.5-53.6-38.3-70.8-61.2c-30.6-36.4-34.4-139.7-34.4-1403.1V-755.3H4050.2c-3300,0-3143,3.8-3391.9-118.7c-252.7-122.5-476.6-417.3-536-700.6c-34.5-162.7-26.8-1117.9,7.6-1257.6c93.8-365.6,356-635.5,727.4-750.4c109.1-32.5,287.1-34.5,4144.2-34.5s4035,1.9,4144.2,34.5c340.7,105.3,581.9,331.2,704.4,660.4c36.4,99.5,40.2,157,47.9,664.2c7.7,625.9-1.9,710.2-105.3,926.5c-86.1,179.9-269.9,367.5-446,457.5c-218.2,109.1-308.2,118.7-1142.8,118.7h-752.3v1361v1361l-65.1,65.1C7317.7,2100.6,7231.5,2115.9,7155,2073.8z M9136.1-1222.3c137.8-72.8,227.8-164.6,291-294.8l63.2-128.3v-545.5v-545.5l-51.7-109.1c-59.3-126.3-174.2-245-298.6-306.3l-90-44H5001.5H953.1l-90,44c-124.4,61.3-239.3,179.9-298.6,306.3l-51.7,109.1v545.5c0,528.3,1.9,549.4,44,639.3c59.3,128.3,126.3,214.4,214.4,271.8c162.7,109.1-109.1,101.5,4259,97.6C8939-1186,9071-1187.9,9136.1-1222.3z" />
+                                                <path fill="#5e5a5ada" d="M1422-2022.5c-135.9-91.9-118.7-290.9,30.6-352.2c197.1-82.3,365.6,158.9,223.9,317.7C1602-1974.6,1510.1-1963.1,1422-2022.5z" />
+                                                <path fill="#5e5a5ada" d="M2647.1-2022.5c-135.9-91.9-118.7-290.9,30.6-352.2c197.2-82.3,365.6,158.9,224,317.7C2827-1974.6,2735.2-1963.1,2647.1-2022.5z" />
+                                                <path fill="#5e5a5ada" d="M3872.2-2022.5c-135.9-91.9-118.7-290.9,30.6-352.2c197.2-82.3,365.6,158.9,224,317.7C4052.1-1974.6,3960.2-1963.1,3872.2-2022.5z" />
+                                                <path fill="#5e5a5ada" d="M5097.2-2022.5c-135.9-91.9-118.7-290.9,30.6-352.2c197.2-82.3,365.6,158.9,223.9,317.7C5277.2-1974.6,5185.3-1963.1,5097.2-2022.5z" />
+                                                <path className="green" fill="#5e5a5ada" d="M6320.4-2024.4c-132.1-88-114.8-289,30.6-350.3c97.6-40.2,2103.7-40.2,2201.3,0c145.5,61.3,162.7,262.2,30.6,350.3l-65.1,44H7451.7H6385.5L6320.4-2024.4z" />
+                                            </g></g>
+                                    </svg>
+                                </div>
 
                             </div>
                         </div>
-                        <p  ><span className=' fw-bold'><i className="bi bi-reception-4 px-1"></i></span> {señal.onu_signal_value}  </p>
-
-
-                        <p className="card__apply  float-end">
-                            <a className="card__link " >{señal.onu_signal} <i className=" m-2 card_icon bi bi-hdd-network"></i></a>
-                        </p>
                     </div>
-                </div>
-                <div className="col-12 col-md-6 pb-1">
-                    <div className="cardt">
 
-                    </div>
                 </div>
 
-            </div>
+         {  getPlatforms().some(e => e == "android")&& getPlatforms().length==1 ?  <IonList
+                className="border  rounded-3 "
+            >
+                {
+                    datos.length > 0 ?
+                        datos.map((e, ind) => {
+                            return (
+
+                                <IonItem key={ind}>
+                                    <IonLabel >
+                                        <h3>{e.asunto}</h3>
+                                        <p>{e.fecha_soporte}</p>
+                                    </IonLabel>
+                                    <IonLabel slot="end">
+                                        <p>{e.estado}</p>
+                                    </IonLabel>
+
+                                </IonItem>
+
+                            )
+                        }) : ""}
+            </IonList>:
             <div className="px-0">
                 <div className="bg-white border shadow ">
                     <div className="w-100 py-3 bg-dark">
@@ -464,7 +527,7 @@ export default function Datatablesoporte() {
                         <span className="sr-only"></span>
                     </div>
                 </div>
-            </div>
+            </div>}
         </>)
 
 

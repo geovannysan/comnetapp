@@ -170,6 +170,7 @@ export function OpcionesView(props: any) {
             />
             <IonModal isOpen={showAlert}
                 id="example-modal2"
+                backdropDismiss={false}
             >
                 <IonHeader className="  border-0">
                     <IonToolbar className="ion-toolbar-transparent" >
@@ -457,25 +458,27 @@ export function OpcionesView(props: any) {
 
                                     </div>
                                     <div className='col-4  d-flex  justify-content-end'>
-                                        <h4 style={{ fontSize: "1em" }} onClick={() => setShowAlert(true)}><i className=" bi bi-arrow-repeat"></i> Cambiar</h4>
+                                        <h4 style={{ fontSize: "1em" }}><i className=" bi bi-arrow-repeat"></i> Cambiar</h4>
 
                                     </div>
                                 </div>
                                 <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span>{datos.modelO_DE_EQUIPO} </p>
 
                                 <div className="row pt-2">
-                                    <div className="col-sm ">
+                                    <div className="col-6 ">
                                         <p className="card__apply ">
-                                            <a className="card__link" onClick={() => setShowAlert(true)} ><i className=" bi bi-wifi"></i> Cambiar  <i className=" bi bi-arrow-left-right"></i></a>
+                                            <a className="card__link" onClick={() => setShowAlert(true)} ><i className=" bi bi-wifi"></i> Cambiar ssi</a>
 
                                         </p>
 
                                     </div>
 
-                                    <div className=" col-8 col-md-6 text-center d-none ">
+                                    <div className="col-6 ">
                                         <p className="card__apply ">
-                                            <a className="card__link" ><i className=" bi bi-wifi"></i> Cambiar  ${datos.facturacion.total_facturas} <i className=" bi bi-arrow-left-right"></i></a>
+                                            <a className="card__link" onClick={() => setShowAlert(true)} ><i className=" bi bi-wifi"></i> Cambiar  clave</a>
+
                                         </p>
+
                                     </div>
                                 </div>
 
@@ -555,7 +558,7 @@ export function OpcionesView(props: any) {
                                 </p>
                             </div>
                         </div>
-                        <div className="col-12 col-md-6 pb-1">
+                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1">
                             <div className="card-t">
                                 <div className='row'>
                                     <div className='col-7'>

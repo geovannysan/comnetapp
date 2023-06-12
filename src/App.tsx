@@ -26,6 +26,7 @@ import './theme/animate.css';
 import "./theme/style.css";
 import "./theme/tablas.css";
 import "./theme/rizes.css";
+import "./theme/anima.css";
 import { useEffect, useState } from 'react';
 import { userlog } from './utils/User';
 import { StatusBar } from '@capacitor/status-bar';

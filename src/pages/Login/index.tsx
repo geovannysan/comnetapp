@@ -24,9 +24,9 @@ const Page: React.FC = () => {
                     if (datos.codigo === e.datos[0].codigo) {
                         present({
                             message: 'Bienvenido',
-                            cssClass: 'custom-toast',
+                           
                             duration: 1500,
-                            position: "top"
+                          
                         });
                         
                         localStorage.setItem("USERLOGIN", JSON.stringify({...e.datos[0]}))
