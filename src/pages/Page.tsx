@@ -6,7 +6,7 @@ import {
 import iconmenu from "../theme/menu.svg";
 import { Route, Switch,useHistory,useLocation } from 'react-router';
 import {
-   close, wifiOutline, ellipsisVertical, arrowBackCircleOutline, arrowBack, arrowBackOutline, chevronBack, chevronBackCircleOutline
+   close, wifiOutline, ellipsisVertical, arrowBackCircleOutline, arrowBack, arrowBackOutline, chevronBack, chevronBackCircleOutline, exitOutline
 } from 'ionicons/icons';
 import './Page.css';
 import routes from './route.js'
@@ -101,9 +101,9 @@ const Page: React.FC = () => {
               
             </IonButtons>
             <IonTitle>
-              <i className="bi bi-person-circle "> </i> Bienvenido
-              <span className='d-none d-sm-block text-lowercase  '
-              ></span>
+              <i className="bi bi-person-circle "> </i> 
+              <span className=' text-lowercase'
+              >{prog.usuario.user.nombre}</span>
             </IonTitle>
             <IonButtons slot='end'
               
@@ -113,7 +113,7 @@ const Page: React.FC = () => {
                   size: 5
                 }}
               >
-                {prog.usuario.user.nombre}
+                
               </IonCardSubtitle>
              
               <IonButton 
@@ -142,11 +142,14 @@ const Page: React.FC = () => {
                 <IonIcon md={wifiOutline}></IonIcon>
               </IonItem>
 
-              <IonItem button onClick={salir}>
+              <IonItem  >
                 <IonLabel>
                   Salir
                 </IonLabel>
-                <IonIcon ios={close} md={close} />
+                <IonButton onClick={salir}>
+                  <IonIcon ios={exitOutline} md={exitOutline} />
+                </IonButton>
+               
               </IonItem>
             </IonList>
           </div>

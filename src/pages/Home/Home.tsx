@@ -6,7 +6,7 @@ import { OverlayTrigger } from 'react-bootstrap';
 import { Popover } from 'react-bootstrap';
 import { useEffect, useRef, useState } from 'react';
 import { ListarFactura } from '../../utils/Queryuser';
-import { setPlan } from '../../StoreRedux/Slice/UserSlice';
+import { setOpctionslice, setPlan } from '../../StoreRedux/Slice/UserSlice';
 import "./Home.css"
 import { OpcionesView } from './Opciones';
 const popover = ()=>{
@@ -24,9 +24,14 @@ const Inicipage: React.FC = () => {
     const datos = useSelector((state: any) => state.usuario.user)
     let info = useSelector((state: any) => state.usuario.plan)
     const [open, setOpen] = useState<boolean>(false);
-    const [opction,setOption]= useState("");
+    const opction = useSelector((state:any) => state.usuario.opcion)
 
     const animatedElement: any = useRef(null);
+    function opciones(param:string){
+        console.log(param)
+        usedispach( setOpctionslice({ opcion :param}))
+        history.push("option")
+    }
     //console.log(datos)
     //function kbToMb(KB: string) { return parseInt(KB) / 1024; }
     useEffect(() => {
@@ -56,11 +61,11 @@ const Inicipage: React.FC = () => {
     return (
         <div className='px-0'>
 
-            {opction ==""?
+           
                 <div ref={animatedElement} className=' container-fluid px-0  d-flex  justify-content-center'>
                 <div className='row col-12 col-md-10 col-lg-12 px-0  '>
                     {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => setOption("Perfil")} >
+                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => opciones("Perfil")} >
                         <div className="cardt cardt-dark ">
                             <div className='row'>
                                 <div className='col-8'>
@@ -83,7 +88,7 @@ const Inicipage: React.FC = () => {
                             </div>
                             <p className=' text-capitalize'><span className=' fw-bold'>Plan:</span>{datos.servicios ? datos.servicios[0].perfil : "User Tickets"} </p>
                             <p className="card__apply">
-                                <a className="card__link" onClick={() => setOption("Perfil")}>Información <i className="card_icon   bi bi-eye"></i></a>
+                                    <a className="card__link" onClick={() => opciones("Perfil")}>Información <i className="card_icon   bi bi-eye"></i></a>
                             </p>
                         </div>
                         
@@ -110,11 +115,11 @@ const Inicipage: React.FC = () => {
                   
                     
 
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => setOption("Factura")} >
+                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => opciones("Factura")} >
                         <div className="cardt  cardt-success">
                             <div className='row'>
                                 <div className='col-8 '>
-                                    <h4 className=' text-success'>Reportar Pago</h4>
+                                    <h4 className=' text-success'>Facturación</h4>
                                 </div>
                                 <div className='col-3 '>
                                     <div className=' bg-success float-end  ms-3 mb-1 card rounded-3 shadow' style={{
@@ -139,11 +144,11 @@ const Inicipage: React.FC = () => {
                                 }} > Facturas</p>
                                 <p className="  text-default col-5 text-center" style={{
                                    
-                                }} > Inpagas: {datos.facturacion.facturas_nopagadas}</p>
+                                }} ><span className={datos.facturacion.facturas_nopagadas != 0 ? " text-danger" : ""}>Inpagas: {datos.facturacion.facturas_nopagadas}</span> </p>
 
                             </div>
                             <p className="card__apply">
-                                <a className="card__link" onClick={() => setOption("Factura")}>Pagar facturas <i className="card_icon   bi bi-cash"></i></a>
+                                    <a className="card__link" onClick={() => opciones("Factura")}>Pagar facturas <i className="card_icon   bi bi-cash"></i></a>
                             </p>
                         </div>
                     </div>
@@ -176,7 +181,7 @@ const Inicipage: React.FC = () => {
                             </p>
                         </div>
                     </div>
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => setOption("wifi")}>
+                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => opciones("wifi")}>
                         <div className="cardt  cardt-red ">
                             <div className='row'>
                                 <div className='col-8'>
@@ -204,14 +209,14 @@ const Inicipage: React.FC = () => {
                            
                             <p>Cambiar claves, Bloqueos</p>
                             <p className="card__apply ">
-                                <a className="card__link" onClick={() => setOption("wifi")}>Actualizar <i className="card_icon bi bi-wifi"></i></a>
+                                    <a className="card__link" onClick={() => opciones("wifi")}>Actualizar <i className="card_icon bi bi-wifi"></i></a>
                             </p>
                         </div>
                     </div>
                 </div>
 
 
-            </div>:""}
+            </div>
             <div className='container-fluid mt-4 d-flex  justify-content-center d-none '>
 
                 <div className='row col-12 col-md-10 col-lg-12 px-0  '>
@@ -403,12 +408,7 @@ const Inicipage: React.FC = () => {
                 </div>
 
             </div>
-            <div>
-                {opction != "" ?   <OpcionesView
-                    opction={opction}
-                    setOption={setOption}
-                />:""}
-            </div>
+            
         </div>
 
     )

@@ -32,3 +32,19 @@ export const Detalleoltport = async (parms) => {
         return error
     }
 }
+export const Deviceslist = async (parms)=>{
+    try {
+        let { data } = await axios.post("http://localhost:5200/PortalApi/Devices",parms)
+        return data
+    } catch (error) {
+        return error        
+    }
+}
+export const Nombressi= async (parms)=>{
+    try {
+        let { data } = await axios.post("http://localhost:5200/PortalApi/ssi", parms)
+        return data
+    } catch (error) {
+        return error      
+    }
+}

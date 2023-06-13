@@ -5,11 +5,12 @@ import { obtenervaariables } from "./parsesmart"
 import { IonAlert, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonToggle, IonToolbar, createAnimation } from "@ionic/react"
 import { arrowBack } from "ionicons/icons"
 import { useEffect, useRef, useState } from "react"
-import { Detalleoltport, EstadoOlt, Estadoluz } from "../../utils/Querystados"
+import { Detalleoltport, Deviceslist, EstadoOlt, Estadoluz, Nombressi } from "../../utils/Querystados"
 import { close } from "ionicons/icons";
 import DeviceView from "./Modaldevices"
-export function OpcionesView(props: any) {
-    let { setOption, opction } = props
+import { setOpctionslice } from "../../StoreRedux/Slice/UserSlice"
+export function OpcionesView() {
+    const opction = useSelector((state: any) => state.usuario.opcion)
     let user: any = userlog()
     let history = useHistory()
     let usedispach = useDispatch()
@@ -18,6 +19,7 @@ export function OpcionesView(props: any) {
         onu_status: "",
         onu_signal: ""
     })
+    const [devices, setDevices] = useState([])
     const [ssi, setSsid] = useState("")
     const [showAlert, setShowAlert] = useState(false);
     const [showModal, setModal] = useState(false);
@@ -63,6 +65,7 @@ export function OpcionesView(props: any) {
 
 
     useEffect(() => {
+        console.log(opction)
         const animation = createAnimation()
             .addElement(animatedElement.current)
             .duration(800)
@@ -100,6 +103,32 @@ export function OpcionesView(props: any) {
         }).catch(err => {
             console.log(err)
         })
+        //console.log(datos)
+        Deviceslist({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
+            console.log(ouput)
+            if (ouput.length > 0) {
+                console.log(ouput)
+                let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
+                console.log(Object.values(dtso))
+                let dat = Object.values(dtso).map((e: any, i) => {
+
+                })
+                setDevices(Object.values(dtso))
+                console.log(Object.values(dtso))
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+        Nombressi({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
+            console.log(ouput)
+            if (ouput.length > 0) {
+                let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSID"]._value
+                console.log(dst)
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+
     }, [opction])
     const handleAlertDismiss = () => {
         // Lógica para manejar el cierre del cuadro de diálogo de alerta
@@ -156,17 +185,22 @@ export function OpcionesView(props: any) {
             </IonModal>
         )
     }
+    function opciones(param: string) {
+        setOpctionslice({ opcion: param })
+        history.push("option")
+    }
 
     return (
         <>
-            <IonFab vertical="bottom" horizontal="end">
-                <IonFabButton size="small" onClick={() => setOption("")}>
+            {/*<IonFab vertical="bottom" horizontal="end">
+                <IonFabButton size="small" onClick={() => opciones("")}>
                     <IonIcon icon={arrowBack}></IonIcon>
                 </IonFabButton>
-            </IonFab>
+            </IonFab>*/}
             <DeviceView
                 showModal={showModal}
                 setModal={setModal}
+                devices={devices}
             />
             <IonModal isOpen={showAlert}
                 id="example-modal2"
@@ -218,14 +252,14 @@ export function OpcionesView(props: any) {
                                         style={{
                                             marginTop: -15
                                         }}>
-                                        <div className='col-8'>
+                                        <div className='col-12'>
                                             <h4 style={{
                                                 textTransform: "capitalize",
                                                 fontSize: "1em"
                                             }} className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"}>{datos.nombre}</h4>
 
                                         </div>
-                                        <div className='col-3  d-flex  justify-content-center'>
+                                        <div className='col-3  d-none  d-flex  justify-content-center'>
                                             <h4 className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"} style={{ fontSize: "1em" }}><i className=" bi bi-phone"></i>{datos.movil}</h4>
 
                                         </div>
@@ -243,7 +277,7 @@ export function OpcionesView(props: any) {
                                             <p className="card__apply ">
                                                 <a className="card__link"
 
-                                                    onClick={() => history.push("/page/perfil")}>Perfil  <i className="card_icon px-2  bi  bi-pencil"></i></a>
+                                                    onClick={() => history.push("/page/perfil")}>Editar  <i className="card_icon px-2  bi  bi-pencil"></i></a>
                                             </p>
                                         </div>
                                     </div>
@@ -258,15 +292,15 @@ export function OpcionesView(props: any) {
                             <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => console.log("")} >
                                 <div className="cardt  cardt-success">
                                     <div className='row'>
-                                        <div className='col-6 col-md-8 '>
+                                        <div className='col-10 col-md-8 '>
                                             <h4 className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"} style={{
                                                 textTransform: "capitalize",
                                                 fontSize: "1em"
                                             }}>{datos.servicios ? datos.servicios[0].perfil : "User Tickets"}</h4>
                                         </div>
-                                        <div className='col-6 col-md-3 text-center'>
+                                        <div className='col-2 col-md-3 '>
 
-                                            <h4 className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"} style={{ fontSize: "1em" }}><i className=" bi  bi-router"></i> {datos.modelO_DE_EQUIPO}</h4>
+                                            <h4 className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"} style={{ fontSize: "1em" }}><i className=" bi  bi-router"></i></h4>
 
 
 
@@ -367,7 +401,7 @@ export function OpcionesView(props: any) {
 
                                     </div>
                                 </div>
-                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span>{datos.modelO_DE_EQUIPO} </p>
+                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> </p>
 
                                 <div className="row pt-2">
                                     <div className="col-4 col-md-6">
@@ -462,7 +496,7 @@ export function OpcionesView(props: any) {
 
                                     </div>
                                 </div>
-                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span>{datos.modelO_DE_EQUIPO} </p>
+                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> </p>
 
                                 <div className="row pt-2">
                                     <div className="col-6 ">
@@ -504,9 +538,10 @@ export function OpcionesView(props: any) {
                                             <h4 style={{ fontSize: "0.9em" }}>  <i className=" bi bi-wifi-off"></i> Oculto </h4>
                                         }
                                     </div>
-                                    <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span>{datos.modelO_DE_EQUIPO} </p>
 
                                 </div>
+                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> </p>
+
                                 <div className="d-flex flex-wrap  justify-content-between align-items-center">
                                     <div className="col-sm "
 
@@ -550,7 +585,7 @@ export function OpcionesView(props: any) {
 
                                     </div>
                                 </div>
-                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span>{datos.modelO_DE_EQUIPO} </p>
+                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> </p>
 
 
                                 <p className="card__apply  float-end">

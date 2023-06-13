@@ -6,6 +6,7 @@ import FacturaViews from "./Comprobantes/Facturas";
 import DocuumentosViews from "./Documentos";
 import SpeddView from "../components/Spedd";
 import { PerfilView } from "./Perfil";
+import { OpcionesView } from "./Home/Opciones";
 export  function Lugar(){
     return(
         <div className="container"> 
@@ -37,6 +38,11 @@ const route = [
         name: "Inicio",
         collapse: false,
         component: Inicipage,
+    },{
+        path: "/option",
+        layout: "/page",
+        name: "Opciones",
+        component: OpcionesView,
     },
     {
         path: "/Documentos",

@@ -10,6 +10,7 @@ const initialState = {
     authb: false,
     progres:false,
     cosultstatus:false,
+    opcion:"",
     señal: {
         onu_signal_value: "",
         onu_status: "",
@@ -45,8 +46,11 @@ const userSlice = createSlice({
         },
         setSeñal: (state, action) => {
             state.señal = { ...action.payload }
+        },
+        setOpctionslice:(state,action)=>{
+            state.opcion = action.payload.opcion
         }
     }
 })
-export const { setDatosuser, setlogin, setProg, setPlan, setModal, setStatus,setSeñal } = userSlice.actions;
+export const { setDatosuser, setlogin, setProg, setPlan, setModal, setStatus, setSeñal, setOpctionslice } = userSlice.actions;
 export default userSlice.reducer;
