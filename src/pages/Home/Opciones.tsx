@@ -123,6 +123,7 @@ export function OpcionesView() {
             console.log(ouput)
             if (ouput.length > 0) {
                 let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSID"]._value
+                setNickname(dst)
                 console.log(dst)
             }
         }).catch(err => {
@@ -530,7 +531,7 @@ export function OpcionesView() {
                                         <h4 style={{
                                             textTransform: "capitalize",
                                             fontSize: "1em"
-                                        }}>Ocultar red Wifi</h4>
+                                        }}>{nickname}</h4>
                                     </div>
                                     <div className='col-5 col-md-5 d-flex  justify-content-end '>
 

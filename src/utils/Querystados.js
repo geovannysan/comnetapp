@@ -34,7 +34,7 @@ export const Detalleoltport = async (parms) => {
 }
 export const Deviceslist = async (parms)=>{
     try {
-        let { data } = await axios.post("http://localhost:5200/PortalApi/Devices",parms)
+        let { data } = await axios.post("https://portalapicon.somee.com/PortalApi/Devices",parms)
         return data
     } catch (error) {
         return error        
@@ -42,7 +42,7 @@ export const Deviceslist = async (parms)=>{
 }
 export const Nombressi= async (parms)=>{
     try {
-        let { data } = await axios.post("http://localhost:5200/PortalApi/ssi", parms)
+        let { data } = await axios.post("https://portalapicon.somee.com/PortalApi/ssi", parms)
         return data
     } catch (error) {
         return error      

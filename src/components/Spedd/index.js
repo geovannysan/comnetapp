@@ -108,7 +108,7 @@ export default function SpeddView() {
                     </IonToolbar>
                 </IonHeader>
 
-                <IonContent className=" ">
+                <IonContent className="ts ">
                    
                         <IonList>
                             <IonItem>
