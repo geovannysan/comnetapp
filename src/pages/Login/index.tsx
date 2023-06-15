@@ -1,4 +1,4 @@
-import { useIonToast } from '@ionic/react';
+import { IonIcon, IonInput, IonItem, IonLabel, IonToggle, useIonToast } from '@ionic/react';
 import {  useHistory } from 'react-router';
 import logo from "../../imagen/logo.png"
 
@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setDatosuser, setPlan, setlogin } from '../../StoreRedux/Slice/UserSlice';
 import { useState } from 'react';
 import { ListarFactura, autenticar } from '../../utils/Queryuser';
+import { eye, eyeOff } from 'ionicons/icons';
 
 const Page: React.FC = () => {
     let usedispat = useDispatch()
@@ -75,13 +76,16 @@ const Page: React.FC = () => {
             position: "top"
         });}
     }
+    const [passwordVisible, setPasswordVisible] = useState(false);
     function handeChange(e: any) {
         setDatos({
             ...datos,
             [e.name]: e.value
         })
     }
-
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
 
     return (
 
@@ -107,13 +111,39 @@ const Page: React.FC = () => {
                             required />
 
                     </div>
-                    <div className="col-sm-12 ">
-                        <label className="form-label"></label>
-                        <input type="text"
-                            placeholder='Contraseña' className="form-control"
-                            value={datos.codigo}
-                            onChange={(e) => handeChange(e.target)}
-                            name="codigo" required />
+                    <div className="col-sm-12  py-3">
+                        
+                           
+                            <div className="input-group">
+                            <input type={passwordVisible ? 'text' : 'password'}
+                                value={datos.codigo}
+                                name="codigo" required
+                                onChange={(e) => handeChange(e.target)}
+                            className="form-control" id="password"/>
+                            <div className="input-group-append" onClick={togglePasswordVisibility}>
+                                        <span className="input-group-text">
+                                    {passwordVisible ? <i className="bi bi-eye" id="togglePassword"></i>:
+                                        <i className="bi  bi-eye-slash" id="togglePassword"></i>}
+                                        </span>
+                                    </div>
+                          </div>
+                        <IonItem lines='none' className='d-none border rounded-3 '>
+                            <IonLabel position="floating">Contraseña</IonLabel>
+                            <IonInput
+                          
+                                type={passwordVisible ? 'text' : 'password'}
+                                value={datos.codigo}
+                                name="codigo" required
+                                onIonChange={(e) => handeChange(e.target)}
+                            />
+                            <IonIcon
+                                slot="end"
+                                icon={passwordVisible ? eyeOff : eye}
+                                onClick={togglePasswordVisibility}
+                                style={{paddigTop: '100px' }}
+
+                            />
+                        </IonItem>
                     </div>
                     <div className='col-12 d-flex justify-content-center pt-3'>
                         <button className='btn col-12  btn-primary' onClick={logearse}> Ingrese al Portal </button>

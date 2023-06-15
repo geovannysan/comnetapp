@@ -1,8 +1,8 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonToolbar } from "@ionic/react";
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from "@ionic/react";
 import { exit, reorderFour, close, chevronForward } from "ionicons/icons";
 
 export default function DeviceView(props: any) {
-    let { showModal, setModal, devices } = props
+    let { showModal, setModal, devices, nickname } = props
     return (
 
         <IonModal isOpen={showModal}
@@ -12,6 +12,9 @@ export default function DeviceView(props: any) {
         >
             <IonHeader>
                 <IonToolbar>
+                    <IonTitle>
+                        {nickname}
+                    </IonTitle>
                     <IonButtons slot="end"  >
                         <IonButton
 

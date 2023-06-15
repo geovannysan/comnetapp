@@ -5,7 +5,7 @@
     --ion-color-primary-contrast: #ffffff;
     --ion-color-primary-contrast-rgb: 255, 255, 255;
     --ion-color-primary-shade: #3171e0;
-    --ion-color-primary-tint: #4c8dff;
+    --ion-color-primary-tint: #10063e;
 
     /** secondary **/
     --ion-color-secondary: #3dc2ff;
@@ -70,6 +70,8 @@
     --ion-color-light-contrast-rgb: 0, 0, 0;
     --ion-color-light-shade: #d7d8da;
     --ion-color-light-tint: #f5f6f9;
+    /*color speed*/
+    --bg-spped:#10063e;
 }
 
 .cardt {
@@ -202,7 +204,7 @@
     z-index: -1;
     top: -15px;
     right: -15px;
-    background: #222428;
+    background: var(--bg-spped);
     height: 220px;
     width: 25px;
     border-radius: 32px;
@@ -233,7 +235,7 @@
 }
 
 .cardt:hover {
-    color: #ffffff !important;
+    color:  var(--ion-color-danger-contrast) !important;
     cursor: pointer !important;
 
 }

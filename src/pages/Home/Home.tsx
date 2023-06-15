@@ -69,7 +69,9 @@ const Inicipage: React.FC = () => {
                         <div className="cardt cardt-dark ">
                             <div className='row'>
                                 <div className='col-8'>
-                                    <h4 style={{ textTransform: "capitalize" }} className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"}>{datos.estado === "ACTIVO" ? " Servicio Activo" : "Servicio cancelado"}!</h4>
+                                    <h4 style={{ textTransform: "capitalize",
+                                        fontSize: "0.9em"
+                                }} className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"}>{datos.estado === "ACTIVO" ? " Servicio Activo" : "Servicio cancelado"}!</h4>
 
                                 </div>
                                 <div className='col-3  '>
@@ -119,7 +121,9 @@ const Inicipage: React.FC = () => {
                         <div className="cardt  cardt-success">
                             <div className='row'>
                                 <div className='col-8 '>
-                                    <h4 className=' text-success'>Facturación</h4>
+                                    <h4 className=' text-success'
+                                    style={{fontSize: "0.9em"}}
+                                    >Facturación</h4>
                                 </div>
                                 <div className='col-3 '>
                                     <div className=' bg-success float-end  ms-3 mb-1 card rounded-3 shadow' style={{
@@ -156,7 +160,9 @@ const Inicipage: React.FC = () => {
                         <div className="cardt cardt-primary ">
                             <div className='row'>
                                 <div className='col-8'>
-                                    <h4 className=' text-primary'>Soporte Técnico</h4>
+                                    <h4 className=' text-primary'
+                                        style={{ fontSize: "0.9em" }}
+                                    >Soporte Técnico</h4>
                                 </div>
                                 <div className='col-3 '>
                                     <div className='  mb-1  float-end   ms-3 card rounded-4 shadow' style={{
@@ -186,7 +192,7 @@ const Inicipage: React.FC = () => {
                             <div className='row'>
                                 <div className='col-8'>
                                     <h4 className=' ' style={{
-                                        
+                                        fontSize: "0.9em",
                                          fontWeight:"bold"
                                     }}> Opciones Wifi</h4>
                                 </div>

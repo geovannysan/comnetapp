@@ -95,7 +95,7 @@ export function PerfilView() {
                                     }}
                                     data-name={dtos.nombre} />
                                 <h4 className="card-title m-t-10">{dtos.nombre}</h4>
-                                <h6 className="card-subtitle">Administrador</h6>
+                                <h6 className="card-subtitle"></h6>
                                 <br />
                                 <button type="button" className="btnfb btn btn-xs btn-default d-none" data-original-title="Avatar desde Facebook"><i className="fab fa-facebook-f"></i>Facebook</button>
 

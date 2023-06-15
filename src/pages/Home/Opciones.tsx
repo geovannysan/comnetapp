@@ -201,6 +201,7 @@ export function OpcionesView() {
             <DeviceView
                 showModal={showModal}
                 setModal={setModal}
+                nickname={nickname}
                 devices={devices}
             />
             <IonModal isOpen={showAlert}
@@ -256,16 +257,18 @@ export function OpcionesView() {
                                         <div className='col-12'>
                                             <h4 style={{
                                                 textTransform: "capitalize",
-                                                fontSize: "1em"
+                                                fontSize: "0.9em"
                                             }} className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"}>{datos.nombre}</h4>
 
                                         </div>
                                         <div className='col-3  d-none  d-flex  justify-content-center'>
-                                            <h4 className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"} style={{ fontSize: "1em" }}><i className=" bi bi-phone"></i>{datos.movil}</h4>
+                                            <h4 style={{ fontSize: "0.9em" }} className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"}><i className=" bi bi-phone"></i>  {datos.movil}</h4>
 
                                         </div>
                                     </div>
-                                    <p className='card__link text-capitalize'  ><span className=' fw-bold'><i className="bi bi-pin-map-fill px-1"></i></span>{datos.direccion_principal} </p>
+                                    <p className='card__link text-capitalize'style={{
+                                        fontSize:"0.9em"
+                                    }}  ><span className=' fw-bold'><i className="bi bi-pin-map-fill px-1"></i></span>{datos.direccion_principal} </p>
                                     <div className="row">
                                         <div className="col-8 col-md-6">
                                             <p className="card__apply ">
@@ -293,15 +296,15 @@ export function OpcionesView() {
                             <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => console.log("")} >
                                 <div className="cardt  cardt-success">
                                     <div className='row'>
-                                        <div className='col-10 col-md-8 '>
+                                        <div className='col-6 col-md-6 '>
                                             <h4 className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"} style={{
                                                 textTransform: "capitalize",
-                                                fontSize: "1em"
+                                                fontSize: "0.9em"
                                             }}>{datos.servicios ? datos.servicios[0].perfil : "User Tickets"}</h4>
                                         </div>
-                                        <div className='col-2 col-md-3 '>
+                                        <div className='col-6 col-md-6 '>
 
-                                            <h4 className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"} style={{ fontSize: "1em" }}><i className=" bi  bi-router"></i></h4>
+                                            <h4 className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"} style={{ fontSize: "0.9em" }}><i className=" bi  bi-router"></i>{nickname}</h4>
 
 
 
@@ -351,7 +354,11 @@ export function OpcionesView() {
                                 <div className="cardt cardt-primary ">
                                     <div className='row'>
                                         <div className='col-8'>
-                                            <h4 className=' text-primary'>Soporte Técnico</h4>
+                                            <h4 className=' text-primary'
+                                            style={{
+                                                fontSize: "0.9em"
+                                            }}
+                                            >Soporte Técnico</h4>
                                         </div>
                                         <div className='col-3 '>
                                             <div className='  mb-1  float-end   ms-3 card rounded-4 shadow' style={{
@@ -402,7 +409,7 @@ export function OpcionesView() {
 
                                     </div>
                                 </div>
-                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> </p>
+                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> {nickname}</p>
 
                                 <div className="row pt-2">
                                     <div className="col-4 col-md-6">
@@ -497,7 +504,7 @@ export function OpcionesView() {
 
                                     </div>
                                 </div>
-                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> </p>
+                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> {nickname}</p>
 
                                 <div className="row pt-2">
                                     <div className="col-6 ">
@@ -508,8 +515,8 @@ export function OpcionesView() {
 
                                     </div>
 
-                                    <div className="col-6 ">
-                                        <p className="card__apply ">
+                                    <div className="col-6  ">
+                                        <p className="card__apply  float-end">
                                             <a className="card__link" onClick={() => setShowAlert(true)} ><i className=" bi bi-wifi"></i> Cambiar  clave</a>
 
                                         </p>
@@ -529,9 +536,9 @@ export function OpcionesView() {
                                 <div className='row'>
                                     <div className='col-7 col-md-7 '>
                                         <h4 style={{
-                                            textTransform: "capitalize",
-                                            fontSize: "1em"
-                                        }}>{nickname}</h4>
+                                          
+                                            fontSize: "0.9em"
+                                        }}>Estado de SSi Wifi</h4>
                                     </div>
                                     <div className='col-5 col-md-5 d-flex  justify-content-end '>
 
@@ -541,7 +548,7 @@ export function OpcionesView() {
                                     </div>
 
                                 </div>
-                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> </p>
+                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span>{nickname} </p>
 
                                 <div className="d-flex flex-wrap  justify-content-between align-items-center">
                                     <div className="col-sm "
@@ -557,7 +564,7 @@ export function OpcionesView() {
                                     </div>
                                     <div className="col-sm d-flex justify-content-end">
                                         <p className="card__apply">
-                                            <a className="card__link" >Cambiar a red oculta </a>
+                                            <a className="card__link" >Cambiar a red oculta/visible </a>
                                         </p>
                                     </div>
 
@@ -586,7 +593,7 @@ export function OpcionesView() {
 
                                     </div>
                                 </div>
-                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> </p>
+                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span>{nickname} </p>
 
 
                                 <p className="card__apply  float-end">
