@@ -13,7 +13,7 @@ export const usuarioTocken= [
     {
         "usuario": "COMNETCARRERA",
         "password": "0930570395",
-        "nombre": "BELEN CARRERA",
+        "nombre": "MARÍA BELÉN CARRERA",
         "correo": "computencnisnet.com",
         "telefono": "",
     }
@@ -25,15 +25,22 @@ export const usuarioTocken= [
         "telefono": "",
     }
     ,{
-        "usuario": "abazan",
-        "password": "0926653197",
-        "nombre": "Alan Bazan",
-        "correo": "abazan@comnet.ec",
+        "usuario": "furresta",
+        "password": "0920111333",
+        "nombre": "Fernando Urresta",
+        "correo": "furresta@comnet.ec",
         "telefono": "",
     },{
         "usuario": "mazanza",
         "password": "0925474942",
         "nombre": "Maria Azanza",
+        "correo": "mazanza@comnet.ec",
+        "telefono": "",
+    },
+    {
+        "usuario": "mmero",
+        "password": "0930429949",
+        "nombre": "Melany Mero",
         "correo": "mazanza@comnet.ec",
         "telefono": "",
     }

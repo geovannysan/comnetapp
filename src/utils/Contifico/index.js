@@ -35,6 +35,17 @@ export const BuscaclienteContifico = async (parms) => {
     }}
 }
 /**
+ * 
+ */
+export const Consultarcedula= async(parms)=>{
+    try {
+        let { data } = await axios.get("https://rec.netbot.ec/ms_login/cedula/"+parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+/**
  * crea cliente en contifico
  * @param {*} parms 
  * @returns 
@@ -81,9 +92,9 @@ export const BuscarProductoContific = async (parms) => {
  */
 export const IncremetoFacturaS = async () => {
     try {
-
+      //https://rec.netbot.ec/mikroti/FactuApi/incrementodos
         let { data } = await axios({
-            method: 'post', url: 'https://flash.t-ickets.com/mikroti/FactuApi/incrementodos'
+            method: 'post', url: 'https://rec.netbot.ec/mikroti/FactuApi/incrementodos'
         })
         return data
     } catch (error) {
@@ -92,9 +103,9 @@ export const IncremetoFacturaS = async () => {
 }
 export const IncremetoCon = async () => {
     try {
-
+        //https://rec.netbot.ec/mikroti/FactuApi/incrementouno
         let { data } = await axios({
-            method: 'post', url: 'https://flash.t-ickets.com/mikroti/FactuApi/incrementouno'
+            method: 'post', url: 'https://rec.netbot.ec/mikroti/FactuApi/incrementouno'
         })
         return data
     } catch (error) {
@@ -122,7 +133,7 @@ export const IncremetoCon = async () => {
  */
 export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("https://flash.t-ickets.com/mikroti/FactuApi/Crearpro", {...parms})
+        let { data } = await axios.post("https://rec.netbot.ec/mikroti/FactuApi/Crearpro", {...parms})
         return data
     } catch (error) {
         return error
@@ -134,7 +145,7 @@ export const PagoFacturacomnet = async (parms) => {
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("https://flash.t-ickets.com/mikroti/PortalApi/PagosdelPortal/" + nombres.password  , 
+        let { data } = await axios.post("https://rec.netbot.ec/mikroti/PortalApi/PagosdelPortal/" + nombres.password  , 
             parms
         
         )

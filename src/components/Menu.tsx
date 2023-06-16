@@ -16,12 +16,9 @@ import {
   archiveOutline, archiveSharp,
   homeSharp,
   homeOutline,
-  documentsOutline, documentSharp,
-  hammerOutline, hammerSharp, locationOutline,
-  location, receiptOutline, receiptSharp
 } from 'ionicons/icons';
-import './Menu.css';
 import logo from "../imagen/logo.png"
+import im from "../imagen/icono.jpg"
 import { useSelector } from 'react-redux';
 interface AppPage {
   url: string;
@@ -88,22 +85,25 @@ const Menu: React.FC = () => {
     <IonContent  >
       <IonHeader className=''>
         <div className='header px-0 pb-3'>
-          <img className='img-fluid' src='https://portal.comnet.ec/admin/images/login-bg/login-bg-9.jpg'
+          <img 
+          width={"100%"}
+
+           src={im}
 
           >
           </img>
-          <div className=' info-user'>
+          
+
+        </div>
+          <div className='  text-dark p-2'>
 
 
             <IonNote className=' text-lowercase'></IonNote>
-            <IonListHeader className='text-white text-info '>{nombres.user.nombre}</IonListHeader>
+            <IonListHeader className='text-dark text-info '>{nombres.user.nombre}</IonListHeader>
 
           </div>
 
-        </div>
-
-
-        <div className='container h-100 pt-5 pb-5'>
+        <div className=' h-100 pb-5'>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
