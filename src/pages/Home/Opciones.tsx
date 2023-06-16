@@ -2,8 +2,8 @@ import { useHistory } from "react-router"
 import { userlog } from "../../utils/User"
 import { useDispatch, useSelector } from "react-redux"
 import { obtenervaariables } from "./parsesmart"
-import { IonAlert, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonToggle, IonToolbar, createAnimation } from "@ionic/react"
-import { arrowBack } from "ionicons/icons"
+import { IonAlert, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonTitle, IonToggle, IonToolbar, createAnimation } from "@ionic/react"
+import { arrowBack, createOutline, expandOutline } from "ionicons/icons"
 import { useEffect, useRef, useState } from "react"
 import { Detalleoltport, Deviceslist, EstadoOlt, Estadoluz, Nombressi } from "../../utils/Querystados"
 import { close } from "ionicons/icons";
@@ -63,7 +63,8 @@ export function OpcionesView() {
 
     const [nickname, setNickname] = useState('');
 
-
+    const [handlerMessage, setHandlerMessage] = useState('');
+    const [roleMessage, setRoleMessage] = useState('');
     useEffect(() => {
         console.log(opction)
         const animation = createAnimation()
@@ -250,39 +251,69 @@ export function OpcionesView() {
                             {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
                             <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' >
                                 <div className="cardt cardt-dark ">
-                                    <div className='row '
+                                    <div className='row py-0'
                                         style={{
-                                            marginTop: -15
+                                                
                                         }}>
-                                        <div className='col-12'>
-                                            <h4 style={{
+                                            <div className=" text-end">
+                                            <IonButton
+                                            slot="end"
+                                                className="p-tn-2 "
+                                                onClick={() => history.push("/page/perfil")}
+                                                color="tertiary"
+                                                size="small">
+                                                Mis datos
+                                                <IonIcon
+                                                    slot="end"
+                                                    icon={createOutline}
+                                                />
+
+                                            </IonButton>
+                                            </div>
+                                        
+                                        <div className=' '
+                                      
+                                        >
+                                           
+                                            {datos.estado === "ACTIVO" ? 
+                                            <h6 
+                                            
+                                            style={{
                                                 textTransform: "capitalize",
-                                                fontSize: "0.9em"
-                                            }} className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"}>{datos.nombre}</h4>
+                                                fontSize: "1em",
+                                                  lineHeight: "15px",
+                                                  verticalAlign:"top"
+                                            }} className="text-success " > <i className=" bi bi-person"></i>{datos.nombre}</h6> :
+                                                <h6 style={{
+                                                    textTransform: "capitalize",
+                                                    fontSize: "0.9em"
+                                                }} className=" text-danger" ><i className=" bi bi-person"></i>{datos.nombre}</h6>
+                                            }
+                                           
 
                                         </div>
-                                        <div className='col-3  d-none  d-flex  justify-content-center'>
-                                            <h4 style={{ fontSize: "0.9em" }} className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"}><i className=" bi bi-phone"></i>  {datos.movil}</h4>
-
-                                        </div>
+                                        
                                     </div>
-                                    <p className='card__link text-capitalize'style={{
-                                        fontSize:"0.9em"
-                                    }}  ><span className=' fw-bold'><i className="bi bi-pin-map-fill px-1"></i></span>{datos.direccion_principal} </p>
-                                    <div className="row">
-                                        <div className="col-8 col-md-6">
+                                    <p className='card__link text-capitalize p-0' style={{
+                                        fontSize: "0.9em"
+                                    }}  ><span className=' fw-bold'><i className="bi bi-pin-map-fill px-1" ></i></span>{datos.direccion_principal} </p>
+
+
+                                    <div className="row px-0">
+                                        <div className="d-none col-7 col-md-6 px-1">
                                             <p className="card__apply ">
+                                                <i className=" px-1  bi  bi-envelope"></i>
                                                 <a className="card__link" style={{
-                                                    fontSize: "0.8em"
-                                                }}><i className="card_icon px-2  bi  bi-envelope"></i>{datos.correo}</a>
+                                                    fontSize: "0.7em"
+                                                }}>{datos.correo}</a>
                                             </p>
                                         </div>
-                                        <div className=" col-4 col-md-6 text-center ">
-                                            <p className="card__apply ">
-                                                <a className="card__link"
+                                        <div className=" col-5 col-md-6 text-center ">
+                                            
+                                            <a className=" d-none btn btn-sm btn-default"
 
-                                                    onClick={() => history.push("/page/perfil")}>Editar  <i className="card_icon px-2  bi  bi-pencil"></i></a>
-                                            </p>
+                                                onClick={() => history.push("/page/perfil")}>Editar  <i className="card_icon px-2  bi  bi-pencil"></i></a>
+
                                         </div>
                                     </div>
 
@@ -355,9 +386,9 @@ export function OpcionesView() {
                                     <div className='row'>
                                         <div className='col-8'>
                                             <h4 className=' text-primary'
-                                            style={{
-                                                fontSize: "0.9em"
-                                            }}
+                                                style={{
+                                                    fontSize: "0.9em"
+                                                }}
                                             >Soporte Técnico</h4>
                                         </div>
                                         <div className='col-3 '>
@@ -489,14 +520,14 @@ export function OpcionesView() {
                 {opction == "wifi" ? <div className='container-fluid px-0  d-flex  justify-content-center'>
                     <div className='row col-12 col-md-10 col-lg-12 px-0  '>
                         {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
-                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' >
-                            <div className="cardt cardt-red ">
+                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2  ' >
+                            <div className="cardt cardt-red border boxshadow">
                                 <div className='row'>
                                     <div className='col-8'>
                                         <h4 style={{
                                             textTransform: "capitalize",
                                             fontSize: "0.9em"
-                                        }} >Cambiar Clave</h4>
+                                        }} >Nombre wifi</h4>
 
                                     </div>
                                     <div className='col-4  d-flex  justify-content-end'>
@@ -509,13 +540,13 @@ export function OpcionesView() {
                                 <div className="row pt-2">
                                     <div className="col-6 ">
                                         <p className="card__apply ">
-                                            <a className="card__link" onClick={() => setShowAlert(true)} ><i className=" bi bi-wifi"></i> Cambiar ssi</a>
+                                            <a className="card__link" onClick={() => setShowAlert(true)} ><i className=" bi bi-wifi"></i> Cambiar nombre</a>
 
                                         </p>
 
                                     </div>
 
-                                    <div className="col-6  ">
+                                    <div className="col-6  d-none ">
                                         <p className="card__apply  float-end">
                                             <a className="card__link" onClick={() => setShowAlert(true)} ><i className=" bi bi-wifi"></i> Cambiar  clave</a>
 
@@ -529,14 +560,51 @@ export function OpcionesView() {
                         </div>
 
 
+                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' >
+                            <div className="cardt cardt-success border boxshadow">
+                                <div className='row'>
+                                    <div className='col-8'>
+                                        <h4 style={{
+                                            textTransform: "capitalize",
+                                            fontSize: "0.9em"
+                                        }} >Clave wifi</h4>
 
+                                    </div>
+                                    <div className='col-4  d-flex  justify-content-end'>
+                                        <h4 style={{ fontSize: "1em" }}><i className=" bi bi-arrow-repeat"></i> Cambiar</h4>
 
-                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 '  >
-                            <div className="cardt  cardt-dark">
+                                    </div>
+                                </div>
+                                <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> {nickname}</p>
+
+                                <div className="row pt-2">
+                                    <div className="col-6 ">
+                                        <p className="card__apply ">
+                                            <a className="card__link" onClick={() => setShowAlert(true)} ><i className=" bi bi-wifi"></i> Cambiar clave</a>
+
+                                        </p>
+
+                                    </div>
+
+                                    <div className="col-6 d-none  ">
+                                        <p className="card__apply  float-end">
+                                            <a className="card__link" onClick={() => setShowAlert(true)} ><i className=" bi bi-wifi"></i> Cambiar  clave</a>
+
+                                        </p>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 '  >
+                            <div id="present-alert" className="cardt  cardt-dark border boxshadow" onClick={() => setFifi(!wifi)}>
                                 <div className='row'>
                                     <div className='col-7 col-md-7 '>
                                         <h4 style={{
-                                          
+
                                             fontSize: "0.9em"
                                         }}>Estado de SSi Wifi</h4>
                                     </div>
@@ -557,9 +625,11 @@ export function OpcionesView() {
                                             marginTop: "-30px"
                                         }}>
                                         <IonToggle
+                                        
                                             checked={wifi}
                                             onIonChange={(e: any) => setFifi(e.detail["checked"])}
                                             enableOnOffLabels={true}
+                                            disabled={true}
                                         ></IonToggle>
                                     </div>
                                     <div className="col-sm d-flex justify-content-end">
@@ -574,8 +644,8 @@ export function OpcionesView() {
 
                             </div>
                         </div>
-                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => console.log("")} >
-                            <div className="cardt cardt-primary ">
+                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => console.log("")} >
+                            <div className="cardt cardt-primary border boxshadow ">
                                 <div className='row'>
                                     <div className='col-7'>
                                         <h4 style={{
@@ -601,7 +671,7 @@ export function OpcionesView() {
                                 </p>
                             </div>
                         </div>
-                        <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1">
+                        <div className="d-none col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1">
                             <div className="card-t">
                                 <div className='row'>
                                     <div className='col-7'>
@@ -635,5 +705,26 @@ export function OpcionesView() {
                 </div> : ""}
 
             </div>
+            <IonAlert
+                header="Alert!"
+               isOpen={wifi}
+                buttons={[
+                    {
+                        text: 'Cancel',
+                        role: 'cancel',
+                        handler: () => {
+                            setHandlerMessage('Alert canceled');
+                        },
+                    },
+                    {
+                        text: 'OK',
+                        role: 'confirm',
+                        handler: () => {
+                            setHandlerMessage('Alert confirmed');
+                        },
+                    },
+                ]}
+                onDidDismiss={() => setFifi(false)}
+            ></IonAlert>
         </>)
 }

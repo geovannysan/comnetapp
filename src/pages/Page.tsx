@@ -90,7 +90,7 @@ const Page: React.FC = () => {
       <IonContent fullscreen id="main-content" className='px-0'>
 
         <IonHeader className="ion-no-border  " >
-          <IonToolbar className='ion-toolbar-transparent ' >
+          <IonToolbar className=' ' >
             
             <IonButtons slot="start">
               <IonMenuButton>
@@ -100,7 +100,7 @@ const Page: React.FC = () => {
               
               
             </IonButtons>
-            <IonTitle>
+            <IonTitle className='d-none'>
               <i className="bi bi-person-circle "> </i> 
               <span className=' text-lowercase'
               >{prog.usuario.user.nombre}</span>

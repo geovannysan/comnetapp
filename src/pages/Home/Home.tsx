@@ -1,4 +1,4 @@
-import { IonPopover , IonContent, IonList, IonItem, createAnimation } from '@ionic/react';
+import { IonPopover, IonContent, IonList, IonItem, createAnimation, IonBadge } from '@ionic/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import Collapse from "react-bootstrap/Collapse"
@@ -9,8 +9,8 @@ import { ListarFactura } from '../../utils/Queryuser';
 import { setOpctionslice, setPlan } from '../../StoreRedux/Slice/UserSlice';
 import "./Home.css"
 import { OpcionesView } from './Opciones';
-const popover = ()=>{
-    return(
+const popover = () => {
+    return (
         <Popover id="basic">
             <Popover.Body>
 
@@ -24,12 +24,12 @@ const Inicipage: React.FC = () => {
     const datos = useSelector((state: any) => state.usuario.user)
     let info = useSelector((state: any) => state.usuario.plan)
     const [open, setOpen] = useState<boolean>(false);
-    const opction = useSelector((state:any) => state.usuario.opcion)
+    const opction = useSelector((state: any) => state.usuario.opcion)
 
     const animatedElement: any = useRef(null);
-    function opciones(param:string){
+    function opciones(param: string) {
         console.log(param)
-        usedispach( setOpctionslice({ opcion :param}))
+        usedispach(setOpctionslice({ opcion: param }))
         history.push("option")
     }
     //console.log(datos)
@@ -61,18 +61,36 @@ const Inicipage: React.FC = () => {
     return (
         <div className='px-0'>
 
-           
-                <div ref={animatedElement} className=' container-fluid px-0  d-flex  justify-content-center'>
+
+            <div ref={animatedElement} className=' container-fluid px-0  d-flex  justify-content-center'>
                 <div className='row col-12 col-md-10 col-lg-12 px-0  '>
                     {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
-                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => opciones("Perfil")} >
-                        <div className="cardt cardt-dark ">
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => opciones("Perfil")} >
+                        <div className="cardt cardt-dark boxshadow border">
+                           
+                              <div className='' style={{
+                                marginTop:"-20px"
+                              }}>
+                                <h5 className=' fw-bold  border-3 border-bottom'
+                                    style={{ fontSize: "1.4em" }}
+                                >Servicio</h5>
+                              </div>
+                                   
+                               
                             <div className='row'>
                                 <div className='col-8'>
-                                    <h4 style={{ textTransform: "capitalize",
-                                        fontSize: "0.9em"
-                                }} className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"}>{datos.estado === "ACTIVO" ? " Servicio Activo" : "Servicio cancelado"}!</h4>
-
+                                    <div className='d-flex  align-items-center'>
+                                        <div className=''>
+                                            <h5 className='  fw-bold' style={{
+                                                textTransform: "capitalize",
+                                                fontSize: "1.0em"
+                                            }} > ESTADO: </h5>
+                                        </div>
+                                        
+                                        <div className='px-1 pt-2'>
+                                            {datos.estado === "ACTIVO" ? <IonBadge className='p-2 activo'>{datos.estado}</IonBadge> : <IonBadge color="danger">{datos.estado}</IonBadge>}
+                                        </div>                                        
+                                    </div>
                                 </div>
                                 <div className='col-3  '>
                                     <div className='   bg-secondary float-end  ms-3 mb-1 card rounded-3 shadow' style={{
@@ -88,41 +106,48 @@ const Inicipage: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <p className=' text-capitalize'><span className=' fw-bold'>Plan:</span>{datos.servicios ? datos.servicios[0].perfil : "User Tickets"} </p>
-                            <p className="card__apply">
-                                    <a className="card__link" onClick={() => opciones("Perfil")}>Información <i className="card_icon   bi bi-eye"></i></a>
+                            <p className=' text-capitalize p-tn-2'style={{
+                                fontSize:"0.75em",
+                               
+                            }} ><span className=' fw-bold'>PLAN: </span>{datos.servicios ? datos.servicios[0].perfil : "User Tickets"} </p>
+                            <p className="card__applynombre float-end"
+                            
+                            >
+                                <a className="card__link" style={{
+                                    paddingTop: "-25px"
+                                }} onClick={() => opciones("Perfil")}>Ver más <i className="card_icon   bi bi-eye"></i></a>
                             </p>
                         </div>
-                        
+
                     </div>
                     <IonPopover trigger="trigger-button" alignment="center" >
-                       
-                            <div className='  col-12  p-2' >
-                                <span className='p-2'> Servicios :</span>
-                                <IonList lines='none'>
-                                    {info.length>0? info.map((e: string, i: number) => {
-                                        return (
-                                            <IonItem className='text-info text-dark' key={i} >
-                                                <span
-                                                >
-                                                    {e}
-                                                </span>
-                                            </IonItem>
-                                        )
-                                    }):""}
-                                </IonList >
-                            </div>
-                        
-                    </IonPopover>
-                  
-                    
 
-                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => opciones("Factura")} >
-                        <div className="cardt  cardt-success">
+                        <div className='  col-12  p-2' >
+                            <span className='p-2'> Servicios :</span>
+                            <IonList lines='none'>
+                                {info.length > 0 ? info.map((e: string, i: number) => {
+                                    return (
+                                        <IonItem className='text-info text-dark' key={i} >
+                                            <span
+                                            >
+                                                {e}
+                                            </span>
+                                        </IonItem>
+                                    )
+                                }) : ""}
+                            </IonList >
+                        </div>
+
+                    </IonPopover>
+
+
+
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => opciones("Factura")} >
+                        <div className="cardt  cardt-success boxshadow border">
                             <div className='row'>
                                 <div className='col-8 '>
                                     <h4 className=' text-success'
-                                    style={{fontSize: "0.9em"}}
+                                        style={{ fontSize: "0.9em" }}
                                     >Facturación</h4>
                                 </div>
                                 <div className='col-3 '>
@@ -144,20 +169,20 @@ const Inicipage: React.FC = () => {
                             </div>
                             <div className=" px-0 row mx-0">
                                 <p className=" text-default col-7" style={{
-                                    
+
                                 }} > Facturas</p>
                                 <p className="  text-default col-5 text-center" style={{
-                                   
+
                                 }} ><span className={datos.facturacion.facturas_nopagadas != 0 ? " text-danger" : ""}>Inpagas: {datos.facturacion.facturas_nopagadas}</span> </p>
 
                             </div>
                             <p className="card__apply">
-                                    <a className="card__link" onClick={() => opciones("Factura")}>Pagar facturas <i className="card_icon   bi bi-cash"></i></a>
+                                <a className="card__link" onClick={() => opciones("Factura")}>Pagar facturas <i className="card_icon   bi bi-cash"></i></a>
                             </p>
                         </div>
                     </div>
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => history.push("/page/Soporte")} >
-                        <div className="cardt cardt-primary ">
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => history.push("/page/Soporte")} >
+                        <div className="cardt cardt-primary boxshadow border">
                             <div className='row'>
                                 <div className='col-8'>
                                     <h4 className=' text-primary'
@@ -187,13 +212,13 @@ const Inicipage: React.FC = () => {
                             </p>
                         </div>
                     </div>
-                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => opciones("wifi")}>
-                        <div className="cardt  cardt-red ">
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => opciones("wifi")}>
+                        <div className="cardt  cardt-red boxshadow border">
                             <div className='row'>
                                 <div className='col-8'>
                                     <h4 className=' ' style={{
                                         fontSize: "0.9em",
-                                         fontWeight:"bold"
+                                        fontWeight: "bold"
                                     }}> Opciones Wifi</h4>
                                 </div>
                                 <div className='col-3'>
@@ -212,10 +237,10 @@ const Inicipage: React.FC = () => {
 
 
                             </div>
-                           
+
                             <p>Cambiar claves, Bloqueos</p>
                             <p className="card__apply ">
-                                    <a className="card__link" onClick={() => opciones("wifi")}>Actualizar <i className="card_icon bi bi-wifi"></i></a>
+                                <a className="card__link" onClick={() => opciones("wifi")}>Actualizar <i className="card_icon bi bi-wifi"></i></a>
                             </p>
                         </div>
                     </div>
@@ -272,7 +297,7 @@ const Inicipage: React.FC = () => {
                                     </div>
                                 </div>
                             </a>
-                           { /*<Collapse in={open}>
+                            { /*<Collapse in={open}>
                                 <div className='  col-12 border  rounded-4 bg-white  shadow-sm  p-2' >
                                     <span className='p-2'> Servicios :</span>
                                     <IonList lines='none'>
@@ -414,7 +439,7 @@ const Inicipage: React.FC = () => {
                 </div>
 
             </div>
-            
+
         </div>
 
     )

@@ -2,16 +2,17 @@
   <defs>
     <style>
       .cls-1 {
-        fill: currentColor;
+        fill: #fff !important;
       }
       @media (prefers-color-scheme: dark) {
   /*
    * Dark Colors
    * -------------------------------------------
-   **/
+   **
+   /*
  .cls-1 {
-    fill: #fff !important;
-    }
+    fill: #000 !important;
+    }*/
   }
     </style>
   </defs>
