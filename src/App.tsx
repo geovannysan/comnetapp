@@ -37,7 +37,7 @@ import { initializeOneSignal } from './Onesignajs'
 import { getPlatforms } from '@ionic/react';
 function OneSignalInit(user:any): void {
   OneSignal.setLogLevel(0, 0);
-  OneSignal.setAppId("849c3d23-45d6-4477-9a2a-e2f964a03c79");
+  OneSignal.setAppId("1b5d9596-a75f-4a2d-b38f-4ae7231e48a3");
   OneSignal.setNotificationOpenedHandler(function (jsonData) {
     console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
   });

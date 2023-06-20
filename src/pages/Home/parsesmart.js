@@ -1,4 +1,7 @@
 export function obtenervaariables(dato) {
+    if(dato==""){
+        return undefined
+    }
     const variables = {}
     let data = JSON.stringify(dato)
     const procesar = JSON.parse(data).split("{")[1]

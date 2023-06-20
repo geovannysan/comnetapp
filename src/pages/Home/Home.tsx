@@ -5,19 +5,12 @@ import Collapse from "react-bootstrap/Collapse"
 import { OverlayTrigger } from 'react-bootstrap';
 import { Popover } from 'react-bootstrap';
 import { useEffect, useRef, useState } from 'react';
-import { ListarFactura } from '../../utils/Queryuser';
+import { Equipos, ListarFactura, OLTcardDETA } from '../../utils/Queryuser';
 import { setOpctionslice, setPlan } from '../../StoreRedux/Slice/UserSlice';
 import "./Home.css"
 import { OpcionesView } from './Opciones';
-const popover = () => {
-    return (
-        <Popover id="basic">
-            <Popover.Body>
-
-            </Popover.Body>
-        </Popover>
-    )
-}
+import { obtenervaariables } from './parsesmart';
+import { DetalleOlt, Detalleoltport, Get_onu_signal, Gt_onu_status } from '../../utils/Querystados';
 const Inicipage: React.FC = () => {
     let history = useHistory()
     let usedispach = useDispatch()
@@ -36,6 +29,9 @@ const Inicipage: React.FC = () => {
     //function kbToMb(KB: string) { return parseInt(KB) / 1024; }
     useEffect(() => {
         let datos: any = localStorage.getItem("INFOUSER")
+        let info: any = localStorage.getItem("USERLOGIN")
+        let users = JSON.parse(info)
+        let infouser: any = obtenervaariables(users.servicios[0].smartolt)
         usedispach(setPlan(JSON.parse(datos)))
         const animation = createAnimation()
             .addElement(animatedElement.current)
@@ -46,6 +42,75 @@ const Inicipage: React.FC = () => {
             .afterAddClass('animated-element');
 
         animation.play();
+        console.log(users.servicios[0])
+        Equipos(users.servicios[0].nodo).then(ou => {
+            if (ou.estado == "exito") {
+                if (ou.routers.length > 0) {
+                    console.log(ou.routers[0].estado)
+                    console.log(infouser)
+                    DetalleOlt(users.servicios[0].id).then(ouput => {
+                        console.log(ouput)
+                        if (ouput.status) {
+                            Detalleoltport(infouser.olt_id).then(ou => {
+                                console.log(ou)
+                                let board = ouput.onu_details["board"]
+                                let poart = ouput.onu_details["port"]
+                                let oltstatus = ou.response.find((e: any) => e.board == board && e.pon_port == poart)
+                                if (!oltstatus.operational_status.includes("Up")) {
+                                    /**crear pantalla con mensaje daño masivo y no tickte */
+
+                                }
+                                else {
+                                    Gt_onu_status(users.servicios[0].idperfil).then(ouputv => {
+                                        console.log(ouputv)
+                                        if (ouputv.status) {
+                                            if (ouputv.onu_status == "Los") {
+                                                /* crear tickte */
+                                                return
+                                            }
+                                            if (ouputv.onu_status == "Power fail") {
+                                                /* Revisar conexio gif intructivo */
+                                                return
+                                            }
+                                            if (ouputv.onu_status == "Online") {
+                                                Get_onu_signal(users.servicios[0].idperfil).then(ouput => {
+                                                    if (ouput.status) {
+                                                        let se = ouput.onu_signal_1490.replace("-", "").replace("dBm", "")
+                                                        console.log(se)
+                                                        if (se < 2.50) {
+                                                            /** mostrar servicio ok */
+                                                        }
+                                                        if (se > 26.50 && se < 29) {
+                                                            /** tickte de revision */
+                                                        }
+                                                        if (se > 29) {
+                                                            /**visita tecnica */
+                                                        }
+                                                    }
+                                                })
+                                                return
+                                            }
+
+                                        }
+                                    })
+                                }
+                                console.log(oltstatus)
+                            }).catch(err => {
+                                console.log(err)
+                            })
+                        }
+                    })
+                    /* OLTcardDETA(infouser.olt_id).then(oltouput => {
+                         console.log(oltouput)
+                     }).catch(err => {
+                         console.log(err)
+                     })*/
+                }
+
+            }
+        }).catch(err => {
+            console.log(err)
+        })
         /* ListarFactura(datos.id).then(ouput => {
              let datos = ouput
              console.log(datos, ouput)
@@ -67,16 +132,16 @@ const Inicipage: React.FC = () => {
                     {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
                     <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => opciones("Perfil")} >
                         <div className="cardt cardt-dark boxshadow border">
-                           
-                              <div className='' style={{
-                                marginTop:"-20px"
-                              }}>
+
+                            <div className='' style={{
+                                marginTop: "-20px"
+                            }}>
                                 <h5 className=' fw-bold  border-3 border-bottom'
                                     style={{ fontSize: "1.4em" }}
                                 >Servicio</h5>
-                              </div>
-                                   
-                               
+                            </div>
+
+
                             <div className='row'>
                                 <div className='col-8'>
                                     <div className='d-flex  align-items-center'>
@@ -86,10 +151,10 @@ const Inicipage: React.FC = () => {
                                                 fontSize: "1.0em"
                                             }} > ESTADO: </h5>
                                         </div>
-                                        
+
                                         <div className='px-1 pt-2'>
                                             {datos.estado === "ACTIVO" ? <IonBadge className='p-2 activo'>{datos.estado}</IonBadge> : <IonBadge color="danger">{datos.estado}</IonBadge>}
-                                        </div>                                        
+                                        </div>
                                     </div>
                                 </div>
                                 <div className='col-3  '>
@@ -106,12 +171,12 @@ const Inicipage: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <p className=' text-capitalize p-tn-2'style={{
-                                fontSize:"0.75em",
-                               
+                            <p className=' text-capitalize p-tn-2' style={{
+                                fontSize: "0.75em",
+
                             }} ><span className=' fw-bold'>PLAN: </span>{datos.servicios ? datos.servicios[0].perfil : "User Tickets"} </p>
                             <p className="card__applynombre float-end"
-                            
+
                             >
                                 <a className="card__link" style={{
                                     paddingTop: "-25px"

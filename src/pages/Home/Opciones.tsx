@@ -5,7 +5,7 @@ import { obtenervaariables } from "./parsesmart"
 import { IonAlert, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonTitle, IonToggle, IonToolbar, createAnimation } from "@ionic/react"
 import { arrowBack, createOutline, expandOutline } from "ionicons/icons"
 import { useEffect, useRef, useState } from "react"
-import { Detalleoltport, Deviceslist, EstadoOlt, Estadoluz, Nombressi } from "../../utils/Querystados"
+import { Detalleoltport, Deviceslist, Get_onu_signal, Gt_onu_status, Nombressi } from "../../utils/Querystados"
 import { close } from "ionicons/icons";
 import DeviceView from "./Modaldevices"
 import { setOpctionslice } from "../../StoreRedux/Slice/UserSlice"
@@ -78,10 +78,12 @@ export function OpcionesView() {
 
 
         animation.play();
-        EstadoOlt(infouser.onu_external_id).then(ouput => {
+        if (infouser!=undefined){
+             Get_onu_signal(infouser.onu_external_id).then(ouput => {
             if (ouput.status) {
                 //console.log(ouput)
-                Estadoluz(infouser.onu_external_id).then(ouputv => {
+                Gt_onu_status(datos.servicios[0].idperfil).then(ouputv => {
+                    console.log(ouputv)
                     if (ouputv.status) {
                         setSeñal({
                             onu_signal_value: ouput.onu_signal_value,
@@ -93,19 +95,21 @@ export function OpcionesView() {
                 })
             }
         })
-        Detalleoltport(infouser.olt_id).then(ouput => {
+            Detalleoltport(datos.servicios[0].idperfil).then(ouput => {
+                console.log(infouser.olt_id, datos.servicios[0].idperfil)
             if (ouput.status) {
-                let board = ouput.response.filter((e: any) => e.board == infouser.board)
-                let estado = board.find((e: any) => e.pon_port == infouser.port)
-                console.log(estado)
+                let board = ouput.response//.filter((e: any) => e.board == infouser.board)
+                let estado = board//.find((e: any) => e.pon_port == infouser.port)
+                console.log(ouput)
                 return
             }
             console.log(ouput)
         }).catch(err => {
             console.log(err)
-        })
+        })}
         //console.log(datos)
-        Deviceslist({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
+        if (datos.iD_EXTERNO_ONU!=""){
+         Deviceslist({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
             console.log(ouput)
             if (ouput.length > 0) {
                 console.log(ouput)
@@ -120,7 +124,7 @@ export function OpcionesView() {
         }).catch(err => {
             console.log(err)
         })
-        Nombressi({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
+          Nombressi({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
             console.log(ouput)
             if (ouput.length > 0) {
                 let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSID"]._value
@@ -129,7 +133,7 @@ export function OpcionesView() {
             }
         }).catch(err => {
             console.log(err)
-        })
+        })}
 
     }, [opction])
     const handleAlertDismiss = () => {
@@ -348,7 +352,7 @@ export function OpcionesView() {
                                             }} >
                                                 <h4 className="card__link">
                                                     <i className=" bi bi-cloud-arrow-up-fill"></i>
-                                                    {inforoute["upload_speed_profile_name"]}
+                                                    {inforoute==undefined?"Desconocido":inforoute["upload_speed_profile_name"]}
                                                 </h4>
                                             </p>
                                         </div>
@@ -359,7 +363,7 @@ export function OpcionesView() {
                                                 }} >
                                                 <h4 className="card__link">
                                                     <i className=" bi bi-cloud-arrow-down-fill"></i>
-                                                    {inforoute["download_speed_profile_name"]}
+                                                    {inforoute == undefined ? "Desconocido":inforoute["download_speed_profile_name"]}
 
                                                 </h4>
                                             </p>

@@ -25,7 +25,7 @@ import "../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.cs
 import { EditorConvertToHTML } from "./Texarea";
 import { Modal } from "react-bootstrap";
 import axios from "axios";
-import { DetalleOlt, Detalleoltport, EstadoOlt, Estadoluz } from "../../../utils/Querystados";
+import { DetalleOlt, Detalleoltport, Get_onu_signal, Gt_onu_status } from "../../../utils/Querystados";
 import { obtenervaariables } from "../../Home/parsesmart";
 //window.JSZip = JSZip;
 
@@ -133,17 +133,17 @@ export default function Datatablesoporte() {
         ).catch(err => {
             console.log(err)
         })
-        EstadoOlt(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput=>{
+        Get_onu_signal(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput=>{
             if (ouput.status){
-                //console.log(ouput)
-                Estadoluz(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouputv=>{
+                console.log(ouput)
+                Gt_onu_status(infouser.servicios[0].idperfil).then(ouputv=>{
                     if(ouputv.status){
                         setSeñal({
                             onu_signal_value: ouput.onu_signal_value,
                             onu_status: ouputv.onu_status,
                             onu_signal: ouput.onu_signal
                         })
-                        //console.log(ouputv)
+                        console.log(ouputv)
                     }
                 })
             }
