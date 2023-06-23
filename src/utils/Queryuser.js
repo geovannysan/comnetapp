@@ -120,7 +120,7 @@ export const Facturaid = async (parms) => {
 }
 export const Equipos = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:5200/PortalApi/Listequipo/"+parms)
+        let { data } = await axios.get("https://rec.netbot.ec/mikroti/PortalApi/Listequipo/"+parms)
         return data
     } catch (error) {
         return error
@@ -133,7 +133,7 @@ let config = {
 }
 export const OLTcardDETA = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:5200/api/SmartApi/oltdetal/" + parms)
+        let { data } = await axios.get("https://rec.netbot.ec/mikroti/api/SmartApi/oltdetal/" + parms)
         return data
     } catch (error) {
         return error

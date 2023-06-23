@@ -42,7 +42,7 @@ const Inicipage: React.FC = () => {
             .afterAddClass('animated-element');
 
         animation.play();
-        console.log(users.servicios[0])
+        // console.log(users.servicios[0])
         Equipos(users.servicios[0].nodo).then(ou => {
             if (ou.estado == "exito") {
                 if (ou.routers.length > 0) {
@@ -174,7 +174,7 @@ const Inicipage: React.FC = () => {
                             <p className=' text-capitalize p-tn-2' style={{
                                 fontSize: "0.75em",
 
-                            }} ><span className=' fw-bold'>PLAN: </span>{datos.servicios ? datos.servicios[0].perfil : "User Tickets"} </p>
+                            }} ><span className=' fw-bold'>Mis datos, Editar y Ver plan.: </span> </p>
                             <p className="card__applynombre float-end"
 
                             >
@@ -246,7 +246,7 @@ const Inicipage: React.FC = () => {
                             </p>
                         </div>
                     </div>
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => history.push("/page/Soporte")} >
+                    {datos.estado === "ACTIVO" ? <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => history.push("/page/Soporte")} >
                         <div className="cardt cardt-primary boxshadow border">
                             <div className='row'>
                                 <div className='col-8'>
@@ -276,39 +276,106 @@ const Inicipage: React.FC = () => {
                                 <a className="card__link" onClick={() => history.push("/page/Soporte")}>Reportar <i className=" m-2 card_icon bi  bi-radioactive"></i></a>
                             </p>
                         </div>
-                    </div>
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => opciones("wifi")}>
-                        <div className="cardt  cardt-red boxshadow border">
-                            <div className='row'>
-                                <div className='col-8'>
-                                    <h4 className=' ' style={{
-                                        fontSize: "0.9em",
-                                        fontWeight: "bold"
-                                    }}> Opciones Wifi</h4>
-                                </div>
-                                <div className='col-3'>
-                                    <div className=' mb-1  float-end  wifi ms-3 card rounded-3 shadow' style={{
-                                        width: "48px",
-                                        height: "48px",
-                                        zIndex: 2
-                                    }}>
-                                        <div className='m-auto'>
-                                            <i className="bi bi-wifi icon-app"></i>
+                    </div>:
+                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 '  >
+                            <div className=" cardt-block border boxshadow-inver ">
+                                <div className='row'>
+                                    <div className='col-8'>
+                                        <h4 className=' text-muted'
+                                            style={{ fontSize: "0.9em" }}
+                                        >Soporte Técnico</h4>
+                                    </div>
+                                    <div className='col-3  '>
+                                        <div className='  mb-1  float-end  wifi-dark card   ms-3 cardt-icon ' style={{
+                                            width: "48px",
+                                            height: "48px",
+                                           
+                                            zIndex: 2
+
+                                        }}>
+                                            <div className='m-auto'>
+                                                <i className="bi bi-radioactive icon-app cardt-icon "  ></i>
+                                            </div>
+
+
                                         </div>
-
-
                                     </div>
                                 </div>
 
-
+                                <p className='text-muted'>Reportar inconveniente en el servicio.</p>
+                                <p className="card__apply cardt-icon cardt-icon text-muted">
+                                    <a className="card__link cardt-icon" >Reportar <i className="cardt-icon m-2 card_icon bi  bi-radioactive"></i></a>
+                                </p>
                             </div>
-
-                            <p>Cambiar claves, Bloqueos</p>
-                            <p className="card__apply ">
-                                <a className="card__link" onClick={() => opciones("wifi")}>Actualizar <i className="card_icon bi bi-wifi"></i></a>
-                            </p>
                         </div>
-                    </div>
+                    }
+                   
+                    {datos.estado === "ACTIVO" ?
+                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => opciones("wifi")}>
+                            <div className="cardt  cardt-red boxshadow border">
+                                <div className='row'>
+                                    <div className='col-8'>
+                                        <h4 className=' ' style={{
+                                            fontSize: "0.9em",
+                                            fontWeight: "bold"
+                                        }}> Opciones Wifi</h4>
+                                    </div>
+                                    <div className='col-3'>
+                                        <div className=' mb-1  float-end  wifi ms-3 card rounded-3 shadow' style={{
+                                            width: "48px",
+                                            height: "48px",
+                                            zIndex: 2
+                                        }}>
+                                            <div className='m-auto'>
+                                                <i className="bi bi-wifi icon-app"></i>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <p>Cambiar claves, Bloqueos</p>
+                                <p className="card__apply ">
+                                    <a className="card__link" onClick={() => opciones("wifi")}>Actualizar <i className="card_icon bi bi-wifi"></i></a>
+                                </p>
+                            </div>
+                        </div> :
+                        <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' >
+                            <div className="  cardt-block border boxshadow-inver  ">
+                                <div className='row'>
+                                    <div className='col-8'>
+                                        <h4 className='text-muted-sm ' style={{
+                                            fontSize: "0.9em",
+                                            fontWeight: "bold"
+                                        }}> Opciones Wifi</h4>
+                                    </div>
+                                    <div className='col-3'>
+                                        <div className=' mb-1  float-end cardt-icon wifi-dark ms-3 card ' style={{
+                                            width: "48px",
+                                            height: "48px",
+                                            zIndex: 2
+                                        }}>
+                                            <div className='m-auto'>
+                                                <i className="bi bi-wifi cardt-icon icon-app"></i>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <p className='text-muted text-muted-sm'>Cambiar claves, Bloqueos</p>
+                                <p className="card__apply text-muted text-muted-sm cardt-icon">
+                                    <a className="card__link text-muted cardt-icon" >Actualizar <i className="card_icon cardt-icon bi bi-wifi"></i></a>
+                                </p>
+                            </div>
+                        </div>
+                    }
                 </div>
 
 

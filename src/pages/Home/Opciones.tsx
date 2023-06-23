@@ -3,12 +3,13 @@ import { userlog } from "../../utils/User"
 import { useDispatch, useSelector } from "react-redux"
 import { obtenervaariables } from "./parsesmart"
 import { IonAlert, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonTitle, IonToggle, IonToolbar, createAnimation } from "@ionic/react"
-import { arrowBack, createOutline, expandOutline } from "ionicons/icons"
+import { arrowBack, createOutline, disc, expandOutline } from "ionicons/icons"
 import { useEffect, useRef, useState } from "react"
-import { Detalleoltport, Deviceslist, Get_onu_signal, Gt_onu_status, Nombressi } from "../../utils/Querystados"
+import { Changessihide, Detalleoltport, Deviceslist, Estadossi, Get_onu_signal, Gt_onu_status, Nombressi, Refresssi } from "../../utils/Querystados"
 import { close } from "ionicons/icons";
 import DeviceView from "./Modaldevices"
 import { setOpctionslice } from "../../StoreRedux/Slice/UserSlice"
+import AlerView from "../../components/Alert"
 export function OpcionesView() {
     const opction = useSelector((state: any) => state.usuario.opcion)
     let user: any = userlog()
@@ -27,25 +28,7 @@ export function OpcionesView() {
     const datos = useSelector((state: any) => state.usuario.user)
     let infouser: any = obtenervaariables(datos.servicios[0].smartolt)
     //console.log(obtenervaariables(datos.servicios[0].smartolt))
-    let info: any = [
-        {
-            lista: "Datos",
-            view: [
-                {
-                    nombres: datos.nombre,
-                    icons: "",
-                    class: ""
 
-                },
-                {
-                    nombres: datos.nombre,
-                    icons: "",
-                    class: ""
-
-                }
-            ]
-        }
-    ]
     let inforoute: any = obtenervaariables(datos.servicios[0].smartolt)
     const animatedElement: any = useRef(null);
     /*const startAnimation = () => {
@@ -60,11 +43,31 @@ export function OpcionesView() {
 
         animation.play();
     };*/
-
     const [nickname, setNickname] = useState('');
+    const [Alert, setAlert] = useState('');
+    function Confirmcall() {
+        Changessihide({
+            "info": datos.iD_EXTERNO_ONU,
+            "booleas": "" + !wifi
+        }).then(change => {
+            if (change.device) {
+                setFifi(!wifi)
+                Refresssi({
+                    "info": datos.iD_EXTERNO_ONU,
+                    "booleas": "" + !wifi
+                }).then(salida=>{
+                    console.log(salida)
+                }).catch(err=>{
+                    console.log(err)
+                })
+            }
+            console.log(change)
+        }).catch(erro => {
+            console.log(erro)
+        })
+        setAlert("")
+    }
 
-    const [handlerMessage, setHandlerMessage] = useState('');
-    const [roleMessage, setRoleMessage] = useState('');
     useEffect(() => {
         console.log(opction)
         const animation = createAnimation()
@@ -78,123 +81,81 @@ export function OpcionesView() {
 
 
         animation.play();
-        if (infouser!=undefined){
-             Get_onu_signal(infouser.onu_external_id).then(ouput => {
-            if (ouput.status) {
-                //console.log(ouput)
-                Gt_onu_status(datos.servicios[0].idperfil).then(ouputv => {
-                    console.log(ouputv)
-                    if (ouputv.status) {
-                        setSeñal({
-                            onu_signal_value: ouput.onu_signal_value,
-                            onu_status: ouputv.onu_status,
-                            onu_signal: ouput.onu_signal
-                        })
-                        //console.log(ouputv)
-                    }
-                })
-            }
-        })
-            Detalleoltport(datos.servicios[0].idperfil).then(ouput => {
+        if (infouser != undefined) {
+            Get_onu_signal(infouser.onu_external_id).then(ouput => {
+                if (ouput.status) {
+                    //console.log(ouput)
+                    Gt_onu_status(datos.servicios[0].idperfil).then(ouputv => {
+                        console.log(ouputv)
+                        if (ouputv.status) {
+                            setSeñal({
+                                onu_signal_value: ouput.onu_signal_value,
+                                onu_status: ouputv.onu_status,
+                                onu_signal: ouput.onu_signal
+                            })
+                            //console.log(ouputv)
+                        }
+                    })
+                }
+            })
+            Detalleoltport(infouser.olt_id).then(ouput => {
                 console.log(infouser.olt_id, datos.servicios[0].idperfil)
-            if (ouput.status) {
-                let board = ouput.response//.filter((e: any) => e.board == infouser.board)
-                let estado = board//.find((e: any) => e.pon_port == infouser.port)
+                if (ouput.status) {
+                    let board = ouput.response//.filter((e: any) => e.board == infouser.board)
+                    let estado = board//.find((e: any) => e.pon_port == infouser.port)
+                    console.log(ouput)
+                    return
+                }
                 console.log(ouput)
-                return
-            }
-            console.log(ouput)
-        }).catch(err => {
-            console.log(err)
-        })}
+            }).catch(err => {
+                console.log(err)
+            })
+        }
         //console.log(datos)
-        if (datos.iD_EXTERNO_ONU!=""){
-         Deviceslist({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
-            console.log(ouput)
-            if (ouput.length > 0) {
+        if (datos.iD_EXTERNO_ONU != "") {
+            Deviceslist({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
                 console.log(ouput)
-                let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
-                console.log(Object.values(dtso))
-                let dat = Object.values(dtso).map((e: any, i) => {
+                if (ouput.length > 0) {
+                    console.log(ouput)
+                    let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
+                    console.log(Object.values(dtso))
+                    let dat = Object.values(dtso).map((e: any, i) => {
 
-                })
-                setDevices(Object.values(dtso))
-                console.log(Object.values(dtso))
-            }
-        }).catch(err => {
-            console.log(err)
-        })
-          Nombressi({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
-            console.log(ouput)
-            if (ouput.length > 0) {
-                let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSID"]._value
-                setNickname(dst)
-                console.log(dst)
-            }
-        }).catch(err => {
-            console.log(err)
-        })}
+                    })
+                    setDevices(Object.values(dtso))
+                    console.log(Object.values(dtso))
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+            Nombressi({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
+                console.log(ouput)
+                if (ouput.length > 0) {
+                    let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSID"]._value
+                    setNickname(dst)
+                    console.log(dst)
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+            Estadossi({ "onu": datos.iD_EXTERNO_ONU }).then(ouput => {
+                console.log("estado ssi", ouput)
+                if (ouput.length > 0) {
+                    let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSIDAdvertisementEnabled"]._value
+                    console.log(dst)
+                    let net: boolean = dst
+                    setFifi(net)
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        }
 
     }, [opction])
-    const handleAlertDismiss = () => {
-        // Lógica para manejar el cierre del cuadro de diálogo de alerta
-        console.log('Cuadro de diálogo de alerta cerrado');
-        console.log('Acerca de:', ssi);
-    };
-    const handleInputChange = (index: number, event: any) => {
-        const value = event.target.value;
-        switch (index) {
-            case 0:
-                setSsid(value);
-                break;
-
-            default:
-                break;
-        }
-    };
-    const inputs = [
-
-        {
-            type: 'text',
-            placeholder: 'A little about yourself',
-            value: ssi,
-            onIonChange: (e: any) => handleInputChange(0, e),
-        },
-    ];
-    const ShowModalBoos = () => {
-        return (
-            <IonModal isOpen={showAlert}
-
-            >
-                <IonHeader className=" ion-toolbar-transparent border-0">
-                    <IonToolbar >
-
-                        <IonButtons slot="end" onClick={() => setShowAlert(false)}>
-                            <IonButton onClick={() => setShowAlert(false)}>
-                                <IonIcon md={close} />
-                            </IonButton>
-                        </IonButtons>
-                    </IonToolbar>
-                </IonHeader>
-                <IonContent>
-                    <div className=" cardt  cardt-red"></div>
-                    <button className="btn btn-secondary" onClick={() => setShowAlert(false)}>cerrado</button>
-                    <div>
-                        <IonInput
-                            value={ssi}
-                            onIonChange={(e) => console.log(e)}
-                        />
-                    </div>
 
 
-                </IonContent>
-            </IonModal>
-        )
-    }
-    function opciones(param: string) {
-        setOpctionslice({ opcion: param })
-        history.push("option")
-    }
+
+
 
     return (
         <>
@@ -203,6 +164,13 @@ export function OpcionesView() {
                     <IonIcon icon={arrowBack}></IonIcon>
                 </IonFabButton>
             </IonFab>*/}
+            <AlerView
+                setAlert={setAlert}
+                alert={(Alert == "hidessi")}
+                header={wifi ? "Desea ocultar de la red wifi? " :"Desea mostrar de la red wifi?"}
+                //subheader={wifi ? "A red oculta ":"A red Visible"}
+                Confirmcall={Confirmcall}
+            />
             <DeviceView
                 showModal={showModal}
                 setModal={setModal}
@@ -257,11 +225,11 @@ export function OpcionesView() {
                                 <div className="cardt cardt-dark ">
                                     <div className='row py-0'
                                         style={{
-                                                
+
                                         }}>
-                                            <div className=" text-end">
+                                        <div className=" text-end">
                                             <IonButton
-                                            slot="end"
+                                                slot="end"
                                                 className="p-tn-2 "
                                                 onClick={() => history.push("/page/perfil")}
                                                 color="tertiary"
@@ -273,30 +241,30 @@ export function OpcionesView() {
                                                 />
 
                                             </IonButton>
-                                            </div>
-                                        
+                                        </div>
+
                                         <div className=' '
-                                      
+
                                         >
-                                           
-                                            {datos.estado === "ACTIVO" ? 
-                                            <h6 
-                                            
-                                            style={{
-                                                textTransform: "capitalize",
-                                                fontSize: "1em",
-                                                  lineHeight: "15px",
-                                                  verticalAlign:"top"
-                                            }} className="text-success " > <i className=" bi bi-person"></i>{datos.nombre}</h6> :
+
+                                            {datos.estado === "ACTIVO" ?
+                                                <h6
+
+                                                    style={{
+                                                        textTransform: "capitalize",
+                                                        fontSize: "1em",
+                                                        lineHeight: "15px",
+                                                        verticalAlign: "top"
+                                                    }} className="text-success " > <i className=" bi bi-person"></i>{datos.nombre}</h6> :
                                                 <h6 style={{
                                                     textTransform: "capitalize",
                                                     fontSize: "0.9em"
                                                 }} className=" text-danger" ><i className=" bi bi-person"></i>{datos.nombre}</h6>
                                             }
-                                           
+
 
                                         </div>
-                                        
+
                                     </div>
                                     <p className='card__link text-capitalize p-0' style={{
                                         fontSize: "0.9em"
@@ -313,7 +281,7 @@ export function OpcionesView() {
                                             </p>
                                         </div>
                                         <div className=" col-5 col-md-6 text-center ">
-                                            
+
                                             <a className=" d-none btn btn-sm btn-default"
 
                                                 onClick={() => history.push("/page/perfil")}>Editar  <i className="card_icon px-2  bi  bi-pencil"></i></a>
@@ -352,7 +320,7 @@ export function OpcionesView() {
                                             }} >
                                                 <h4 className="card__link">
                                                     <i className=" bi bi-cloud-arrow-up-fill"></i>
-                                                    {inforoute==undefined?"Desconocido":inforoute["upload_speed_profile_name"]}
+                                                    {inforoute == undefined ? "Desconocido" : inforoute["upload_speed_profile_name"]}
                                                 </h4>
                                             </p>
                                         </div>
@@ -363,7 +331,7 @@ export function OpcionesView() {
                                                 }} >
                                                 <h4 className="card__link">
                                                     <i className=" bi bi-cloud-arrow-down-fill"></i>
-                                                    {inforoute == undefined ? "Desconocido":inforoute["download_speed_profile_name"]}
+                                                    {inforoute == undefined ? "Desconocido" : inforoute["download_speed_profile_name"]}
 
                                                 </h4>
                                             </p>
@@ -604,7 +572,7 @@ export function OpcionesView() {
                         </div>
 
                         <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 '  >
-                            <div id="present-alert" className="cardt  cardt-dark border boxshadow" onClick={() => setFifi(!wifi)}>
+                            <div id="present-alert" className="cardt  cardt-dark border boxshadow" onClick={() => setAlert("hidessi")}>
                                 <div className='row'>
                                     <div className='col-7 col-md-7 '>
                                         <h4 style={{
@@ -629,11 +597,11 @@ export function OpcionesView() {
                                             marginTop: "-30px"
                                         }}>
                                         <IonToggle
-                                        
+
                                             checked={wifi}
-                                            onIonChange={(e: any) => setFifi(e.detail["checked"])}
+                                            //  onIonChange={(e: any) => setFifi(e.detail["checked"])}
                                             enableOnOffLabels={true}
-                                            disabled={true}
+                                            
                                         ></IonToggle>
                                     </div>
                                     <div className="col-sm d-flex justify-content-end">
@@ -709,26 +677,6 @@ export function OpcionesView() {
                 </div> : ""}
 
             </div>
-            <IonAlert
-                header="Alert!"
-               isOpen={wifi}
-                buttons={[
-                    {
-                        text: 'Cancel',
-                        role: 'cancel',
-                        handler: () => {
-                            setHandlerMessage('Alert canceled');
-                        },
-                    },
-                    {
-                        text: 'OK',
-                        role: 'confirm',
-                        handler: () => {
-                            setHandlerMessage('Alert confirmed');
-                        },
-                    },
-                ]}
-                onDidDismiss={() => setFifi(false)}
-            ></IonAlert>
+
         </>)
 }

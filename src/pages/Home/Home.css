@@ -62,6 +62,8 @@
     --ion-color-medium-contrast-rgb: 255, 255, 255;
     --ion-color-medium-shade: #808289;
     --ion-color-medium-tint: #9d9fa6;
+    --text-muted: #e2e2e2;
+    --text-muted-sm: #dfdfdf;
 
     /** light **/
     --ion-color-light: #f4f5f8;
@@ -71,7 +73,7 @@
     --ion-color-light-shade: #d7d8da;
     --ion-color-light-tint: #f5f6f9;
     /*color speed*/
-    --bg-spped:#10063e;
+    --bg-spped: #10063e;
 }
 
 .cardt {
@@ -87,30 +89,49 @@
     transition: 0.6s ease-in;
 
 }
- ion-modal#example-modal2 {
-     --height: 35%;
-     
- }
- .card-t {
+
+ion-modal#example-modal2 {
+    --height: 35%;
+
+}
+
+.text-muted-sm {
+    color: #9b9b9b !important;
+}
+
+.wifi-dark {
+    background-color: #9b9b9b !important;
+}
+
+.card-t {
     border-radius: 10px;
-        filter: drop-shadow(0 5px 10px 0 #ffffff);
-    
-        height: 180px;
-        background-color: #ffffff;
-        padding: 20px;
-        position: relative;
-        z-index: 0;
-        overflow: hidden;
-        transition: 0.6s ease-in;
- }
- .boxshadow{
+    filter: drop-shadow(0 5px 10px 0 #ffffff);
+
+    height: 180px;
+    background-color: #ffffff;
+    padding: 20px;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    transition: 0.6s ease-in;
+}
+
+.boxshadow {
     box-shadow: -2px 8px 9px -1px rgba(173, 173, 173, 0.75);
-        -webkit-box-shadow: -2px 8px 9px -1px rgba(173, 173, 173, 0.75);
-        -moz-box-shadow: -2px 8px 9px -1px rgba(173, 173, 173, 0.75);
- }
-   .card__applynombre {
-       margin-top: -40px !important;
-   }
+    -webkit-box-shadow: -2px 8px 9px -1px rgba(173, 173, 173, 0.75);
+    -moz-box-shadow: -2px 8px 9px -1px rgba(173, 173, 173, 0.75);
+}
+
+.boxshadow-invers {
+    box-shadow: 10px 10px 60px 0px rgba(173, 173, 173, 0.75) inset;
+    -webkit-box-shadow: 10px 10px 60px 0px rgba(173, 173, 173, 0.75) inset;
+    -moz-box-shadow: 10px 10px 60px 0px rgba(173, 173, 173, 0.75) inset;
+}
+
+.card__applynombre {
+    margin-top: -40px !important;
+}
+
 @media only screen and (max-width: 667px) {
     .cardt {
         border-radius: 10px;
@@ -119,14 +140,30 @@
         height: 155px;
         background-color: #ffffff;
         padding-right: 15px;
-        padding-left:15px;
-        padding-top:10px;
-        padding-bottom:10px;
+        padding-left: 15px;
+        padding-top: 10px;
+        padding-bottom: 10px;
         position: relative;
         z-index: 0;
         overflow: hidden;
         transition: 0.6s ease-in;
     }
+
+    .cardt-block {
+        border-radius: 10px;
+        filter: drop-shadow(0 5px 10px 0 #ffffff);
+
+        height: 155px;
+        background-color: var(--text-muted-sm);
+        ;
+        padding: 20px;
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+        transition: 0.6s ease-in;
+        cursor: not-allowed;
+    }
+
     .card-t {
         border-radius: 10px;
         filter: drop-shadow(0 5px 10px 0 #ffffff);
@@ -139,21 +176,40 @@
         overflow: hidden;
         transition: 0.6s ease-in;
     }
-        ion-modal#example-modal2 {
-            --height: 50%;
-            --width: 90%
-        }
+
+    .cardt-block {
+        border-radius: 10px;
+        filter: drop-shadow(0 5px 10px 0 #ffffff);
+
+        height: 155px;
+        background-color: var(--text-muted-sm);
+        ;
+        padding: 20px;
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+        transition: 0.6s ease-in;
+        cursor: not-allowed;
+    }
+
+    ion-modal#example-modal2 {
+        --height: 50%;
+        --width: 90%
+    }
 
     .card__apply {
         margin-top: -25px !important;
     }
-        .card__applynombre {
-            margin-top: -40px !important;
-        }
-    h4{
+
+    .card__applynombre {
+        margin-top: -40px !important;
+    }
+
+    h4 {
         font-size: 0.9em !important;
     }
-    p.card__link{
+
+    p.card__link {
         font-size: 0.8em !important;
     }
 }
@@ -174,6 +230,24 @@
     transition: 0.6s ease-in;
 }
 
+.cardt-block {
+    border-radius: 10px;
+    filter: drop-shadow(0 5px 10px 0 #ffffff);
+
+    height: 180px;
+    background-color: var(--text-muted-sm);
+    ;
+    padding: 20px;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    transition: 0.6s ease-in;
+    cursor: not-allowed !important;
+}
+
+.cardt-icon {
+    cursor: not-allowed !important;
+}
 
 .cardt-red::before {
     content: "";
@@ -189,11 +263,29 @@
     transform-origin: 50% 50%;
     transition: transform 0.25s ease-out;
 }
+
+/*.cardt-block::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -15px;
+   left: 0px;
+    background: var(--text-muted);
+    height: 220px;
+    width: 100% !important;
+    border-radius: 32px;
+    transform: scale(1);
+    color: #fff !important;
+   /* transform-origin: 50% 50%;
+    transition: transform 0.25s ease-out;*
+}*/
+
 .cardt-red h4 {
     color: #cb1656;
 
 }
-.cardt:hover h4{
+
+.cardt:hover h4 {
     color: #ffffff !important;
 }
 
@@ -249,7 +341,7 @@
 }
 
 .cardt:hover {
-    color:  var(--ion-color-danger-contrast) !important;
+    color: var(--ion-color-danger-contrast) !important;
     cursor: pointer !important;
 
 }
@@ -346,4 +438,26 @@ ion-popover ion-content {
 
 ion-popover::part(backdrop) {
     background-color: rgba(228, 229, 231, 0);
+}
+
+ion-toggle {
+    padding: 12px;
+    width: 50px !important;
+    height: 25px !important;
+    
+    /* padding: 12px;
+
+  --track-background: #ddd;
+  --track-background-checked: #ddd;
+
+  --handle-background: #eb7769;
+  --handle-background-checked: #95c34e;
+
+  --handle-width: 25px;
+  --handle-height: 27px;
+  --handle-max-height: auto;
+  --handle-spacing: 6px;
+
+  --handle-border-radius: 4px;
+  --handle-box-shadow: none;*/
 }

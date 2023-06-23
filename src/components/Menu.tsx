@@ -110,7 +110,7 @@ const Menu: React.FC = () => {
   const [isVisible, setIsVisible] = useState("");
 
   return (
-    <IonMenu contentId='main' type='push' className='col-12 col-lg-2 px-0'>
+    <IonMenu contentId='main' type='overlay' className='col-12 col-lg-2 px-0'>
 
       <IonHeader className=''>
         <div className=' px-0'>
