@@ -8,8 +8,8 @@ import { token } from "../variables";
  */
 export const BuscaclienteContifico = async (parms) => {
     console.log(parms)
-    if (parms.length>10){
-
+    if (parms.length > 11) {
+        console.log("ruc")
         try {
             let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?ruc=" + parms, {
                 headers: {
@@ -22,24 +22,43 @@ export const BuscaclienteContifico = async (parms) => {
         }
 
     }
-    else{
-    try {
-        let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?cedula=" + parms, {
-            headers: {
-                "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
-            }
-        })
-        return data
-    } catch (error) {
-        return error
-    }}
+    else if (parms.length == 11) {
+
+        parms = parms.substring(0, parms.length - 1);
+        console.log("ce", parms)
+        try {
+            let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?cedula=" + parms, {
+                headers: {
+                    "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+                }
+            })
+            return data
+        } catch (error) {
+            return error
+        }
+    } else {
+        console.log(parms)
+        try {
+            let { data } = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?cedula=" + parms, {
+                headers: {
+                    "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+                }
+            })
+            return data
+        } catch (error) {
+            return error
+        }
+    }
 }
 /**
  * 
  */
-export const Consultarcedula= async(parms)=>{
+export const Consultarcedula = async (parms) => {
+    if(parms.length==11) {
+        parms = parms.substring(0, parms.length - 1);
+    }
     try {
-        let { data } = await axios.get("https://rec.netbot.ec/ms_login/cedula/"+parms)
+        let { data } = await axios.get("https://rec.netbot.ec/ms_login/cedula/" + parms)
         return data
     } catch (error) {
         return error
@@ -92,9 +111,9 @@ export const BuscarProductoContific = async (parms) => {
  */
 export const IncremetoFacturaS = async () => {
     try {
-      //https://rec.netbot.ec/mikroti/FactuApi/incrementodos
+        //https://rec.netbot.ec/mikroti/FactuApi/incrementodos
         let { data } = await axios({
-            method: 'post', url: 'https://rec.netbot.ec/mikroti/FactuApi/incrementodos'
+            method: 'post', url: 'https://portalfac.netbot.ec/incrementov.php'
         })
         return data
     } catch (error) {
@@ -105,7 +124,7 @@ export const IncremetoCon = async () => {
     try {
         //https://rec.netbot.ec/mikroti/FactuApi/incrementouno
         let { data } = await axios({
-            method: 'post', url: 'https://rec.netbot.ec/mikroti/FactuApi/incrementouno'
+            method: 'post', url: 'https://portalfac.netbot.ec/incremento.php'
         })
         return data
     } catch (error) {
@@ -133,7 +152,7 @@ export const IncremetoCon = async () => {
  */
 export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/mikroti/FactuApi/Crearpro", {...parms})
+        let { data } = await axios.post("https://rec.netbot.ec/mikroti/FactuApi/Crearpro", { ...parms })
         return data
     } catch (error) {
         return error
@@ -145,9 +164,9 @@ export const PagoFacturacomnet = async (parms) => {
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("https://rec.netbot.ec/mikroti/PortalApi/PagosdelPortal/" + nombres.password  , 
+        let { data } = await axios.post("https://rec.netbot.ec/mikroti/PortalApi/PagosdelPortal/" + nombres.password,
             parms
-        
+
         )
         return data
     } catch (error) {
