@@ -133,7 +133,7 @@ let config = {
 }
 export const OLTcardDETA = async (parms) => {
     try {
-        let { data } = await axios.get("https://rec.netbot.ec/mikroti/api/SmartApi/oltdetal/" + parms)
+        let { data } = await axios.get("http://localhost:5200/api/SmartApi/get_olt_cards_details/" + parms)
         return data
     } catch (error) {
         return error

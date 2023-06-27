@@ -61,7 +61,7 @@ const Inicipage: React.FC = () => {
 
                                 }
                                 else {
-                                    Gt_onu_status(users.servicios[0].idperfil).then(ouputv => {
+                                    Gt_onu_status(users.servicios[0].id).then(ouputv => {
                                         console.log(ouputv)
                                         if (ouputv.status) {
                                             if (ouputv.onu_status == "Los") {
@@ -73,8 +73,9 @@ const Inicipage: React.FC = () => {
                                                 return
                                             }
                                             if (ouputv.onu_status == "Online") {
-                                                Get_onu_signal(users.servicios[0].idperfil).then(ouput => {
+                                                Get_onu_signal(users.servicios[0].id).then(ouput => {
                                                     if (ouput.status) {
+                                                        console.log(ouput)
                                                         let se = ouput.onu_signal_1490.replace("-", "").replace("dBm", "")
                                                         console.log(se)
                                                         if (se < 2.50) {
@@ -130,7 +131,7 @@ const Inicipage: React.FC = () => {
             <div ref={animatedElement} className=' container-fluid px-0  d-flex  justify-content-center'>
                 <div className='row col-12 col-md-10 col-lg-12 px-0  '>
                     {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => opciones("Perfil")} >
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => history.push("info")} >
                         <div className="cardt cardt-dark boxshadow border">
 
                             <div className='' style={{
@@ -151,7 +152,6 @@ const Inicipage: React.FC = () => {
                                                 fontSize: "1.0em"
                                             }} > ESTADO: </h5>
                                         </div>
-
                                         <div className='px-1 pt-2'>
                                             {datos.estado === "ACTIVO" ? <IonBadge className='p-2 activo'>{datos.estado}</IonBadge> : <IonBadge color="danger">{datos.estado}</IonBadge>}
                                         </div>
@@ -207,7 +207,7 @@ const Inicipage: React.FC = () => {
 
 
 
-                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => opciones("Factura")} >
+                    <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => history.push("Facturas")} >
                         <div className="cardt  cardt-success boxshadow border">
                             <div className='row'>
                                 <div className='col-8 '>
@@ -242,7 +242,7 @@ const Inicipage: React.FC = () => {
 
                             </div>
                             <p className="card__apply">
-                                <a className="card__link" onClick={() => opciones("Factura")}>Pagar facturas <i className="card_icon   bi bi-cash"></i></a>
+                                <a className="card__link" onClick={() => history.push("Facturas")}>Pagar facturas <i className="card_icon   bi bi-cash"></i></a>
                             </p>
                         </div>
                     </div>

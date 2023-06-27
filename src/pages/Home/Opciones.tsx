@@ -5,10 +5,10 @@ import { obtenervaariables } from "./parsesmart"
 import { IonAlert, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonTitle, IonToggle, IonToolbar, createAnimation } from "@ionic/react"
 import { arrowBack, createOutline, disc, expandOutline } from "ionicons/icons"
 import { useEffect, useRef, useState } from "react"
-import { Changessihide, Detalleoltport, Deviceslist, Estadossi, Get_onu_signal, Gt_onu_status, Nombressi, Refresssi } from "../../utils/Querystados"
+import { Changessihide, Detalleoltport, Deviceslist, Estadossi, Get_onu_profile_speed, Get_onu_signal, Gt_onu_status, Nombressi, Refresssi } from "../../utils/Querystados"
 import { close } from "ionicons/icons";
 import DeviceView from "./Modaldevices"
-import { setOpctionslice } from "../../StoreRedux/Slice/UserSlice"
+import { setNicknameslice, setOpctionslice } from "../../StoreRedux/Slice/UserSlice"
 import AlerView from "../../components/Alert"
 export function OpcionesView() {
     const opction = useSelector((state: any) => state.usuario.opcion)
@@ -85,7 +85,7 @@ export function OpcionesView() {
             Get_onu_signal(infouser.onu_external_id).then(ouput => {
                 if (ouput.status) {
                     //console.log(ouput)
-                    Gt_onu_status(datos.servicios[0].idperfil).then(ouputv => {
+                    Gt_onu_status(datos.servicios[0].id).then(ouputv => {
                         console.log(ouputv)
                         if (ouputv.status) {
                             setSeñal({
@@ -97,6 +97,11 @@ export function OpcionesView() {
                         }
                     })
                 }
+            })
+            Get_onu_profile_speed(infouser.onu_external_id).then(ou=>{
+                console.log(ou)
+            }).catch(err=>{
+                console.log(err)
             })
             Detalleoltport(infouser.olt_id).then(ouput => {
                 console.log(infouser.olt_id, datos.servicios[0].idperfil)
@@ -133,6 +138,7 @@ export function OpcionesView() {
                 if (ouput.length > 0) {
                     let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSID"]._value
                     setNickname(dst)
+                    setNicknameslice({nickname:dst})
                     console.log(dst)
                 }
             }).catch(err => {
@@ -149,6 +155,8 @@ export function OpcionesView() {
             }).catch(err => {
                 console.log(err)
             })
+        }else{
+            
         }
 
     }, [opction])
@@ -398,7 +406,7 @@ export function OpcionesView() {
                     <div className='row col-12 col-md-10 col-lg-12 px-0  '>
                         {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
                         <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' >
-                            <div className="cardt cardt-dark ">
+                            <div className="cardt cardt-dark boxshadow border">
                                 <div className='row'>
                                     <div className='col-8'>
                                         <h4 style={{
@@ -437,7 +445,7 @@ export function OpcionesView() {
 
 
                         <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => console.log("")} >
-                            <div className="cardt  cardt-red">
+                            <div className="cardt  cardt-red boxshadow border ">
                                 <div className='row'>
                                     <div className='col-6 col-md-8 '>
                                         <h4 style={{
@@ -459,7 +467,7 @@ export function OpcionesView() {
                             </div>
                         </div>
                         <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => console.log("")} >
-                            <div className="cardt cardt-primary ">
+                            <div className="cardt cardt-primary boxshadow border">
                                 <div className='row'>
                                     <div className='col-7'>
                                         <h4 style={{

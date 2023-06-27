@@ -7,10 +7,12 @@ const initialState = {
         cedula:"",
     },
     plan:[],
+
     authb: false,
     progres:false,
     cosultstatus:false,
     opcion:"",
+    nickname:"",
     señal: {
         onu_signal_value: "",
         onu_status: "",
@@ -49,8 +51,13 @@ const userSlice = createSlice({
         },
         setOpctionslice:(state,action)=>{
             state.opcion = action.payload.opcion
+        },
+        setNicknameslice:(state,action)=>{
+            state.nickname= action.payload.nickname
         }
     }
 })
-export const { setDatosuser, setlogin, setProg, setPlan, setModal, setStatus, setSeñal, setOpctionslice } = userSlice.actions;
+export const { setDatosuser, setlogin, setProg, setPlan, 
+    setNicknameslice,
+    setModal, setStatus, setSeñal, setOpctionslice } = userSlice.actions;
 export default userSlice.reducer;
