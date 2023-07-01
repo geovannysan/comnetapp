@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { obtenervaariables } from "./parsesmart"
 import { IonButton, IonIcon } from "@ionic/react"
 import { createOutline, settingsOutline, speedometerOutline } from "ionicons/icons"
-import { Get_onu_profile_speed, Nombressi } from "../../utils/Querystados"
+import { Get_onu_profile_speed, Get_speed_profiles, Nombressi } from "../../utils/Querystados"
 
 export default function ProfileView() {
     const opction = useSelector((state: any) => state.usuario.opcion)
@@ -26,17 +26,34 @@ export default function ProfileView() {
     const datos = useSelector((state: any) => state.usuario.user)
     let infouser: any = obtenervaariables(datos.servicios[0].smartolt)
     //console.log(obtenervaariables(datos.servicios[0].smartolt))
+    function kilobytesToMegabytes(kilobytes:any) {
+        return kilobytes / 1024;
+    }
 
     let inforoute: any = obtenervaariables(datos.servicios[0].smartolt)
     useEffect(() => {
         Get_onu_profile_speed(user.servicios[0].id).then(salida => {
             if (salida.status) {
                 setSeñal(salida)
+                Get_speed_profiles().then(oupt => {
+                    let da = oupt.response.filter((e: any) => e.name == salida.upload_speed_profile_name)
+                    if(da.length==2){
+                        setSeñal({
+                            status: salida.upload_speed_profile_name,
+                            upload_speed_profile_name: kilobytesToMegabytes( da[0].speed)+"Mbps",
+                            download_speed_profile_name: kilobytesToMegabytes( da[1].speed)+"Mbps"
+                        })
+                    }
+                    console.log(da)
+                }).catch(error => {
+                    console.log(error)
+                })
             }
             console.log(salida)
         }).catch(err => {
             console.log(err)
         })
+     
         Nombressi({
             "info": datos.iD_EXTERNO_ONU
         }).then(oup => {
@@ -143,7 +160,7 @@ export default function ProfileView() {
 
                                     color="tertiary"
                                     size="small">
-                                Tipo de Plan 
+                                    Tipo de Plan
                                     <IonIcon
                                         slot="end"
                                         icon={speedometerOutline}
@@ -153,10 +170,7 @@ export default function ProfileView() {
                             </div>
 
                             <div className=' '
-
                             >
-
-
                                 {datos.estado === "ACTIVO" ? <h6
 
                                     style={{
@@ -165,7 +179,7 @@ export default function ProfileView() {
                                         lineHeight: "15px",
                                         verticalAlign: "top"
                                     }} className=" text-success " >
-                                    <i className=" bi bi-hdd-network px-1"></i>{datos.servicios ? datos.servicios[0].perfil : "User Tickets"}</h6>
+                                    <i className=" bi bi-hdd-network px-1"></i>{datos.servicios ? señal.status : "aqui User Tickets"}</h6>
                                     : <h6
 
                                         style={{
@@ -198,10 +212,12 @@ export default function ProfileView() {
                                 <p className="card__apply" style={{
 
                                 }} >
-                                    <h4 className="card__link">
-                                        <i className=" bi bi-cloud-arrow-up-fill"></i>
+                                    <h5 style={{
+                                        fontSize: "1em"
+                                    }} className="card__link fw-bold">
+                                        <i className=" bi bi-cloud-arrow-up-fill px-1"></i>
                                         {señal.upload_speed_profile_name}
-                                    </h4>
+                                    </h5>
                                 </p>
                             </div>
                             <div className="">
@@ -209,11 +225,15 @@ export default function ProfileView() {
                                     style={{
 
                                     }} >
-                                    <h4 className="card__link">
-                                        <i className=" bi bi-cloud-arrow-down-fill"></i>
+                                    <h5 
+                                    style={{
+                                        fontSize:"1em"
+                                    }}
+                                    className="card__link fw-bold">
+                                        <i className=" bi bi-cloud-arrow-down-fill px-1"></i>
                                         {señal.download_speed_profile_name}
 
-                                    </h4>
+                                    </h5>
                                 </p>
                             </div>
 

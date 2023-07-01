@@ -1,4 +1,4 @@
-import { IonPopover, IonContent, IonList, IonItem, createAnimation, IonBadge } from '@ionic/react';
+import { IonPopover, IonContent, IonList, IonItem, createAnimation, IonBadge, useIonToast, useIonLoading } from '@ionic/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import Collapse from "react-bootstrap/Collapse"
@@ -12,6 +12,8 @@ import { OpcionesView } from './Opciones';
 import { obtenervaariables } from './parsesmart';
 import { DetalleOlt, Detalleoltport, Get_onu_signal, Gt_onu_status } from '../../utils/Querystados';
 const Inicipage: React.FC = () => {
+    const [present] = useIonToast();
+    let [presentlo, dismiss] = useIonLoading()
     let history = useHistory()
     let usedispach = useDispatch()
     const datos = useSelector((state: any) => state.usuario.user)
@@ -29,8 +31,8 @@ const Inicipage: React.FC = () => {
     //function kbToMb(KB: string) { return parseInt(KB) / 1024; }
     useEffect(() => {
         let datos: any = localStorage.getItem("INFOUSER")
-        let info: any = localStorage.getItem("USERLOGIN")
-        let users = JSON.parse(info)
+        let infos: any = localStorage.getItem("USERLOGIN")
+        let users = JSON.parse(infos)
         let infouser: any = obtenervaariables(users.servicios[0].smartolt)
         usedispach(setPlan(JSON.parse(datos)))
         const animation = createAnimation()
@@ -42,76 +44,9 @@ const Inicipage: React.FC = () => {
             .afterAddClass('animated-element');
 
         animation.play();
-        // console.log(users.servicios[0])
-        Equipos(users.servicios[0].nodo).then(ou => {
-            if (ou.estado == "exito") {
-                if (ou.routers.length > 0) {
-                    console.log(ou.routers[0].estado)
-                    console.log(infouser)
-                    DetalleOlt(users.servicios[0].id).then(ouput => {
-                        console.log(ouput)
-                        if (ouput.status) {
-                            Detalleoltport(infouser.olt_id).then(ou => {
-                                console.log(ou)
-                                let board = ouput.onu_details["board"]
-                                let poart = ouput.onu_details["port"]
-                                let oltstatus = ou.response.find((e: any) => e.board == board && e.pon_port == poart)
-                                if (!oltstatus.operational_status.includes("Up")) {
-                                    /**crear pantalla con mensaje daño masivo y no tickte */
-
-                                }
-                                else {
-                                    Gt_onu_status(users.servicios[0].id).then(ouputv => {
-                                        console.log(ouputv)
-                                        if (ouputv.status) {
-                                            if (ouputv.onu_status == "Los") {
-                                                /* crear tickte */
-                                                return
-                                            }
-                                            if (ouputv.onu_status == "Power fail") {
-                                                /* Revisar conexio gif intructivo */
-                                                return
-                                            }
-                                            if (ouputv.onu_status == "Online") {
-                                                Get_onu_signal(users.servicios[0].id).then(ouput => {
-                                                    if (ouput.status) {
-                                                        console.log(ouput)
-                                                        let se = ouput.onu_signal_1490.replace("-", "").replace("dBm", "")
-                                                        console.log(se)
-                                                        if (se < 2.50) {
-                                                            /** mostrar servicio ok */
-                                                        }
-                                                        if (se > 26.50 && se < 29) {
-                                                            /** tickte de revision */
-                                                        }
-                                                        if (se > 29) {
-                                                            /**visita tecnica */
-                                                        }
-                                                    }
-                                                })
-                                                return
-                                            }
-
-                                        }
-                                    })
-                                }
-                                console.log(oltstatus)
-                            }).catch(err => {
-                                console.log(err)
-                            })
-                        }
-                    })
-                    /* OLTcardDETA(infouser.olt_id).then(oltouput => {
-                         console.log(oltouput)
-                     }).catch(err => {
-                         console.log(err)
-                     })*/
-                }
-
-            }
-        }).catch(err => {
-            console.log(err)
-        })
+        console.log(infouser)
+        // dismiss()
+        
         /* ListarFactura(datos.id).then(ouput => {
              let datos = ouput
              console.log(datos, ouput)
@@ -121,8 +56,202 @@ const Inicipage: React.FC = () => {
              }).catch(err => {
              console.log(err)
          })*/
+       // Soporteinicial()
     }, [opction])
+function Soporteinicial(){
+    let datos: any = localStorage.getItem("INFOUSER")
+    let infos: any = localStorage.getItem("USERLOGIN")
+    let users = JSON.parse(infos)
+    let infouser: any = obtenervaariables(users.servicios[0].smartolt)
+    presentlo({
+        message: 'Comprobando Nodo del servicio ',
+        cssClass: 'custom-loading',
+        spinner: "bubbles",
+        duration: 1500,
+    })
+    // dismiss()
+    Equipos(users.servicios[0].nodo).then(ou => {
+        dismiss()
+        if (ou.estado == "exito") {
+            dismiss()
+            if (ou.routers.length > 0) {
+                console.log(ou.routers[0].estado)
+                console.log(infouser)
+                dismiss()
+                presentlo({
+                    message: 'Comprobando Olt',
+                    cssClass: 'custom-loading',
+                    spinner: "bubbles",
+                    duration: 1500,
+                })
+                DetalleOlt(users.servicios[0].id).then(ouput => {
+                    dismiss()
+                    console.log(ouput)
+                    if (ouput.status) {
+                        dismiss()
+                        presentlo({
+                            message: 'Comprobando puertos olt',
+                            cssClass: 'custom-loading',
+                            spinner: "bubbles",
+                            duration: 1500
+                        })
+                        //dismiss()
+                        Detalleoltport(infouser.olt_id).then(ou => {
+                            //console.log(ou)
 
+
+                            dismiss()
+                            let board = ouput.onu_details["board"]
+                            let poart = ouput.onu_details["port"]
+                            let oltstatus = ou.response.find((e: any) => e.board == board && e.pon_port == poart)
+                            if (!oltstatus.operational_status.includes("Up")) {
+                                dismiss()
+                                /**crear pantalla con mensaje daño masivo y no se genera tickte */
+                                present({
+                                    message: 'crear pantalla con mensaje daño masivo y no se genera tickte',
+                                    cssClass: 'custom-loading',
+                                    duration: 4500,
+                                    buttons: [
+                                        {
+                                            text: "cerrar",
+                                            role: "cancel",
+
+                                        }
+                                    ]
+                                })
+                            }
+                            else {
+                                dismiss()
+                                presentlo({
+                                    message: 'Comprobando estado onu ',
+                                    cssClass: 'custom-loading',
+                                    spinner: "bubbles",
+                                    duration: 1500
+                                })
+                                Gt_onu_status(users.servicios[0].id).then(ouputv => {
+                                    console.log(ouputv)
+                                    if (ouputv.status) {
+                                        dismiss()
+                                        if (ouputv.onu_status == "Los") {
+                                            /* crear tickte */
+                                            present({
+                                                message: 'crear pantalla con mensaje de Los',
+                                                cssClass: 'custom-loading',
+                                                duration: 4500,
+                                                buttons: [
+                                                    {
+                                                        text: "cerrar",
+                                                        role: "cancel",
+
+                                                    }
+                                                ]
+                                            })
+                                            return
+                                        }
+                                        if (ouputv.onu_status == "Power fail") {
+                                            present({
+                                                message: 'crear gif intructivo. seria un modal con el gif',
+                                                cssClass: 'custom-loading',
+                                                duration: 4500,
+                                                buttons: [
+                                                    {
+                                                        text: "cerrar",
+                                                        role: "cancel",
+
+                                                    }
+                                                ]
+                                            })
+                                            /* Revisar conexio gif intructivo */
+                                            return
+                                        }
+                                        if (ouputv.onu_status == "Online") {
+                                            dismiss()
+                                            presentlo({
+                                                message: 'Comprobando estado de la señal',
+                                                cssClass: 'custom-loading',
+                                                spinner: "bubbles",
+                                                duration: 1500
+                                            })
+                                            Get_onu_signal(users.servicios[0].id).then(ouput => {
+                                                if (ouput.status) {
+                                                    dismiss()
+                                                    console.log(ouput)
+                                                    let se = ouput.onu_signal_1490.replace("-", "").replace("dBm", "")
+                                                    console.log(se)
+                                                    if (se < 25.0) {
+                                                        /** mostrar servicio ok */
+                                                        present({
+                                                            message: 'Buena señal',
+                                                            cssClass: 'custom-loading',
+                                                            duration: 4500,
+                                                        })
+                                                    }
+                                                    if (se > 26.50 && se < 29) {
+                                                        /** tickte de revision */
+                                                        present({
+                                                            message: 'se debe crear tickte de revision',
+                                                            cssClass: 'custom-loading',
+                                                            duration: 4500,
+                                                        })
+                                                    }
+                                                    if (se > 29) {
+                                                        /**visita tecnica */
+                                                        present({
+                                                            message: 'se debe crear tickte de visita',
+                                                            cssClass: 'custom-loading',
+                                                            duration: 4500,
+                                                        })
+                                                    }
+                                                } else {
+                                                    /* present({
+                                                         message: 'Hubo un error intente mas tarde',
+                                                         cssClass: 'custom-loading',
+                                                         duration: 4500,
+                                                         buttons: [
+                                                             {
+                                                                 text: "cerrar",
+                                                                 role: "cancel",
+
+                                                             }
+                                                         ]
+                                                     })*/
+                                                }
+                                            })
+                                            return
+                                        }
+
+                                    }else{
+                                        dismiss()
+                                    }
+                                })
+                            }
+                            console.log(oltstatus)
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                    }
+                })
+                /* OLTcardDETA(infouser.olt_id).then(oltouput => {
+                     console.log(oltouput)
+                 }).catch(err => {
+                     console.log(err)
+                 })*/
+            }
+
+        }
+        else {
+            /*  dismiss()
+              presentlo({
+                  message: ou.mensaje,
+                  cssClass: 'custom-loading',
+                  spinner: "bubbles",
+                  duration: 4500,
+              })*/
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+}
 
     return (
         <div className='px-0'>
@@ -276,7 +405,7 @@ const Inicipage: React.FC = () => {
                                 <a className="card__link" onClick={() => history.push("/page/Soporte")}>Reportar <i className=" m-2 card_icon bi  bi-radioactive"></i></a>
                             </p>
                         </div>
-                    </div>:
+                    </div> :
                         <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 '  >
                             <div className=" cardt-block border boxshadow-inver ">
                                 <div className='row'>
@@ -289,7 +418,7 @@ const Inicipage: React.FC = () => {
                                         <div className='  mb-1  float-end  wifi-dark card   ms-3 cardt-icon ' style={{
                                             width: "48px",
                                             height: "48px",
-                                           
+
                                             zIndex: 2
 
                                         }}>
@@ -309,7 +438,7 @@ const Inicipage: React.FC = () => {
                             </div>
                         </div>
                     }
-                   
+
                     {datos.estado === "ACTIVO" ?
                         <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => opciones("wifi")}>
                             <div className="cardt  cardt-red boxshadow border">
@@ -432,7 +561,7 @@ const Inicipage: React.FC = () => {
                             { /*<Collapse in={open}>
                                 <div className='  col-12 border  rounded-4 bg-white  shadow-sm  p-2' >
                                     <span className='p-2'> Servicios :</span>
-                                    <IonList lines='none'>
+                                    <IonList bubbles='none'>
                                         {info.map((e: string, i: number) => {
                                             return (
                                                 <IonItem className='text-info text-dark' key={i} >

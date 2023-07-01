@@ -120,15 +120,10 @@ export const Facturaid = async (parms) => {
 }
 export const Equipos = async (parms) => {
     try {
-        let { data } = await axios.get("https://rec.netbot.ec/mikroti/PortalApi/Listequipo/"+parms)
+        let { data } = await axios.get("https://rec.netbot.ec/mikroti/PortalApi/Listequipo/" + parms)
         return data
     } catch (error) {
         return error
-    }
-}
-let config = {
-    headers: {
-        "X-Token": "a068dcbce5ab4b3591e57f8d8a4348e9",
     }
 }
 export const OLTcardDETA = async (parms) => {
@@ -140,6 +135,22 @@ export const OLTcardDETA = async (parms) => {
 
     }
 }
+export const Cambiarclave = async (parms) => {
+    try {
+        let { data } = await axios.post("http://localhost:5200/MovilApi/passwordssi", parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Cambiarname = async (parms) => {
+    try {
+        let { data } = await axios.post("http://localhost:5200/MovilApi/namessi", parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
 export const UserUpdate = async (parms) => {
     try {
         let { data } = await axios.post(Hostv1 + "/PortalApi/UpdateUser", parms)
@@ -149,3 +160,11 @@ export const UserUpdate = async (parms) => {
     }
 }
 
+export const Newtickte = async (parms) => {
+    try {
+        let { data } = await axios.post("http://localhost:5200/PortalApi/CreaTicket", parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}

@@ -87,3 +87,11 @@ export const Get_onu_profile_speed = async (parms) => {
         return error
     }
 }
+export const Get_speed_profiles = async ()=>{
+    try {
+        let { data } = await axios.get("http://localhost:5200/api/SmartApi/get_speed_profiles")
+        return data
+    } catch (error) {
+        return error
+    }
+}

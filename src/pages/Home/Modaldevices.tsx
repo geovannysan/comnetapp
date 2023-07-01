@@ -12,7 +12,7 @@ export default function DeviceView(props: any) {
         >
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>
+                    <IonTitle className="text-white">
                         {nickname}
                     </IonTitle>
                     <IonButtons slot="end"  >
@@ -48,7 +48,7 @@ export default function DeviceView(props: any) {
                         {
                             if (e.HostName != undefined) {
                                 return (<IonItem lines="none" key={i}>
-                                    <IonLabel>
+                                    <IonLabel slot="">
                                         <h3>{e.HostName._value==""?"Desconocido":e.HostName._value}</h3>
                                         <p>{e.MACAddress._value}</p>
                                         <h3> </h3>
@@ -58,12 +58,10 @@ export default function DeviceView(props: any) {
                                         <h3></h3>
                                         <a className="btn btn-sm  btn-default"><i className="bi bi-phone-landscape-fill"></i> Bloquear </a>
                                     </IonLabel>
-                                    <IonIcon mode="ios" slot="end" icon={chevronForward} />
+                                    <IonIcon className="d-none" mode="ios" slot="end" icon={chevronForward} />
                                 </IonItem>)
-                            }
-                         
+                            }                         
                         }
-
                     }):
                     
                     <div className="h-100 ">

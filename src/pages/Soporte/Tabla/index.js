@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IonModal, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonIcon, IonCardSubtitle, getPlatforms, IonList, IonItem, IonLabel } from "@ionic/react";
+import { IonModal, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonIcon, IonCardSubtitle, getPlatforms, IonList, IonItem, IonLabel, useIonLoading, useIonToast } from "@ionic/react";
 import "jquery/dist/jquery.slim"
 import "jszip"
 import "pdfmake"
@@ -17,7 +17,7 @@ import $ from "jquery"
 import { close } from "ionicons/icons";
 import * as moment from "moment"
 import { userlog } from "../../../utils/User";
-import { ListarTicket } from "../../../utils/Queryuser";
+import { Equipos, ListarTicket, Newtickte } from "../../../utils/Queryuser";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "../../../StoreRedux/Slice/UserSlice";
 import { Editor } from 'react-draft-wysiwyg';
@@ -27,20 +27,24 @@ import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { DetalleOlt, Detalleoltport, Get_onu_signal, Gt_onu_status } from "../../../utils/Querystados";
 import { obtenervaariables } from "../../Home/parsesmart";
+
 //window.JSZip = JSZip;
 
 export default function Datatablesoporte() {
     let usedispatch = useDispatch()
+    const [present] = useIonToast();
+    let [presentlo, dismiss] = useIonLoading()
     let modal = useSelector((state) => state.usuario.modal)
     const infouser = useSelector((state) => state.usuario.user)
-   // console.log(obtenervaariables(infouser.servicios[0].smartolt))
+    let infor = obtenervaariables(infouser.servicios[0].smartolt).onu_external_id
+    // console.log(obtenervaariables(infouser.servicios[0].smartolt))
     const [spiner, setSpiner] = useState("")
     const [datos, setDatos] = useState([])
     const [contentState, setContentState] = useState({})
-    const [señal,setSeñal]=useState({
-        onu_signal_value:"",
-        onu_status:"",
-        onu_signal:""
+    const [señal, setSeñal] = useState({
+        onu_signal_value: "",
+        onu_status: "",
+        onu_signal: ""
     })
     // console.log(modal)
     const abrir = () => {
@@ -50,7 +54,7 @@ export default function Datatablesoporte() {
     function onContentStateChange(contentState) {
         setContentState(contentState)
     }
-    
+
 
     useEffect(() => {
         let datos = userlog()
@@ -59,6 +63,8 @@ export default function Datatablesoporte() {
             console.log(response)
             if (response.estado == "exito") {
                 setDatos(response.data.tickets)
+                let soport = response.data.tickets.filter(e => e.estado == "abierto")
+                Soporte(soport.length)
             }
             setTimeout(function () {
                 if ($.fn.dataTable.isDataTable('#doc')) {
@@ -133,45 +139,253 @@ export default function Datatablesoporte() {
         ).catch(err => {
             console.log(err)
         })
-        Get_onu_signal(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput=>{
-            if (ouput.status){
-                console.log(ouput)
-                Gt_onu_status(infouser.servicios[0].idperfil).then(ouputv=>{
-                    if(ouputv.status){
-                        setSeñal({
-                            onu_signal_value: ouput.onu_signal_value,
-                            onu_status: ouputv.onu_status,
-                            onu_signal: ouput.onu_signal
-                        })
-                        console.log(ouputv)
-                    }
-                })
-            }
-        })
-        Detalleoltport(obtenervaariables(infouser.servicios[0].smartolt).olt_id).then(ouput=>{
-            if(ouput.status){
+        if (obtenervaariables(infouser.servicios[0].smartolt).onu_external_id != "") {
+            Get_onu_signal(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput => {
+                if (ouput.status) {
+                    console.log(ouput)
+                    Gt_onu_status(infouser.servicios[0].idperfil).then(ouputv => {
+                        if (ouputv.status) {
+                            setSeñal({
+                                onu_signal_value: ouput.onu_signal_value,
+                                onu_status: ouputv.onu_status,
+                                onu_signal: ouput.onu_signal
+                            })
+                            console.log(ouputv)
+                        }
+                    })
+                }
+            })
+        }
+        /*Detalleoltport(obtenervaariables(infouser.servicios[0].smartolt).olt_id).then(ouput => {
+            if (ouput.status) {
                 let board = ouput.response.filter(e => e.board == obtenervaariables(infouser.servicios[0].smartolt).board)
                 let estado = board.find(e => e.pon_port == obtenervaariables(infouser.servicios[0].smartolt).port)
                 console.log(estado)
                 return
             }
-                console.log(ouput)
-        }).catch(err=>{
+            console.log(ouput)
+        }).catch(err => {
             console.log(err)
-        })
-       /* DetalleOlt(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput=>{
-            //console.log(ouput)
-            if(ouput.status){
-                Detalleoltport(ouput.onu_details[""])
-            }
         })*/
+        /* DetalleOlt(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput=>{
+             //console.log(ouput)
+             if(ouput.status){
+                 Detalleoltport(ouput.onu_details[""])
+             }
+         })*/
 
         //console.log(consultaseñal())
         /* var editor = new wysihtml5.Editor('editor', {
              toolbar: 'toolbar', // defined in file parser rules javascript
          });*/
 
+
     }, [])
+    function Soporte(so) {
+        let datos = localStorage.getItem("INFOUSER")
+        let infos = localStorage.getItem("USERLOGIN")
+        let users = JSON.parse(infos)
+        let infouser = obtenervaariables(users.servicios[0].smartolt)
+        Equipos(users.servicios[0].nodo).then(ou => {
+            // dismiss()
+            if (ou.estado == "exito") {
+                dismiss()
+                if (ou.routers.length > 0) {
+                    console.log(ou.routers[0].estado)
+                    console.log(infouser)
+                    dismiss()
+                    presentlo({
+                        message: 'Comprobando Olt',
+                        cssClass: 'custom-loading',
+                        spinner: "bubbles",
+                        //duration: 1500,
+                    })
+                    DetalleOlt(users.servicios[0].id).then(ouput => {
+                        console.log(ouput)
+                        if (ouput.status) {
+                            dismiss()
+                            presentlo({
+                                message: 'Comprobando puertos olt',
+                                cssClass: 'custom-loading',
+                                spinner: "bubbles",
+                                duration: 2500
+                            })
+                            // dismiss()
+                            Detalleoltport(infouser.olt_id).then(ou => {
+                                //console.log(ou)
+                                dismiss()
+                                let board = ouput.onu_details["board"]
+                                let poart = ouput.onu_details["port"]
+                                console.log(ouput.onu_details, ou)
+                                let oltstatus = ou.response.find((e) => e.board == board && e.pon_port == poart)
+                                if (!oltstatus.operational_status.includes("Up")) {
+                                    /**crear pantalla con mensaje daño masivo y no se genera tickte */
+                                    present({
+                                        message: 'crear pantalla con mensaje daño masivo y no se genera tickte',
+                                        cssClass: 'custom-loading',
+                                        duration: 4500,
+                                        buttons: [
+                                            {
+                                                text: "cerrar",
+                                                role: "cancel",
+
+                                            }
+                                        ]
+                                    })
+                                }
+                                else {
+                                    dismiss()
+                                    presentlo({
+                                        message: 'Comprobando estado onu ',
+                                        cssClass: 'custom-loading',
+                                        spinner: "bubbles",
+                                        // duration: 1500
+                                    })
+                                    Gt_onu_status(users.servicios[0].id).then(ouputv => {
+                                        console.log(ouputv)
+                                        if (ouputv.status) {
+                                            if (ouputv.onu_status == "Los") {
+                                                /* crear tickte */
+                                                present({
+                                                    message: 'crear pantalla con mensaje de Los',
+                                                    cssClass: 'custom-loading',
+                                                    duration: 4500,
+                                                    buttons: [
+                                                        {
+                                                            text: "cerrar",
+                                                            role: "cancel",
+
+                                                        }
+                                                    ]
+                                                })
+                                                return
+                                            }
+                                            if (ouputv.onu_status == "Power fail") {
+                                                present({
+                                                    message: 'crear gif intructivo. seria un modal con el gif',
+                                                    cssClass: 'custom-loading',
+                                                    duration: 4500,
+                                                    buttons: [
+                                                        {
+                                                            text: "cerrar",
+                                                            role: "cancel",
+
+                                                        }
+                                                    ]
+                                                })
+                                                /* Revisar conexio gif intructivo */
+                                                return
+                                            }
+                                            if (ouputv.onu_status == "Online") {
+                                                dismiss()
+                                                presentlo({
+                                                    message: 'Comprobando estado de la señal',
+                                                    cssClass: 'custom-loading',
+                                                    spinner: "bubbles",
+                                                    duration: 3500
+                                                })
+                                                Get_onu_signal(users.servicios[0].id).then(ouput => {
+                                                    if (ouput.status) {
+                                                        dismiss()
+                                                        console.log(ouput)
+                                                        let se = ouput.onu_signal_1490.replace("-", "").replace("dBm", "")
+                                                        console.log(se)
+                                                        if (se < 29) {
+                                                            /** mostrar servicio ok */
+                                                            present({
+                                                                message: 'Buena señal',
+                                                                cssClass: 'custom-loading',
+                                                                duration: 4500,
+                                                            })
+                                                        }
+                                                        /*if (se > 26.50 && se < 29) {
+                                                            /** tickte de revision *
+                                                            
+
+                                                        }*/
+                                                        if (se > 29) {
+                                                            /**visita tecnica */
+                                                            let info = {
+                                                                "idcliente": users.id,
+                                                                "asunto": "Revision de señal",
+                                                                "solicitante": users.nombre,
+                                                                "fechavisita": moment().format('YYYY-MM-D'),
+                                                                "turno": "MAÑANA",
+                                                                "agendado": "PAGINA WEB",
+                                                                "contenido": "Hola,<br> Necesito ayuda para mi conexión de internet " + ouput.onu_signal_1490 + "."
+                                                            }
+                                                            if (so == 0) {
+                                                                present({
+                                                                    message: 'Creando ticket de soporte',
+                                                                    cssClass: 'custom-loading',
+                                                                    duration: 4500,
+                                                                })
+
+                                                                Newtickte(info).then(oput => {
+                                                                    dismiss()
+                                                                    console.log(oput)
+                                                                }).catch(err => {
+                                                                    console.log(err)
+                                                                })
+
+                                                                return
+                                                            } else {
+
+                                                                present({
+                                                                    message: 'Tienes un ticke abierto ',
+                                                                    cssClass: 'custom-loading',
+                                                                    duration: 4500,
+                                                                })
+                                                            }
+                                                        }
+                                                    } else {
+                                                        /* present({
+                                                             message: 'Hubo un error intente mas tarde',
+                                                             cssClass: 'custom-loading',
+                                                             duration: 4500,
+                                                             buttons: [
+                                                                 {
+                                                                     text: "cerrar",
+                                                                     role: "cancel",
+ 
+                                                                 }
+                                                             ]
+                                                         })*/
+                                                    }
+                                                })
+                                                return
+                                            }
+
+                                        }
+                                    })
+                                }
+                                console.log(oltstatus)
+                            }).catch(err => {
+                                console.log(err)
+                            })
+                        }
+                    })
+                    /* OLTcardDETA(infouser.olt_id).then(oltouput => {
+                         console.log(oltouput)
+                     }).catch(err => {
+                         console.log(err)
+                     })*/
+                }
+
+            }
+            else {
+                /*  dismiss()
+                  presentlo({
+                      message: ou.mensaje,
+                      cssClass: 'custom-loading',
+                      spinner: "bubbles",
+                      duration: 4500,
+                  })*/
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
     function fecha(item) {
         if (moment(new Date()).diff(item, 'days', true) < 31) {
             if (moment(new Date()).diff(item, 'days', true) < 2)
@@ -186,6 +400,7 @@ export default function Datatablesoporte() {
         }
 
     }
+
     const showDatos = () => {
         try {
             return datos.map((item, index) => {
@@ -354,10 +569,10 @@ export default function Datatablesoporte() {
 
     return (
         <>
-            
+            <IonContent fullscreen>
                 <div className="row pb-2 px-0">
-                    <div className="col-12 col-md-6 pb-1">
-                        <div className="card-t">
+                    <div className="col-12 col-md-6 pb-1 py-2">
+                        <div className="card-t boxshadow border">
                             <div className='row'>
                                 <div className='col-7'>
                                     <h4 style={{
@@ -379,12 +594,16 @@ export default function Datatablesoporte() {
 
 
                             <p className="card__apply  float-end">
-                                <a className="card__link " >{señal.onu_signal} <i className=" m-2 card_icon bi bi-hdd-network"></i></a>
+                                <a className="card__link " >
+                                    {señal.onu_signal == "Very good" ? "Muy buena" : ""}
+                                    {señal.onu_signal == "Warning" ? "Buena" : ""}
+                                    {señal.onu_signal == "Critical" ? "Mala" : ""}
+                                    <i className=" m-2 card_icon bi bi-hdd-network"></i></a>
                             </p>
                         </div>
                     </div>
-                    <div className="col-12 col-md-6 pb-1">
-                        <div className="card-t">
+                    <div className="col-12 col-md-6 pb-1 py-2">
+                        <div className="card-t boxshadow border">
                             <div className="row">
                                 <div className="col-6">
                                     <div className="">
@@ -427,72 +646,103 @@ export default function Datatablesoporte() {
                             </div>
                         </div>
                     </div>
+                    <div className="col-12 col-md-6 pb-1 py-2">
+                        <div className="card-t boxshadow border">
+                            <div className='row'>
+                                <div className='col-7'>
+                                    <h4 style={{
+                                        textTransform: "capitalize",
+                                        fontSize: "0.9em",
+                                        color: "#3171e0"
+                                    }} >Reportar inconvvememte </h4>
+
+                                </div>
+                                <div className='col-5  d-flex  justify-content-end'>
+                                    <h4 style={{
+                                        fontSize: "1em",
+                                        color: "#3171e0"
+                                    }}><i className=" bi  bi-router-fill p-1"></i>{señal.onu_status}  </h4>
+
+                                </div>
+                            </div>
+                            <p  ><span className=' fw-bold'><i className="bi bi-reception-4 px-1"></i></span> {señal.onu_signal_value}  </p>
+
+
+                            <p className="card__apply  float-end">
+                                <a className="card__link " >{señal.onu_signal == "Very good" ? "Muy buena" : ""
+                                }
+                                    {señal.onu_signal == "Warning" ? "Buena" : ""}
+                                    {señal.onu_signal == "Critical" ? "Mala" : ""}
+                                    <i className=" m-2 card_icon bi bi-hdd-network"></i></a>
+                            </p>
+                        </div>
+                    </div>
 
                 </div>
 
-         {  getPlatforms().some(e => e == "android")&& getPlatforms().length==1 ?  <IonList
-                className="border  rounded-3 "
-            >
-                {
-                    datos.length > 0 ?
-                        datos.map((e, ind) => {
-                            return (
+                {getPlatforms().some(e => e == "android") ? <IonList
+                    className="border  rounded-3 "
+                >
+                    {
+                        datos.length > 0 ?
+                            datos.map((e, ind) => {
+                                return (
 
-                                <IonItem key={ind}>
-                                    <IonLabel >
-                                        <h3>{e.asunto}</h3>
-                                        <p>{e.fecha_soporte}</p>
-                                    </IonLabel>
-                                    <IonLabel slot="end">
-                                        <p>{e.estado}</p>
-                                    </IonLabel>
+                                    <IonItem key={ind}>
+                                        <IonLabel >
+                                            <h3>{e.asunto}</h3>
+                                            <p>{e.fecha_soporte}</p>
+                                        </IonLabel>
+                                        <IonLabel slot="end">
+                                            <p>{e.estado}</p>
+                                        </IonLabel>
 
-                                </IonItem>
+                                    </IonItem>
 
-                            )
-                        }) : ""}
-            </IonList>:
-            <div className="px-0">
-                <div className="bg-white border shadow ">
-                    <div className="w-100 py-3 bg-dark">
-                        <div className="text-white ps-2">
-                            <i className="bi bi-file-earmark-pdf"></i> Soporte
+                                )
+                            }) : ""}
+                </IonList> :
+                    <div className="px-0 d-none">
+                        <div className="bg-white border shadow ">
+                            <div className="w-100 py-3 bg-dark">
+                                <div className="text-white ps-2">
+                                    <i className="bi bi-file-earmark-pdf"></i> Soporte
+                                </div>
+                            </div>
+                            <div className="p-2 d-none">
+                                <div className={"  p-0 pb-2"}
+                                >
+                                    <table id="doc" className="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
+                                        style={{
+                                            width: "100%",
+                                        }}>
+                                        <thead className="">
+                                            <tr className="border ">
+                                                <th className=" text-center" ></th>
+                                                <th className="sorting" >No</th>
+                                                <th >Asunto</th>
+                                                <th >Fecha</th>
+                                                <th >Estado</th>
+                                                <th >Última Rspta.</th>
+                                                <th ></th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {showDatos()}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            {showModal()}
+
                         </div>
-                    </div>
-                    <div className="p-2">
-                        <div className={"  p-0 pb-2"}
-                        >
-                            <table id="doc" className="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
-                                style={{
-                                    width: "100%",
-                                }}>
-                                <thead className="">
-                                    <tr className="border ">
-                                        <th className=" text-center" ></th>
-                                        <th className="sorting" >No</th>
-                                        <th >Asunto</th>
-                                        <th >Fecha</th>
-                                        <th >Estado</th>
-                                        <th >Última Rspta.</th>
-                                        <th ></th>
+                        {ShowModalBoos()}
+                        <div className="container px-0 card">
 
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {showDatos()}
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                    {showModal()}
-
-                </div>
-                {ShowModalBoos()}
-                <div className="container px-0 card">
-
-                    {/*<Editor
+                            {/*<Editor
                        
                         wrapperClassName="demo-wrapper"
                         editorClassName="demo-editor"
@@ -506,28 +756,29 @@ export default function Datatablesoporte() {
                         }}
                     />*/}
 
-                </div>
+                        </div>
 
-                <div className={spiner}
-                    style={{
+                        <div className={"d-none"}
+                            style={{
 
-                        position: 'fixed',
-                        height: "100%",
-                        left: '0',
-                        bottom: '0',
-                        width: '100%',
-                        backgroundColor: '#fff',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: '3'
-                    }}
-                >
-                    <div className="spinner-border" >
-                        <span className="sr-only"></span>
-                    </div>
-                </div>
-            </div>}
+                                position: 'fixed',
+                                height: "100%",
+                                left: '0',
+                                bottom: '0',
+                                width: '100%',
+                                backgroundColor: '#fff',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                zIndex: '3'
+                            }}
+                        >
+                            <div className="spinner-border" >
+                                <span className="sr-only"></span>
+                            </div>
+                        </div>
+                    </div>}
+            </IonContent>
         </>)
 
 

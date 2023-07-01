@@ -1,5 +1,5 @@
 import { IonIcon, IonInput, IonItem, IonLabel, IonToggle, useIonToast } from '@ionic/react';
-import {  useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 import logo from "../../imagen/logo.png"
 
 import { useDispatch } from 'react-redux';
@@ -17,20 +17,28 @@ const Page: React.FC = () => {
         codigo: ""
     })
     function logearse() {
-        if(datos.cedula.trim()!== ""&& datos.codigo.trim()!== ""){
+        if (datos.cedula.trim() !== "" && datos.codigo.trim() !== "") {
             autenticar(datos.cedula).then(e => {
                 console.log(e)
                 if (e.estado === "exito") {
+                    if (!e.datos[0].servicios) {
+                        present({
+                            message: 'Usuario sin servicio registrado',
 
+                            duration: 1500,
+
+                        }); 
+                        return
+                    }
                     if (datos.codigo === e.datos[0].codigo) {
                         present({
                             message: 'Bienvenido',
-                           
+
                             duration: 1500,
-                          
+
                         });
-                        
-                        localStorage.setItem("USERLOGIN", JSON.stringify({...e.datos[0]}))
+
+                        localStorage.setItem("USERLOGIN", JSON.stringify({ ...e.datos[0] }))
                         console.log(e.datos)
                         console.log(e.datos[0].id)
                         ListarFactura(e.datos[0].id).then(ouput => {
@@ -46,7 +54,7 @@ const Page: React.FC = () => {
                         }).catch(err => {
 
                         })
-                        
+
                     }
                     else {
                         present({
@@ -69,12 +77,13 @@ const Page: React.FC = () => {
                 console.error(err)
             })
         }
-        else{
-        present({
-            message: 'Ingrese datos',
-            duration: 1500,
-            position: "top"
-        });}
+        else {
+            present({
+                message: 'Ingrese datos',
+                duration: 1500,
+                position: "top"
+            });
+        }
     }
     const [passwordVisible, setPasswordVisible] = useState(false);
     function handeChange(e: any) {
@@ -112,25 +121,25 @@ const Page: React.FC = () => {
 
                     </div>
                     <div className="col-sm-12  py-3">
-                        
-                           
-                            <div className="input-group">
+
+
+                        <div className="input-group">
                             <input type={passwordVisible ? 'text' : 'password'}
                                 value={datos.codigo}
                                 name="codigo" required
                                 onChange={(e) => handeChange(e.target)}
-                            className="form-control" id="password"/>
+                                className="form-control" id="password" />
                             <div className="input-group-append" onClick={togglePasswordVisibility}>
-                                        <span className="input-group-text">
-                                    {passwordVisible ? <i className="bi bi-eye" id="togglePassword"></i>:
+                                <span className="input-group-text">
+                                    {passwordVisible ? <i className="bi bi-eye" id="togglePassword"></i> :
                                         <i className="bi  bi-eye-slash" id="togglePassword"></i>}
-                                        </span>
-                                    </div>
-                          </div>
+                                </span>
+                            </div>
+                        </div>
                         <IonItem lines='none' className='d-none border rounded-3 '>
                             <IonLabel position="floating">Contraseña</IonLabel>
                             <IonInput
-                          
+
                                 type={passwordVisible ? 'text' : 'password'}
                                 value={datos.codigo}
                                 name="codigo" required
@@ -140,7 +149,7 @@ const Page: React.FC = () => {
                                 slot="end"
                                 icon={passwordVisible ? eyeOff : eye}
                                 onClick={togglePasswordVisibility}
-                                style={{paddigTop: '100px' }}
+                                style={{ paddigTop: '100px' }}
 
                             />
                         </IonItem>
