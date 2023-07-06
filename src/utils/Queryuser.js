@@ -128,7 +128,7 @@ export const Equipos = async (parms) => {
 }
 export const OLTcardDETA = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:5200/api/SmartApi/get_olt_cards_details/" + parms)
+        let { data } = await axios.get("https://rec.netbot.ec/mikroti/api/SmartApi/get_olt_cards_details/" + parms)
         return data
     } catch (error) {
         return error
@@ -137,7 +137,7 @@ export const OLTcardDETA = async (parms) => {
 }
 export const Cambiarclave = async (parms) => {
     try {
-        let { data } = await axios.post("http://localhost:5200/MovilApi/passwordssi", parms)
+        let { data } = await axios.post("https://rec.netbot.ec/mikroti/MovilApi/passwordssi", parms)
         return data
     } catch (error) {
         return error
@@ -145,7 +145,7 @@ export const Cambiarclave = async (parms) => {
 }
 export const Cambiarname = async (parms) => {
     try {
-        let { data } = await axios.post("http://localhost:5200/MovilApi/namessi", parms)
+        let { data } = await axios.post("https://rec.netbot.ec/mikroti/MovilApi/namessi", parms)
         return data
     } catch (error) {
         return error
@@ -162,7 +162,7 @@ export const UserUpdate = async (parms) => {
 
 export const Newtickte = async (parms) => {
     try {
-        let { data } = await axios.post("http://localhost:5200/PortalApi/CreaTicket", parms)
+        let { data } = await axios.post("https://rec.netbot.ec/mikroti/PortalApi/CreaTicket", parms)
         return data
     } catch (error) {
         return error

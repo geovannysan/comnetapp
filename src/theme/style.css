@@ -292,8 +292,18 @@ ion-badge.activo {
 .modal-content {
     height: 100% !important;
     width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
+}
+ion-item.iteminput::part(native) {
+    background: transparent;
+    color: #fff;
+  
+
+    
+}
+
+ion-item.iteminput::part(detail-icon) {
+    color: white;
+    opacity: 1;
+   
+    font-size: 20px;
 }

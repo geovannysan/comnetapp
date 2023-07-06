@@ -305,290 +305,16 @@ export function OpcionesView() {
 
             />
             <IonContent fullscreen  
-            className="  m-auto text-center"
+            className="  m-auto "
             >
 
           
-            <div ref={animatedElement} className=" h-100  my-auto pt-5"
+            <div ref={animatedElement} className=" h-100  my-auto pt-2"
             
             >
 
 
-                {opction == "Perfil" ?
-
-                    <div className='container-fluid d-none px-0  d-flex  justify-content-center'>
-
-                        <div className='row col-12 col-md-10 col-lg-12 px-0  '>
-                            {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
-                            <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' >
-                                <div className="cardt cardt-dark ">
-                                    <div className='row py-0'
-                                        style={{
-
-                                        }}>
-                                        <div className=" text-end">
-                                            <IonButton
-                                                slot="end"
-                                                className="p-tn-2 "
-                                                onClick={() => history.push("/page/perfil")}
-                                                color="tertiary"
-                                                size="small">
-                                                Mis datos
-                                                <IonIcon
-                                                    slot="end"
-                                                    icon={createOutline}
-                                                />
-
-                                            </IonButton>
-                                        </div>
-
-                                        <div className=' '
-
-                                        >
-
-                                            {datos.estado === "ACTIVO" ?
-                                                <h6
-
-                                                    style={{
-                                                        textTransform: "capitalize",
-                                                        fontSize: "1em",
-                                                        lineHeight: "15px",
-                                                        verticalAlign: "top"
-                                                    }} className="text-success " > <i className=" bi bi-person"></i>{datos.nombre}</h6> :
-                                                <h6 style={{
-                                                    textTransform: "capitalize",
-                                                    fontSize: "0.9em"
-                                                }} className=" text-danger" ><i className=" bi bi-person"></i>{datos.nombre}</h6>
-                                            }
-
-
-                                        </div>
-
-                                    </div>
-                                    <p className='card__link text-capitalize p-0' style={{
-                                        fontSize: "0.9em"
-                                    }}  ><span className=' fw-bold'><i className="bi bi-pin-map-fill px-1" ></i></span>{datos.direccion_principal} </p>
-
-
-                                    <div className="row px-0">
-                                        <div className="d-none col-7 col-md-6 px-1">
-                                            <p className="card__apply ">
-                                                <i className=" px-1  bi  bi-envelope"></i>
-                                                <a className="card__link" style={{
-                                                    fontSize: "0.7em"
-                                                }}>{datos.correo}</a>
-                                            </p>
-                                        </div>
-                                        <div className=" col-5 col-md-6 text-center ">
-
-                                            <a className=" d-none btn btn-sm btn-default"
-
-                                                onClick={() => history.push("/page/perfil")}>Editar  <i className="card_icon px-2  bi  bi-pencil"></i></a>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-
-
-                            <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => console.log("")} >
-                                <div className="cardt  cardt-success">
-                                    <div className='row'>
-                                        <div className='col-6 col-md-6 '>
-                                            <h4 className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"} style={{
-                                                textTransform: "capitalize",
-                                                fontSize: "0.9em"
-                                            }}>{datos.servicios ? datos.servicios[0].perfil : "User Tickets"}</h4>
-                                        </div>
-                                        <div className='col-6 col-md-6 '>
-
-                                            <h4 className={datos.estado === "ACTIVO" ? "text-success" : " text-danger"} style={{ fontSize: "0.9em" }}><i className=" bi  bi-router"></i>{nickname}</h4>
-
-
-
-                                        </div>
-                                    </div>
-                                    <div className=" px-0 d-flex  justify-content-around pt-4 ">
-                                        < div className=" ">
-                                            <p className="card__apply" style={{
-
-                                            }} >
-                                                <h4 className="card__link">
-                                                    <i className=" bi bi-cloud-arrow-up-fill"></i>
-                                                    {inforoute == undefined ? "Desconocido" : inforoute["upload_speed_profile_name"]}
-                                                </h4>
-                                            </p>
-                                        </div>
-                                        <div className="">
-                                            <p className="card__apply    "
-                                                style={{
-
-                                                }} >
-                                                <h4 className="card__link">
-                                                    <i className=" bi bi-cloud-arrow-down-fill"></i>
-                                                    {inforoute == undefined ? "Desconocido" : inforoute["download_speed_profile_name"]}
-
-                                                </h4>
-                                            </p>
-                                        </div>
-
-
-                                    </div>
-                                    {/*<div className="row">
-                                <div className="col-6">
-                                    
-                                </div>
-                                <div className=" col-6 text-center">
-                                    <p className="card__apply ">
-                                        <a className="card__link" style={{
-                                            fontSize: "0.9em"
-                                        }}><i className="card_icon px-2  bi  bi-globe-americas"></i>{inforoute["zone"]}</a>
-                                    </p>
-                                </div>
-                                    </div>*/}
-                                </div>
-                            </div>
-                            <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => console.log("")} >
-                                <div className="cardt cardt-primary ">
-                                    <div className='row'>
-                                        <div className='col-8'>
-                                            <h4 className=' text-primary'
-                                                style={{
-                                                    fontSize: "0.9em"
-                                                }}
-                                            >Soporte Técnico</h4>
-                                        </div>
-                                        <div className='col-3 '>
-                                            <div className='  mb-1  float-end   ms-3 card rounded-4 shadow' style={{
-                                                width: "48px",
-                                                height: "48px",
-                                                backgroundColor: "#3691ef",
-                                                zIndex: 2
-
-                                            }}>
-                                                <div className='m-auto'>
-                                                    <i className="bi bi-radioactive icon-app "  ></i>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <p>Reportar inconveniente en el servicio.</p>
-                                    <p className="card__apply">
-                                        <a className="card__link" onClick={() => history.push("/page/Soporte")}>Reportar <i className=" m-2 card_icon bi  bi-radioactive"></i></a>
-                                    </p>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-
-                    </div>
-
-                    : ""}
-                {opction == "Factura" ?
-                    <div className='container-fluid d-none px-0  d-flex  justify-content-center'>
-                        <div className='row col-12 col-md-10 col-lg-12 px-0  '>
-                            {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
-                            <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' >
-                                <div className="cardt cardt-dark boxshadow border">
-                                    <div className='row'>
-                                        <div className='col-8'>
-                                            <h4 style={{
-                                                textTransform: "capitalize",
-                                                fontSize: "0.9em"
-                                            }} >Valores pendientes</h4>
-
-                                        </div>
-                                        <div className='col-4  d-flex  justify-content-center'>
-                                            <h4 style={{ fontSize: "1em" }}><i className=" bi bi-building-check"></i> Cuenta</h4>
-
-                                        </div>
-                                    </div>
-                                    <p  ><span className=' fw-bold'><i className="bi bi-router px-1"></i></span> {nickname}</p>
-
-                                    <div className="row pt-2">
-                                        <div className="col-4 col-md-6">
-                                            <p className="card__apply ">
-                                                <a className="card__link" style={{
-
-                                                }}>Facturas:{datos.facturacion.facturas_nopagadas}</a>
-                                            </p>
-                                        </div>
-                                        <div className=" col-8 col-md-6 text-center ">
-                                            <p className="card__apply ">
-                                                <a className="card__link" >Valor Pendiente ${datos.facturacion.total_facturas}</a>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-
-
-                            <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => console.log("")} >
-                                <div className="cardt  cardt-red boxshadow border ">
-                                    <div className='row'>
-                                        <div className='col-6 col-md-8 '>
-                                            <h4 style={{
-                                                textTransform: "capitalize",
-                                                fontSize: "1em"
-                                            }}>Reportar pagos</h4>
-                                        </div>
-                                        <div className='col-6 col-md-3 text-center'>
-
-                                            <h4 style={{ fontSize: "1em" }}><i className=" bi bi-clipboard-check-fill"></i> Informes </h4>
-                                        </div>
-                                        <p  ><span className=' fw-bold'><i className="bi bi-shield-check px-1"></i></span> Reporta tu pago desde este medio </p>
-
-                                    </div>
-                                    <p className="card__apply">
-                                        <a className="card__link" onClick={() => history.push("/page/Informe")}>Reportar <i className=" m-2 card_icon bi  bi-radioactive"></i></a>
-                                    </p>
-
-                                </div>
-                            </div>
-                            <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 ' onClick={() => console.log("")} >
-                                <div className="cardt cardt-primary boxshadow border">
-                                    <div className='row'>
-                                        <div className='col-7'>
-                                            <h4 style={{
-                                                textTransform: "capitalize",
-                                                fontSize: "0.9em",
-                                                color: "#3171e0"
-                                            }} >Preguntas Frecuentes</h4>
-
-                                        </div>
-                                        <div className='col-5  d-flex  justify-content-center'>
-                                            <h4 style={{
-                                                fontSize: "1em",
-                                                color: "#3171e0"
-                                            }}><i className=" bi bi-list-check"></i> Facturación </h4>
-
-                                        </div>
-                                    </div>
-
-                                    <p>Consulta tus dudas.</p>
-                                    <p className="card__apply  float-end">
-                                        <a className="card__link text-primary" >Preguntas <i className=" m-2 card_icon bi bi-patch-question"></i></a>
-                                    </p>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                    </div> : ""}
+     
 
                 {datos.iD_EXTERNO_ONU == "" ? 
                 <div className="">
@@ -611,12 +337,12 @@ export function OpcionesView() {
 
                 </div> : 
                 <div className='container-fluid px-0  d-flex  justify-content-center'>
-                    <div className='row col-12 col-md-10 col-lg-12 px-0  '>
+                    <div className='row col-12 col-md-10 col-lg-12 px-0 '>
                         {/*onClick={() => setOpen(!open)}  id="trigger-button"*/}
                         <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2  ' >
                             <div className="cardt cardt-red border boxshadow">
-                                <div className='row'>
-                                    <div className='col-8'>
+                                        <div className='row  '>
+                                    <div className='col-8 text-start'>
                                         <h4 style={{
                                             textTransform: "capitalize",
                                             fontSize: "0.9em"
@@ -656,7 +382,7 @@ export function OpcionesView() {
                         <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' >
                             <div className="cardt cardt-success border boxshadow">
                                 <div className='row'>
-                                    <div className='col-8'>
+                                            <div className='col-8 text-start'>
                                         <h4 style={{
                                             textTransform: "capitalize",
                                             fontSize: "0.9em"
@@ -695,7 +421,7 @@ export function OpcionesView() {
                         <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 '  >
                             <div id="present-alert" className="cardt  cardt-dark border boxshadow" onClick={() => setAlert("hidessi")}>
                                 <div className='row'>
-                                    <div className='col-7 col-md-7 '>
+                                            <div className='col-7 col-md-7 text-start'>
                                         <h4 style={{
 
                                             fontSize: "0.9em"
@@ -740,7 +466,7 @@ export function OpcionesView() {
                         <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-2 ' onClick={() => console.log("")} >
                             <div className="cardt cardt-primary border boxshadow ">
                                 <div className='row'>
-                                    <div className='col-7'>
+                                            <div className='col-7 text-start'>
                                         <h4 style={{
                                             textTransform: "capitalize",
                                             fontSize: "0.9em",

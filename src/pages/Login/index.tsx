@@ -27,7 +27,7 @@ const Page: React.FC = () => {
 
                             duration: 1500,
 
-                        }); 
+                        });
                         return
                     }
                     if (datos.codigo === e.datos[0].codigo) {
@@ -95,35 +95,34 @@ const Page: React.FC = () => {
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     };
-
     return (
-
         <div className='container-fluid  h-100  d-flex justify-content-center align-items-center'
-
-            style={{
-                backgroundColor: "#10063e"
-            }}
-        >
-
-
+            style={{backgroundColor: "#10063e"}}>
             <div className='container  d-flex justify-content-center '>
                 <div className=' col-12 col-md-4 justify-content-center'>
                     <div className='col-12'>
                         <img src={logo} />
                     </div>
                     <div className="  col-sm-12">
-                        <label className="form-label"></label>
+                        <label className="form-label d-none"></label>
                         <input type="text"
-                            placeholder='Cédula' className="form-control" name="cedula"
+                            placeholder='Cédula' className="form-control d-none" name="cedula"
                             value={datos.cedula}
                             onChange={(e) => handeChange(e.target)}
                             required />
+                        <IonItem color={"tertiary"} className='iteminput  '>
+                            <IonLabel position="floating">Cédula</IonLabel>
+                            <IonInput type="text"
+                                placeholder='Cédula' name="cedula"
+                                value={datos.cedula}
+                                required
+                                onIonChange={(e) => handeChange(e.target)} >
+                            </IonInput>
+                        </IonItem>
 
                     </div>
-                    <div className="col-sm-12  py-3">
-
-
-                        <div className="input-group">
+                    <div className="col-sm-12  py-1">
+                        <div className="input-group d-none">
                             <input type={passwordVisible ? 'text' : 'password'}
                                 value={datos.codigo}
                                 name="codigo" required
@@ -136,26 +135,29 @@ const Page: React.FC = () => {
                                 </span>
                             </div>
                         </div>
-                        <IonItem lines='none' className='d-none border rounded-3 '>
-                            <IonLabel position="floating">Contraseña</IonLabel>
-                            <IonInput
 
-                                type={passwordVisible ? 'text' : 'password'}
+                        <IonItem color={"tertiary"} className='iteminput '
+                            style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "end" }}
+                        >
+                            <IonLabel position="floating">Contraseña</IonLabel>
+                            <IonInput type={passwordVisible ? 'text' : 'password'}
                                 value={datos.codigo}
                                 name="codigo" required
-                                onIonChange={(e) => handeChange(e.target)}
-                            />
+                                onIonChange={(e) => handeChange(e.target)} placeholder="Contraseña"></IonInput>
                             <IonIcon
+                                className="ion-text-end"
                                 slot="end"
+                                color='white'
                                 icon={passwordVisible ? eyeOff : eye}
                                 onClick={togglePasswordVisibility}
                                 style={{ paddigTop: '100px' }}
 
                             />
+
                         </IonItem>
                     </div>
                     <div className='col-12 d-flex justify-content-center pt-3'>
-                        <button className='btn col-12  btn-primary' onClick={logearse}> Ingrese al Portal </button>
+                        <button className='btn col-12  btn-primary' onClick={logearse}> Iniciar </button>
 
                     </div>
                     <div className='mt-2 d-flex justify-content-center'>
@@ -169,7 +171,7 @@ const Page: React.FC = () => {
 
 
 
-        </div>
+        </div >
 
 
 
