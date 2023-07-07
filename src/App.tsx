@@ -35,7 +35,7 @@ import { ListarFactura } from './utils/Queryuser';
 import OneSignal from 'onesignal-cordova-plugin';
 import { initializeOneSignal } from './Onesignajs'
 import { getPlatforms } from '@ionic/react';
-import { home, person, pulse } from 'ionicons/icons';
+import { add, home, person, pulse } from 'ionicons/icons';
 function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
   OneSignal.setAppId("1b5d9596-a75f-4a2d-b38f-4ae7231e48a3");
@@ -164,12 +164,12 @@ const App: React.FC = () => {
                 </Route>
               </Switch>
             </IonRouterOutlet>
-            <IonTabBar slot='bottom' className="IonTabBar">
+            <IonTabBar slot='bottom' className="IonTabBar ta">
               <IonTabButton tab='tab1' className="tab" >
                   <IonIcon  aria-hidden="true" icon={home} />
                 </IonTabButton>
               <IonTabButton tab='tab2' className="tab" >
-                  <IonIcon aria-hidden="true" icon={pulse} />
+                  <IonIcon aria-hidden="true" icon={add} />
                 </IonTabButton>
               <IonTabButton tab='tab2' className="tab">
                   <IonIcon aria-hidden="true" icon={person} />

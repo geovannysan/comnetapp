@@ -266,19 +266,40 @@ ion-modal#example-modal2 {
 
 
 
+.tabs-inner {
+    border-color: #000000 !important;
+}
 
 .IonTabBar {
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
     --color: white;
-    --backgournd: transparent;
 
-    --background: black;
+--background: transparent;
+    --background:var(--bg-spped);
     /* Cambia el fondo a negro */
     display: flex;
     /* Utiliza flexbox para alinear los elementos */
     justify-content: center;
 }
+/*ion-tab-bar {
+    --color: white;
+    /* Cambia el color de los iconos a blanco *
+    --background: transparent;
+    /* Establece el fondo como transparente *
+    --border: none;
+    /* Elimina el borde *
+    position: absolute;
+    /* Cambia la posición a absoluta *
+    top: 0;
+    /* Coloca la barra en la parte superior *
+    left: 0;
+    /* Coloca la barra en la esquina izquierda *
+    right: 0;
+    /* Ajusta el ancho a la derecha *
+    z-index: 1;
+    /* Establece un índice de apilamiento superior para que esté por encima del contenido *
+}*/
 
 .tab {
     border-radius: 50px;
@@ -286,8 +307,8 @@ ion-modal#example-modal2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 20px;
-    margin: 0 10px;
+    padding: 0  20px;
+    margin:0 10px;
 
     transition: background 0.2s ease-in;
 }
