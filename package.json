@@ -52,6 +52,7 @@
     "jquery": "^3.6.3",
     "jsbarcode": "^3.11.5",
     "jszip": "^3.10.1",
+    "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "ngx-quill": "^22.0.0",
     "onesignal-cordova-plugin": "^3.3.1",

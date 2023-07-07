@@ -1,4 +1,4 @@
-import { IonApp, IonButton, IonButtons, IonCardSubtitle, IonHeader, IonMenuButton, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar, isPlatform, setupIonicReact } from '@ionic/react';
+import { IonApp, IonButton, IonButtons, IonCardSubtitle, IonHeader, IonIcon, IonMenuButton, IonRouterOutlet, IonSplitPane, IonTabBar, IonTabButton, IonTabs, IonTitle, IonToolbar, isPlatform, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -35,7 +35,8 @@ import { ListarFactura } from './utils/Queryuser';
 import OneSignal from 'onesignal-cordova-plugin';
 import { initializeOneSignal } from './Onesignajs'
 import { getPlatforms } from '@ionic/react';
-function OneSignalInit(user:any): void {
+import { home, person, pulse } from 'ionicons/icons';
+function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
   OneSignal.setAppId("1b5d9596-a75f-4a2d-b38f-4ae7231e48a3");
   OneSignal.setNotificationOpenedHandler(function (jsonData) {
@@ -46,7 +47,7 @@ function OneSignalInit(user:any): void {
     console.log("User accepted notifications: " + accepted);
   });
   const externalUserId = "ID_EXTERNO"; // Reemplaza con tu ID externo único
-  
+
   OneSignal.setExternalUserId(user.id, (results: any) => {
     console.log('Results of setting external user id');
     console.log(results);
@@ -93,20 +94,20 @@ const App: React.FC = () => {
       userdispach(setlogin({ estado: true }))
       userdispach(setDatosuser({ ...datos }))
       // createSingleTaskNotification()
-     
-      console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"),getPlatforms())
+
+      console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"), getPlatforms())
       if (getPlatforms().some(e => e == "android") && getPlatforms().length == 1) {
         OneSignalInit(datos)
-        
+
         //OneSignal.startInit('TU_APP_ID')
 
 
-      /*  OneSignal.setNotificationOpenedHandler((openedResult) => {
-          // Aquí puedes manejar la apertura de la notificación
-          console.log('Notificación abierta:', openedResult);
-        });/*/
+        /*  OneSignal.setNotificationOpenedHandler((openedResult) => {
+            // Aquí puedes manejar la apertura de la notificación
+            console.log('Notificación abierta:', openedResult);
+          });/*/
       } else {
-        
+
         // initializeOneSignal();
         /* ReactOnesigna.setNotificationOpenedHandler((notification:any) => {
            // Aquí puedes manejar la apertura de la notificación
@@ -143,11 +144,14 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         {user.authb ?
-          <IonSplitPane contentId="main"
+          /* <IonSplitPane contentId="main"
             className=''
-          >
-            <Menu />
-            <IonRouterOutlet id="main">
+        >
+        <Menu />
+      
+      */
+          <IonTabs>
+            < IonRouterOutlet id="main">
 
 
               <Switch>
@@ -160,7 +164,20 @@ const App: React.FC = () => {
                 </Route>
               </Switch>
             </IonRouterOutlet>
-          </IonSplitPane> :
+            <IonTabBar slot='bottom' className="IonTabBar">
+              <IonTabButton tab='tab1' className="tab" >
+                  <IonIcon  aria-hidden="true" icon={home} />
+                </IonTabButton>
+              <IonTabButton tab='tab2' className="tab" >
+                  <IonIcon aria-hidden="true" icon={pulse} />
+                </IonTabButton>
+              <IonTabButton tab='tab2' className="tab">
+                  <IonIcon aria-hidden="true" icon={person} />
+                </IonTabButton>          
+
+            </IonTabBar>
+          </IonTabs>
+      /* </IonSplitPane> */ :
           <IonRouterOutlet id="main">
             <Route path="/" >
               <Inicio />
@@ -174,7 +191,7 @@ const App: React.FC = () => {
           </IonRouterOutlet>
         }
       </IonReactRouter>
-    </IonApp>
+    </IonApp >
 
   );
 };

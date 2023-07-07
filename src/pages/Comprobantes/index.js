@@ -164,7 +164,7 @@ function ComprovanteViews() {
                     </div>
                 </div>
                 <div className="p-2 ">
-                    <table id="example" className="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" width="100%" >
+                    <table id="example" className="   table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" width="100%" >
                         <thead className="border">
                             <tr>
                                 <th ></th>

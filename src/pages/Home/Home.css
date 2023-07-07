@@ -264,6 +264,50 @@ ion-modal#example-modal2 {
     transition: transform 0.25s ease-out;
 }
 
+
+
+
+.IonTabBar {
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    --color: white;
+    --backgournd: transparent;
+
+    --background: black;
+    /* Cambia el fondo a negro */
+    display: flex;
+    /* Utiliza flexbox para alinear los elementos */
+    justify-content: center;
+}
+
+.tab {
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    margin: 0 10px;
+
+    transition: background 0.2s ease-in;
+}
+
+ion-tab-bar::part(tab-button) {
+    flex: 1;
+    /* Distribuye el espacio disponible entre los botones de tab */
+    max-width: none;
+    /* Elimina el ancho máximo */
+}
+
+@media (min-width: 751px) {
+    ion-tab-bar {
+        width: 600px;
+        /* Establece el ancho en 350px */
+        margin: 0 auto;
+        /* Centra horizontalmente */
+    }
+}
+
 /*.cardt-block::before {
     content: "";
     position: absolute;
@@ -444,7 +488,7 @@ ion-toggle {
     padding: 12px;
     width: 50px !important;
     height: 25px !important;
-    
+
     /* padding: 12px;
 
   --track-background: #ddd;
