@@ -22,6 +22,7 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
+import './theme/boostrap.css';
 import './theme/animate.css';
 import "./theme/style.css";
 import "./theme/tablas.css";
@@ -36,6 +37,7 @@ import OneSignal from 'onesignal-cordova-plugin';
 import { initializeOneSignal } from './Onesignajs'
 import { getPlatforms } from '@ionic/react';
 import { add, home, person, pulse } from 'ionicons/icons';
+import LoginView from './pagevdos/Inicio/login';
 function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
   OneSignal.setAppId("1b5d9596-a75f-4a2d-b38f-4ae7231e48a3");
@@ -142,55 +144,7 @@ const App: React.FC = () => {
   };*/
   return (
     <IonApp>
-      <IonReactRouter>
-        {user.authb ?
-          /* <IonSplitPane contentId="main"
-            className=''
-        >
-        <Menu />
-      
-      */
-          <IonTabs>
-            < IonRouterOutlet id="main">
-
-
-              <Switch>
-                <Route path="/page"
-                >
-                  <Page />
-                </Route>
-                <Route path="/" >
-                  <Redirect to="/page/Inicio" />
-                </Route>
-              </Switch>
-            </IonRouterOutlet>
-            <IonTabBar slot='bottom' className="IonTabBar ta">
-              <IonTabButton tab='tab1' className="tab" >
-                  <IonIcon  aria-hidden="true" icon={home} />
-                </IonTabButton>
-              <IonTabButton tab='tab2' className="tab" >
-                  <IonIcon aria-hidden="true" icon={add} />
-                </IonTabButton>
-              <IonTabButton tab='tab2' className="tab">
-                  <IonIcon aria-hidden="true" icon={person} />
-                </IonTabButton>          
-
-            </IonTabBar>
-          </IonTabs>
-      /* </IonSplitPane> */ :
-          <IonRouterOutlet id="main">
-            <Route path="/" >
-              <Inicio />
-            </Route>
-            <Route path="*">
-              <Redirect to="/" />
-            </Route>
-            <Route path="/">
-              <Inicio />
-            </Route>
-          </IonRouterOutlet>
-        }
-      </IonReactRouter>
+     <LoginView/>
     </IonApp >
 
   );
