@@ -58,7 +58,7 @@ export const Consultarcedula = async (parms) => {
         parms = parms.substring(0, parms.length - 1);
     }
     try {
-        let { data } = await axios.get("https://rec.netbot.ec/ms_login/cedula/" + parms)
+        let { data } = await axios.get("https://api.t-ickets.com/ms_login/cedula/" + parms)
         return data
     } catch (error) {
         return error
@@ -111,7 +111,7 @@ export const BuscarProductoContific = async (parms) => {
  */
 export const IncremetoFacturaS = async () => {
     try {
-        //https://rec.netbot.ec/mikroti/FactuApi/incrementodos
+        //https://api.t-ickets.com/mikroti/FactuApi/incrementodos
         let { data } = await axios({
             method: 'post', url: 'https://portalfac.netbot.ec/incrementov.php'
         })
@@ -122,7 +122,7 @@ export const IncremetoFacturaS = async () => {
 }
 export const IncremetoCon = async () => {
     try {
-        //https://rec.netbot.ec/mikroti/FactuApi/incrementouno
+        //https://api.t-ickets.com/mikroti/FactuApi/incrementouno
         let { data } = await axios({
             method: 'post', url: 'https://portalfac.netbot.ec/incremento.php'
         })
@@ -152,7 +152,7 @@ export const IncremetoCon = async () => {
  */
 export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/mikroti/FactuApi/Crearpro", { ...parms })
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/FactuApi/Crearpro", { ...parms })
         return data
     } catch (error) {
         return error
@@ -164,7 +164,7 @@ export const PagoFacturacomnet = async (parms) => {
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("https://rec.netbot.ec/mikroti/PortalApi/PagosdelPortal/" + nombres.password,
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/PagosdelPortal/" + nombres.password,
             parms
 
         )

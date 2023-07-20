@@ -7,7 +7,7 @@ let Host = "https://portal.comnet.ec/api/v1/";
 export const autenticar = async (parms) => {
     console.log(userlog())
     try {
-        let { data } = await axios.post("https://portalapicon.somee.com/PortalApi/GetClientsDetails" , { cedula: parms, operador: userlog().password })
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/GetClientsDetails" , { cedula: parms, operador: userlog().password })
         console.log(data)
         return data
     } catch (error) {
@@ -28,7 +28,7 @@ export const ListarTicket = async (parm) => {
 }
 export const ListarFactura = async (parms) => {
     try {
-        let { data } = await axios.get("https://portalapicon.somee.com/PortalApi/GetInvoices/"+parms+"/"+userlog().password)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/PortalApi/GetInvoices/"+parms+"/"+userlog().password)
         if (JSON.parse(data).estado === "exito") {
 
             let id = await JSON.parse(data).facturas[0].id
@@ -51,7 +51,7 @@ export const ListarFactura = async (parms) => {
 export const MostrarFacturas = async (parms) => {
    
     try {
-        let { data } = await axios.get("https://portalapicon.somee.com/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
         return data
 
     } catch (error) {
@@ -60,7 +60,7 @@ export const MostrarFacturas = async (parms) => {
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.get("https://portalapicon.somee.com/PortalApi/GetInvoice/"+parms+"/"+userlog().password)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/PortalApi/GetInvoice/"+parms+"/"+userlog().password)
         return data
 
     } catch (error) {
@@ -84,7 +84,7 @@ export const CreaLaFacturapor = async (parms) => {
     }
 }
 export const Loginadmin = async (parms) => {
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_admin", parms, {
+    const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/auth_admin", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
