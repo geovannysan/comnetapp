@@ -1,4 +1,4 @@
-export default function registerView(){
+export default function RegisterViews(){
     return(
         <>
         </>

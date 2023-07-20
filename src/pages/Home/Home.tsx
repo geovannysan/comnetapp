@@ -294,7 +294,7 @@ function Soporteinicial(){
                                     }}>
                                         <div className='m-auto'>
                                             <i className="bi bi-info-circle text-white " style={{
-                                                fontSize: 28
+                                                fontSize: "28"
                                             }} ></i>
                                         </div>
                                     </div>
@@ -525,7 +525,7 @@ function Soporteinicial(){
                                     }}>
                                         <div className='m-auto'>
                                             <i className="bi bi-info-circle text-white " style={{
-                                                fontSize: 35
+                                                fontSize: "35"
                                             }} ></i>
                                         </div>
                                     </div>

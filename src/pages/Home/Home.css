@@ -276,11 +276,11 @@ ion-modal#example-modal2 {
     --color: white;
 
 --background: transparent;
-    --background:var(--bg-spped);
+    /*--background:var(--bg-spped);*/
+   
+        background: linear-gradient(90deg, rgba(0, 129, 199, 1) 0%, rgba(26, 36, 91, 1) 100%);
     /* Cambia el fondo a negro */
-    display: flex;
-    /* Utiliza flexbox para alinear los elementos */
-    justify-content: center;
+
 }
 /*ion-tab-bar {
     --color: white;
@@ -301,7 +301,7 @@ ion-modal#example-modal2 {
     /* Establece un índice de apilamiento superior para que esté por encima del contenido *
 }*/
 
-.tab {
+/*.tab {
     border-radius: 50px;
     cursor: pointer;
     display: flex;
@@ -312,7 +312,7 @@ ion-modal#example-modal2 {
 
     transition: background 0.2s ease-in;
 }
-
+*/
 ion-tab-bar::part(tab-button) {
     flex: 1;
     /* Distribuye el espacio disponible entre los botones de tab */

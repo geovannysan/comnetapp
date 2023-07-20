@@ -22,12 +22,12 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
-import './theme/boostrap.css';
-import './theme/animate.css';
+//import './theme/boostrap.css';
+//import './theme/animate.css';
 import "./theme/style.css";
 import "./theme/tablas.css";
 import "./theme/rizes.css";
-import "./theme/anima.css";
+//import "./theme/anima.css";
 import { useEffect, useState } from 'react';
 import { userlog } from './utils/User';
 import { StatusBar } from '@capacitor/status-bar';
@@ -38,6 +38,9 @@ import { initializeOneSignal } from './Onesignajs'
 import { getPlatforms } from '@ionic/react';
 import { add, home, person, pulse } from 'ionicons/icons';
 import LoginView from './pagevdos/Inicio/login';
+import RegistroView from './pages/Login/Register';
+import RegisterViews from './pagevdos/Inicio/register';
+import TabsView from './components/Tabs';
 function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
   OneSignal.setAppId("1b5d9596-a75f-4a2d-b38f-4ae7231e48a3");
@@ -144,7 +147,40 @@ const App: React.FC = () => {
   };*/
   return (
     <IonApp>
-     <LoginView/>
+      <IonReactRouter>
+        {user.authb ?
+          <IonReactRouter>
+            <IonRouterOutlet>
+              <Switch>
+                <Route path="/page">
+                  <Page />
+                </Route>
+                <Route path="/home">
+                  <TabsView/>
+  
+                </Route>
+                <Route path="/" >
+                  <Redirect to="/home/inicio" />
+                </Route>
+  
+              </Switch>
+  
+            </IonRouterOutlet>
+          </IonReactRouter>
+          :
+
+          <IonRouterOutlet>
+            <Route path="/">
+              <LoginView />
+            </Route>
+            <Route path="registro">
+              <RegisterViews />
+            </Route>
+          </IonRouterOutlet>
+
+
+        }
+      </IonReactRouter>
     </IonApp >
 
   );

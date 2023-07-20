@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { operador } from './variables';
 let Host = "http://45.224.96.50/api/v1/"
-let Hostv1 = "https://rec.netbot.ec/mikroti"
+//let Hostv1 = "https://api.t-ickets.com/mikroti"
+let Hostv1 = "http://localhost:5200"
 export const autenticar = async (parms) => {
     try {
         let { data } = await axios.post(Hostv1 + "/PortalApi/GetClientsDetails",
@@ -15,6 +16,14 @@ export const autenticar = async (parms) => {
             },
         })
         console.log(data)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Logearusar = async (parms) => {
+    try {
+        let { data } = await axios.post(Hostv1 + "/api/users/Login", parms)
         return data
     } catch (error) {
         return error
@@ -120,7 +129,7 @@ export const Facturaid = async (parms) => {
 }
 export const Equipos = async (parms) => {
     try {
-        let { data } = await axios.get("https://rec.netbot.ec/mikroti/PortalApi/Listequipo/" + parms)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/PortalApi/Listequipo/" + parms)
         return data
     } catch (error) {
         return error
@@ -128,7 +137,7 @@ export const Equipos = async (parms) => {
 }
 export const OLTcardDETA = async (parms) => {
     try {
-        let { data } = await axios.get("https://rec.netbot.ec/mikroti/api/SmartApi/get_olt_cards_details/" + parms)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/api/SmartApi/get_olt_cards_details/" + parms)
         return data
     } catch (error) {
         return error
@@ -137,7 +146,7 @@ export const OLTcardDETA = async (parms) => {
 }
 export const Cambiarclave = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/mikroti/MovilApi/passwordssi", parms)
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/passwordssi", parms)
         return data
     } catch (error) {
         return error
@@ -145,7 +154,7 @@ export const Cambiarclave = async (parms) => {
 }
 export const Cambiarname = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/mikroti/MovilApi/namessi", parms)
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/namessi", parms)
         return data
     } catch (error) {
         return error
@@ -162,7 +171,7 @@ export const UserUpdate = async (parms) => {
 
 export const Newtickte = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/mikroti/PortalApi/CreaTicket", parms)
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/CreaTicket", parms)
         return data
     } catch (error) {
         return error
