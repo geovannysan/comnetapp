@@ -4398,7 +4398,9 @@
     transform: translate3d(0, -100%, 0);
   }
 }
-
+.transparente{
+  background: transparent !important;
+}
 .animate__slideOutUp {
   -webkit-animation-name: slideOutUp;
   animation-name: slideOutUp;

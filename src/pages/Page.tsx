@@ -1,12 +1,12 @@
 import {
   IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton,
   IonProgressBar,
-  IonTitle, IonToolbar, IonItem, IonList, IonLabel, IonCardSubtitle, IonMenu, IonFab, IonFabButton, useIonPopover, IonPopover
+  IonTitle, IonToolbar, IonItem, IonList, IonLabel, IonCardSubtitle, IonMenu, IonFab, IonFabButton, useIonPopover, IonPopover, IonBackButton
 } from '@ionic/react';
 import iconmenu from "../theme/menu.svg";
 import { Route, Switch, useHistory, useLocation } from 'react-router';
 import {
-  close, wifiOutline, ellipsisVertical, arrowBackCircleOutline, arrowBack, arrowBackOutline, chevronBack, chevronBackCircleOutline, exitOutline
+  close, wifiOutline, ellipsisVertical, arrowBackCircleOutline, arrowBack, arrowBackOutline, chevronBack, chevronBackCircleOutline, exitOutline, backspace
 } from 'ionicons/icons';
 import logo from './Soporte/speed logo.svg'
 import './Page.css';
@@ -90,25 +90,30 @@ const Page: React.FC = () => {
       </IonFab>
       <IonContent fullscreen id="main-content" className='px-0'>
 
-        <IonHeader className="ion-no-border  " >
+        <IonHeader className="  " >
           <IonToolbar className=' ' >
+            <IonButtons slot="start" className=' text-light'>
+              <IonBackButton
+              
+              ></IonBackButton>
+            </IonButtons>
 
-            <IonButtons slot="start">
+            { /*  <IonButtons slot="start">
               <IonMenuButton>
                 <img src={iconmenu}
                 />
               </IonMenuButton>
 
 
-            </IonButtons>
+          </IonButtons>*/}
             <IonTitle className=' text-white'>
-              <div>
+              {/*<div>
                 <img className='' src={logo}
                 height={100}
                 />
-              </div>
+              </div>*/}
             </IonTitle>
-            <IonButtons slot='end'
+            {/*<IonButtons slot='end'
 
             >
               <IonCardSubtitle className='d-none  d-sm-none d-md-block'
@@ -126,14 +131,14 @@ const Page: React.FC = () => {
                 <IonIcon ios={ellipsisVertical} md={ellipsisVertical} />
               </IonButton>
 
-            </IonButtons>
+            </IonButtons>*/}
             {prog.usuario.progres ? <IonProgressBar type="indeterminate" ></IonProgressBar> : ''}
           </IonToolbar>
 
 
         </IonHeader>
 
-        <IonPopover trigger="popover-button" side='bottom' dismissOnSelect={true}>
+        {/*<IonPopover trigger="popover-button" side='bottom' dismissOnSelect={true}>
           <div>
 
 
@@ -157,7 +162,7 @@ const Page: React.FC = () => {
             </IonList>
           </div>
 
-        </IonPopover>
+        </IonPopover>*/}
         <div className='pt-1 px-0' >
 
           <Switch>
@@ -166,7 +171,7 @@ const Page: React.FC = () => {
 
         </div>
 
-      </IonContent>
+      </IonContent >
 
     </>
 

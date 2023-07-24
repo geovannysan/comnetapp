@@ -1,4 +1,4 @@
-import { IonApp, IonButton, IonButtons, IonCardSubtitle, IonHeader, IonIcon, IonMenuButton, IonRouterOutlet, IonSplitPane, IonTabBar, IonTabButton, IonTabs, IonTitle, IonToolbar, isPlatform, setupIonicReact } from '@ionic/react';
+import { IonApp, IonButton, IonButtons, IonCardSubtitle, IonHeader, IonIcon, IonMenuButton, IonRouterOutlet, IonSplitPane, IonTabBar, IonTabButton, IonTabs, IonTitle, IonToolbar, createAnimation, isPlatform, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,8 +29,9 @@ import "./theme/tablas.css";
 import "./theme/rizes.css";
 //import "./theme/anima.css";
 import { useEffect, useState } from 'react';
+
 import { userlog } from './utils/User';
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar,Style } from '@capacitor/status-bar';
 import { setDatosuser, setlogin, setPlan } from './StoreRedux/Slice/UserSlice';
 import { ListarFactura } from './utils/Queryuser';
 import OneSignal from 'onesignal-cordova-plugin';
@@ -41,6 +42,9 @@ import LoginView from './pagevdos/Inicio/login';
 import RegistroView from './pages/Login/Register';
 import RegisterViews from './pagevdos/Inicio/register';
 import TabsView from './components/Tabs';
+import PAgosViewa from './pagevdos/Pagos';
+import PlanView from './pagevdos/Plan';
+
 function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
   OneSignal.setAppId("1b5d9596-a75f-4a2d-b38f-4ae7231e48a3");
@@ -78,9 +82,29 @@ function OneSignalInit(user: any): void {
   })
 
 }
+const animationBuilder = (baseEl: any, opts?: any) => {
+  const enteringAnimation = createAnimation()
+    .addElement(opts.enteringEl)
+    .fromTo('transform', 'translateX(100px)', 'translateX(0px)')
+    .fromTo('opacity', 0, 1)
+    .duration(350);
 
+  const leavingAnimation = createAnimation()
+    .addElement(opts.leavingEl)
+    .fromTo('transform', 'translateX(0px)', 'translateX(100px)')
+
+    .duration(350);
+
+  const animation = createAnimation()
+    .addAnimation(enteringAnimation)
+    .addAnimation(leavingAnimation);
+
+  return animation;
+};
 setupIonicReact();
-
+const setStatusBarStyleLight = async () => {
+  await StatusBar.setStyle({ style: Style.Light });
+};
 const App: React.FC = () => {
   let user = useSelector((state: any) => state.usuario)
   let userdispach = useDispatch()
@@ -93,6 +117,8 @@ const App: React.FC = () => {
     // StatusBar.setBackgroundColor({ color: '#0000' });
     // StatusBar.setStyle()
     // StatusBar.setStyle({ Style.dark: 'dark' });
+   
+  
     let datos = userlog()
     console.log(datos)
     if (datos != null) {
@@ -150,14 +176,23 @@ const App: React.FC = () => {
       <IonReactRouter>
         {user.authb ?
           <IonReactRouter>
-            <IonRouterOutlet>
+            <IonRouterOutlet animation={animationBuilder}>
               <Switch>
-                <Route path="/page">
-                  <Page />
-                </Route>
+               
                 <Route path="/home">
-                  <TabsView/>
-  
+                  <TabsView/>  
+                </Route>
+                <Route path="/pagos">
+                  <PAgosViewa/>
+                </Route>
+                <Route path="/plan">
+                  <PlanView/>
+                </Route>
+                <Route path="/cambios">
+                </Route>
+                <Route path="/termino">                  
+                </Route>
+                <Route path="/contatos"> 
                 </Route>
                 <Route path="/" >
                   <Redirect to="/home/inicio" />

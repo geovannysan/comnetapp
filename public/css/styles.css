@@ -308,6 +308,26 @@
         background: transparent;
     }
 }
+#Alerta .modal-content {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border:none;
+
+}
+
+.IonTabBar {
+    border-top-right-radius: 30px !important;
+    border-top-left-radius: 30px !important;
+    --color: white;
+
+--background: transparent;
+    --background:var(--bg-spped);
+   
+        background: linear-gradient(90deg, rgba(0, 129, 199, 1) 0%, rgba(26, 36, 91, 1) 100%);
+    /* Cambia el fondo a negro */
+
+}
+
 /*termina inpiut line */
 
 

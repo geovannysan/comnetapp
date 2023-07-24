@@ -42,12 +42,12 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2 ">
                                 <div className="container p-1">
-                                    <a href="mi-plan.html"><img src="img/botones-home/mi-plan-boton-wifi.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="/plan"><img src="img/botones-home/mi-plan-boton-wifi.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
-                                    <a href="soporte-tecnico.html"><img src="img/botones-home/soporte-tecnico-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="/home/soporte"><img src="img/botones-home/soporte-tecnico-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
@@ -57,7 +57,7 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2">
                                 <div className="container p-1">
-                                    <a href="pagos.html"><img src="img/botones-home/reportar-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="/pagos"><img src="img/botones-home/reportar-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 ">

@@ -11,9 +11,10 @@ export default function ModalViews(props) {
     }, [showAlert])
 
     return (
-        <IonModal isOpen={showAlert}
+        <Modal show={showAlert}
             id="example-modal2"
-            backdropDismiss={false}
+            backdrop={false}
+            centered
         >
             <IonHeader className="  border-0">
                 <IonToolbar className="ion-toolbar-transparent" >
@@ -25,7 +26,8 @@ export default function ModalViews(props) {
                     </IonButtons>
                 </IonToolbar>
             </IonHeader>
-            <IonContent>
+            <Modal.Body>
+          
                 <div className="pt-5 px-2">
                     <IonItem>
                         <IonLabel position="floating">{header}</IonLabel>
@@ -40,8 +42,7 @@ export default function ModalViews(props) {
 
                 </div>
 
-
-            </IonContent>
-        </IonModal>
+            </Modal.Body>
+        </Modal>
     )
 }

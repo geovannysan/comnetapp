@@ -63,3 +63,19 @@
 .btn-size-1 {
     width: 180px;
 }
+
+#Alerta.modal-content{
+    background: transparent !important;
+}
+.IonTabBar {
+    border-top-right-radius: 30px !important;
+    border-top-left-radius: 30px !important;
+    --color: white !important;
+
+    --background: transparent ;
+    --background:var(--bg-spped);
+
+    background: linear-gradient(90deg, rgba(0, 129, 199, 1) 0%, rgba(26, 36, 91, 1) 100%) !important;
+    /* Cambia el fondo a negro */
+
+}

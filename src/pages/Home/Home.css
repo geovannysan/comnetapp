@@ -271,12 +271,12 @@ ion-modal#example-modal2 {
 }
 
 .IonTabBar {
-    border-top-right-radius: 30px;
-    border-top-left-radius: 30px;
+    border-top-right-radius: 30px !important;
+    border-top-left-radius: 30px !important;
     --color: white;
 
 --background: transparent;
-    /*--background:var(--bg-spped);*/
+    --background:var(--bg-spped);
    
         background: linear-gradient(90deg, rgba(0, 129, 199, 1) 0%, rgba(26, 36, 91, 1) 100%);
     /* Cambia el fondo a negro */
