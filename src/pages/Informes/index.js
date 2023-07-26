@@ -148,6 +148,10 @@ export default function InformeViews() {
     function comprobante(e) {
         setSingleSelect(e)
         if (e.value != "") {
+            presentlo({
+                message: 'Validando valores de factura y producto',
+                cssClass: 'custom-loading'
+            })
             Facturaid(e.value).then(ouput => {
                 console.log(ouput)
                 if (ouput.estado === "exito") {
@@ -267,11 +271,25 @@ export default function InformeViews() {
                                 ]
                             })
                         })
-
+                        return
                     }
+                    dismiss()
                 }
 
             }).catch(err => {
+                dismiss()
+                present({
+                    message: "Hubo un error" + err,
+                    cssClass: '',
+                    duration: 4500,
+                    position: "middle",
+                    buttons: [
+                        {
+                            text: "cerrar",
+                            role: "cancel",
+                        }
+                    ]
+                })
                 console.log(err)
             })
         }
@@ -475,6 +493,19 @@ export default function InformeViews() {
                     })
                 }
             }).catch(err => {
+                dismiss()
+                present({
+                    message: "Hubo un error" + err,
+                    cssClass: '',
+                    duration: 4500,
+                    position: "middle",
+                    buttons: [
+                        {
+                            text: "cerrar",
+                            role: "cancel",
+                        }
+                    ]
+                })
                 /* dismiss()
                  present({
                      message: err,
@@ -2138,32 +2169,7 @@ export default function InformeViews() {
             //  console.log(datosdefactura, fac)
         }
     }
-    function Validarcedula(){
-        if (cedula.trim().length < 7) {
-         //   setBusca(false)
-            return
-        }
-        Consultarcedula(cedula.trim()).then(ouput=>{
-            if(ouput.success){
-                present({
-                    message: ""+ouput.message,
-                    cssClass: '-',
-                    duration: 4500,
-                    position: "bottom",
-                    buttons: [
-                        {
-                            text: "cerrar",
-                            role: "cancel",
-                        }
-                    ]
-                })
-                return
-            }
-            console.log(ouput)
-        }).catch(erro=>{
-            console.log(erro)
-        })
-    }
+    
 
     return (
         <IonContent fullscreen={true}>

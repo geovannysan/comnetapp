@@ -54,7 +54,7 @@ export const BuscaclienteContifico = async (parms) => {
  * 
  */
 export const Consultarcedula = async (parms) => {
-    if(parms.length==11) {
+    if (parms.length == 11) {
         parms = parms.substring(0, parms.length - 1);
     }
     try {
@@ -161,12 +161,15 @@ export const CreaProducto = async (parms) => {
 
 export const PagoFacturacomnet = async (parms) => {
     let nombres = JSON.parse(sessionStorage.getItem("USERLOGIN"))
+    console.log(nombres.password,parms)
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/PagosdelPortal/" + nombres.password,
-            parms
-
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/PagosdelPortal" ,
+            {
+                ...parms,
+                "operador": nombres.password
+            }
         )
         return data
     } catch (error) {
