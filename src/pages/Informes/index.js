@@ -1559,7 +1559,7 @@ export default function InformeViews() {
                         //crea factura
 
                     }
-                    if (fact.estado == "error") {
+                    else {
                         //muestra mensaje de errror
                         dismiss()
                         present({
@@ -1757,6 +1757,21 @@ export default function InformeViews() {
 
                     })
 
+                }else{
+                    dismiss()
+                    present({
+                        message: fact.mensaje,
+                        cssClass: '-',
+                        duration: 4500,
+                        position: "middle",
+                        buttons: [
+                            {
+                                text: "cerrar",
+                                role: "cancel",
+                            }
+                        ]
+                    })
+                    console.log(fact)
                 }
             }).catch(err => {
                 dismiss()
@@ -2148,6 +2163,21 @@ export default function InformeViews() {
                          console.log(err)
                      })*/
 
+                }else{
+                    dismiss()
+                    present({
+                        message: fact.mensaje,
+                        cssClass: '-',
+                        duration: 4500,
+                        position: "middle",
+                        buttons: [
+                            {
+                                text: "cerrar",
+                                role: "cancel",
+                            }
+                        ]
+                    })
+                    console.log(fact)
                 }
             }).catch(err => {
                 dismiss()
