@@ -82,7 +82,7 @@ export default function LoginView() {
     function Iniciarsession() {
 
         if (datos.cedula.trim() !== "" && datos.codigo.trim() !== "") {
-            Logearusar({ "cedula": datos.cedula, "password": datos.codigo }).then(ou => {
+            Logearusar({ "cedula": datos.cedula, "passwors": datos.codigo }).then(ou => {
                 if (ou.estado == "exito") {
                     localStorage.setItem("Perfiles", JSON.stringify([...ou.datos]))
                     localStorage.setItem("USERLOGIN", JSON.stringify({ ...ou.datos[0] }))
