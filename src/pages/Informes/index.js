@@ -544,7 +544,7 @@ export default function InformeViews() {
                 BuscaclienteContifico(cedula.trim()).then(ouputs => {
                     console.log(ouputs)
                     if (ouputs.length == 0) {
-                        let datos = ouput.datos[0].cedula.length==10? {
+                        let datos = ouput.datos[0].cedula.trim().length==10? {
                             "tipo": "N",
                             "personaasociada_id": null,
                             "nombre_comercial": ouput.datos[0].nombre,
@@ -555,7 +555,7 @@ export default function InformeViews() {
                             "es_cliente": true,
                             "origen": "Panel de Facturacion",
                             "email": ouput.datos[0].correo,
-                            "cedula": ouput.datos[0].cedula,
+                            "cedula": ouput.datos[0].cedula.trim(),
                             "Provincia": "Guayaquil",
                             "adicional1_cliente": "Cliente de Internet"
 
@@ -571,7 +571,7 @@ export default function InformeViews() {
                             "origen": "Panel de Facturacion",
                                 "cedula": ouput.datos[0].cedula,
                             "email": ouput.datos[0].correo,
-                            "ruc": ouput.datos[0].cedula,
+                                "ruc": ouput.datos[0].cedula.trim(),
                             "Provincia": "Guayaquil",
                             "adicional1_cliente": "Cliente de Internet"
 
