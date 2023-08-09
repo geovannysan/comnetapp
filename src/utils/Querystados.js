@@ -2,7 +2,7 @@ import axios from "axios"
 
 export const Get_onu_signal = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:3008/api/SmartApi/get_onu_signal/" + parms)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/api/SmartApi/get_onu_signal/" + parms)
         return data
     } catch (error) {
         return error
@@ -11,7 +11,7 @@ export const Get_onu_signal = async (parms) => {
 /* Detaslle de la onu */
 export const Gt_onu_status = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:3008/api/SmartApi/get_onu_status/" + parms)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/api/SmartApi/get_onu_status/" + parms)
         return data
     } catch (error) {
         return error
@@ -20,7 +20,7 @@ export const Gt_onu_status = async (parms) => {
 /* detalle de la olt */
 export const DetalleOlt = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:3008/api/SmartApi/get_onu_details/" + parms)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/api/SmartApi/get_onu_details/" + parms)
         return data
     } catch (error) {
         return error
@@ -29,7 +29,7 @@ export const DetalleOlt = async (parms) => {
 /* detalle del port olt */
 export const Detalleoltport = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:3008/api/SmartApi/get_olt_pon_ports_details/" + parms)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/api/SmartApi/get_olt_pon_ports_details/" + parms)
         return data
     } catch (error) {
         return error
@@ -37,8 +37,9 @@ export const Detalleoltport = async (parms) => {
 }
 /* lista de conectados  */
 export const Deviceslist = async (parms) => {
+    console.log(parms)
     try {
-        let { data } = await axios.post("http://localhost:3008/MovilApi/Devices", parms)
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/Devices", parms)
         return data
     } catch (error) {
         return error
@@ -47,7 +48,7 @@ export const Deviceslist = async (parms) => {
 /* nombre de la red  */
 export const Nombressi = async (parms) => {
     try {
-        let { data } = await axios.post("http://localhost:3008/MovilApi/ssi", parms)
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/ssi", parms)
         return data
     } catch (error) {
         return error
@@ -56,7 +57,7 @@ export const Nombressi = async (parms) => {
 /** obtiene el estado ssi */
 export const Estadossi = async (parms) => {
     try {
-        let { data } = await axios.post("http://localhost:3008/MovilApi/hide", parms)
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/hide", parms)
         return data
     } catch (error) {
         return error
@@ -65,7 +66,7 @@ export const Estadossi = async (parms) => {
 /* visivilidad de la red  */
 export const Changessihide = async (parms) => {
     try {
-        let { data } = await axios.post("http://localhost:3008/MovilApi/changessi", parms)
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/changessi", parms)
         return data
     } catch (error) {
         return error
@@ -74,7 +75,7 @@ export const Changessihide = async (parms) => {
 /** Refrescando cambias del router */
 export const Refresssi = async (parms) => {
     try {
-        let { data } = await axios.post("http://localhost:3008/MovilApi/refres", parms)
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/refres", parms)
         return data
     } catch (error) {
         return error
@@ -83,7 +84,7 @@ export const Refresssi = async (parms) => {
 //* obtiene nombre de perfil de velocidad */
 export const Get_onu_profile_speed = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:3008/api/SmartApi/get_onu_speed_profiles/" + parms)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/api/SmartApi/get_onu_speed_profiles/" + parms)
         return data
     } catch (error) {
         return error
@@ -92,7 +93,7 @@ export const Get_onu_profile_speed = async (parms) => {
 /** lista todos los perfiles profile */
 export const Get_speed_profiles = async ()=>{
     try {
-        let { data } = await axios.get("http://localhost:3008/api/SmartApi/get_speed_profiles")
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/api/SmartApi/get_speed_profiles")
         return data
     } catch (error) {
         return error

@@ -1,3 +1,4 @@
+import React from "react"
 import { useEffect, useState } from "react"
 import { obtenervaariables } from "../../pages/Home/parsesmart"
 import { DetalleOlt, Detalleoltport, Get_onu_signal, Gt_onu_status } from "../../utils/Querystados"
@@ -10,19 +11,42 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import AlerModal from "../../components/Modal/Modal"
 import { setModal } from "../../StoreRedux/Slice/UserSlice"
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 export default function SoporteView() {
     const infouser = useSelector((state) => state.usuario.user)
     const dispat = useDispatch()
-    let [presentlo, dismis] = useIonLoading()
     let dtos = userlog()
     const [señal, setSeñal] = useState({
         onu_signal_value: "",
         onu_status: "",
         onu_signal: ""
     })
-    const [alert, setAlert] = useState(null)
+    const [btn, setBtn] = useState(false)
+    const [open, setOpen] = React.useState(false);
 
-   
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handelaceptar = () => {
+        setBtn(!btn)
+        setOpen(false);
+    }
+
+
     useEffect(() => {
         let tick = userlog()
         document.addEventListener('ionBackButton', (ev) => {
@@ -35,6 +59,11 @@ export default function SoporteView() {
                 if (ouput.status) {
                     Gt_onu_status(infouser.servicios[0].idperfil).then(ouputv => {
                         if (ouputv.status) {
+                            console.log({
+                                onu_signal_value: ouput.onu_signal_value,
+                                onu_status: ouputv.onu_status,
+                                onu_signal: ouput.onu_signal
+                            })
                             setSeñal({
                                 onu_signal_value: ouput.onu_signal_value,
                                 onu_status: ouputv.onu_status,
@@ -75,7 +104,7 @@ export default function SoporteView() {
                         return
                     }
                     DetalleOlt(users.servicios[0].id).then(ouput => {
-                        console.log(ouput)
+                        console.log(users.servicios[0].id, ouput)
                         if (ouput.status) {
                             dispat(setModal({ nombre: "Alerta", payloa: "Comprobando puertos olt" }))
 
@@ -151,9 +180,9 @@ export default function SoporteView() {
                                                           }
                                                       ]
                                                   })*/
-                                                  setTimeout(function(){
-                                                      dispat(setModal({ nombre: "", payloa: "" }))
-                                                  },1000)
+                                                setTimeout(function () {
+                                                    dispat(setModal({ nombre: "", payloa: "" }))
+                                                }, 1000)
                                                 return
                                             }
                                             if (ouputv.onu_status == "Power fail") {
@@ -184,6 +213,11 @@ export default function SoporteView() {
                                                     if (ouput.status) {
                                                         //dismiss()
                                                         console.log(ouput)
+                                                        setSeñal({
+                                                            onu_signal_value: ouput.onu_signal_value,
+                                                            onu_status: ouputv.onu_status,
+                                                            onu_signal: ouput.onu_signal
+                                                        })
                                                         let se = ouput.onu_signal_1490.replace("-", "").replace("dBm", "")
                                                         console.log(se)
                                                         if (se < 29) {
@@ -218,12 +252,12 @@ export default function SoporteView() {
                                                                       duration: 4500,
                                                                   })*/
 
-                                                                 Newtickte(info).then(oput => {
+                                                                Newtickte(info).then(oput => {
                                                                     // dismiss()
-                                                                     console.log(oput)
-                                                                 }).catch(err => {
-                                                                     console.log(err)
-                                                                 })
+                                                                    console.log(oput)
+                                                                }).catch(err => {
+                                                                    console.log(err)
+                                                                })
 
                                                                 return
                                                             } else {
@@ -291,7 +325,24 @@ export default function SoporteView() {
             <AlerModal />
 
 
+            <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle>Reportar inconvenientes</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
 
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handelaceptar}>Aceptar</Button>
+                    <Button onClick={handleClose}>cancelar</Button>
+                </DialogActions>
+            </Dialog>
 
             {/* <!--Contenedor General-->*/}
 
@@ -335,16 +386,17 @@ export default function SoporteView() {
                                         </li>
                                         <li className="list-unstyled my-md-1" style={{ width: "100%", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }} >
                                             <span className="" ><img src="img/opcion soporte/estado-check.png" className="img-fluid" style={{ height: "2vh" }} alt="" /></span>
-                                            <span className="text-muted text-uppercase" style={{ fontSize: "1.4vh" }}>ESTADO: <span className="fw-bold">
-                                                {señal.onu_signal == "Very good" ? "Muy buena" : ""}
-                                                {señal.onu_signal == "Warning" ? "Buena" : ""}
-                                                {señal.onu_signal == "Critical" ? "Mala" : ""}
-                                            </span></span>
+                                            <span className="text-muted text-uppercase" style={{ fontSize: "1.4vh" }}>ESTADO:
+                                                <span className="fw-bold">
+                                                    {señal.onu_signal == "Very good" ? "Muy buena" : ""}
+                                                    {señal.onu_signal == "Warning" ? "Buena" : ""}
+                                                    {señal.onu_signal == "Critical" ? "Mala" : ""}
+
+                                                </span></span>
                                         </li>
                                     </div>
                                 </div>
                             </div>
-
                             <div className="col-5 px-1 d-no h-100 rounded-start-4 bg-red-gradient-180">
                                 <div className="col-12 h-100 w-100 btn-group-vertical">
                                     <div className="container h-30">
@@ -360,11 +412,9 @@ export default function SoporteView() {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         {/*<!--cierre card opcion-->*/}
-
-                        <div className="row col-12 shadow-3  rounded-4 mx-auto my-2 h-15 bg-white py-0">
+                        {!btn?"": <div className="row col-12 shadow-3   rounded-4 mx-auto my-2 h-15 bg-white py-0">
                             {/* <!--card opcion-->*/}
                             <div className="col-8 h-100 border rounded-start-4">
                                 <div className="row w-100 mx-auto h-100">
@@ -377,7 +427,6 @@ export default function SoporteView() {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="col-4 px-1 d-no h-100 rounded-end-4 bg-red-gradient">
                                 <div className="col-12 h-100 w-100 btn-group-vertical">
                                     <div className="container h-100 text-center btn-group-vertical">
@@ -385,8 +434,7 @@ export default function SoporteView() {
                                     </div>
                                 </div>
                             </div>
-
-                        </div>
+                        </div>}
                         {/*<!--cierre card opcion-->*/}
 
                         <div className="row col-12 shadow-3  rounded-4 mx-auto my-2 h-15 bg-white py-0">
@@ -396,9 +444,12 @@ export default function SoporteView() {
                                     <div className="col-12 h-100 btn-group-vertical">
                                         <li className="list-unstyled my-md-1" style={{ width: "100%", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
                                             <span className="" ><img src="img/opcion soporte/signal-wifi.png" className="img-fluid" style={{ height: "2vh" }} alt="" /></span>
-                                            <span className="text-muted" style={{ fontSize: "1.4vh" }}>Estado: <span>Excelente</span></span>
+                                            <span className="text-muted" style={{ fontSize: "1.4vh" }}>Estado: <span>
+                                                {señal.onu_signal == "Very good" ? "Muy buena" : ""}
+                                                {señal.onu_signal == "Warning" ? "Buena" : ""}
+                                                {señal.onu_signal == "Critical" ? "Mala" : ""}</span></span>
                                         </li>
-                                        <a href="" className="bg-white shadow-1 none-style  border px-4 rounded-pill text-center text-celeste" style={{ fontSize: "1.8vh" }}>Lentitud</a>
+                                        <a className="bg-white shadow-1 none-style  border px-4 rounded-pill text-center text-celeste" onClick={handleClickOpen} style={{ fontSize: "1.8vh" }}>Lentitud</a>
                                     </div>
                                 </div>
                             </div>

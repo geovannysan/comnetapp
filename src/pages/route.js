@@ -93,6 +93,7 @@ const route = [
         collapse: false,
         component: Lugar,
     },
+    
     {
         path: "/Factura/:id",
         layout: "/page",

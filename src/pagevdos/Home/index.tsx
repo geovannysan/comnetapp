@@ -1,8 +1,10 @@
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
+import { useHistory } from "react-router"
 
 export default function HomeView() {
     const datos = useSelector((state: any) => state.usuario.user)
+    let history = useHistory()
     useEffect(()=>{
         console.log(datos)
     },[])
@@ -42,7 +44,7 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2 ">
                                 <div className="container p-1">
-                                    <a href="/plan"><img src="img/botones-home/mi-plan-boton-wifi.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="/home"><img src="img/botones-home/mi-plan-boton-wifi.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
@@ -52,7 +54,7 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
-                                    <a href="mi-wifi.html"><img src="img/botones-home/mi-wifi-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="/home/wifi"><img src="img/botones-home/mi-wifi-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2">
@@ -62,22 +64,24 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2 ">
                                 <div className="container p-1">
-                                    <a href=""><img src="img/botones-home/puntos-de-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a
+                                    onClick={()=>history.push("/mapas")}
+                                    ><img src="img/botones-home/puntos-de-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
-                                    <a href=""><img src="img/botones-home/cambio-de-plan-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="/plan"><img src="img/botones-home/cambio-de-plan-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2">
                                 <div className="container p-1">
-                                    <a href=""><img src="img/botones-home/terminos-y-condiciones-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="/home"><img src="img/botones-home/terminos-y-condiciones-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2">
                                 <div className="container p-1">
-                                    <a href=""><img src="img/botones-home/contactanos-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="/home"><img src="img/botones-home/contactanos-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                         </div>

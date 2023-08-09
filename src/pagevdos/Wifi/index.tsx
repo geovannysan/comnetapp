@@ -15,6 +15,7 @@ import { Modal } from "react-bootstrap";
 import ModalViews from "../../components/Modal";
 import { Cambiarclave, Cambiarname } from "../../utils/Queryuser";
 import AlerView from "../../components/Alert";
+import DialogViewa from "../../components/Alert/Dialog";
 
 
 export default function WifiView(){
@@ -49,15 +50,15 @@ export default function WifiView(){
             cssClass: 'custom-loading',
             spinner: "bubbles",
         })*/
-        let campo = datos.iD_EXTERNO_ONU.includes("IGD") ? "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_TP_PreSharedKey" : "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.PreSharedKey.1.PreSharedKey"
+        let campo = datos.ID_EXTERNO_ONU.includes("IGD") ? "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_TP_PreSharedKey" : "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.PreSharedKey.1.PreSharedKey"
         Cambiarclave({
-            "info": datos.iD_EXTERNO_ONU,
+            "info": datos.ID_EXTERNO_ONU,
             "booleas": e,
             "confi": campo
         }).then(ou => {
             console.log(ou)
             Refresssi({
-                "info": datos.iD_EXTERNO_ONU,
+                "info": datos.ID_EXTERNO_ONU,
                 "booleas": "" + !wifi,
                 "confi": campo
             }).then(salida => {
@@ -78,13 +79,13 @@ export default function WifiView(){
 
     function Confirmcall() {
         Changessihide({
-            "info": datos.iD_EXTERNO_ONU,
+            "info": datos.ID_EXTERNO_ONU,
             "booleas": "" + !wifi
         }).then(change => {
             if (change.device) {
                 setFifi(!wifi)
                 Refresssi({
-                    "info": datos.iD_EXTERNO_ONU,
+                    "info": datos.ID_EXTERNO_ONU,
                     "booleas": "" + !wifi
                 }).then(salida => {
                     console.log(salida)
@@ -109,12 +110,12 @@ export default function WifiView(){
             spinner: "bubbles",
         })*/
         Cambiarname({
-            "info": datos.iD_EXTERNO_ONU,
+            "info": datos.ID_EXTERNO_ONU,
             "booleas": e
         }).then(ou => {
             console.log(ou)
             Refresssi({
-                "info": datos.iD_EXTERNO_ONU,
+                "info": datos.ID_EXTERNO_ONU,
                 "booleas": "" + !wifi
             }).then(salida => {
                 cargarssi()
@@ -143,11 +144,12 @@ export default function WifiView(){
         console.log(e)
     }
     function cargarssi() {
-        if (datos.iD_EXTERNO_ONU != "") {
-            Deviceslist({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
-                console.log(ouput)
+        if (datos.ID_EXTERNO_ONU != "") {
+            console.log(datos)
+            Deviceslist({ "info": datos.ID_EXTERNO_ONU }).then(ouput => {
+                //console.log(ouput)
                 if (ouput.length > 0) {
-                    console.log(ouput)
+                    console.log("error list",ouput)
                     let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
                     setDevices(Object.values(dtso))
                     console.log(Object.values(dtso))
@@ -155,7 +157,7 @@ export default function WifiView(){
             }).catch(err => {
                 console.log(err)
             })
-            Nombressi({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
+            Nombressi({ "info": datos.ID_EXTERNO_ONU }).then(ouput => {
                 console.log(ouput)
                 if (ouput.length > 0) {
                     let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSID"]._value
@@ -166,7 +168,7 @@ export default function WifiView(){
             }).catch(err => {
                 console.log(err)
             })
-            Estadossi({ "onu": datos.iD_EXTERNO_ONU }).then(ouput => {
+            Estadossi({ "onu": datos.ID_EXTERNO_ONU }).then(ouput => {
                 console.log("estado ssi", ouput)
                 if (ouput.length > 0) {
                     let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSIDAdvertisementEnabled"]._value
@@ -181,6 +183,11 @@ export default function WifiView(){
 
         }
     }
+    function cerrarnuevo(e:string){
+        setAlert("")
+        setShowAlert(e)
+
+    }
     useEffect(()=>{
         console.log("wifi")
         cargarssi()
@@ -193,33 +200,33 @@ export default function WifiView(){
                 nickname={nickname}
                 devices={devices}
             />
-            <AlerView
+            <DialogViewa
                 setAlert={setAlert}
                 alert={(Alert == "hidessi")}
-                header={wifi ? "Desea ocultar de la red wifi? " : "Desea mostrar de la red wifi?"}
+                header={wifi ? "Desea ocultar la red wifi? " : "Desea mostrar la red wifi?"}
                 //subheader={wifi ? "A red oculta ":"A red Visible"}
                 Confirmcall={Confirmcall}
             />
-            <AlerView
+            <DialogViewa
                 setAlert={setAlert}
                 alert={(Alert == "mensaje")}
                 header={"El nombre debe ser de minimo"}
                 subheader={" 7 caracteres"}
-                Confirmcall={() => setAlert("")}
+                Confirmcall={() => cerrarnuevo("")}
             />
-            <AlerView
+            <DialogViewa
                 setAlert={setAlert}
-                alert={(Alert == "cambiarssi")}
+                alert={(Alert === "cambiarssi")}
                 header={"Esta segur@ de cambiar el nombre de la red wifi"}
                 subheader={"se reiniciara el equipo"}
-                Confirmcall={() => setShowAlert("ssi")}
+                Confirmcall={() => cerrarnuevo("ssi")}
             />
-            <AlerView
+            <DialogViewa
                 setAlert={setAlert}
                 alert={(Alert == "password")}
                 header={"Esta segur@ de cambiar la clave de la red wifi"}
                 subheader={"se reiniciara el equipo"}
-                Confirmcall={() => setShowAlert("password")}
+                Confirmcall={() => cerrarnuevo("password")}
             />
             <DeviceView
                 showModal={showModal}
@@ -266,7 +273,7 @@ export default function WifiView(){
 
 
 
-                {datos.iD_EXTERNO_ONU == "" ?"":<div className="col-12 col-md-8 col-xl-2 mx-auto h-73 ">
+                {datos.ID_EXTERNO_ONU == "" ?"":<div className="col-12 col-md-8 col-xl-2 mx-auto h-73 ">
                     {/*<!--card info-->*/}
                     <div className="container-fluid h-100 btn-group-vertical" >
                         <div className="container-fluid btn-group-vertical h-100  ">
@@ -383,7 +390,7 @@ export default function WifiView(){
                         </div>
                     </div>
                 </div>}
-                {datos.iD_EXTERNO_ONU != "" ?"":<div className="col-12 col-md-8 col-xl-2 mx-auto h-73 ">
+                {datos.ID_EXTERNO_ONU != "" ?"":<div className="col-12 col-md-8 col-xl-2 mx-auto h-73 ">
                     <section className="page_404">
                         <div className="container">
                             <div className="row">

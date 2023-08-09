@@ -1,0 +1,9 @@
+.custom-fab-button {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+}
+
+.custom-fab-button ion-label {
+    margin-right: 8px !important;
+}

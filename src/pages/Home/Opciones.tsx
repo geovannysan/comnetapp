@@ -73,6 +73,7 @@ export function OpcionesView() {
     }
     function cargarssi() {
         if (datos.iD_EXTERNO_ONU != "") {
+            
             Deviceslist({ "info": datos.iD_EXTERNO_ONU }).then(ouput => {
                 console.log(ouput)
                 if (ouput.length > 0) {

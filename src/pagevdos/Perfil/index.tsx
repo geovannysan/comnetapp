@@ -34,10 +34,10 @@ export default function PerfilViews() {
         <div>
             <div className="container-fluid h-20 pb-5 bg-welcome bg-welcome-radius px-0">
                 {/* <!--header welcome-->*/}
-                <div className="container-fluid pt-2 h-50 text-end btn-group-vertical">
-                    <img src="img/speed logo name.png" className="img-fluid ms-auto" style={{ height: "65px" }} alt="" />
+                <div className="container-fluid pt-2 h-40 text-end btn-group-vertical">
+                    <img src="img/speed logo name.png" className="img-fluid ms-auto" style={{ height: "40px" }} alt="" />
                 </div>
-                <div className="container-fluid bg- h-50 bg-welcome-radius px-0">
+                <div className="container-fluid bg- h-45 bg-welcome-radius px-0">
                     <div className="container w-75 h-100 ">
                         <div className="row h-100  ">
                             <div className="col-5  text-end p-0">
@@ -71,7 +71,7 @@ export default function PerfilViews() {
                                 </div>
 
                             </div>
-                            <div className=" col-7 d-flex justify-content-center flex-column py-2  ">
+                            <div className=" col-7 d-flex justify-content-center flex-column py-1  ">
                                 <h6 style={{ fontSize: "0.7em" }}>Estado: <span>{dtos.estado}</span> </h6>
                                 <h6 style={{ fontSize: "0.7em" }}>Saldo pendiente: <span>${dtos.facturacion.total_facturas}</span> </h6>
                                 <h6 style={{ fontSize: "0.7em" }}>Plan actual: <span>{dtos.servicios[0].perfil}</span> </h6>

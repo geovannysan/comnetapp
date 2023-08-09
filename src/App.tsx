@@ -44,6 +44,7 @@ import RegisterViews from './pagevdos/Inicio/register';
 import TabsView from './components/Tabs';
 import PAgosViewa from './pagevdos/Pagos';
 import PlanView from './pagevdos/Plan';
+import { MapsVies } from './pagevdos/Mapa';
 
 function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
@@ -192,7 +193,8 @@ const App: React.FC = () => {
                 </Route>
                 <Route path="/termino">                  
                 </Route>
-                <Route path="/contatos"> 
+                <Route path="/mapas">
+                  <MapsVies/> 
                 </Route>
                 <Route path="/" >
                   <Redirect to="/home/inicio" />
