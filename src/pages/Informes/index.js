@@ -569,7 +569,7 @@ export default function InformeViews() {
                             "porcentaje_descuento": "0",
                             "es_cliente": true,
                             "origen": "Panel de Facturacion",
-                                "cedula": ouput.datos[0].cedula,
+                                "cedula": ouput.datos[0].cedula.trim().substring(0, 10),
                             "email": ouput.datos[0].correo,
                                 "ruc": ouput.datos[0].cedula.trim(),
                             "Provincia": "Guayaquil",
