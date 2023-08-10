@@ -2,7 +2,7 @@ export const token = "ejdGNmVseFZtd1NIczE5eTBhQy9xZz09"
 
 
 export const usuarioTocken= [
-
+/*
     {
         "usuario":"dcuevag",
         "password":"0941089492",
@@ -43,7 +43,14 @@ export const usuarioTocken= [
         "nombre": "Melany Mero",
         "correo": "mazanza@comnet.ec",
         "telefono": "",
-    }
+    },
+     {
+         "usuario": "amosquera",
+        "password": "0930429949",
+         "nombre": "Adrian Mosquera Rodriguez",
+         "correo": "amosquera@comnet.ec",
+        "telefono": "",
+    }*/
 ]
 
 export const Mes = {

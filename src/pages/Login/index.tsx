@@ -1,11 +1,11 @@
 import { useIonToast } from '@ionic/react';
-import {  useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 import logo from "../../imagen/logo.png"
 
 import { useDispatch } from 'react-redux';
 import { setDatosuser, setlogin } from '../../StoreRedux/Slice/UserSlice';
 import { useState } from 'react';
-import { autenticar, Loginadmin } from '../../utils/Queryuser';
+import { autenticar, Logearse, Loginadmin } from '../../utils/Queryuser';
 import { usuarioTocken } from '../../utils/variables';
 import axios from 'axios';
 
@@ -17,86 +17,104 @@ const Page: React.FC = () => {
         cedula: "",
         codigo: ""
     })
+    function iniciarsecion() {
+        let info = {
+            username: datos.cedula.trim(),
+            password: datos.codigo.trim()
+        }
+        Logearse(info).then(oupt => {
+            if(oupt.estado&&oupt.estado!="error"){
+                sessionStorage.setItem("USERLOGIN", JSON.stringify({ ...oupt.user}))
+                usedispat(setDatosuser({...oupt.user}))
+                usedispat(setlogin({ estado: true }))
+                history.push("/page/inicio")
+            }
+            console.log(oupt)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
     function logearse() {
-        if(datos.cedula.trim()!== ""&& datos.codigo.trim()!== ""){
+        if (datos.cedula.trim() !== "" && datos.codigo.trim() !== "") {
             let usuario = usuarioTocken.some(e => e.usuario == datos.cedula.trim())
             let pass = usuarioTocken.some(e => e.password == datos.codigo.trim())
-           console.log(usuario,pass)
-           if(usuario&&pass){
-               sessionStorage.setItem("USERLOGIN", JSON.stringify({ ...usuarioTocken.find(e => e.usuario === datos.cedula) }))
-               usedispat(setDatosuser(usuarioTocken.find(e=>e.usuario=== datos.cedula)))
-               usedispat(setlogin({ estado: true }))
-               history.push("/page/inicio")
-           }else if(!usuario){
-               present({
-                   message: 'Usuario incorrecto',
-                   cssClass: 'custom-toast',
-                   duration: 1500,
-                   position: "top",
-                   buttons:[
-                    {
-                        text:"cerrar",
-                        role:"cancel",
+            console.log(usuario, pass)
+            if (usuario && pass) {
+                sessionStorage.setItem("USERLOGIN", JSON.stringify({ ...usuarioTocken.find(e => e.usuario === datos.cedula) }))
+                usedispat(setDatosuser(usuarioTocken.find(e => e.usuario === datos.cedula)))
+                usedispat(setlogin({ estado: true }))
+                history.push("/page/inicio")
+            } else if (!usuario) {
+                present({
+                    message: 'Usuario incorrecto',
+                    cssClass: 'custom-toast',
+                    duration: 1500,
+                    position: "top",
+                    buttons: [
+                        {
+                            text: "cerrar",
+                            role: "cancel",
 
-                    }
-                   ]
-               });
-           }else if(!pass){
-               present({
-                   message: 'Contraseña incorrecto',
-                   cssClass: 'custom-toast',
-                   duration: 1500,
-                   position: "top",
-                   buttons: [
-                       {
-                           text: "cerrar",
-                           role: "cancel",
+                        }
+                    ]
+                });
+            } else if (!pass) {
+                present({
+                    message: 'Contraseña incorrecto',
+                    cssClass: 'custom-toast',
+                    duration: 1500,
+                    position: "top",
+                    buttons: [
+                        {
+                            text: "cerrar",
+                            role: "cancel",
 
-                       }
-                   ]
-               });
-           }
-           /* autenticar(datos.cedula).then(e => {
-                if (e.estado === "exito") {
-                    if (datos.codigo === e.datos[0].codigo) {
-                        present({
-                            message: 'Bienvenido',
-                            cssClass: 'custom-toast',
-                            duration: 1500,
-                            position: "bottom"
-                        });
-                        sessionStorage.setItem("USERLOGIN", JSON.stringify({...e.datos[0]}))
-                        usedispat(setDatosuser(e.datos[0]))
-                        usedispat(setlogin({ estado: true }))
-                        history.push("/page/inicio")
-                    }
-                    else {
-                        present({
-                            message: 'Contraseña erronea',
-                            cssClass: 'custom-toast',
-                            duration: 1500,
-                            position: "bottom"
-                        });
-                    }
-                }
-                else {
-                    present({
-                        message: 'Solo usuarios del portal pueden ingresar',
-                        cssClass: 'custom-toast',
-                        duration: 1500,
-                        position: "bottom"
-                    });
-                }
-            }).catch(err => {
-                console.error(err)
-            })*/
+                        }
+                    ]
+                });
+            }
+            /* autenticar(datos.cedula).then(e => {
+                 if (e.estado === "exito") {
+                     if (datos.codigo === e.datos[0].codigo) {
+                         present({
+                             message: 'Bienvenido',
+                             cssClass: 'custom-toast',
+                             duration: 1500,
+                             position: "bottom"
+                         });
+                         sessionStorage.setItem("USERLOGIN", JSON.stringify({...e.datos[0]}))
+                         usedispat(setDatosuser(e.datos[0]))
+                         usedispat(setlogin({ estado: true }))
+                         history.push("/page/inicio")
+                     }
+                     else {
+                         present({
+                             message: 'Contraseña erronea',
+                             cssClass: 'custom-toast',
+                             duration: 1500,
+                             position: "bottom"
+                         });
+                     }
+                 }
+                 else {
+                     present({
+                         message: 'Solo usuarios del portal pueden ingresar',
+                         cssClass: 'custom-toast',
+                         duration: 1500,
+                         position: "bottom"
+                     });
+                 }
+             }).catch(err => {
+                 console.error(err)
+             })*/
         }
-        else{
-        present({
-            message: 'Ingrese datos',
-            duration: 1500,
-            position: "top"
-        });}
+        else {
+            present({
+                message: 'Ingrese datos',
+                duration: 1500,
+                position: "top"
+            });
+        }
     }
     function handeChange(e: any) {
         setDatos({
@@ -108,7 +126,7 @@ const Page: React.FC = () => {
         username: '',
         password: '',
     });
-    const handleSubmit = async (event:any) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
         if (credenciales.username.trim() !== '' && credenciales.password.trim() !== '') {
             try {
@@ -116,14 +134,14 @@ const Page: React.FC = () => {
                 const { success, token } = data
                 if (success) {
                     //console.log("success-->",data)
-                   // setDatosUser(token)
-                  //  setShow(true)
-                   // setmessage("Inicio de session exitoso")
+                    // setDatosUser(token)
+                    //  setShow(true)
+                    // setmessage("Inicio de session exitoso")
                     history.push('/admin/inicio')
                 }
                 else {
-                   // setShow(true)
-                   // setmessage("Usuario o contraeña incorrecta")
+                    // setShow(true)
+                    // setmessage("Usuario o contraeña incorrecta")
                     console.log("mensage de alvertencia", data)
                 }
             } catch (error) {
@@ -132,7 +150,7 @@ const Page: React.FC = () => {
             }
             //setShow(true)
         }
-       // setShow(true)
+        // setShow(true)
     };
 
 
@@ -169,7 +187,7 @@ const Page: React.FC = () => {
                             name="codigo" required />
                     </div>
                     <div className='col-12 d-flex justify-content-center pt-3'>
-                        <button className='btn col-12  btn-primary' onClick={logearse}> Ingrese al Portal </button>
+                        <button className='btn col-12  btn-primary' onClick={iniciarsecion}> Ingrese al Portal </button>
 
                     </div>
                     <div className='mt-2 d-flex justify-content-center'>
