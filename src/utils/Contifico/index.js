@@ -111,7 +111,7 @@ export const BuscarProductoContific = async (parms) => {
  */
 export const IncremetoFacturaS = async () => {
     try {
-        //http://localhost:3008/FactuApi/incrementodos
+        //https://api.ticketsecuador.ec/mikroti/FactuApi/incrementodos
         let { data } = await axios({
             method: 'post', url: 'https://portalfac.netbot.ec/incrementov.php'
         })
@@ -122,7 +122,7 @@ export const IncremetoFacturaS = async () => {
 }
 export const IncremetoCon = async () => {
     try {
-        //http://localhost:3008/FactuApi/incrementouno
+        //https://api.ticketsecuador.ec/mikroti/FactuApi/incrementouno
         let { data } = await axios({
             method: 'post', url: 'https://portalfac.netbot.ec/incremento.php'
         })
@@ -152,7 +152,7 @@ export const IncremetoCon = async () => {
  */
 export const CreaProducto = async (parms) => {
     try {
-        let { data } = await axios.post("http://localhost:3008/FactuApi/Crearpro", { ...parms })
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/FactuApi/Crearpro", { ...parms })
         return data
     } catch (error) {
         return error
@@ -165,7 +165,7 @@ export const PagoFacturacomnet = async (parms) => {
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("http://localhost:3008/PortalApi/PagosdelPortal" ,
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/PagosdelPortal" ,
             {
                 ...parms,
                 "operador": nombres.password
