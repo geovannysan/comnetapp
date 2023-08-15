@@ -7,7 +7,7 @@ export const autenticar = async (parms) => {
     try {
         let { data } = await axios.post(Hostv1 + "/PortalApi/GetClientsDetails",
             {
-                "operador": operador,
+                "operador": "appspeed",
                 "cedula": parms
             }, {
             headers: {

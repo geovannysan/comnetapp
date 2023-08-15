@@ -11,6 +11,7 @@ const initialState = {
     authb: false,
     progres:false,
     cosultstatus:false,
+    soporte:false,
     opcion:"",
     nickname:"",
     señal: {
@@ -54,10 +55,14 @@ const userSlice = createSlice({
         },
         setNicknameslice:(state,action)=>{
             state.nickname= action.payload.nickname
+        },
+        setSoport:(state,action)=>{
+            state.soporte=action.payload.soporte
         }
+        
     }
 })
 export const { setDatosuser, setlogin, setProg, setPlan, 
-    setNicknameslice,
+    setNicknameslice,setSoport,
     setModal, setStatus, setSeñal, setOpctionslice } = userSlice.actions;
 export default userSlice.reducer;

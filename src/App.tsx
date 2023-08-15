@@ -31,9 +31,9 @@ import "./theme/rizes.css";
 import { useEffect, useState } from 'react';
 
 import { userlog } from './utils/User';
-import { StatusBar,Style } from '@capacitor/status-bar';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { setDatosuser, setlogin, setPlan } from './StoreRedux/Slice/UserSlice';
-import { ListarFactura } from './utils/Queryuser';
+import { ListarFactura, autenticar } from './utils/Queryuser';
 import OneSignal from 'onesignal-cordova-plugin';
 import { initializeOneSignal } from './Onesignajs'
 import { getPlatforms } from '@ionic/react';
@@ -118,15 +118,29 @@ const App: React.FC = () => {
     // StatusBar.setBackgroundColor({ color: '#0000' });
     // StatusBar.setStyle()
     // StatusBar.setStyle({ Style.dark: 'dark' });
-   
-  
+
+
     let datos = userlog()
     console.log(datos)
     if (datos != null) {
-      userdispach(setlogin({ estado: true }))
-      userdispach(setDatosuser({ ...datos }))
-      // createSingleTaskNotification()
 
+      //console.log(salida)
+      userdispach(setlogin({ estado: true }))
+      //userdispach(setDatosuser({ ...datos }))
+      // createSingleTaskNotification()
+      //console.log(datos)
+      autenticar(datos.cedula).then(salida => {
+        if (salida.estado == "exito") {
+         // console.log(salida.datos)
+         // userdispach(setlogin({ estado: true }))
+          userdispach(setDatosuser({ ...salida.datos[0] }))
+        }else{
+          
+        }
+
+      }).catch(err => {
+
+      })
       console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"), getPlatforms())
       if (getPlatforms().some(e => e == "android") && getPlatforms().length == 1) {
         OneSignalInit(datos)
@@ -179,29 +193,29 @@ const App: React.FC = () => {
           <IonReactRouter>
             <IonRouterOutlet animation={animationBuilder}>
               <Switch>
-               
+
                 <Route path="/home">
-                  <TabsView/>  
+                  <TabsView />
                 </Route>
                 <Route path="/pagos">
-                  <PAgosViewa/>
+                  <PAgosViewa />
                 </Route>
                 <Route path="/plan">
-                  <PlanView/>
+                  <PlanView />
                 </Route>
                 <Route path="/cambios">
                 </Route>
-                <Route path="/termino">                  
+                <Route path="/termino">
                 </Route>
                 <Route path="/mapas">
-                  <MapsVies/> 
+                  <MapsVies />
                 </Route>
                 <Route path="/" >
                   <Redirect to="/home/inicio" />
                 </Route>
-  
+
               </Switch>
-  
+
             </IonRouterOutlet>
           </IonReactRouter>
           :

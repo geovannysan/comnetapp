@@ -9,7 +9,7 @@ import { userlog } from "../../utils/User"
 import { useIonLoading } from "@ionic/react"
 import SweetAlert from "react-bootstrap-sweetalert";
 import AlerModal from "../../components/Modal/Modal"
-import { setModal } from "../../StoreRedux/Slice/UserSlice"
+import { setModal, setSeñal, setSoport } from "../../StoreRedux/Slice/UserSlice"
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -25,12 +25,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function SoporteView() {
     const infouser = useSelector((state) => state.usuario.user)
     const dispat = useDispatch()
+    const soportes = useSelector((state)=> state.usuario.soporte)
+    const señal = useSelector((state)=>state.usuario.señal)
     let dtos = userlog()
-    const [señal, setSeñal] = useState({
-        onu_signal_value: "",
-        onu_status: "",
-        onu_signal: ""
-    })
+    
     const [btn, setBtn] = useState(false)
     const [open, setOpen] = React.useState(false);
 
@@ -64,11 +62,11 @@ export default function SoporteView() {
                                 onu_status: ouputv.onu_status,
                                 onu_signal: ouput.onu_signal
                             })
-                            setSeñal({
+                           dispat( setSeñal({
                                 onu_signal_value: ouput.onu_signal_value,
                                 onu_status: ouputv.onu_status,
                                 onu_signal: ouput.onu_signal
-                            })
+                            }))
                         }
                     })
                 }
@@ -77,7 +75,8 @@ export default function SoporteView() {
         ListarTicket(tick.id).then(response => {
             if (response.estado == "exito") {
                 let soport = response.data.tickets.filter(e => e.estado == "abierto")
-                Soporte(soport.length)
+                if(!soportes){
+                Soporte(soport.length)}
             }
         }).catch(err => {
 
@@ -97,6 +96,8 @@ export default function SoporteView() {
                     console.log(ou.routers[0].estado)
                     console.log(infouser)
                     if (ou.routers[0].estado != "CONECTADO") {
+                        dispat(setSoport({ soporte: true }))
+                        //agregar mensaje
                         /*
                         Daño masivo
                         */
@@ -107,12 +108,10 @@ export default function SoporteView() {
                         console.log(users.servicios[0].id, ouput)
                         if (ouput.status) {
                             dispat(setModal({ nombre: "Alerta", payloa: "Comprobando puertos olt" }))
-
                             if (ouput.onu_details.administrative_status != "Enabled") {
-
+                                dispat(setSoport({ soporte: true }))
                                 /*
-
-                                
+                                //agregar mensaje
                                 */
                                 return
                             }
@@ -124,6 +123,8 @@ export default function SoporteView() {
                                 let oltstatus = ou.response.find((e) => e.board == board && e.pon_port == poart)
                                 console.log("Detalleoltport->", oltstatus)
                                 if (!oltstatus.operational_status.includes("Up")) {
+                                    dispat(setSoport({ soporte: true }))
+                                    //agregar mensaje
                                     /**crear pantalla con mensaje daño masivo y no se genera tickte */
                                     /*present({
                                         message: 'crear pantalla con mensaje daño masivo y no se genera tickte',
@@ -162,10 +163,12 @@ export default function SoporteView() {
                                                       })*/
                                                     Newtickte(info).then(oput => {
                                                         // dismiss()
+                                                        dispat(setSoport({ soporte: true }))
                                                         console.log(oput)
                                                     }).catch(err => {
                                                         console.log(err)
                                                     })
+                                                    dispat(setSoport({ soporte: true }))
                                                     return
                                                 }
                                                 /* crear tickte */
@@ -186,6 +189,8 @@ export default function SoporteView() {
                                                 return
                                             }
                                             if (ouputv.onu_status == "Power fail") {
+                                                dispat(setSoport({ soporte: true }))
+                                                //agregar mensaje
                                                 /* present({
                                                      message: 'crear gif intructivo. seria un modal con el gif',
                                                      cssClass: 'custom-loading',
@@ -202,6 +207,8 @@ export default function SoporteView() {
                                                 return
                                             }
                                             if (ouputv.onu_status == "Online") {
+                                                //agregar mensaje
+                                                dispat(setSoport({ soporte: true }))
                                                 //dismiss()
                                                 /*presentlo({
                                                     message: 'Comprobando estado de la señal',
@@ -213,14 +220,16 @@ export default function SoporteView() {
                                                     if (ouput.status) {
                                                         //dismiss()
                                                         console.log(ouput)
-                                                        setSeñal({
+                                                      dispat( setSeñal({
                                                             onu_signal_value: ouput.onu_signal_value,
                                                             onu_status: ouputv.onu_status,
                                                             onu_signal: ouput.onu_signal
-                                                        })
+                                                        }))
                                                         let se = ouput.onu_signal_1490.replace("-", "").replace("dBm", "")
                                                         console.log(se)
+                                                        dispat(setSoport({ soporte: true }))
                                                         if (se < 29) {
+                                                            //agregar mensaje
                                                             /** mostrar servicio ok */
                                                             /*present({
                                                                 message: 'Buena señal',
@@ -229,9 +238,11 @@ export default function SoporteView() {
                                                             })*/
                                                         }
                                                         if (se > 26.50 && se < 29) {
+                                                            //agregar mensaje
                                                             /** tickte de revision */
                                                         }
                                                         if (se > 29) {
+                                                            //agregar mensaje
                                                             /**visita tecnica */
                                                             let info = {
                                                                 "idcliente": users.id,
@@ -245,7 +256,7 @@ export default function SoporteView() {
                                                             if (so == 0) {
 
                                                                 dispat(setModal({ nombre: "Alerta", payloa: "Creando ticket de soporte" }))
-
+                                                                //agregar mensaje
                                                                 /*  present({
                                                                       message: 'Creando ticket de soporte',
                                                                       cssClass: 'custom-loading',
@@ -255,6 +266,7 @@ export default function SoporteView() {
                                                                 Newtickte(info).then(oput => {
                                                                     // dismiss()
                                                                     console.log(oput)
+
                                                                 }).catch(err => {
                                                                     console.log(err)
                                                                 })
@@ -270,6 +282,8 @@ export default function SoporteView() {
                                                             }
                                                         }
                                                     } else {
+                                                        //agregar mensaje
+                                                        dispat(setSoport({ soporte: true }))
                                                         /*present({
                                                              message: 'Hubo un error intente mas tarde',
                                                              cssClass: 'custom-loading',
@@ -287,6 +301,9 @@ export default function SoporteView() {
                                                 return
                                             }
 
+                                        }else{
+                                            dispat(setSoport({ soporte: true }))
+                                            //agregar mensaje
                                         }
                                     })
                                     dispat(setModal({ nombre: "", payloa: "" }))
@@ -303,10 +320,15 @@ export default function SoporteView() {
                      }).catch(err => {
                          console.log(err)
                      })*/
+                }else{
+                    dispat(setSoport({ soporte: true }))
+                    //agregar mensaje
                 }
 
             }
             else {
+                dispat(setSoport({soporte:true}))
+                //agregar mensaje
                 /*  dismiss()
                   presentlo({
                       message: ou.mensaje,
@@ -317,6 +339,7 @@ export default function SoporteView() {
             }
         }).catch(err => {
             dispat(setModal({ nombre: "", payloa: "" }))
+            dispat(setSoport({ soporte: true }))
             console.log(err)
         })
     }
