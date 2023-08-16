@@ -8,6 +8,7 @@ import { Fab, Menu, MenuItem } from '@mui/material';
 import { Add as AddIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
 import './index.css'
 import mapaicon from "../../imagen/PUNTO DE PAGO_Mesa de trabajo 1.png"
+import { useSelector } from 'react-redux';
 
 const openGoogleMapsNavigation = (e) => {
     const latitude = e[0]; // Latitud
@@ -66,9 +67,8 @@ function LocationMarkers({ position }) {
     );
 }
 export function MapsVies() {
-    const mapRef = useRef();
-    let newMap;
     const [anchorEl, setAnchorEl] = useState(null);
+    let posicion = useSelector(state => state.usuario.positio)
 
     const handleOpenMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -98,16 +98,14 @@ export function MapsVies() {
     const [userLocation, setUserLocation] = useState(
         [-2.109304,
         -79.936441,]);
-    const [locate, setLocate] = useState([-2.229304,
-    -79.936441,
+    const [locate, setLocate] = useState([
     ])
     const [zomm, setzomm] = useState(15)
     function Agregardat(e) {
         console.log([...e])
         setLocate(
             [...e]);
-        setLocate(
-            [...e]);
+        /*setLocate([...e]);*/
         setShowPopover({ showPopover: false, event: undefined });
         // setzomm(18)
     }
@@ -141,7 +139,7 @@ export function MapsVies() {
     return (
         <>
 
-            <MapContainer center={userLocation} zoom={zomm} style={{ height: '100%', width: '100%' }}>
+            <MapContainer center={posicion} zoom={zomm} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
@@ -159,11 +157,12 @@ export function MapsVies() {
                         <IonIcon icon={mapOutline}></IonIcon>
 
                     </IonFabButton>
-                </IonFab>
-               {/* <LocationMarker/>*/}
-                <LocationMarkers
+                </IonFab> 
+                <LocationMarker/>
+                
+               {locate.length>0? <LocationMarkers
                     position={locate}
-                />
+                />:""}
                 <Menu
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}

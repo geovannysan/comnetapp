@@ -1,13 +1,38 @@
 import { useEffect } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router"
+import { setPosision } from "../../StoreRedux/Slice/UserSlice"
 
 export default function HomeView() {
     const datos = useSelector((state: any) => state.usuario.user)
     let history = useHistory()
+    let dispatch = useDispatch()
     useEffect(()=>{
         console.log(datos)
     },[])
+    function soportes(){
+        history.push("/home/soporte")
+    }
+    function ObtenerLocatio(){
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    console.log(position)
+                    dispatch(setPosision([latitude,longitude]))
+                    history.push("/mapas")
+                   // setUserLocation([-2.129304, -79.936441,]);
+                },
+                (error) => {
+                    history.push("/mapas")
+                    console.error('Error getting user location:', error.message);
+                }
+            );
+        } else {
+            console.warn('Geolocation is not supported by this browser.');
+        }
+    }
+
     return (
         <div className="container-fluid px-0 vh-100">
             {/*<!--Contenedor General-->*/}
@@ -44,12 +69,12 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2 ">
                                 <div className="container p-1">
-                                    <a href="/home"><img src="img/botones-home/mi-plan-boton-wifi.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/plan") }><img src="img/botones-home/mi-plan-boton-wifi.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
-                                    <a href="/home/soporte"><img src="img/botones-home/soporte-tecnico-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={soportes}><img src="img/botones-home/soporte-tecnico-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
@@ -65,13 +90,13 @@ export default function HomeView() {
                             <div className="col-4 p-0 my-2 ">
                                 <div className="container p-1">
                                     <a
-                                    onClick={()=>history.push("/mapas")}
+                                    onClick={ObtenerLocatio}
                                     ><img src="img/botones-home/puntos-de-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
-                            <div className="col-4 p-0 my-2 block">
+                            <div className="col-4 p-0 my-2 block d-none">
                                 <div className="container p-1">
-                                    <a href="/plan"><img src="img/botones-home/cambio-de-plan-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/plan")} ><img src="img/botones-home/cambio-de-plan-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2">

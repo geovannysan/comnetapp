@@ -25,10 +25,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function SoporteView() {
     const infouser = useSelector((state) => state.usuario.user)
     const dispat = useDispatch()
-    const soportes = useSelector((state)=> state.usuario.soporte)
-    const señal = useSelector((state)=>state.usuario.señal)
+    const soportes = useSelector((state) => state.usuario.soporte)
+    const señal = useSelector((state) => state.usuario.señal)
     let dtos = userlog()
-    
+
     const [btn, setBtn] = useState(false)
     const [open, setOpen] = React.useState(false);
 
@@ -53,6 +53,7 @@ export default function SoporteView() {
             });
         });
         if (obtenervaariables(infouser.servicios[0].smartolt).onu_external_id != "") {
+
             Get_onu_signal(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput => {
                 if (ouput.status) {
                     Gt_onu_status(infouser.servicios[0].idperfil).then(ouputv => {
@@ -62,7 +63,7 @@ export default function SoporteView() {
                                 onu_status: ouputv.onu_status,
                                 onu_signal: ouput.onu_signal
                             })
-                           dispat( setSeñal({
+                            dispat(setSeñal({
                                 onu_signal_value: ouput.onu_signal_value,
                                 onu_status: ouputv.onu_status,
                                 onu_signal: ouput.onu_signal
@@ -75,8 +76,9 @@ export default function SoporteView() {
         ListarTicket(tick.id).then(response => {
             if (response.estado == "exito") {
                 let soport = response.data.tickets.filter(e => e.estado == "abierto")
-                if(!soportes){
-                Soporte(soport.length)}
+                if (!soportes) {
+                    Soporte(soport.length)
+                }
             }
         }).catch(err => {
 
@@ -220,7 +222,7 @@ export default function SoporteView() {
                                                     if (ouput.status) {
                                                         //dismiss()
                                                         console.log(ouput)
-                                                      dispat( setSeñal({
+                                                        dispat(setSeñal({
                                                             onu_signal_value: ouput.onu_signal_value,
                                                             onu_status: ouputv.onu_status,
                                                             onu_signal: ouput.onu_signal
@@ -301,7 +303,7 @@ export default function SoporteView() {
                                                 return
                                             }
 
-                                        }else{
+                                        } else {
                                             dispat(setSoport({ soporte: true }))
                                             //agregar mensaje
                                         }
@@ -320,14 +322,14 @@ export default function SoporteView() {
                      }).catch(err => {
                          console.log(err)
                      })*/
-                }else{
+                } else {
                     dispat(setSoport({ soporte: true }))
                     //agregar mensaje
                 }
 
             }
             else {
-                dispat(setSoport({soporte:true}))
+                dispat(setSoport({ soporte: true }))
                 //agregar mensaje
                 /*  dismiss()
                   presentlo({
@@ -343,6 +345,7 @@ export default function SoporteView() {
             console.log(err)
         })
     }
+    console.log("agregado")
     return (
         <div className="container-fluid px-0 vh-100">
             <AlerModal />
@@ -437,7 +440,7 @@ export default function SoporteView() {
                             </div>
                         </div>
                         {/*<!--cierre card opcion-->*/}
-                        {!btn?"": <div className="row col-12 shadow-3   rounded-4 mx-auto my-2 h-15 bg-white py-0">
+                        {!btn ? "" : <div className="row col-12 shadow-3   rounded-4 mx-auto my-2 h-15 bg-white py-0">
                             {/* <!--card opcion-->*/}
                             <div className="col-8 h-100 border rounded-start-4">
                                 <div className="row w-100 mx-auto h-100">

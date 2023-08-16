@@ -204,7 +204,7 @@ export default function WifiView(){
                 setAlert={setAlert}
                 alert={(Alert == "hidessi")}
                 header={wifi ? "Desea ocultar la red wifi? " : "Desea mostrar la red wifi?"}
-                //subheader={wifi ? "A red oculta ":"A red Visible"}
+                subheader={"se reiniciara el equipo"}
                 Confirmcall={Confirmcall}
             />
             <DialogViewa

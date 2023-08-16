@@ -7,7 +7,7 @@ const initialState = {
         cedula:"",
     },
     plan:[],
-
+    positio: [-2.129304, -79.936441],
     authb: false,
     progres:false,
     cosultstatus:false,
@@ -58,11 +58,14 @@ const userSlice = createSlice({
         },
         setSoport:(state,action)=>{
             state.soporte=action.payload.soporte
+        },
+        setPosision:(state,action)=>{
+            state.positio=[...action.payload]
         }
         
     }
 })
 export const { setDatosuser, setlogin, setProg, setPlan, 
-    setNicknameslice,setSoport,
+    setNicknameslice,setSoport,setPosision,
     setModal, setStatus, setSeñal, setOpctionslice } = userSlice.actions;
 export default userSlice.reducer;

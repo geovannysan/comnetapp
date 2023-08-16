@@ -21,6 +21,7 @@ export const autenticar = async (parms) => {
         return error
     }
 }
+
 export const Logearusar = async (parms) => {
     try {
         console.log(Hostv1 + "/Login", parms)
@@ -85,6 +86,16 @@ export const ListarFactura = async (parms) => {
     }
 }
 export const MostrarFacturas = async (parms) => {
+
+    try {
+        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/PortalApi/GetInvoices/" + parms +"/appspeed")
+        return data
+    } catch (error) {
+        return error
+    }
+}
+/*
+export const MostrarFacturas = async (parms) => {
     try {
         let { data } = await axios.post(Hostv1 + "/PortalApi/GetInvoices", {
             //"token": token,
@@ -101,7 +112,7 @@ export const MostrarFacturas = async (parms) => {
     } catch (error) {
         return error
     }
-}
+}*/
 export const MostrarFacturasdeuda = async (parms) => {
     try {
         let { data } = await axios.post(Hostv1 + "/PortalApi/GetInvoices", {
