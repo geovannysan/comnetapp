@@ -2,6 +2,7 @@ import { IonContent } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { ObtenerFactura, ObtenerFacturas } from "../../utils/Contifico";
 import TablasViwe from "./Tablasdoc";
+import { listarSolicitud } from "../../utils/Queryuser";
 
 export default function DocuumentosViews(){
     const [datos,setDatos]=useState<any>([])
@@ -21,6 +22,11 @@ export default function DocuumentosViews(){
             
     }
     useEffect(()=>{
+        listarSolicitud(2).then(sali=>{
+            console.log(sali)
+        }).catch(errr=>{
+            console.log(errr)
+        })
         /*ObtenerFactura().then((salida) =>{
             console.log(salida.status)
             if (salida.length == 0) return

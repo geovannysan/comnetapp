@@ -18,9 +18,9 @@ const route = [
         component: InformeViews,
     },
     {
-        path: "/Documentos",
+        path: "/Solicitudes",
         layout: "/page",
-        name: "Documentos",
+        name: "Solicitudes",
         component: DocuumentosViews,
     }
     /*{

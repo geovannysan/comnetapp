@@ -35,8 +35,8 @@ const appPages: AppPage[] = [
     mdIcon: homeOutline
   },
   {
-    title: 'Documentos',
-    url: '/page/Documentos',
+    title: 'Solicitudes',
+    url: '/page/Solicitudes',
     iosIcon: archiveOutline,
     mdIcon: archiveSharp
   }
