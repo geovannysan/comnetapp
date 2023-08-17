@@ -113,17 +113,18 @@ export const Actualizarsolicitud=async (parms) => {
     }
 }
 export const listarSolicitud = async (parms) => {
-    try {
-        let{data}=await axios.get("http://api.ticketsecuador.ec/mikroti/solicitu/lista/"+ parms,{    headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        try {
+            let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/solicitu/lista/"+parms, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                }
+            })
+            return data
+        } catch (error) {
+            return error
         }
-    })
-    return data
-    } catch (error) {
-        return error
     }
-}
 /**
  * 
  *  mode: 'no-cors',

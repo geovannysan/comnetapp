@@ -17,8 +17,11 @@ import * as moment from "moment"
 
 export default function TablasViwe({...props}){
     const [spiner,setSpiner]=useState("")
+    
     useEffect(()=>{
-        setSpiner("")
+        setSpiner("d-none")
+       // console.log(props)
+       // setSpiner("")
         if (props.datos.length>0) {  
             setTimeout(function(){
            
