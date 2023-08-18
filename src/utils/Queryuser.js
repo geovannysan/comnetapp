@@ -74,18 +74,23 @@ export const Facturaid = async (parms) => {
         return error
     }
 }
-export const CreaLaFacturapor = async (parms) => {
+export const CreaLaFacturapor = async (parms,idfacttu) => {
+    let datos = {
+        "parms": { ...parms }
+    }
     try {
+        
 
-        let { data } = await axios({
-            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/documento/', data: parms, headers: {
-                'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
-            }
-        })
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/newdocumento/" + idfacttu + "/" + userlog().Id,datos)
+        
+        
+       /* axios({
+            method: 'post', url: "http://localhost:3009/newdocumento/" + idfacttu + "/" + userlog().Id, data: datos
+        })*/
         return data
 
     } catch (error) {
-        console.log(parms, error)
+        console.log(datos, error)
         return error
 
     }

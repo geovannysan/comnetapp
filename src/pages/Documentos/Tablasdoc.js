@@ -15,6 +15,7 @@ import "datatables.net-responsive-dt"
 import $ from "jquery"
 import * as moment from "moment"
 
+
 export default function TablasViwe({...props}){
     const [spiner,setSpiner]=useState("")
     

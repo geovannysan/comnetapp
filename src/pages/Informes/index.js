@@ -1483,7 +1483,7 @@ export default function InformeViews() {
                                 presentlo({
                                     message: "Creando factura Contifico"
                                 })
-                                CreaLaFacturapor(fac).then(salida => {
+                                CreaLaFacturapor(fac,singleSelect.value).then(salida => {
                                     console.log(salida)
                                     let fat = "001-001-00000" + facnum
 
@@ -1710,7 +1710,7 @@ export default function InformeViews() {
                             message: 'Creando factura electrónica',
                             cssClass: 'custom-loading'
                         })
-                        CreaLaFacturapor(fac).then(salida => {
+                        CreaLaFacturapor(fac,singleSelect.value).then(salida => {
                             //dismiss()
                             let fat = "001-001-00000" + facnum
                             console.log(salida)
@@ -1918,7 +1918,7 @@ export default function InformeViews() {
                                     redirect: 'follow'
                                 };
 
-                                CreaLaFacturapor(fac).then(salida => {
+                                CreaLaFacturapor(fac,singleSelect.value).then(salida => {
                                     dismiss()
                                     let fat = "001-001-00000" + facnum
                                     console.log(salida)
@@ -2081,7 +2081,7 @@ export default function InformeViews() {
                                     redirect: 'follow'
                                 };
 
-                                CreaLaFacturapor(fac).then(salida => {
+                                CreaLaFacturapor(fac,singleSelect.value).then(salida => {
                                     dismiss()
                                     let fat = "001-001-00000" + facnum
                                     console.log(salida)
