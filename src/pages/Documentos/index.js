@@ -14,11 +14,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import Slide from '@mui/material/Slide';
+import { useHistory } from "react-router";
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 export default function DocuumentosViews() {
     const [datos, setDatos] = useState([])
+    let history = useHistory()
     let [wifi, setWifi] = useState("")
     let [showAlert, setShowAlert] = useState(false)
     function handleClose() {
@@ -26,9 +28,11 @@ export default function DocuumentosViews() {
     }
     let [info, setInfo] = useState({})
     async function abreir(e) {
-        setInfo(e)
+        console.log(e)
+        history.push("/page/detalle/"+e.Id)
+       // setInfo(e)
 
-        setShowAlert(true)
+        //setShowAlert(true)
 
     }
     useEffect(() => {

@@ -3,9 +3,9 @@ import { token } from './variables';
 import { userlog } from './User';
 let Host = "https://portal.comnet.ec/api/v1/";
 //let userlog() = JSON.parse(sessionStorage.getItem("USERLOGIN"))
-export const Logearse = async (parms)=>{
+export const Logearse = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/Login",parms)
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/Login", parms)
         return data
     } catch (error) {
         return error
@@ -14,7 +14,7 @@ export const Logearse = async (parms)=>{
 export const autenticar = async (parms) => {
     console.log(userlog())
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/GetClientsDetails" , { cedula: parms, operador: userlog().password })
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/GetClientsDetails", { cedula: parms, operador: userlog().password })
         console.log(data)
         return data
     } catch (error) {
@@ -35,7 +35,7 @@ export const ListarTicket = async (parm) => {
 }
 export const ListarFactura = async (parms) => {
     try {
-        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/PortalApi/GetInvoices/"+parms+"/"+userlog().password)
+        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
         if (JSON.parse(data).estado === "exito") {
 
             let id = await JSON.parse(data).facturas[0].id
@@ -56,7 +56,7 @@ export const ListarFactura = async (parms) => {
     }
 }
 export const MostrarFacturas = async (parms) => {
-   
+
     try {
         let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
         return data
@@ -67,26 +67,26 @@ export const MostrarFacturas = async (parms) => {
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/PortalApi/GetInvoice/"+parms+"/"+userlog().password)
+        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/PortalApi/GetInvoice/" + parms + "/" + userlog().password)
         return data
 
     } catch (error) {
         return error
     }
 }
-export const CreaLaFacturapor = async (parms,idfacttu) => {
+export const CreaLaFacturapor = async (parms, idfacttu) => {
     let datos = {
         "parms": { ...parms }
     }
     try {
-        
 
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/newdocumento/" + idfacttu + "/" + userlog().Id,datos)
-        
-        
-       /* axios({
-            method: 'post', url: "http://localhost:3009/newdocumento/" + idfacttu + "/" + userlog().Id, data: datos
-        })*/
+
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/newdocumento/" + idfacttu + "/" + userlog().Id, datos)
+
+
+        /* axios({
+             method: 'post', url: "https://api.ticketsecuador.ec/mikroti/newdocumento/" + idfacttu + "/" + userlog().Id, data: datos
+         })*/
         return data
 
     } catch (error) {
@@ -104,9 +104,9 @@ export const Loginadmin = async (parms) => {
     })
     return data
 }
-export const Actualizarsolicitud=async (parms) => {
+export const Actualizarsolicitud = async (parms, id) => {
     try {
-        let{data}= await axios.post("http://api.ticketsecuador.ec/mikroti/solicitu/actualiza/{idcliente}", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/solicitu/actualiza/" + id, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -118,18 +118,31 @@ export const Actualizarsolicitud=async (parms) => {
     }
 }
 export const listarSolicitud = async (parms) => {
-        try {
-            let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/solicitu/lista/"+parms, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                }
-            })
-            return data
-        } catch (error) {
-            return error
-        }
+    try {
+        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/solicitu/lista/" + parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
     }
+}
+export const ListarSolicituID = async (parms) => {
+    try {
+        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/solicitu/solicitu/" + parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
 /**
  * 
  *  mode: 'no-cors',

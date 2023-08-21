@@ -4,6 +4,7 @@ import InformeViews from "./Informes";
 import Soportviews from "./Soporte";
 import FacturaViews from "./Comprobantes/Facturas";
 import DocuumentosViews from "./Documentos";
+import Detallesolicitud from "./Documentos/Solicitud";
 /*    {
         path: "/inicio",
         layout: "/page",
@@ -22,7 +23,13 @@ const route = [
         layout: "/page",
         name: "Solicitudes",
         component: DocuumentosViews,
-    }
+    },
+     {
+         path: "/detalle/:id",
+        layout: "/page",
+         name: "Solicitudes",
+        component: Detallesolicitud,
+    },
     /*{
         path: "/Documentos",
         layout: "/page",
