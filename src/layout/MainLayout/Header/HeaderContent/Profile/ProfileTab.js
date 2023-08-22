@@ -33,13 +33,13 @@ const ProfileTab = ({ handleLogout }) => {
                 <ListItemText primary="View Profile" />
             </ListItemButton>
 
-            <ListItemButton selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)}>
+            <ListItemButton style={{ display: 'none' }} selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)}>
                 <ListItemIcon>
                     <ProfileOutlined />
                 </ListItemIcon>
                 <ListItemText primary="Social Profile" />
             </ListItemButton>
-            <ListItemButton selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)}>
+            <ListItemButton style={{ display: 'none' }} selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)}>
                 <ListItemIcon>
                     <WalletOutlined />
                 </ListItemIcon>

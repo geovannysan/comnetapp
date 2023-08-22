@@ -1,0 +1,142 @@
+/* colores root */
+:root{
+    --bs-azul: #1a2a5b;
+    --bs-celeste: #0081c7;
+}
+
+/* Background Styles */
+
+.bg-welcome {
+    background: url(../img/background-welcome.png);
+    background-size: cover;
+    background-position: top;
+}
+
+.bg-welcome-radius {
+    border-bottom-left-radius: 12%;
+    border-bottom-right-radius: 12%;
+}
+
+/* gradiantes */
+.bg-oreange-gradient {
+    background: rgb(237, 28, 36);
+    background: linear-gradient(90deg, rgba(237, 28, 36, 1) 0%, rgba(241, 90, 36, 1) 50%, rgba(237, 28, 36, 1) 100%);
+}
+
+.bg-purpura-gradient {
+    background: rgb(121, 56, 196);
+    background: linear-gradient(90deg, rgba(121, 56, 196, 1) 0%, rgba(165, 89, 251, 1) 50%, rgba(121, 56, 196, 1) 100%);
+}
+
+.bg-blue-gradient {
+    background: rgb(0, 129, 199);
+    background: linear-gradient(90deg, rgba(0, 129, 199, 1) 0%, rgba(26, 36, 91, 1) 100%);
+}
+
+.bg-yello-gradient {
+    background: rgb(237, 132, 0);
+    background: linear-gradient(90deg, rgba(237, 132, 0, 1) 0%, rgba(255, 188, 0, 1) 50%, rgba(237, 132, 0, 1) 100%);
+
+}
+
+/*Background Colores */
+
+.blue-gradient {
+    background: linear-gradient(90deg, rgba(0, 129, 199, 1) 0%, rgba(26, 42, 91, 1) 100%);
+}
+
+
+/* Background Styles */
+
+.shadow-1 {
+    box-shadow: 3px 6px 14px -4px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 3px 6px 14px -4px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 3px 6px 14px -4px rgba(0, 0, 0, 0.75);
+}
+
+.shadow-2 {
+    box-shadow: 3px 6px 14px -6px rgba(143, 143, 143, 0.75);
+    -webkit-box-shadow: 3px 6px 14px -6px rgba(143, 143, 143, 0.75);
+    -moz-box-shadow: 3px 6px 14px -6px rgba(143, 143, 143, 0.75);
+}
+
+.shadow-3{
+    box-shadow: 2px 6px 5px -2px rgba(0,0,0,0.35);
+    -webkit-box-shadow: 2px 6px 5px -2px rgba(0,0,0,0.35);
+    -moz-box-shadow: 2px 6px 5px -2px rgba(0,0,0,0.35);
+    
+}
+
+/* Font Sizes */
+.fs-12{
+    font-size: 12px;
+}
+.fs-13{
+    font-size: 13px;
+}
+.fs-15{
+    font-size: 15px;
+}
+.fs-18{
+    font-size: 18px;
+}
+
+
+/*Text Colors*/
+
+.text-azul{
+    color: var(--bs-azul);
+}
+
+.text-celeste{
+    color: var(--bs-celeste);
+}
+
+/* Varios Styles */
+.none-style {
+    text-decoration: none;
+    list-style: none;
+}
+
+.btn-size-1 {
+    width: 180px;
+}
+
+
+
+.main_div {
+    padding: 30px;
+}
+
+/*input */
+.custom-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdbdbd;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.3);
+}
+.inptFielsd{
+    padding: 8px;
+    border: solid 0.5px #dad9d9;
+    border-radius: 3px;
+    
+    margin: 0;
+}
+.form-check-input{
+    padding: 7px;
+    
+    border-color: #333 !important;
+    margin-right: 2px;
+}

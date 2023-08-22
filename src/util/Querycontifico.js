@@ -1,9 +1,11 @@
-import axios from "axios";
+import axios from "../../node_modules/axios/index"
+
 /**
  * busca cliente cn contifico
  * @param {*} parms 
  * @returns 
  */
+
 export const BuscaclienteContifico = async (parms) => {
     console.log(parms)
     if (parms.length > 11) {
@@ -159,11 +161,11 @@ export const CreaProducto = async (parms) => {
 
 export const PagoFacturacomnet = async (parms) => {
     let nombres = JSON.parse(sessionStorage.getItem("USERLOGIN"))
-    console.log(nombres.password,parms)
+    console.log(nombres.password, parms)
     try {
         //https://portalfac.netbot.ec/consultas.php
         //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/PagosdelPortal" ,
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/PagosdelPortal",
             {
                 ...parms,
                 "operador": nombres.password

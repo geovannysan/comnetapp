@@ -10,17 +10,17 @@ const icons = {
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
 
 const pages = {
-    id: 'authentication',
-    title: 'Authentication',
+    id: 'pagos',
+    title: 'Contifico',
     type: 'group',
     children: [
         {
-            id: 'login1',
-            title: 'Login',
+            id: 'Pago',
+            title: 'Pagos',
             type: 'item',
-            url: '/login',
-            icon: icons.LoginOutlined,
-            target: true
+            url: '/pagos',
+            icon: icons.ProfileOutlined,
+            target: false
         },
         {
             id: 'register1',

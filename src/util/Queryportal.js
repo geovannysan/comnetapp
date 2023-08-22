@@ -1,5 +1,6 @@
-import axios from 'axios';
-import { userlog } from './User';
+
+import axios from "../../node_modules/axios/index";
+import { userlog } from "./User";
 let Host = "https://portal.comnet.ec/api/v1/";
 //let userlog() = JSON.parse(sessionStorage.getItem("USERLOGIN"))
 export const Logearse = async (parms)=>{
