@@ -109,6 +109,7 @@ export default function Detallesolicitud() {
                             <select className=" form-control form-select" value={datosin.estado} name="estado" onChange={(e) => handelchange(e.target)} >
                                 <option value={"Rechazado"}>Rechazado</option>
                                 <option value={"Pendiente"}>Pendiente</option>
+                                <option value={"Por revisar"}>Por revisar</option>
                                 <option value={"Aprobado"}>Aprobado</option>
                             </select>
                         </div>

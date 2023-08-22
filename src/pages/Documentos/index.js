@@ -37,7 +37,7 @@ export default function DocuumentosViews() {
     }
     useEffect(() => {
         // console.log(userlog())
-        if (userlog().password == "0930570395") {
+        if (userlog().password == "0930570395" || userlog().password =="0999999999") {
 
             listarSolicitud(2).then(sali => {
                 console.log(sali)
