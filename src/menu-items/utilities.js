@@ -5,7 +5,9 @@ import {
     BarcodeOutlined,
     BgColorsOutlined,
     FontSizeOutlined,
-    LoadingOutlined
+    LoadingOutlined,
+    FundViewOutlined,
+    ReadOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -15,7 +17,9 @@ const icons = {
     BarcodeOutlined,
     AntDesignOutlined,
     LoadingOutlined,
-    AppstoreAddOutlined
+    AppstoreAddOutlined,
+    FundViewOutlined,
+    ReadOutlined
 };
 
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
@@ -26,31 +30,25 @@ const utilities = {
     type: 'group',
     children: [
         {
-            id: 'util-typography',
-            title: 'Typography',
+            id: 'Reportes',
+            title: 'Reportes',
             type: 'item',
-            url: '/typography',
-            icon: icons.FontSizeOutlined
+            url: '/reporte',
+            icon: icons.FundViewOutlined
         },
         {
-            id: 'util-color',
-            title: 'Color',
+            id: 'Solicitudes',
+            title: 'Solicitudes',
             type: 'item',
-            url: '/color',
-            icon: icons.BgColorsOutlined
+            url: '/Solicitud',
+            icon: icons.ReadOutlined,
+            target: false
         },
         {
-            id: 'util-shadow',
-            title: 'Shadow',
+            id: 'Framepage',
+            title: 'Framepage',
             type: 'item',
-            url: '/shadow',
-            icon: icons.BarcodeOutlined
-        },
-        {
-            id: 'ant-icons',
-            title: 'Ant Icons',
-            type: 'item',
-            url: '/icons/ant',
+            url: '/pageview',
             icon: icons.AntDesignOutlined,
             breadcrumbs: false
         }

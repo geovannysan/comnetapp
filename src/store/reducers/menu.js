@@ -8,13 +8,14 @@ const initialState = {
     drawerOpen: false,
     componentDrawerOpen: true,
     user: {
-        Id: 3,
-        nombre: 'scajape@comnet.ec',
-        password: '0999999999',
-        permiso: '2',
+        Id:'',
+        nombre: '',
+        password: '',
+        permiso: '',
         telefono: '',
-        usuario: 'scajape'
-    }
+        usuario: ''
+    },
+    estado: false
 };
 
 // ==============================|| SLICE - MENU ||============================== //
@@ -38,12 +39,15 @@ const menu = createSlice({
         openComponentDrawer(state, action) {
             state.componentDrawerOpen = action.payload.componentDrawerOpen;
         },
-        setUser(state, action) {
-            state.user = action.payload.user;
+        setDatosuser(state, action) {
+            state.user = action.payload;
+        },
+        setlogin(state, action) {
+            state.estado = action.payload.estado
         }
     }
 });
 
 export default menu.reducer;
 
-export const { activeItem, activeComponent, openDrawer, openComponentDrawer, setUser } = menu.actions;
+export const { activeItem, activeComponent, openDrawer, openComponentDrawer, setDatosuser, setlogin } = menu.actions;

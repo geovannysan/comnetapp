@@ -10,19 +10,61 @@ import {
     DialogContent,
     DialogContentText
 } from '@mui/material';
-import React from 'react';
-import Button from '@mui/material/Button';
+import PropTypes from 'prop-types';
+import Avatar from '@mui/material/Avatar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
+import PersonIcon from '@mui/icons-material/Person';
+import AddIcon from '@mui/icons-material/Add';
+import { blue } from '@mui/material/colors';
+import React, { useEffect } from 'react';
+import Button from '@mui/material/Button';
 import { Spin, notification } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import { useState } from 'react';
 import Selectopction from 'components/Selectshear';
-import { MostrarFacturas, autenticar } from 'util/Queryportal';
-import { BuscarProductoContific, Consultarcedula, CreaProducto, IncremetoCon } from 'util/Querycontifico';
+import { Facturaid, MostrarFacturas, autenticar } from 'util/Queryportal';
+import { BuscaclienteContifico, BuscarProductoContific, Consultarcedula, CreaProducto, CrearClienteContifico, IncremetoCon, IncremetoFacturaS, PagoFacturacomnet } from 'util/Querycontifico';
 
-import ModalalerView from './ModalAlert';
+
+function SimpleDialogop(props) {
+    const { onClose, open, servicios } = props;
+
+    const handleClose = () => {
+        onClose("");
+    };
+
+    const handleListItemClick = (value) => {
+        onClose(value);
+    };
+
+    return (
+        <Dialog onClose={handleClose} open={open}>
+            <DialogTitle>Selecione perfil</DialogTitle>
+            <List sx={{ pt: 0 }}>
+                {servicios.map((email, i) => (
+                    <ListItem disableGutters>
+                        <ListItemButton onClick={() => handleListItemClick(email.id)} key={i}>
+                            <ListItemAvatar>
+                                <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                                    <PersonIcon />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary={email.nombre} secondary={email.correo + "\n" + email.direccion_principal} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+
+            </List>
+        </Dialog>
+    );
+}
 function SimpleDialog(props) {
     const { selectedValue, estado, open } = props;
 
@@ -35,8 +77,8 @@ function SimpleDialog(props) {
     return (
         <Dialog open={open}>
             {estado ?
-                <DialogTitle>
-                    <Spin ttip="Loading" size="large"></Spin>
+                <DialogTitle className="p-5">
+                    <Spin ttip="Loading" size="large" className="px-3"></Spin>
                     {selectedValue}
                 </DialogTitle> :
                 <DialogContent>
@@ -48,30 +90,130 @@ function SimpleDialog(props) {
     );
 }
 const PagosView = () => {
+    const [openServ, setOpenSer] = useState(false);
+    const [servicio, setservisicos] = useState([])
+    const [idperfil, setidPerfil] = useState("")
+    function closeDialo(e) {
+        console.log(e)
+        let info = servicio.filter(f => f.id == e)[0]
+        setOpenSer(false)
+        console.log(info)
+        let datos = {
+            nombre: info.nombre,
+            estado: info.estado,
+            cedula: info.cedula,
+            movil: info.movil,
+            direccion_principal: info.direccion_principal,
+            correo: info.correo,
+            facturacion: {
+                ...info.facturacion
+            },
+            servicios: info.servicios
+        }
+        setUser({ ...datos })
+        BuscarProductoContific(info.servicios[0].idperfil).then(salida => {
+            if (salida.length > 0) {
+                let estado = salida[0].estado;
+                let valor = parseFloat(salida[0].pvp1) * 1.12;
+                if (estado == "A") {
+                    setValor({
+                        total: valor,
+                        estado: estado,
+                        id: salida[0].id,
+                    })
+                    setMensaje({
+                        mensaje: "buscando Factura por pagar",
+                        estado: true
+                    })
+                    MostrarFacturas(info.id).then(ouput => {
+                        if (ouput.estado === "exito") {
+                            setOpen(false)
+                            openNotificationWithIcon('success', "Alerta", "Facturas encontradas")
+                            console.log(ouput)
+                            let datos = ouput.facturas.map((el, index) => {
+                                return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
+                            })
+                            datos.unshift({ value: "", label: "Selecione Factura" })
+                            seTlist(datos)
+                            comprobante({ value: "", label: "Selecione Factura" })
+                        } else {
+                            setOpen(false)
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                        setOpen(false)
+                        openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado")
+
+                    })
+                }
+                console.log(salida)
+                return
+            }
+            setOpen(true)
+            setMensaje({
+                mensaje: "Creando producto contifico ",
+                estado: true
+            })
+            IncremetoCon().then(salida => {
+                console.log(salida)
+                if (salida.status) {
+                    let facnum = salida.result[0].contadores
+                    CreaProducto({
+                        "codigo_barra": null,
+                        "porcentaje_iva": "12",
+                        "categoria_id": "91qdGvZgXhY6nbN8",
+                        "pvp1": parseFloat(ouput.factura.total).toFixed(2),
+                        "tipo": "SER",
+                        "para_supereasy": false,
+                        "para_comisariato": false,
+                        "minimo": "0.0",
+                        "descripcion": "Servicio de Internet Banda ancha",
+                        "nombre": usuario.servicios[0]["perfil"],
+                        "codigo": facnum + "" + usuario.servicios[0]["idperfil"],
+                        "estado": "A"
+                    }).then(produ => {
+                        console.log(JSON.parse(produ))
+                        let estado = JSON.parse(produ).estado;
+                        let valor = parseFloat(JSON.parse(produ).pvp1) * 1.12;
+
+                        setValor({
+                            total: valor,
+                            estado: estado,
+                            id: JSON.parse(produ).id,
+                        })
+                        //dismiss()
+                    })
+                    setOpen(false)
+                }
+            }).catch(err => {
+                setOpen(false)
+                console.log(err)
+            })
+
+        }).catch(err => {
+            console.log(err)
+            setOpen(false)
+            openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado al buscar Producto Contifico")
+        })
+    }
     const [open, setOpen] = React.useState(false);
     const [mesaje, setMensaje] = useState({ mensaje: "", estado: false })
     const [api, contextHolder] = notification.useNotification();
-
+    let [contifico, setContifico] = useState([])
     const openNotificationWithIcon = (type, mensaje, description) => {
         api[type]({
-            message: mensaje,
+            message: "" + mensaje,
             description:
-                description,
+                "" + description,
             placement: 'bottom'
         });
     };
     const [impri, setimpri] = useState(false)
     const [busca, setBusca] = useState(false)
-    const [values, setValue] = useState(
-        {
-            firstname: '',
-            lastname: '',
-            email: '',
-            company: '',
-            password: '',
-            submit: null
-        }
-    )
+    const [lugar, setLugar] = useState({ value: "", label: "" })
+
+
+    const [banco, setBanco] = useState({ value: "", label: "" })
     const [datos, setDatos] = useState({
         total: "",
         transacion: "",
@@ -100,6 +242,9 @@ const PagosView = () => {
     let [factura, setFactura] = useState({ urlpdf: "" })
     let [cedula, setCedul] = useState("")
     let [total, settotal] = useState("")
+    function handelChangeT(e) {
+        settotal(e.target.value)
+    }
     let [descri, setDescrip] = useState({
         factura: "",
         items: []
@@ -111,31 +256,22 @@ const PagosView = () => {
     })
     const [singleSelect, setSingleSelect] = useState({ value: "", label: "", });
     const [list, seTlist] = useState([])
-    function comprobante(e){
-        console.log(e)
-    }
+
     function buscar() {
-        console.log("keyh")
         setBusca(true)
-        if (cedula.trim().length < 10) {
+        if (cedula.trim() == "") return
+        if (cedula.trim().length > 5 && cedula.trim().length < 10) {
             setBusca(false)
             setOpen(true)
             setMensaje({
                 mensaje: "Busacando Cliente portal",
                 estado: true
             })
-            /* presentlo({
-                 message: 'Busacando Clinete portal ',
-                 cssClass: 'custom-loading'
-             })*/
             autenticar(cedula.trim()).then(ouput => {
                 console.log(ouput)
                 setimpri(false)
                 if (ouput.estado === "exito") {
-                    /*  presentlo({
-                          message: 'Busacando Facturas comnet',
-                          cssClass: 'custom-loading'
-                      })*/
+
                     setMensaje({
                         mensaje: "Buscando Facturas comnet",
                         estado: true
@@ -144,6 +280,7 @@ const PagosView = () => {
                     setSingleSelect({ value: "", label: "" })
                     let infor = ouput.datos.find(e => e.estado == "ACTIVO")
                     console.log(infor.id)
+                   // if()
                     MostrarFacturas(infor.id).then(ouput => {
                         console.log(ouput)
                         if (ouput.estado === "exito") {
@@ -158,13 +295,13 @@ const PagosView = () => {
                             comprobante({ value: "", label: "Selecione Factura" })
                         } else {
                             setOpen(false)
-                            openNotificationWithIcon('info', "Rinformación", "No hay facturas pendientes")
+                            openNotificationWithIcon('success', "Rinformación", "No hay facturas pendientes")
                         }
                     }).catch(err => {
-                        console.log(err)                        
+                        console.log(err)
                         setOpen(false)
-                        openNotificationWithIcon('error', "Alerta", ouput.mensaje)
-                      
+                        openNotificationWithIcon('error', "Alerta", "" + ouput.mensaje)
+
                     })
 
                     if (ouput.datos.length == 2) {
@@ -267,7 +404,7 @@ const PagosView = () => {
                 }
                 if (ouput.estado === "error") {
                     setOpen(false)
-                    openNotificationWithIcon('error', "Alerta", ouput.mensaje)
+                    openNotificationWithIcon('error', "Alerta", "" + ouput.mensaje)
 
                     /*dismiss()
                     present({
@@ -334,27 +471,19 @@ const PagosView = () => {
         setBusca(false)
         setOpen(true)
         setMensaje({
-            mensaje:"Buscando Cliente en el Portal",
-            estado:true
+            mensaje: "Buscando Cliente en el Portal",
+            estado: true
         })
         settotal("")
         autenticar(cedula.trim()).then(ouput => {
             console.log(ouput)
             setimpri(false)
             if (ouput.estado === "exito") {
-                seTlist([])
                 setSingleSelect({ value: "", label: "" })
-               
                 setMensaje({
                     mensaje: "buscando Cliente en contifico",
                     estado: true
                 })
-
-                /* dismiss()
-                 presentlo({
-                     message: 'Busacando Cliente en Contifico ',
-                     cssClass: 'custom-loading'
-                 })*/
                 BuscaclienteContifico(cedula.trim()).then(ouputs => {
                     console.log(ouputs)
                     if (ouputs.length == 0) {
@@ -391,16 +520,11 @@ const PagosView = () => {
 
                         }
                         console.log(datos)
-                        
+
                         setMensaje({
                             mensaje: "Creando Cliente en Contifico",
                             estado: true
                         })
-                        /* dismiss()
-                         presentlo({
-                             message: 'Creando Cliente en Contifico ',
-                             cssClass: 'custom-loading'
-                         })*/
                         CrearClienteContifico(datos).then(crea => {
                             if (crea.response.status == 400) {
                                 setimpri(true)
@@ -413,10 +537,6 @@ const PagosView = () => {
                                         mensaje: "creando cliente Juridico en Contifico",
                                         estado: false
                                     })
-                                    /*presentlo({
-                                        message: 'Creando Cliente Juridico en Contifico ',
-                                        cssClass: 'custom-loading'
-                                    })*/
                                     CrearClienteContifico({
                                         "tipo": "J",
                                         "personaasociada_id": null,
@@ -437,18 +557,14 @@ const PagosView = () => {
                                         if (crea.response.status == 400) {
                                             setimpri(true)
                                             setOpen(false)
-                                            openNotificationWithIcon('error', "Alerta", "El clinete contifico no se Creo"+crea.response.data["mensaje"])
+                                            openNotificationWithIcon('error', "Alerta", "El clinete contifico no se Creo" + crea.response.data["mensaje"])
 
-                                            
+
                                             return;
                                         }
                                         if (Object.keys(creas).length > 1) {
                                             // dismiss()
                                             setContifico([creas])
-                                            /* presentlo({
-                                                 message: 'Busacndo facturas inpagas ',
-                                                 cssClass: 'custom-loading'
-                                             })*/
                                             setOpen(true)
                                             setMensaje({
                                                 mensaje: "Buscando Facturas Inpagas",
@@ -456,8 +572,9 @@ const PagosView = () => {
                                             })
                                             MostrarFacturas(ouput.datos[0].id).then(ouput => {
                                                 if (ouput.estado === "exito") {
-                                                    // dismiss()
+                                                    // dismiss() 
                                                     setOpen(false)
+                                                    openNotificationWithIcon('success', "Alerta", "Facturas encontradas")
                                                     console.log(ouput)
                                                     let datos = ouput.facturas.map((el, index) => {
                                                         return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
@@ -467,40 +584,19 @@ const PagosView = () => {
                                                     //setSingleSelect({ value: "", label: "Selecione Factura" })
                                                     comprobante({ value: "", label: "Selecione Factura" })
                                                 } else {
+                                                    setOpen(false)
+                                                    openNotificationWithIcon('success', "Alerta", "no se encontro facturas")
                                                     //dismiss()
                                                 }
                                             }).catch(err => {
                                                 console.log(err)
-                                                /*dismiss()
-                                                present({
-                                                    message: "Hubo un error inesperado",
-                                                    cssClass: '',
-                                                    duration: 4500,
-                                                    position: "middle",
-                                                    buttons: [
-                                                        {
-                                                            text: "cerrar",
-                                                            role: "cancel",
-
-                                                        }
-                                                    ]
-                                                })*/
+                                                setOpen(false)
+                                                openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado")
                                             })
                                         } else {
-                                            /* dismiss()
-                                             present({
-                                                 message: "Erro No se creo cliente contifico",
-                                                 cssClass: '',
-                                                 duration: 4500,
-                                                 position: "middle",
-                                                 buttons: [
-                                                     {
-                                                         text: "cerrar",
-                                                         role: "cancel",
- 
-                                                     }
-                                                 ]
-                                             })*/
+                                            setOpen(false)
+                                            openNotificationWithIcon('error', "Alerta", "no se creo cliente contifico")
+
                                         }
 
                                     }).catch(err => {
@@ -511,19 +607,19 @@ const PagosView = () => {
 
                                 return
                             }
-                            //mostrar mensaje de registro
-                            //  console.log(e)
                             if (Object.keys(crea).length > 1) {
                                 setContifico([crea])
-                                /* dismiss()
-                                 setContifico([crea])
-                                 presentlo({
-                                     message: 'Busacndo facturas inpagas ',
-                                     cssClass: 'custom-loading'
-                                 })*/
+                                setOpen(true)
+                                setMensaje({
+                                    mensaje: "buscando facturas inpagas",
+                                    estado: true
+                                })
+
                                 MostrarFacturas(ouput.datos[0].id).then(ouput => {
                                     if (ouput.estado === "exito") {
                                         // dismiss()
+                                        setOpen(false)
+                                        openNotificationWithIcon('success', "Alerta", "Facturas Encontradas")
 
                                         console.log(ouput)
                                         let datos = ouput.facturas.map((el, index) => {
@@ -534,67 +630,39 @@ const PagosView = () => {
                                         //setSingleSelect({ value: "", label: "Selecione Factura" })
                                         comprobante({ value: "", label: "Selecione Factura" })
                                     } else {
+                                        setOpen(false)
+                                        openNotificationWithIcon('success', "Alerta", "No se encontro facturas inpagas")
                                         //dismiss()
                                     }
                                 }).catch(err => {
                                     console.log(err)
-                                    /* dismiss()
-                                     present({
-                                         message: "Hubo un error inesperado",
-                                         cssClass: '',
-                                         duration: 4500,
-                                         position: "middle",
-                                         buttons: [
-                                             {
-                                                 text: "cerrar",
-                                                 role: "cancel",
- 
-                                             }
-                                         ]
-                                     })*/
+                                    setOpen(false)
+                                    openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado")
                                 })
                             } else {
-                                /* dismiss()
-                                 present({
-                                     message: "Erro No se creo cliente contifico",
-                                     cssClass: '',
-                                     duration: 4500,
-                                     position: "middle",
-                                     buttons: [
-                                         {
-                                             text: "cerrar",
-                                             role: "cancel",
- 
-                                         }
-                                     ]
-                                 })*/
+                                setOpen(false)
+                                openNotificationWithIcon('error', "Alerta", "Error no se creo cliente contifico ")
                             }
                         }).catch(err => {
-                            /* dismiss()
-                             console.log(err.response.data);
-                             present({
-                                 message: "Hubo un error inesperado al crear cliente contifico no se creo" + err,
-                                 cssClass: '',
-                                 duration: 4500,
-                                 position: "middle",
-                                 buttons: [
-                                     {
-                                         text: "cerrar",
-                                         role: "cancel",
-                                     }
-                                 ]
-                             })*/
+                            setOpen(false)
+                            openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado al crear cliente contifico" + err)
                         })
                     }
                     else if (ouputs.length > 0) {
+
+                        console.log(ouput.datos.length)
+                        if (ouput.datos.length>1){
+                            setservisicos(ouput.datos)
+                            setOpenSer(true)
+                            return
+                        }
                         console.log(ouput)
-                        if (ouput.datos[1] != undefined && ouput.datos[1].servicios != undefined) {
+                        /*if (ouput.datos[1] != undefined && ouput.datos[1].servicios != undefined) {
                             setContifico(ouputs)
-                            /* dismiss()
-                             presentlo({
-                                 message: 'Busacando Producto en Contifico ',
-                                 cssClass: 'custom-loading'
-                             })*/
+                            setMensaje({
+                                mensaje: "buscando producto en contifico",
+                                estado: true
+                            })
                             let dato = ouput.datos
                             let info = ouput.datos.includes(e => e.estado = "Activo") ? dato.find(dato => dato.estado = "ACTIVO") : dato.find(dato => dato.estado = "SUSPENDIDO" && dato.servicios != null)
                             console.log(ouput.datos)
@@ -609,14 +677,14 @@ const PagosView = () => {
                                             estado: estado,
                                             id: salida[0].id,
                                         })
-                                        /* dismiss()
-                                         presentlo({
-                                             message: 'Busacando Facturas por pagar',
-                                             cssClass: 'custom-loading'
-                                         }) */
+                                        setMensaje({
+                                            mensaje: "buscando Factura por pagar",
+                                            estado: true
+                                        })
                                         MostrarFacturas(info.id).then(ouput => {
                                             if (ouput.estado === "exito") {
-                                                dismiss()
+                                                setOpen(false)
+                                                openNotificationWithIcon('success', "Alerta", "Facturas encontradas")
                                                 console.log(ouput)
                                                 let datos = ouput.facturas.map((el, index) => {
                                                     return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
@@ -625,34 +693,23 @@ const PagosView = () => {
                                                 seTlist(datos)
                                                 comprobante({ value: "", label: "Selecione Factura" })
                                             } else {
-                                                //dismiss()
+                                                setOpen(false)
                                             }
                                         }).catch(err => {
                                             console.log(err)
-                                            // dismiss()
-                                            /*present({
-                                                message: "Hubo un error inesperado",
-                                                cssClass: '',
-                                                duration: 4500,
-                                                position: "middle",
-                                                buttons: [
-                                                    {
-                                                        text: "cerrar",
-                                                        role: "cancel",
+                                            setOpen(false)
+                                            openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado")
 
-                                                    }
-                                                ]
-                                            })*/
                                         })
                                     }
                                     console.log(salida)
                                     return
                                 }
-                                /*dismiss()
-                                presentlo({
-                                    message: 'No se encontro Producto Contifico ',
-                                    cssClass: 'custom-loading'
-                                })*/
+                                setOpen(true)
+                                setMensaje({
+                                    mensaje: "Creando producto contifico ",
+                                    estado: true
+                                })
                                 IncremetoCon().then(salida => {
                                     console.log(salida)
                                     if (salida.status) {
@@ -674,11 +731,7 @@ const PagosView = () => {
                                             console.log(JSON.parse(produ))
                                             let estado = JSON.parse(produ).estado;
                                             let valor = parseFloat(JSON.parse(produ).pvp1) * 1.12;
-                                            /* console.log({
-                                                 total: valor,
-                                                 estado: estado,
-                                                 id: JSON.parse(produ).id,
-                                             })*/
+                                            
                                             setValor({
                                                 total: valor,
                                                 estado: estado,
@@ -686,36 +739,27 @@ const PagosView = () => {
                                             })
                                             //dismiss()
                                         })
+                                        setOpen(false)
                                     }
                                 }).catch(err => {
+                                    setOpen(false)
                                     console.log(err)
                                 })
 
                             }).catch(err => {
                                 console.log(err)
-                                /*dismiss()
-                                present({
-                                    message: "Hubo un error inesperado al Buscar Producto Contifico",
-                                    cssClass: '',
-                                    duration: 4500,
-                                    position: "middle",
-                                    buttons: [
-                                        {
-                                            text: "cerrar",
-                                            role: "cancel",
-                                        }
-                                    ]
-                                })*/
+                                setOpen(false)
+                                openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado al buscar Producto Contifico")
                             })
                             return
                         }
                         if (ouput.datos[1] != undefined && ouput.datos[1].servicios != undefined) {
                             setContifico(ouputs)
-                            /*dismiss()
-                            presentlo({
-                                message: 'Busacando Producto en Contifico ',
-                                cssClass: 'custom-loading'
-                            })*/
+                            setOpen(true)
+                            setMensaje({
+                                mensaje: "Buscando Producto en Contifico",
+                                estado: true
+                            })
                             BuscarProductoContific(ouput.datos[1].servicios[0].idperfil).then(salida => {
                                 if (salida.length > 0) {
                                     let estado = salida[0].estado;
@@ -726,14 +770,14 @@ const PagosView = () => {
                                             estado: estado,
                                             id: salida[0].id,
                                         })
-                                        /* dismiss()
-                                         presentlo({
-                                             message: 'Busacando Facturas por pagar',
-                                             cssClass: 'custom-loading'
-                                         })*/
+                                        setMensaje({
+                                            mensaje: "Buscando Factura por pagar ",
+                                            estado: true
+                                        })
                                         MostrarFacturas(ouput.datos[1].id).then(ouput => {
                                             if (ouput.estado === "exito") {
-                                                //dismiss()
+                                                setOpen(false)
+                                                openNotificationWithIcon('success', "Alerta", "Facturas encontradas")
                                                 console.log(ouput)
                                                 let datos = ouput.facturas.map((el, index) => {
                                                     return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
@@ -742,24 +786,13 @@ const PagosView = () => {
                                                 seTlist(datos)
                                                 comprobante({ value: "", label: "Selecione Factura" })
                                             } else {
-                                                //dismiss()
+                                                setOpen(false)
+                                                openNotificationWithIcon('success', "Alerta", "No se encontro facturas pendientes")
                                             }
                                         }).catch(err => {
                                             console.log(err)
-                                            /* dismiss()
-                                             present({
-                                                 message: "Hubo un error inesperado",
-                                                 cssClass: '',
-                                                 duration: 4500,
-                                                 position: "middle",
-                                                 buttons: [
-                                                     {
-                                                         text: "cerrar",
-                                                         role: "cancel",
- 
-                                                     }
-                                                 ]
-                                             })*/
+                                            setOpen(false)
+                                            openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado")
                                         })
                                     }
                                     console.log(salida)
@@ -786,46 +819,32 @@ const PagosView = () => {
                                             console.log(JSON.parse(produ))
                                             let estado = JSON.parse(produ).estado;
                                             let valor = parseFloat(JSON.parse(produ).pvp1) * 1.12;
-                                            /* console.log({
-                                                 total: valor,
-                                                 estado: estado,
-                                                 id: JSON.parse(produ).id,
-                                             })*/
+                                            
                                             setValor({
                                                 total: valor,
                                                 estado: estado,
                                                 id: JSON.parse(produ).id,
                                             })
+                                            setOpen(false)
                                             ///dismiss()
                                         })
                                     }
                                 }).catch(err => {
+                                    setOpen(false)
                                     console.log(err)
                                 })
-                                /*  dismiss()
-                                  presentlo({
-                                      message: 'No se encontro Producto Contifico ',
-                                      cssClass: 'custom-loading'
-                                  })*/
+                                setOpen(false)
+                                openNotificationWithIcon('error', "Alerta", "No se encontro producto contifico")
+                                
 
                             }).catch(err => {
+                                setOpen(false)
                                 console.log(err)
-                                /* dismiss()
-                                 present({
-                                     message: "Hubo un error inesperado al Buscar Producto Contifico",
-                                     cssClass: '',
-                                     duration: 4500,
-                                     position: "middle",
-                                     buttons: [
-                                         {
-                                             text: "cerrar",
-                                             role: "cancel",
-                                         }
-                                     ]
-                                 })*/
+                                openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado al Buscar Producto Contifico")
+
                             })
                             return
-                        }
+                        }*/
                         if (ouput.datos[0].servicios != undefined) {
                             BuscarProductoContific(ouput.datos[0].servicios[0].idperfil).then(salida => {
                                 if (salida.length > 0) {
@@ -837,14 +856,16 @@ const PagosView = () => {
                                             estado: estado,
                                             id: salida[0].id,
                                         })
-                                        /* dismiss()
-                                         presentlo({
-                                             message: 'Busacando Facturas por pagar',
-                                             cssClass: 'custom-loading'
-                                         })*/
+                                        setOpen(true)
+                                        setMensaje({
+                                            mensaje: "Buscando Factura por pagar ",
+                                            estado: true
+                                        })
                                         MostrarFacturas(ouput.datos[0].id).then(ouput => {
                                             console.log(ouput)
                                             if (ouput.estado === "exito") {
+                                                setOpen(false)
+                                                openNotificationWithIcon('success', "Alerta", "Facturas encontradas")
                                                 //dismiss()
                                                 console.log(ouput)
                                                 let datos = ouput.facturas.map((el, index) => {
@@ -854,26 +875,18 @@ const PagosView = () => {
                                                 seTlist(datos)
                                                 comprobante({ value: "", label: "Selecione Factura" })
                                             } else {
+                                                setOpen(false)
+                                                openNotificationWithIcon('success', "Alerta", "No se encontro facturas pendientes")
                                                 // dismiss()
                                             }
                                         }).catch(err => {
                                             console.log(err)
-                                            /* dismiss()
-                                             present({
-                                                 message: "Hubo un error inesperado",
-                                                 cssClass: '',
-                                                 duration: 4500,
-                                                 position: "middle",
-                                                 buttons: [
-                                                     {
-                                                         text: "cerrar",
-                                                         role: "cancel",
- 
-                                                     }
-                                                 ]
-                                             })*/
+                                            setOpen(false)
+                                            openNotificationWithIcon('error', "Mostrar facturas comnet", "" + err)
+
                                         })
                                     }
+                                    setOpen(false)
                                     console.log(salida)
                                     return
                                 }
@@ -913,15 +926,19 @@ const PagosView = () => {
                                                 estado: estado,
                                                 id: JSON.parse(produ).id,
                                             })
+                                            setOpen(false)
                                             // dismiss()
                                         })
                                     }
                                 }).catch(err => {
+                                    setOpen(false)
                                     console.log(err)
                                 })
 
                             }).catch(err => {
                                 console.log(err)
+                                setOpen(false)
+                                openNotificationWithIcon('error', "Alerta", "Hubo un error al buscar Producto contifico")
                                 /* dismiss()
                                  present({
                                      message: "Hubo un error inesperado al Buscar Producto Contifico",
@@ -938,42 +955,21 @@ const PagosView = () => {
                             })
                         }
                         if (ouput.datos[0].servicios == undefined) {
-                            /*  dismiss()
-                              present({
-                                  message: "Este usuario no tiene servicio registrado en el Perfil",
-                                  cssClass: '',
-                                  duration: 4500,
-                                  position: "middle",
-                                  buttons: [
-                                      {
-                                          text: "cerrar",
-                                          role: "cancel",
-                                      }
-                                  ]
-                              })*/
+                            seTlist([])
+                            setOpen(false)
+                            openNotificationWithIcon('error', "Alerta", "Este usuario no tiene servicio en el portal ")
+
                             return
                         }
-
-                        // ouput.datos[0].servicios == undefined ? seTlist([{ value: "", label: "Selecione Factura" }]) :
 
                     }
                 }).catch(err => {
                     console.log(err)
-                    /*dismiss()
-                    present({
-                        message: "Hubo un error inesperado",
-                        cssClass: '',
-                        duration: 4500,
-                        position: "middle",
-                        buttons: [
-                            {
-                                text: "cerrar",
-                                role: "cancel",
-                            }
-                        ]
-                    })*/
+                    setOpen(false)
+                    openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado")
+
                 })
-                if (ouput.datos.length == 2) {
+               /* if (ouput.datos.length == 2) {
                     if (ouput.datos[1].estado === "ACTIVO") {
                         let datos = {
                             nombre: ouput.datos[1].nombre,
@@ -1069,24 +1065,11 @@ const PagosView = () => {
                     }
 
                     setUser({ ...datos })
-                }
+                }*/
             }
             if (ouput.estado === "error") {
-                /*  dismiss()
-                  present({
-                      message: ouput.mensaje,
-                      cssClass: '-danger',
-                      duration: 4500,
-                      position: "middle",
-                      buttons: [
-                          {
-                              text: "cerrar",
-                              role: "cancel",
-  
-                          }
-                      ]
-                  });*/
-
+                setOpen(false)
+                openNotificationWithIcon('error', "Alerta", "" + ouput.mensaje)
                 console.log("err")
                 setUser({
                     nombre: "",
@@ -1103,25 +1086,14 @@ const PagosView = () => {
                 })
             }
         }).catch(err => {
-            /* dismiss()
-             present({
-                 message: err,
-                 cssClass: '-danger',
-                  duration: 4500,
-                 position: "middle",
-                 buttons: [
-                     {
-                         text: "cerrar",
-                         role: "cancel",
- 
-                     }
-                 ]
-             });*/
-            //console.log(err)
+            setOpen(false)       
+            console.log(err)
         })
         Consultarcedula(cedula.trim()).then(ouput => {
             console.log(ouput)
             if (ouput.success) {
+                setOpen(false)
+                openNotificationWithIcon('success', "Usuario exitestente en el registro civil", ouput.data.name)
                 /*present2({
                     message: "" + ouput.message + " " + ouput.data.name,
                     cssClass: '-',
@@ -1136,26 +1108,619 @@ const PagosView = () => {
                 })*/
                 return
             }
-            /* present2({
-                 message: "" + ouput.message,
-                 cssClass: '-',
-                 duration: 4500,
-                 position: "bottom",
-                 buttons: [
-                     {
-                         text: "cerrar",
-                         role: "cancel",
-                     }
-                 ]
-             })*/
+            setOpen(false)
+            openNotificationWithIcon('error', "Usuario no consta en el regisrto civil", ouput.mensaje)
+
             console.log(ouput)
         }).catch(erro => {
             console.log(erro)
         })
     }
+    function comprobante(e) {
+        setSingleSelect(e)
+        if (e.value != "") {
+            setOpen(true)
+            setMensaje({
+                mensaje: "Validando Valor de factura y producto contifico",
+                estado: true
+            })
+            Facturaid(e.value).then(ouput => {
+                console.log(ouput)
+                if (ouput.estado === "exito") {
+                    setFactura({
+                        ...ouput.factura
+                    })
+                    setDescrip({ factura: { ...ouput.factura }, items: ouput.items })
+                    settotal(ouput.factura.total)
+                    console.log(totalcon.total.toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
+                    console.log((totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)))
+                    console.log({
+                        "codigo_barra": null,
+                        "porcentaje_iva": "12",
+                        "categoria_id": "91qdGvZgXhY6nbN8",
+                        "pvp1": parseFloat(ouput.factura.total).toFixed(2),
+                        "tipo": "SER",
+                        "para_supereasy": false,
+                        "para_comisariato": false,
+                        "minimo": "0.0",
+                        "descripcion": "Servicio de Internet Banda ancha",
+                        "nombre": usuario.servicios[0]["perfil"],
+                        "codigo": usuario.servicios[0]["idperfil"],
+                        "estado": "A"
+                    })
+                    if (cedula.trim().length < 10) {
+                        return
+                    }
+                    if (totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
+                        setMensaje({
+                            mensaje: "creando producto contifico",
+                            estado: true
+                        })
+                        IncremetoCon().then(salida => {
+                            console.log(salida)
+                            if (salida.status) {
+                                let facnum = salida.result[0].contadores
+                                CreaProducto({
+                                    "pvp1": parseFloat(ouput.factura.subtotal).toFixed(2),
+                                    "nombre": usuario.servicios[0]["perfil"],
+                                    "codigo": facnum + "" + usuario.servicios[0]["idperfil"]
+                                }).then(produ => {
+                                    console.log(produ)
 
+                                    /*if (produ.response.data.status != 200) {
+                                        setimpri(true)
+                                        dismiss()
+                                        present({
+                                            message: "El PRODUCTO no se creo en contifico" + produ.response.data["mensaje"],
+                                            cssClass: '',
+                                            duration: 4500,
+                                            position: "middle",
+                                            buttons: [
+                                                {
+                                                    text: "cerrar",
+                                                    role: "cancel",
+                                                }
+                                            ]
+                                        })
+                                        return
+                                    }*/
+                                    console.log({
+                                        "codigo_barra": null,
+                                        "porcentaje_iva": "12",
+                                        "categoria_id": "91qdGvZgXhY6nbN8",
+                                        "pvp1": parseFloat(ouput.factura.subtotal).toFixed(2),
+                                        "tipo": "SER",
+                                        "para_supereasy": false,
+                                        "para_comisariato": false,
+                                        "minimo": "0.0",
+                                        "descripcion": "Servicio de Internet Banda ancha",
+                                        "nombre": usuario.servicios[0]["perfil"],
+                                        "codigo": facnum + "" + usuario.servicios[0]["idperfil"],
+                                        "estado": "A"
+                                    })
+                                    console.log(produ)
+                                    let estado = produ.estado;
+                                    let valor = parseFloat(produ.pvp1).toFixed(2) * 1.12;
+                                    /* console.log({
+                                         total: valor,
+                                         estado: estado,
+                                         id: JSON.parse(produ).id,
+                                     })*/
+                                    setValor({
+                                        total: valor,
+                                        estado: estado,
+                                        id: produ.id,
+                                    })
+                                    setOpen(false)
+                                }).catch(err => {
+                                    console.log(err)
+                                    setOpen(false)
+                                    openNotificationWithIcon('error', "Hubo un error inesperado al crear producto contifico", "" + err.status)
+
+                                })
+                            }
+                        }).catch(err => {
+                            setOpen(false)
+                            openNotificationWithIcon('error', "Hubo un error inesperado al crear procuto contifico", "" + err)
+
+                        })
+                        return
+                    }
+                    setOpen(false)
+                }
+
+            }).catch(err => {
+                setOpen(false)
+                openNotificationWithIcon('error', "Hubo un error ", "" + err)
+            })
+        }
+    }
+    const handelChange = (e) => {
+        setDatos({
+            ...datos,
+            [e.name]: e.value
+
+        })
+        //console.log(e.value)
+    }
+    function RegistrarPago(e) {
+        e.preventDefault()
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        let mm = today.getMonth() + 1; // Months start at 0!
+        let dd = today.getDate();
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+        const formattedToday = dd + '/' + mm + '/' + yyyy;
+        console.log(cedula, total, lugar.value, banco.value, singleSelect.value)
+        // creaComprobante() 
+        // if(true) return
+        if (lugar.label.includes("CALL")) {
+            console.log(banco.value)
+            if (datos.asunto.trim().length == 0 && banco.label.trim() == "") {
+                setOpen(false)
+                openNotificationWithIcon('error', "Info", "Ingrese un numero de comprobante o slecione una cuenta")
+
+
+            }
+            else {
+                setOpen(true)
+                setMensaje({
+                    mensaje: "Pagando factura en el portal",
+                    estado: true
+                })
+                console.log(datos.asunto, datos.mensaje)
+                let datosdefactura = {
+                    "token": nombres.telefono,
+                    "idfactura": singleSelect.value,
+                    "pasarela": lugar.label,
+                    "cantidad": total,
+                    "idtransaccion": datos.asunto,
+                    "nota": banco.label + "/" + datos.mensaje
+                }
+
+                //  console.log(datosdefactura,fac)
+                PagoFacturacomnet(datosdefactura).then(fact => {
+                    console.log(fact)
+
+                    if (fact.estado == "exito") {
+                        //dismiss()
+
+                        if (cedula.trim().length < 10) {
+                            setimpri(true)
+                            //setOpen(false)
+                            openNotificationWithIcon('succes', "Factura Pagada en portal", "")
+
+                            return
+                        }
+                        setOpen(true)
+                        setMensaje({
+                            mensaje: "Ageragando numero de Factura",
+                            estado: true
+                        })
+                        IncremetoFacturaS().then(num => {
+                            if (num.status) {
+                                //dismiss()
+                                setOpen(false)
+                                let facnum = num.result[0].contadores
+                                let fac = {
+                                    "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+                                    "fecha_emision": formattedToday,
+                                    "tipo_documento": "FAC",
+                                    "documento": "001-001-00000" + facnum,
+                                    "estado": "G",
+                                    "electronico": true,
+                                    "autorizacion": null,
+                                    "caja_id": null,
+                                    "cliente": {
+                                        "ruc": null,
+                                        "cedula": usuario.cedula.trim().trim(),
+                                        "razon_social": usuario.nombre,
+                                        "telefonos": usuario.movil,
+                                        "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
+                                        "tipo": "N",
+                                        "email": usuario.correo,
+                                        "es_extranjero": false
+                                    },
+                                    "vendedor": {
+                                        "ruc": "0992782129001",
+                                        "razon_social": "COMPUTECNICSNET S.A",
+                                        "telefonos": "5104910",
+                                        "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+                                        "tipo": "J",
+                                        "email": "facturacion@speed.ec",
+                                        "es_extranjero": false
+                                    },
+                                    //contifico[0].
+                                    "descripcion": descri.items[0]["descrp"],
+                                    "subtotal_0": 0,
+                                    "subtotal_12": (totalcon.total) / 1.12,
+                                    "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
+                                    "total": totalcon.total.toFixed(2),
+                                    "detalles": [
+                                        {
+                                            "producto_id": totalcon.id,
+                                            "cantidad": 1,
+                                            "precio": (totalcon.total) / 1.12,
+                                            "porcentaje_iva": 12,
+                                            "porcentaje_descuento": 0,
+                                            "base_cero": 0,
+                                            "base_gravable": (totalcon.total) / 1.12,
+                                            "base_no_gravable": 0
+                                        }
+                                    ],
+                                    "cobros": [
+                                        {
+                                            "forma_cobro": lugar.value.split("-")[0],
+                                            "monto": totalcon.total.toFixed(2),
+                                            "cuenta_bancaria_id": banco.value,
+                                            "numero_comprobante": datos.asunto,
+                                            "fecha": formattedToday,
+                                        }
+                                    ]
+                                }
+
+                                setMensaje({
+                                    mensaje: "Creando factura Contifico",
+                                    estado: true
+                                })
+                                CreaLaFacturapor(fac, singleSelect.value).then(salida => {
+                                    console.log(salida)
+                                    let fat = "001-001-00000" + facnum
+
+                                    if (salida.documento === fat) {
+                                        // creaComprobante()
+                                        setimpri(true)
+                                        document.getElementById("pagos").reset();
+                                        setOpen(false)
+                                        openNotificationWithIcon('success', "Factura creada", "Factura número 001-001-00000" + facnum + " creada con éxito")
+
+
+                                    }
+                                }).catch(error => {
+                                    console.log(error)
+                                    setOpen(false)
+                                    openNotificationWithIcon('error', "Hubo un error inesperado a", "No se Genero Factura")
+                                })
+                            } else {
+                                setOpen(false)
+                                openNotificationWithIcon('error', "Hubo un error", "No se genero el numero incremental")
+                            }
+                        }).catch(err => {
+                            console.log(err)
+                            setOpen(false)
+                            openNotificationWithIcon('error', "Hubo un error ", "No se Genero el número incremental de factura")
+                        })
+                        //crea factura
+
+                    }
+                    else {
+                        //muestra mensaje de errror
+                        setOpen(false)
+                        openNotificationWithIcon('error', "Hubo un error inesperado ", "" + fact.mensaje)
+                        console.log(fact)
+                    }
+                }).catch(err => {
+                    setOpen(false)
+                    console.log(err)
+                })
+            }
+        }
+        if (lugar.label.includes("TARJETA")) {
+            if (datos.asunto.trim().length == 0 && banco.label.trim() == "") {
+                setOpen(false)
+                openNotificationWithIcon('error', "Ingrese número de Autorización", "")
+                /*
+                                present({
+                                    message: "Ingrese número de Autorización",
+                                    cssClass: '-',
+                                    duration: 4500,
+                                    position: "middle",
+                                    buttons: [
+                                        {
+                                            text: "cerrar",
+                                            role: "cancel",
+                
+                                        }
+                                    ]
+                                })*/
+            }
+            let datosdefactura = {
+                "token": nombres.telefono,
+                "idfactura": singleSelect.value,
+                "pasarela": lugar.label,
+                "cantidad": total,
+                "idtransaccion": datos.asunto,
+                "nota": banco.label + "/" + datos.mensaje
+            }
+            setOpen(true)
+            setMensaje({
+                mensaje: "Registrando factura en el portal ",
+                estado: true
+            })
+            PagoFacturacomnet(datosdefactura).then(fact => {
+                if (fact.estado == "exito") {
+                    if (cedula.trim().length < 10) {
+                        setimpri(true)
+                        openNotificationWithIcon('error', "Pagado en el portal", "")
+                        return
+                    }
+                    setOpen(true)
+                    setMensaje({
+                        mensaje: "Obteniendo número de factura",
+                        estado: true
+                    })
+                    IncremetoFacturaS().then(num => {
+                        if (!num.status) {
+                            setOpen(false)
+                            openNotificationWithIcon('error', "No se genero el numero de factura", "")
+                            return;
+                        }
+                        let facnum = num.result[0].contadores
+                        let fac = {
+                            "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+                            "fecha_emision": formattedToday,
+                            "tipo_documento": "FAC",
+                            "documento": "001-001-00000" + facnum,
+                            "estado": "G",
+                            "electronico": true,
+                            "autorizacion": null,
+                            "caja_id": null,
+                            "cliente": {
+                                "ruc": null,
+                                "cedula": usuario.cedula.trim(),
+                                "razon_social": usuario.nombre,
+                                "telefonos": usuario.movil,
+                                "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
+                                "tipo": "N",
+                                "email": usuario.correo,
+                                "es_extranjero": false
+                            },
+                            "vendedor": {
+                                "ruc": "0992782129001",
+                                "razon_social": "COMPUTECNICSNET S.A",
+                                "telefonos": "5104910",
+                                "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+                                "tipo": "J",
+                                "email": "facturacion@speed.ec",
+                                "es_extranjero": false
+                            },
+                            //contifico[0].
+                            "descripcion": descri.items[0]["descrp"],
+                            "subtotal_0": 0,
+                            "subtotal_12": (totalcon.total) / 1.12,
+                            "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
+                            "total": totalcon.total.toFixed(2),
+                            "detalles": [
+                                {
+                                    "producto_id": totalcon.id,
+                                    "cantidad": 1,
+                                    "precio": (totalcon.total) / 1.12,
+                                    "porcentaje_iva": 12,
+                                    "porcentaje_descuento": 0,
+                                    "base_cero": 0,
+                                    "base_gravable": (totalcon.total) / 1.12,
+                                    "base_no_gravable": 0
+                                }
+                            ],
+                            "cobros": [
+                                {
+                                    "forma_cobro": lugar.value.split("-")[0],
+                                    "monto": totalcon.total.toFixed(2),
+                                    "tipo_ping": "D",
+                                    "fecha": formattedToday,
+                                }
+                            ]
+                        }
+                        setOpen(true)
+                        setMensaje({
+                            mensaje: "Creando factura electrónica",
+                            estado: true
+                        })
+                        CreaLaFacturapor(fac, singleSelect.value).then(salida => {
+                            let fat = "001-001-00000" + facnum
+                            console.log(salida)
+                            if (salida.documento === fat) {
+                                document.getElementById("pagos").reset();
+                                seTlist([])
+                                setOpen(false)
+                                openNotificationWithIcon('success', "Factura electrónica creada", "número:" + facnum)
+                            }
+                            console.log(salida)
+                        }).catch(erro => {
+                            setOpen(false)
+                            openNotificationWithIcon('error', "Hubo un error inesperado no se registro factura electronica", "" + erro)
+                            console.log(erro)
+                        })
+                    }).catch(err => {
+                        setOpen(false)
+                        console.log(err)
+                    })
+                } else {
+                    setOpen(false)
+                    openNotificationWithIcon('error', "Hubo un error inesperado ", "" + fact.mesaje)
+                    console.log(fact)
+                }
+            }).catch(err => {
+                setOpen(false)
+                openNotificationWithIcon('error', "Hubo un error al registar la factura en el portal", "" + err)
+                console.log(err)
+            })
+        }
+        if (lugar.label.includes("Efectivo")) {
+            let datosdefactura = {
+                "token": nombres.telefono,
+                "idfactura": singleSelect.value,
+                "pasarela": lugar.label,
+                "cantidad": total,
+                "idtransaccion": datos.asunto,
+                "nota": banco.label + "/" + datos.mensaje
+            }
+            setOpen(true)
+            setMensaje({
+                mensaje: "Registrando factura",
+                estado: true
+            })
+            PagoFacturacomnet(datosdefactura).then(fact => {
+                if (fact.estado == "exito") {
+                    /*  $.get("demo.asp", function (data, status) {
+                          alert("Data: " + data + "\nStatus: " + status);
+                      });*/
+                    if (cedula.trim().length < 10) {
+                        setimpri(true)
+                        setOpen(false)
+                        openNotificationWithIcon('success', "Pagado en el portal", "")
+                        return
+                    }
+                    if (!cedula.trim().length < 10) {
+                        setOpen(true)
+                        setMensaje({
+                            mensaje: "Obteniendo numero de factura",
+                            estado: true
+                        })
+                        IncremetoFacturaS().then(num => {
+                            if (num.status) {
+                                console.log(num)
+                                if (!num.status) {
+                                    setOpen(false)
+                                    openNotificationWithIcon('error', "No se Genero número incremental de la factura", "")
+                                    return;
+                                }
+                                setOpen(true)
+                                setMensaje({
+                                    mensaje: "Creando Factura Electrónica",
+                                    estado: true
+                                })
+                                let facnum = num.result[0].contadores
+                                let fac = {
+                                    "pos": "4511aa3d-fce0-4441-a3e1-0961bd3357af",
+                                    "fecha_emision": formattedToday,
+                                    "tipo_documento": "FAC",
+                                    "documento": "001-001-00000" + facnum,
+                                    "estado": "G",
+                                    "electronico": true,
+                                    "autorizacion": null,
+                                    "caja_id": null,
+                                    "cliente": {
+                                        "ruc": null,
+                                        "cedula": usuario.cedula.trim(),
+                                        "razon_social": usuario.nombre,
+                                        "telefonos": usuario.movil,
+                                        "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
+                                        "tipo": "N",
+                                        "email": usuario.correo,
+                                        "es_extranjero": false
+                                    },
+                                    "vendedor": {
+                                        "ruc": "0992782129001",
+                                        "razon_social": "COMPUTECNICSNET S.A",
+                                        "telefonos": "5104910",
+                                        "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
+                                        "tipo": "J",
+                                        "email": "facturacion@speed.ec",
+                                        "es_extranjero": false
+                                    },
+                                    "descripcion": descri.items[0]["descrp"],
+                                    "subtotal_0": 0,
+                                    "subtotal_12": (totalcon.total) / 1.12,
+                                    "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
+                                    "total": totalcon.total.toFixed(2),
+                                    "detalles": [
+                                        {
+                                            "producto_id": totalcon.id,
+                                            "cantidad": 1,
+                                            "precio": (totalcon.total) / 1.12,
+                                            "porcentaje_iva": 12,
+                                            "porcentaje_descuento": 0,
+                                            "base_cero": 0,
+                                            "base_gravable": (totalcon.total) / 1.12,
+                                            "base_no_gravable": 0
+                                        }
+                                    ],
+                                    "cobros": [
+                                        {
+                                            "forma_cobro": lugar.value.split("-")[0],
+                                            "monto": totalcon.total.toFixed(2),
+                                            "fecha": formattedToday,
+                                        }
+                                    ]
+                                }
+                                CreaLaFacturapor(fac, singleSelect.value).then(salida => {
+                                    setOpen(false)
+                                    let fat = "001-001-00000" + facnum
+                                    console.log(salida)
+                                    if (salida.documento === fat) {
+                                        setimpri(true)
+                                        seTlist([])
+                                        document.getElementById("pagos").reset();
+                                        setOpen(false)
+                                        openNotificationWithIcon('success', "Factura electronica creada con éxito", "numero " + facnum)
+                                    }
+                                    console.log(salida)
+                                }).catch(error => {
+                                    setOpen(false)
+                                    openNotificationWithIcon('error', "Hubo un error no se genero la factura Electrónica", "")
+                                    console.log(error)
+                                })
+
+
+                                console.log(num)
+
+                                console.log(datos)
+                            }
+
+                            else {
+                                console.log(num)
+                            }
+
+                        }).catch(err => {
+                            setOpen(false)
+                            openNotificationWithIcon('error', "No se genero la facura", "")
+
+                            /* dismiss()
+                             present({
+                                 message: "No se Genero el Numero de Factura",
+                                 cssClass: '-',
+                                 duration: 4500,
+                                 position: "middle",
+                                 buttons: [
+                                     {
+                                         text: "cerrar",
+                                         role: "cancel",
+                                     }
+                                 ]
+                             })*/
+                            console.log(err)
+                        })
+
+                    }
+                    else {
+                        setimpri(true)
+                    }
+
+                } else {
+                    setOpen(false)
+                    openNotificationWithIcon('error', "Hubo un error inesperado ", "" + fact.mensaje)
+                    console.log(fact)
+                }
+            }).catch(err => {
+                setOpen(false)
+                openNotificationWithIcon('error', "Error al crear Factura en portal", "")
+                console.log(err)
+            })
+
+            //  console.log(datosdefactura, fac)
+        }
+    }
+    
+    
     return (
         <div>
+            <SimpleDialogop
+            open={openServ}
+            servicios={servicio}
+            onClose={closeDialo}
+            />
             <SimpleDialog
                 selectedValue={mesaje.mensaje}
                 open={open}
@@ -1202,9 +1767,17 @@ const PagosView = () => {
                     </div>
                     <Grid style={{ paddingTop: "15px" }} spacing={1.5}>
 
+                        <Typography variant="h6" className="py-2"  >
+                            {usuario.nombre == "" ? "" : <div className={usuario.facturacion.facturas_nopagadas == "0" ? " bg-secondary container-fluid   text-center py-2 rounded-2  " : " bg-danger container-fluid   text-center py-2 rounded-2 "}>
+                                <span className=" text-white">   {
+                                    "El cliente cuenta con " + usuario.facturacion.facturas_nopagadas + " Facturas vencidas (Total:" + usuario.facturacion.total_facturas + ")"
 
+                                }
+                                </span>
+                            </div>}
+                        </Typography>
                         <Typography variant="h6"  >
-                            Id contifico: {""} / Estado contifico : {""} / Total producto : {""}
+                            Id contifico: {totalcon.id}/ Estado contifico : {totalcon.estado} / Total producto : {parseFloat(totalcon.total).toFixed(2)} <p className="px-2">{JSON.stringify(impri)}</p>
                         </Typography>
                     </Grid>
                     <div className="col-12 col-md-6 d-flex  align-items-center">
@@ -1222,7 +1795,7 @@ const PagosView = () => {
                 <form noValidate style={{ paddingTop: '15px' }}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={12} >
-                            <Stack spacing={1}>
+                            {list.length > 0 ? <Stack spacing={1}>
                                 <InputLabel>Factura a Pagar </InputLabel>
                                 <Selectopction
                                     name="factura"
@@ -1230,63 +1803,122 @@ const PagosView = () => {
                                     value={singleSelect}
                                     placeholder="Factura"
                                     onChange={(e) => comprobante(e)} />
-                            </Stack>
+                            </Stack> :
+                                <Stack spacing={1}>
+                                    <InputLabel>Facturas a Pagar </InputLabel>
+                                    <select className='form-control' disabled>
+                                        <option ></option>
+                                    </select>
+                                </Stack>
+                            }
 
                         </Grid>
+                        <Grid item xs={12} md={12}>
+                            <Stack spacing={1}>
+                                <InputLabel htmlFor="firstname-signup">Formas de pago</InputLabel>
+                                <Selectopction
+                                    name="Forma"
+                                    options={[
+                                        { value: "EF-Oficina/Matriz", label: "Efectivo Oficina/Matriz" },
+                                        { value: "EF-Oficina/Ecocity", label: "Efectivo Oficina/Ecocity" },
+                                        { value: "TC-Oficina/Matriz", label: "TARJETA Oficina/Matriz" },
+                                        { value: "TC-Oficina/Ecocity", label: "TARJETA Oficina/Ecocity" },
+                                        { value: "TRA-Oficina/Matriz", label: "CALL PRODUBANCO" },
+                                        { value: "TRA-Oficina/Ecocity", label: "CALL BANCO PICHINCHA EMP" },
+                                        { value: "TRA-Ecocity", label: "CALL BANCO PICHINCHA PRS" },
+                                        { value: "TRA-Ecoty", label: "CALL BANCO GUAYAQUIL PRS" },
+                                        { value: "TRA-bancoguay", label: "CALL BANCO GUAYAQUIL EMP" },
+                                        { value: "TRA-bancopac", label: "CALL BANCO PACIFICO PRS" },
+                                        { value: "TRA-pacifico", label: "CALL BANCO PACIFICO EMP" },
+
+                                    ]}
+                                    value={lugar}
+                                    placeholder="Forma"
+                                    onChange={setLugar}
+                                />
+
+                            </Stack>
+                        </Grid>
+
+                        {lugar.value.includes("TRA") ?
+                            <Grid item xs={12} md={6}>
+                                <Stack spacing={1}>
+                                    <InputLabel htmlFor="firstname-signup">Bancos</InputLabel>
+                                    <Selectopction
+                                        name="Banco"
+                                        options={[
+                                            { value: "", label: "" },
+
+                                            { value: "Q9pdBBVzt6yqd8KE", label: "CTA CTE BCO PICHINCHA 2100106995 COMPUTECNICS" },
+                                            { value: "vj6e9QgXc3DneWBV", label: "CTA CTE BCO PRODUBANCO 1058194005 COMPUTECNICS" },
+                                            { value: "5gQbWnq5S9V3a6w2", label: "CTA CTE BCO GUAYAQUIL 18018624 COMPUTECNICS" },
+                                            { value: "xGge0VLoTopvbADR", label: "CTA CTE BCO PACIFICO 8069530 COMPUTECNICS" },
+                                            { value: "1mBdJqpkurVOb0J6", label: "CTA BCO PACIFICO PERSONAL 1051475596" },
+                                            { value: "Q9jaKZqohE6Kek5K", label: "CTA BCO PICHINCHA 6164998400" }
+                                        ]}
+                                        value={banco}
+                                        placeholder="Banco"
+                                        onChange={setBanco}
+                                    />
+                                </Stack>
+                            </Grid> : ""}
+
+
                         <Grid item xs={12} md={6}>
                             <Stack spacing={1}>
-                                <InputLabel htmlFor="firstname-signup">First Name*</InputLabel>
+                                <InputLabel htmlFor="lastname-signup">Nº transación</InputLabel>
                                 <OutlinedInput
-                                    id="firstname-login"
-                                    type="firstname"
-                                    value={values.firstname}
-                                    name="firstname"
-
-
-                                    placeholder="John"
                                     fullWidth
-
+                                    name="asunto"
+                                    value={datos.asunto}
+                                    onChange={(e) => handelChange(e.target)}
                                 />
 
                             </Stack>
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <Stack spacing={1}>
-                                <InputLabel htmlFor="lastname-signup">Last Name*</InputLabel>
+                                <InputLabel htmlFor="company-signup">Total a pagar</InputLabel>
                                 <OutlinedInput
                                     fullWidth
-                                    id="lastname-signup"
-                                    type="lastname"
-                                    value={values.lastname}
-                                    name="lastname"
-
-
-                                    placeholder="Doe"
+                                    name="valor"
+                                    value={total}
+                                    onChange={handelChangeT}
                                     inputProps={{}}
                                 />
 
                             </Stack>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} md={12}>
                             <Stack spacing={1}>
-                                <InputLabel htmlFor="company-signup">Company</InputLabel>
-                                <OutlinedInput
-                                    fullWidth
+                                <InputLabel htmlFor="company-signup">Notas</InputLabel>
+                                <textarea className=' form-control'
+                                    rows={4}
+                                    name="mensaje"
+                                    value={datos.mensaje}
+                                    onChange={(e) => handelChange(e.target)}
 
-                                    id="company-signup"
-                                    value={values.company}
-                                    name="company"
-
-
-                                    placeholder="Demo Inc."
-                                    inputProps={{}}
                                 />
 
                             </Stack>
                         </Grid>
                         <Grid item xs={12}>
-                            <Divider>
-                                <Typography variant="caption">Sign up with</Typography>
+                            <Divider className="">
+                                <div className=" text-center ">
+
+                                    {cedula.length >= 10 ?
+                                        <button className=" btn-primary m-1 mt-5 p-2  btn"
+                                            disabled={impri}
+                                            onClick={(e) => RegistrarPago(e)}
+                                        >
+                                            Registrar Pago
+                                        </button> :
+                                        <button className=" btn btn-primary m-1 mt-5 p-2 "
+                                            disabled={impri}
+                                            onClick={(e) => RegistrarPago(e)}
+                                        >Registro Comnet</button>
+                                    }
+                                </div>
                             </Divider>
                         </Grid>
 

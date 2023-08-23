@@ -15,9 +15,9 @@ const HeaderContent = () => {
 
     return (
         <>
-            {!matchesXs && <Search />}
-            {matchesXs && <Box sx={{ width: '100%', ml: 1 }} />}
-
+            {/*!matchesXs && <Search />*/}
+            {/*matchesXs && <Box sx={{ width: '100%', ml: 1 }} />*/}
+            <Box sx={{ width: '100%', ml: 1 }} />
             <IconButton
                 component={Link}
                 href=""

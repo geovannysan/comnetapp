@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import {
@@ -33,6 +33,7 @@ import avatar1 from 'assets/images/users/avatar-1.png';
 import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
+import { ListarReportes } from '../../util/Queryportal';
 
 // avatar style
 const avatarSX = {
@@ -72,7 +73,14 @@ const status = [
 const DashboardDefault = () => {
     const [value, setValue] = useState('today');
     const [slot, setSlot] = useState('week');
+    useEffect(() => {
+       /* ListarReportes().then(salida => {
+            console.log(salida)
+        }).catch(err => {
+            console.log(err)
+        })*/
 
+    }, [])
     return (
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>
             {/* row 1 */}
@@ -80,7 +88,7 @@ const DashboardDefault = () => {
                 <Typography variant="h5">Dashboard</Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AnalyticEcommerce title="Total Page Views" count="4,42,236" percentage={59.3} extra="35,000" />
+                <AnalyticEcommerce title="Total Page Views" count="4,42,236" />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
                 <AnalyticEcommerce title="Total Users" count="78,250" percentage={70.5} extra="8,900" />
@@ -95,7 +103,7 @@ const DashboardDefault = () => {
             <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
             {/* row 2 */}
-            <Grid item xs={12} md={7} lg={8}>
+            <Grid className='d-none' item xs={12} md={7} lg={8}>
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
                         <Typography variant="h5">Unique Visitor</Typography>
@@ -127,7 +135,7 @@ const DashboardDefault = () => {
                     </Box>
                 </MainCard>
             </Grid>
-            <Grid item xs={12} md={5} lg={4}>
+            <Grid className='d-none' item xs={12} md={5} lg={4}>
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
                         <Typography variant="h5">Income Overview</Typography>
@@ -148,7 +156,7 @@ const DashboardDefault = () => {
             </Grid>
 
             {/* row 3 */}
-            <Grid item xs={12} md={7} lg={8}>
+            <Grid className='d-none' item xs={12} md={7} lg={8}>
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
                         <Typography variant="h5">Recent Orders</Typography>
@@ -159,7 +167,7 @@ const DashboardDefault = () => {
                     <OrdersTable />
                 </MainCard>
             </Grid>
-            <Grid item xs={12} md={5} lg={4}>
+            <Grid className='d-none' item xs={12} md={5} lg={4}>
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
                         <Typography variant="h5">Analytics Report</Typography>
@@ -186,7 +194,7 @@ const DashboardDefault = () => {
             </Grid>
 
             {/* row 4 */}
-            <Grid item xs={12} md={7} lg={8}>
+            <Grid className='d-none' item xs={12} md={7} lg={8}>
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
                         <Typography variant="h5">Sales Report</Typography>
@@ -218,7 +226,7 @@ const DashboardDefault = () => {
                     <SalesColumnChart />
                 </MainCard>
             </Grid>
-            <Grid item xs={12} md={5} lg={4}>
+            <Grid className='d-none' item xs={12} md={5} lg={4}>
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
                         <Typography variant="h5">Transaction History</Typography>

@@ -28,7 +28,9 @@ import SettingTab from './SettingTab';
 // assets
 import avatar1 from 'assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { setDatosuser, setlogin } from '../../../../../store/reducers/menu';
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -57,11 +59,12 @@ function a11yProps(index) {
 const Profile = () => {
     const theme = useTheme();
     const user = useSelector((state) => state.menu.user);
-
+    let history= useNavigate()
+    let usedispatch= useDispatch()
     const handleLogout = async () => {
         // logout
     };
-
+     console.log(user)
     const anchorRef = useRef(null);
     const [open, setOpen] = useState(false);
     const handleToggle = () => {
@@ -80,7 +83,13 @@ const Profile = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+    function salir() {
+        usedispatch(setlogin({ estado: false }))
+        usedispatch(setDatosuser({}))
+        sessionStorage.removeItem("USERLOGIN")
+        history("/")
 
+    } 
     const iconBackColorOpen = 'grey.300';
 
     return (
@@ -152,7 +161,7 @@ const Profile = () => {
                                                 </Grid>
                                                 <Grid item>
                                                     <IconButton size="large" color="secondary" onClick={handleLogout}>
-                                                        <LogoutOutlined />
+                                                        <LogoutOutlined onClick={salir} />
                                                     </IconButton>
                                                 </Grid>
                                             </Grid>
@@ -193,7 +202,7 @@ const Profile = () => {
                                                     </Tabs>
                                                 </Box>
                                                 <TabPanel value={value} index={0} dir={theme.direction}>
-                                                    <ProfileTab handleLogout={handleLogout} />
+                                                    <ProfileTab handleLogout={salir} />
                                                 </TabPanel>
                                                 <TabPanel value={value} index={1} dir={theme.direction}>
                                                     <SettingTab />

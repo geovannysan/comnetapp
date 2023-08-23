@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
+const SolicitudView = Loadable(lazy(() => import('pages/solicitud/index')));
 const PagosView = Loadable(lazy(() => import('pages/pagos/index')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
@@ -24,7 +25,7 @@ const MainRoutes = {
             path: 'dashboard',
             children: [
                 {
-                    path: 'default',
+                    path: 'home',
                     element: <DashboardDefault />
                 }
             ]
@@ -34,19 +35,19 @@ const MainRoutes = {
             element: <PagosView />
         },
         {
-            path: 'sample-page',
+            path: 'Facturas',
             element: <SamplePage />
         },
         {
-            path: 'shadow',
-            element: <Shadow />
+            path: 'Solicitud',
+            element: <SolicitudView />
         },
         {
-            path: 'typography',
-            element: <Typography />
+            path: 'reporte',
+            element: <SamplePage />
         },
         {
-            path: 'icons/ant',
+            path: 'pageview',
             element: <AntIcons />
         }
     ]
