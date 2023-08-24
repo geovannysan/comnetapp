@@ -2336,8 +2336,7 @@ export default function InformeViews() {
                                                     options={[
                                                         { value: "EF-Oficina/Matriz", label: "Efectivo Oficina/Matriz" },
                                                         { value: "EF-Oficina/Ecocity", label: "Efectivo Oficina/Ecocity" },
-                                                        { value: "TC-Oficina/Matriz", label: "TARJETA Oficina/Matriz" },
-                                                        { value: "TC-Oficina/Ecocity", label: "TARJETA Oficina/Ecocity" },
+                                                        { value: "TC-Oficina", label: "CALL Datalink" },
                                                         { value: "TRA-Oficina/Matriz", label: "CALL PRODUBANCO" },
                                                         { value: "TRA-Oficina/Ecocity", label: "CALL BANCO PICHINCHA EMP" },
                                                         { value: "TRA-Ecocity", label: "CALL BANCO PICHINCHA PRS" },
