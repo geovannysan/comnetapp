@@ -44,9 +44,7 @@ const IncomeAreaChart = ({ slot }) => {
             colors: [theme.palette.primary.main, theme.palette.primary[700]],
             xaxis: {
                 categories:
-                    slot === 'month'
-                        ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                        : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                       ['scajape', '"COMNETCARRERA"', 'furresta', 'amosquera', 'kmendoza', 'dcuevag'],
                 labels: {
                     style: {
                         colors: [
@@ -89,11 +87,11 @@ const IncomeAreaChart = ({ slot }) => {
 
     const [series, setSeries] = useState([
         {
-            name: 'Page Views',
+            name: 'Usuarios',
             data: [0, 86, 28, 115, 48, 210, 136]
         },
         {
-            name: 'Sessions',
+            name: 'Valores',
             data: [0, 43, 14, 56, 24, 105, 68]
         }
     ]);
@@ -101,12 +99,40 @@ const IncomeAreaChart = ({ slot }) => {
     useEffect(() => {
         setSeries([
             {
-                name: 'Page Views',
-                data: slot === 'month' ? [76, 85, 101, 98, 87, 105, 91, 114, 94, 86, 115, 35] : [31, 40, 28, 51, 42, 109, 100]
+                "name": "scajape",
+                "data": [
+                    89.86999999999999
+                ]
             },
             {
-                name: 'Sessions',
-                data: slot === 'month' ? [110, 60, 150, 35, 60, 36, 26, 45, 65, 52, 53, 41] : [11, 32, 45, 32, 34, 52, 41]
+                "name": "COMNETCARRERA",
+                "data": [
+                    355.78
+                ]
+            },
+            {
+                "name": "furresta",
+                "data": [
+                    152.8
+                ]
+            },
+            {
+                "name": "amosquera",
+                "data": [
+                    362.38000000000005
+                ]
+            },
+            {
+                "name": "kmendoza",
+                "data": [
+                    91.97999999999999
+                ]
+            },
+            {
+                "name": "dcuevag",
+                "data": [
+                    20.4
+                ]
             }
         ]);
     }, [slot]);

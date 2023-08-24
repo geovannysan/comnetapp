@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
+const DetallesView = Loadable(lazy(() => import('pages/solicitud/Detalle')));
 const SolicitudView = Loadable(lazy(() => import('pages/solicitud/index')));
 const PagosView = Loadable(lazy(() => import('pages/pagos/index')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -29,6 +30,10 @@ const MainRoutes = {
                     element: <DashboardDefault />
                 }
             ]
+        },
+        {
+            path:"detalle/:id",
+            element: <DetallesView />
         },
         {
             path: '/pagos',

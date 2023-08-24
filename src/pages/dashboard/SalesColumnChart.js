@@ -30,7 +30,8 @@ const columnChartOptions = {
         colors: ['transparent']
     },
     xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+        categories:
+            ['scajape', 'COMNETCARRERA', 'furresta', 'amosquera', 'kmendoza', 'dcuevag'],
     },
     yaxis: {
         title: {
@@ -43,7 +44,7 @@ const columnChartOptions = {
     tooltip: {
         y: {
             formatter(val) {
-                return `$ ${val} thousands`;
+                return `$ ${val} `;
             }
         }
     },
@@ -93,12 +94,40 @@ const SalesColumnChart = () => {
 
     const [series] = useState([
         {
-            name: 'Net Profit',
-            data: [180, 90, 135, 114, 120, 145]
+            "name": "scajape",
+            "data": [
+                89.87
+            ]
         },
         {
-            name: 'Revenue',
-            data: [120, 45, 78, 150, 168, 99]
+            "name": "COMNETCARRERA",
+            "data": [
+                355.78
+            ]
+        },
+        {
+            "name": "furresta",
+            "data": [
+                152.8
+            ]
+        },
+        {
+            "name": "amosquera",
+            "data": [
+                362.38
+            ]
+        },
+        {
+            "name": "kmendoza",
+            "data": [
+                91.99
+            ]
+        },
+        {
+            "name": "dcuevag",
+            "data": [
+                20.4
+            ]
         }
     ]);
 

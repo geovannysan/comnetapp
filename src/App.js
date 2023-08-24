@@ -18,7 +18,9 @@ const App = () => {
         let datos = userlog()
         if (datos != null) {
             userdispach(setlogin({ estado: true }))
+            
             userdispach(setDatosuser({ ...datos }))
+          
         }
     }, [])
     return (

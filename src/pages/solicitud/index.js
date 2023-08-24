@@ -9,7 +9,7 @@ export default function SolicitudView() {
     const [spiner, setSpiner] = useState("d-none")
     const [spinerdos, setSpinerdos] = useState("d-none")
     async function abreir(e) {
-        history("/page/detalle/" + e.Id)
+        history("/detalle/" + e.Id)
         // setInfo(e)
         //setShowAlert(true)
     }
@@ -134,7 +134,7 @@ export default function SolicitudView() {
                         </td>
 
                         <td className="text-xs font-weight-bold">
-
+                        <button className="btn btn-success" onClick={()=>abreir(item)} >ver</button>
                         </td>
 
 

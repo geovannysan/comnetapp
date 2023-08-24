@@ -1,8 +1,7 @@
-import axios from "../../node_modules/axios/index"
-
-export const Listareport = async () => {
+import axios from "axios"
+export const Listareportes = async () => {
     try {
-        let { data } = await axios.post("http://localhost:3009/reportes/0", {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/reportes/"+0, {
             "startDate": "",
             "endDate": ""
         })
