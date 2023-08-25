@@ -5,84 +5,86 @@ import { useTheme } from '@mui/material/styles';
 
 // third-party
 import ReactApexChart from 'react-apexcharts';
+import { ListarReportes } from '../../util/Queryportal';
+import { Listareportes } from 'util/Querireport';
 
 // chart options
-const columnChartOptions = {
-    chart: {
-        type: 'bar',
-        height: 430,
-        toolbar: {
-            show: false
-        }
-    },
-    plotOptions: {
-        bar: {
-            columnWidth: '30%',
-            borderRadius: 4
-        }
-    },
-    dataLabels: {
-        enabled: false
-    },
-    stroke: {
-        show: true,
-        width: 8,
-        colors: ['transparent']
-    },
-    xaxis: {
-        categories:
-            ['scajape', 'COMNETCARRERA', 'furresta', 'amosquera', 'kmendoza', 'dcuevag'],
-    },
-    yaxis: {
-        title: {
-            text: '$ (thousands)'
-        }
-    },
-    fill: {
-        opacity: 1
-    },
-    tooltip: {
-        y: {
-            formatter(val) {
-                return `$ ${val} `;
-            }
-        }
-    },
-    legend: {
-        show: true,
-        fontFamily: `'Public Sans', sans-serif`,
-        offsetX: 10,
-        offsetY: 10,
-        labels: {
-            useSeriesColors: false
-        },
-        markers: {
-            width: 16,
-            height: 16,
-            radius: '50%',
-            offsexX: 2,
-            offsexY: 2
-        },
-        itemMargin: {
-            horizontal: 15,
-            vertical: 50
-        }
-    },
-    responsive: [
-        {
-            breakpoint: 600,
-            options: {
-                yaxis: {
-                    show: false
-                }
-            }
-        }
-    ]
-};
+
 
 // ==============================|| SALES COLUMN CHART ||============================== //
 
 const SalesColumnChart = () => {
+    const [dia, seDias] = useState([])
+    const [valor,setValor]=useState(0)
+    const columnChartOptions = {
+        chart: {
+            type: 'bar',
+            height: 430,
+            toolbar: {
+                show: false
+            }
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '30%',
+                borderRadius: 4
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            show: true,
+            width: 8,
+            colors: ['transparent']
+        },
+       
+        yaxis: {
+            title: {
+                text: '$ recudado'
+            }
+        },
+        fill: {
+            opacity: 1
+        },
+        tooltip: {
+            y: {
+                formatter(val) {
+                    return `$ ${val} `;
+                }
+            }
+        },
+        legend: {
+            show: true,
+            fontFamily: `'Public Sans', sans-serif`,
+            offsetX: 10,
+            offsetY: 10,
+            labels: {
+                useSeriesColors: false
+            },
+            markers: {
+                width: 16,
+                height: 16,
+                radius: '50%',
+                offsexX: 2,
+                offsexY: 2
+            },
+            itemMargin: {
+                horizontal: 15,
+                vertical: 50
+            }
+        },
+        responsive: [
+            {
+                breakpoint: 600,
+                options: {
+                    yaxis: {
+                        show: false
+                    }
+                }
+            }
+        ]
+    };
     const theme = useTheme();
 
     const { primary, secondary } = theme.palette.text;
@@ -92,41 +94,14 @@ const SalesColumnChart = () => {
     const primaryMain = theme.palette.primary.main;
     const successDark = theme.palette.success.dark;
 
-    const [series] = useState([
+    const [series, setSerial] = useState([
         {
-            "name": "scajape",
-            "data": [
-                89.87
-            ]
+            name: 'Subtotal',
+            data: []
         },
         {
-            "name": "COMNETCARRERA",
+            "name": "Total",
             "data": [
-                355.78
-            ]
-        },
-        {
-            "name": "furresta",
-            "data": [
-                152.8
-            ]
-        },
-        {
-            "name": "amosquera",
-            "data": [
-                362.38
-            ]
-        },
-        {
-            "name": "kmendoza",
-            "data": [
-                91.99
-            ]
-        },
-        {
-            "name": "dcuevag",
-            "data": [
-                20.4
             ]
         }
     ]);
@@ -134,42 +109,85 @@ const SalesColumnChart = () => {
     const [options, setOptions] = useState(columnChartOptions);
 
     useEffect(() => {
-        setOptions((prevState) => ({
-            ...prevState,
-            colors: [warning, primaryMain],
-            xaxis: {
-                labels: {
-                    style: {
-                        colors: [secondary, secondary, secondary, secondary, secondary, secondary]
-                    }
-                }
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: [secondary]
-                    }
-                }
-            },
-            grid: {
-                borderColor: line
-            },
-            tooltip: {
-                theme: 'light'
-            },
-            legend: {
-                position: 'top',
-                horizontalAlign: 'right',
-                labels: {
-                    colors: 'grey.500'
-                }
+
+        Listareportes().then(salida => {
+            if (salida.success) {
+                const subtotalSum = salida.data.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2);
+                setValor(subtotalSum)
             }
-        }));
+            const subtotalData = {
+                name: 'Subtotal',
+                data: []
+            };
+
+            const totalData = {
+                name: 'Total',
+                data: []
+            };
+            const dayNames = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+
+            // Función para convertir fecha a día de la semana
+            function convertDateToDay(dateString) {
+                const date = new Date(dateString);
+                const dayIndex = date.getDay();
+                return dayNames[dayIndex];
+            }
+            // Procesar los resultados y llenar los datos de subtotal y total
+            salida.data.forEach(result => {
+                const category = result.dia;
+                const subtotal = parseFloat(result.subtotal.toFixed(2)); // Redondear a 2 decimales
+                const total = parseFloat(result.total.toFixed(2)); // Redondear a 2 decimales
+
+                // Agregar los valores a los arrays de datos
+                subtotalData.data.push(subtotal);
+                totalData.data.push(total);
+            });
+            const daysArray = salida.data.map(result => convertDateToDay(result.dia));
+            seDias(daysArray)
+            setOptions((prevState) => ({
+                ...prevState,
+                colors: [warning, primaryMain],
+                xaxis: {
+                    categories: [
+                        ...daysArray
+                    ]
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            colors: [secondary]
+                        }
+                    }
+                },
+                grid: {
+                    borderColor: line
+                },
+                tooltip: {
+                    theme: 'light'
+                },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'right',
+                    labels: {
+                        colors: 'grey.500'
+                    }
+                }
+            }));
+            console.log(daysArray)
+            console.log(salida)
+            // Crear el array final con los datos de subtotal y total
+            const finalDataArray = [subtotalData, totalData];
+            setSerial(finalDataArray)
+            console.log(finalDataArray)
+        }).catch(err => {
+            console.log(err)
+        })
+       
     }, [primary, secondary, line, warning, primaryMain, successDark]);
 
     return (
         <div id="chart">
-            <ReactApexChart options={options} series={series} type="bar" height={430} />
+           <ReactApexChart options={options} series={series} type="bar" height={430} />
         </div>
     );
 };

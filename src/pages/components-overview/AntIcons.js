@@ -16,7 +16,7 @@ const IFrameWrapper = styled('iframe')(() => ({
 const AntIcons = () => (
     <ComponentSkeleton>
         <MainCard title="Framepage">
-            <IFrameWrapper title="Ant Icon" width="100%" src="https://comnet.sz.chat/" />
+            <IFrameWrapper title="Ant Icon" width="100%" src="https://www.google.com/maps" />
         </MainCard>
     </ComponentSkeleton>
 );

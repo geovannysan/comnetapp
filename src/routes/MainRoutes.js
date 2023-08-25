@@ -51,10 +51,10 @@ const MainRoutes = {
             path: 'reporte',
             element: <SamplePage />
         },
-        {
+        /*{
             path: 'pageview',
             element: <AntIcons />
-        }
+        }*/
     ]
 };
 

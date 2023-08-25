@@ -8,6 +8,7 @@ import { userlog } from './util/User';
 import { setDatosuser, setlogin } from './store/reducers/menu';
 import AuthLogin from './pages/authentication/auth-forms/AuthLogin';
 import Login from './pages/authentication/Login';
+import './themes/themes/bootstrap.css'
 
 // ==============================|| APP - THEME, ROUTER, LOCAL  ||============================== //
 

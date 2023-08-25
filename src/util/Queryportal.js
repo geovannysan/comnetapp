@@ -126,9 +126,9 @@ export const listarSolicitud = async (parms) => {
         return error
     }
 }
-export const ListarReportes = async (id, parms) => {
+export const Solicitudid = async (id) => {
     try {
-        let { data } = await axios.post("http://177.234.209.101:3545/reportes/" + id, parms, {
+        let { data } = await axios.get("http://localhost:3009/solicitu/solicitu/" + id, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

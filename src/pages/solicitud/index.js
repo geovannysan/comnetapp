@@ -94,7 +94,7 @@ export default function SolicitudView() {
                     
                     <th  >Asunto</th>
                     <th >Información completa</th>
-                    <th >Cédula</th>
+                    <th >Ingreso</th>
                     <th >Fecha de registro</th>
 
                     <th >Estado </th>

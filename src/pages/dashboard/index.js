@@ -94,23 +94,31 @@ const DashboardDefault = () => {
                     ...salida.info[0],
                     subtotal:subtotalSum
                 })
-            }const groupedData = salida.data.reduce((result, item) => {
-                const existingGroup = result.find(group => group.name === item.username);
-            
-                if (existingGroup) {
-                    existingGroup.data.push(item.subtotal);
-                } else {
-                    result.push({
-                        name: item.username,
-                        data: [item.subtotal]
-                    });
-                }
-            
-                return result;
-            }, []);
-            
-            console.log(groupedData)
-            console.log(salida)
+            }
+            const subtotalData = {
+                name: 'Subtotal',
+                data: []
+            };
+
+            const totalData = {
+                name: 'Total',
+                data: []
+            };
+
+            // Procesar los resultados y llenar los datos de subtotal y total
+            salida.data.forEach(result => {
+                const category = result.dia;
+                const subtotal = parseFloat(result.subtotal.toFixed(2)); // Redondear a 2 decimales
+                const total = parseFloat(result.total.toFixed(2)); // Redondear a 2 decimales
+
+                // Agregar los valores a los arrays de datos
+                subtotalData.data.push(subtotal);
+                totalData.data.push(total);
+            });
+
+            // Crear el array final con los datos de subtotal y total
+            const finalDataArray = [subtotalData, totalData];
+            console.log(finalDataArray)
         }).catch(err => {
             console.log(err)
         })
@@ -143,7 +151,7 @@ const DashboardDefault = () => {
             <Grid  item xs={12} md={7} lg={8}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
-                            <Typography variant="h5">Sales Report</Typography>
+                            <Typography variant="h5"> Report utimos 7 días </Typography>
                         </Grid>
                         <Grid item>
                         </Grid>
@@ -151,9 +159,9 @@ const DashboardDefault = () => {
                     <MainCard sx={{ mt: 1.75 }}>
                         <Stack spacing={1.5} sx={{ mb: -12 }}>
                             <Typography variant="h6" color="secondary">
-                                Net Profit
+                            Subtotal 
                             </Typography>
-                            <Typography variant="h4">$1560</Typography>
+                        <Typography variant="h4">{"$" + info.subtotal} </Typography>
                         </Stack>
                         <SalesColumnChart />
                     </MainCard>

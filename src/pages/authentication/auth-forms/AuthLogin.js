@@ -76,8 +76,8 @@ const AuthLogin = () => {
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().max(255).required('Usuari es required'),
-                    password: Yup.string().max(255).required('Password es required')
+                    email: Yup.string().max(255).required('Usuario es requiredo'),
+                    password: Yup.string().max(255).required('Password es requiredo')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -167,7 +167,7 @@ const AuthLogin = () => {
                                         variant="contained"
                                         color="primary"
                                     >
-                                        Login
+                                        Entrar
                                     </Button>
                                 </AnimateButton>
                             </Grid>

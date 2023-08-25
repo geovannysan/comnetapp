@@ -43,7 +43,7 @@ const utilities = {
             url: '/Solicitud',
             icon: icons.ReadOutlined,
             target: false
-        },
+        },/*
         {
             id: 'Framepage',
             title: 'Framepage',
@@ -51,7 +51,7 @@ const utilities = {
             url: '/pageview',
             icon: icons.AntDesignOutlined,
             breadcrumbs: false
-        }
+        }*/
     ]
 };
 
