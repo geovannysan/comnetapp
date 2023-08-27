@@ -14,8 +14,8 @@ const dashboard = {
     type: 'group',
     children: [
         {
-            id: 'dashboard',
-            title: 'Dashboard',
+            id: 'Principal',
+            title: 'Principal',
             type: 'item',
             url: '/dashboard/home',
             icon: icons.DashboardOutlined,
