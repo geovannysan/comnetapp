@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { listarSolicitud } from "util/Queryportal";
 import { userlog } from "util/User";
 import MainCard from 'components/MainCard';
+import moment from "moment/moment";
 export default function SolicitudView() {
     const [datos, setDatos] = useState([])
     let history = useNavigate()
@@ -126,7 +127,7 @@ export default function SolicitudView() {
                             {item.Tipo == "Permiso" ? item.Tipo + "\nSolicitante:" + item.Nombre + "\n Días" + item.cantiadad + "\n Fecha solicitada:" + item.Prioridad : ""}
                         </td>
                         <td className="text-xs font-weight-bold">{item.cedula}</td>
-                        <td className="text-xs font-weight-bold">{item.fecha}</td>
+                        <td className="text-xs font-weight-bold">{moment(item.fecha).format('YYYY/MM/DD')}</td>
 
                         <td className="text-xs font-weight-bold">
                             {item.estado}

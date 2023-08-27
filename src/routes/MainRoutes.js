@@ -6,10 +6,10 @@ const SolicitudView = Loadable(lazy(() => import('pages/solicitud/index')));
 const PagosView = Loadable(lazy(() => import('pages/pagos/index')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
-const Typography = Loadable(lazy(() => import('pages/components-overview/Typography')));
 const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
-const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
-const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
+//const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
+//const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
+const FacturasView = Loadable(lazy(() => import('pages/Facturas/index')));
 const MainRoutes = {
     path: '/',
     element: <MainLayout />,
@@ -26,7 +26,7 @@ const MainRoutes = {
             path: 'dashboard',
             children: [
                 {
-                    path: 'home',
+                    path: 'panel',
                     element: <DashboardDefault />
                 }
             ]
@@ -41,7 +41,7 @@ const MainRoutes = {
         },
         {
             path: 'Facturas',
-            element: <SamplePage />
+            element: <FacturasView />
         },
         {
             path: 'Solicitud',
