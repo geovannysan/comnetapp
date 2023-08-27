@@ -12215,3 +12215,7 @@ textarea.form-control-lg {
 }
 
 /*# sourceMappingURL=bootstrap.css.map */
+pre {
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
