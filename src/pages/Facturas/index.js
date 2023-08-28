@@ -127,7 +127,7 @@ const FacturasView = () => {
                         }}>
                             {item.idfactura}</td>
                         <td className=" font-weight-bold">
-                            {moment(item.fecha).format('YYYY/MM/DD')}
+                            {(item.fecha).split("T")[0]}
                         </td>
                         <td className=" font-weight-bold">
                             {item.numfactura}

@@ -31,7 +31,7 @@ import { useState } from 'react';
 import Selectopction from 'components/Selectshear';
 import { Facturaid, MostrarFacturas, autenticar } from 'util/Queryportal';
 import { BuscaclienteContifico, BuscarProductoContific, Consultarcedula, CreaProducto, CrearClienteContifico, IncremetoCon, IncremetoFacturaS, PagoFacturacomnet } from 'util/Querycontifico';
-
+import jsPDF from "jspdf"
 
 function SimpleDialogop(props) {
     const { onClose, open, servicios } = props;
@@ -256,7 +256,70 @@ const PagosView = () => {
     })
     const [singleSelect, setSingleSelect] = useState({ value: "", label: "", });
     const [list, seTlist] = useState([])
+    function creaComprobante() {
+        // console.log(usuario,descri)
+        const result2 = new Date().toLocaleString('en-GB', {
+            hour12: false,
+        });
+        const hoy = new Date(descri.factura.vencimiento).getMonth()
 
+        var opciones = {
+            orientation: 'p',
+            unit: 'mm',
+            format: [240, 400]
+        };
+
+        var doc = new jsPDF(opciones);
+        let pagnum = 80
+        doc.setFontSize(7);
+        doc.text(3, 3, 'COMNET - SPEED - T-ICKETS (COMPUTECNICSNET');
+        doc.text(18, 8, '                S.A.)');
+        doc.text(20, 12, 'RUC 092782129001');
+        doc.text(15, 15, 'Edifico City Officce Oficina 310');
+        doc.text(3, 18, 'Fecha:' + result2);
+        doc.text(3, 21, '*******************************************************************');
+        doc.text(25, 23, 'DESCRIPCIÓN');
+        doc.text(3, 26, '*******************************************************************');
+        doc.text(3, 29, "Servicio de intennet");
+        doc.text(3, 34, "Plan internet :" + usuario.servicios[0]["perfil"]);
+        doc.text(3, 38, "facturación del " + descri.factura.emitido + " " + descri.factura.vencimiento);
+
+        doc.text(3, 43, "Mes: " + Mes[hoy]);
+        doc.text(3, 49, "*******************************************************************");
+        doc.text(35, 54, "DESCUENTO $0.00");
+        doc.text(40, 58, "TOTAL: " + descri.items[0]["total2"]);
+        doc.text(40, 62, "SALDO: $0.00");
+        doc.text(3, 65, "*******************************************************************");
+        doc.text(20, 69, "CLIENTE")
+        doc.text(3, 73, "" + usuario.nombre)
+        doc.text(3, 76, "" + usuario.direccion_principal)
+        doc.text(3, 79, "" + usuario.cedula.trim())
+        doc.text(3, 84, "Fecha corte: " + descri.factura.emitido)
+        doc.text(3, 88, "*******************************************************************");
+        doc.text(3, 94, "Operador " + nombres.usuario);
+        doc.text(3, 98, "Impresión:" + result2);
+        doc.text(3, 105, "______________________________________________");
+
+
+
+        // doc.text(3, 32, descri.items[0]["descrp"])
+        /*  doc.text(3, 25, 'Fecha Registro');
+          doc.text(3, 30, '_______________________________');
+          doc.text(3, 80, 'Recibí conforme');
+          doc.text(3, 85, 'Concierto       LOC	CANT.');
+         /* JSON.parse(nombres.info_concierto).map(e => {
+              doc.text(10, pagnum + 5, "" + LocalidadPrecio(e.idespaciolocalida, e.id_localidad) + "       " + parseInt(e.cantidad) * parseFloat(ListarPrecio(e.idespaciolocalida, e.id_localidad))
+              );
+          })*/
+
+
+
+
+        // doc.save('comprobante.pdf');
+        //doc.autoPrint();
+
+        doc.output('dataurlnewwindow');
+    }
     function buscar() {
         setBusca(true)
         if (cedula.trim() == "") return
@@ -280,7 +343,7 @@ const PagosView = () => {
                     setSingleSelect({ value: "", label: "" })
                     let infor = ouput.datos.find(e => e.estado == "ACTIVO")
                     console.log(infor.id)
-                   // if()
+                    // if()
                     MostrarFacturas(infor.id).then(ouput => {
                         console.log(ouput)
                         if (ouput.estado === "exito") {
@@ -651,7 +714,7 @@ const PagosView = () => {
                     else if (ouputs.length > 0) {
 
                         console.log(ouput.datos.length)
-                        if (ouput.datos.length>1){
+                        if (ouput.datos.length > 1) {
                             setservisicos(ouput.datos)
                             setOpenSer(true)
                             return
@@ -969,103 +1032,103 @@ const PagosView = () => {
                     openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado")
 
                 })
-               /* if (ouput.datos.length == 2) {
-                    if (ouput.datos[1].estado === "ACTIVO") {
-                        let datos = {
-                            nombre: ouput.datos[1].nombre,
-                            estado: ouput.datos[1].estado,
-                            cedula: ouput.datos[1].cedula,
-                            movil: ouput.datos[1].movil,
-                            direccion_principal: ouput.datos[1].direccion_principal,
-                            correo: ouput.datos[1].correo,
-                            facturacion: {
-                                ...ouput.datos[1].facturacion
-                            },
-                            servicios: ouput.datos[1].servicios
-                        }
-                        setUser({ ...datos })
-                    }
-
-                    if (ouput.datos[1].estado === "SUSPENDIDO") {
-                        let datos = {
-                            nombre: ouput.datos[1].nombre,
-                            estado: ouput.datos[1].estado,
-                            cedula: ouput.datos[1].cedula,
-                            movil: ouput.datos[1].movil,
-                            direccion_principal: ouput.datos[1].direccion_principal,
-                            correo: ouput.datos[1].correo,
-                            facturacion: {
-                                ...ouput.datos[1].facturacion
-                            },
-                            servicios: ouput.datos[1].servicios
-                        }
-                        setUser({ ...datos })
-                    }
-                    if (ouput.datos.estado[1] === "RETIRADO") {
-                        let datos = {
-                            nombre: ouput.datos[1].nombre,
-                            estado: ouput.datos[1].estado,
-                            cedula: ouput.datos[1].cedula,
-                            movil: ouput.datos[1].movil,
-                            direccion_principal: ouput.datos[1].direccion_principal,
-                            correo: ouput.datos[1].correo,
-                            facturacion: {
-                                ...ouput.datos[1].facturacion
-                            }
-                            , servicios: ouput.datos[1].servicios
-                        }
-
-                        setUser({ ...datos })
-                    }
-                    return
-                }
-                if (ouput.datos[0].estado === "ACTIVO") {
-                    let datos = {
-                        nombre: ouput.datos[0].nombre,
-                        estado: ouput.datos[0].estado,
-                        cedula: ouput.datos[0].cedula,
-                        movil: ouput.datos[0].movil,
-                        direccion_principal: ouput.datos[0].direccion_principal,
-                        correo: ouput.datos[0].correo,
-                        facturacion: {
-                            ...ouput.datos[0].facturacion
-                        },
-                        servicios: ouput.datos[0].servicios
-                    }
-                    setUser({ ...datos })
-                }
-
-                if (ouput.datos[0].estado === "SUSPENDIDO") {
-                    let datos = {
-                        nombre: ouput.datos[0].nombre,
-                        estado: ouput.datos[0].estado,
-                        cedula: ouput.datos[0].cedula,
-                        movil: ouput.datos[0].movil,
-                        direccion_principal: ouput.datos[0].direccion_principal,
-                        correo: ouput.datos[0].correo,
-                        facturacion: {
-                            ...ouput.datos[0].facturacion
-                        },
-                        servicios: ouput.datos[0].servicios
-                    }
-                    setUser({ ...datos })
-                }
-                if (ouput.datos.estado[0] === "RETIRADO") {
-                    let datos = {
-                        nombre: ouput.datos[0].nombre,
-                        estado: ouput.datos[0].estado,
-                        cedula: ouput.datos[0].cedula,
-                        movil: ouput.datos[0].movil,
-                        direccion_principal: ouput.datos[0].direccion_principal,
-                        correo: ouput.datos[0].correo,
-                        facturacion: {
-                            ...ouput.datos[0].facturacion
-                        }
-                        , servicios: ouput.datos[0].servicios
-                    }
-
-                    setUser({ ...datos })
-                }*/
+                /* if (ouput.datos.length == 2) {
+                     if (ouput.datos[1].estado === "ACTIVO") {
+                         let datos = {
+                             nombre: ouput.datos[1].nombre,
+                             estado: ouput.datos[1].estado,
+                             cedula: ouput.datos[1].cedula,
+                             movil: ouput.datos[1].movil,
+                             direccion_principal: ouput.datos[1].direccion_principal,
+                             correo: ouput.datos[1].correo,
+                             facturacion: {
+                                 ...ouput.datos[1].facturacion
+                             },
+                             servicios: ouput.datos[1].servicios
+                         }
+                         setUser({ ...datos })
+                     }
+ 
+                     if (ouput.datos[1].estado === "SUSPENDIDO") {
+                         let datos = {
+                             nombre: ouput.datos[1].nombre,
+                             estado: ouput.datos[1].estado,
+                             cedula: ouput.datos[1].cedula,
+                             movil: ouput.datos[1].movil,
+                             direccion_principal: ouput.datos[1].direccion_principal,
+                             correo: ouput.datos[1].correo,
+                             facturacion: {
+                                 ...ouput.datos[1].facturacion
+                             },
+                             servicios: ouput.datos[1].servicios
+                         }
+                         setUser({ ...datos })
+                     }
+                     if (ouput.datos.estado[1] === "RETIRADO") {
+                         let datos = {
+                             nombre: ouput.datos[1].nombre,
+                             estado: ouput.datos[1].estado,
+                             cedula: ouput.datos[1].cedula,
+                             movil: ouput.datos[1].movil,
+                             direccion_principal: ouput.datos[1].direccion_principal,
+                             correo: ouput.datos[1].correo,
+                             facturacion: {
+                                 ...ouput.datos[1].facturacion
+                             }
+                             , servicios: ouput.datos[1].servicios
+                         }
+ 
+                         setUser({ ...datos })
+                     }
+                     return
+                 }
+                 if (ouput.datos[0].estado === "ACTIVO") {
+                     let datos = {
+                         nombre: ouput.datos[0].nombre,
+                         estado: ouput.datos[0].estado,
+                         cedula: ouput.datos[0].cedula,
+                         movil: ouput.datos[0].movil,
+                         direccion_principal: ouput.datos[0].direccion_principal,
+                         correo: ouput.datos[0].correo,
+                         facturacion: {
+                             ...ouput.datos[0].facturacion
+                         },
+                         servicios: ouput.datos[0].servicios
+                     }
+                     setUser({ ...datos })
+                 }
+ 
+                 if (ouput.datos[0].estado === "SUSPENDIDO") {
+                     let datos = {
+                         nombre: ouput.datos[0].nombre,
+                         estado: ouput.datos[0].estado,
+                         cedula: ouput.datos[0].cedula,
+                         movil: ouput.datos[0].movil,
+                         direccion_principal: ouput.datos[0].direccion_principal,
+                         correo: ouput.datos[0].correo,
+                         facturacion: {
+                             ...ouput.datos[0].facturacion
+                         },
+                         servicios: ouput.datos[0].servicios
+                     }
+                     setUser({ ...datos })
+                 }
+                 if (ouput.datos.estado[0] === "RETIRADO") {
+                     let datos = {
+                         nombre: ouput.datos[0].nombre,
+                         estado: ouput.datos[0].estado,
+                         cedula: ouput.datos[0].cedula,
+                         movil: ouput.datos[0].movil,
+                         direccion_principal: ouput.datos[0].direccion_principal,
+                         correo: ouput.datos[0].correo,
+                         facturacion: {
+                             ...ouput.datos[0].facturacion
+                         }
+                         , servicios: ouput.datos[0].servicios
+                     }
+ 
+                     setUser({ ...datos })
+                 }*/
             }
             if (ouput.estado === "error") {
                 setOpen(false)
@@ -1086,7 +1149,7 @@ const PagosView = () => {
                 })
             }
         }).catch(err => {
-            setOpen(false)       
+            setOpen(false)
             console.log(err)
         })
         Consultarcedula(cedula.trim()).then(ouput => {
@@ -1712,14 +1775,14 @@ const PagosView = () => {
             //  console.log(datosdefactura, fac)
         }
     }
-    
-    
+
+
     return (
         <div>
             <SimpleDialogop
-            open={openServ}
-            servicios={servicio}
-            onClose={closeDialo}
+                open={openServ}
+                servicios={servicio}
+                onClose={closeDialo}
             />
             <SimpleDialog
                 selectedValue={mesaje.mensaje}
@@ -1786,6 +1849,27 @@ const PagosView = () => {
                         {usuario.estado === "ACTIVO" ? <span className='badge p-3 bg-success mx-3'>ACTIVO</span> : ""}
                         {usuario.estado === "SUSPENDIDO" ? <span className='badge p-3 bg-danger mx-3'>SUSPENDIDO</span> : ""}
                         {usuario.estado === "RETIRADO" ? <span className='badge p-3 bg-warnig mx-3'>RETIRADO</span> : ""}
+
+                    </div>
+                    <div className=" container text-center mb-3 py-3">
+
+                        <span className=""
+                            style={{
+                                fontWeight: "bold"
+                            }}
+                        >Comprobante a pagar</span>
+                        {factura.urlpdf == "" ?
+                            <a href={factura.urlpdf}
+                                target="_blank"
+                            >
+                                <i className="px-2 bi bi-file-earmark-pdf"></i>
+                            </a>
+                            : <i className="px-2 bi bi-file-earmark-pdf"></i>}
+                        {!impri ? "" : <button className=" btn btn-defaul"
+                            onClick={creaComprobante}
+                        >
+                            <i className=" px-3 bi bi-printer-fill"></i>Imprimir Comprobante
+                        </button>}
 
                     </div>
                 </div>

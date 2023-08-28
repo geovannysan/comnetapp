@@ -57,7 +57,7 @@ const AuthLogin = () => {
                 sessionStorage.setItem("USERLOGIN", JSON.stringify({ ...oupt.user }))
                 usedispat(setDatosuser({ ...oupt.user }))
                 usedispat(setlogin({ estado: true }))
-                history("/dashboard/home")
+                history("/dashboard/panel")
             }else{
                 alert(""+JSON.stringify(oupt))
             }

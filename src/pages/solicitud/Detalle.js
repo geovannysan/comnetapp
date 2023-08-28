@@ -6,7 +6,8 @@ const { Title } = Typography
 import MainCard from "components/MainCard"
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Solicitudid } from "util/Queryportal";
+import { Actualizarsolicitud, EnviaWhast, Solicitudid } from "util/Queryportal";
+import moment from "moment/moment";
 export default function DetallesView() {
     let { id } = useParams()
     let [solicitud, setSolicitud] = useState({
@@ -21,10 +22,68 @@ export default function DetallesView() {
         "observacion": "",
         "Idadmin": ""
     })
-    function handelChange(e){
+    function handelChange(e) {
         setSolicitud({
             ...solicitud,
-            [e.name]:e.value
+            [e.name]: e.value
+        })
+    }
+    function validateDateFormat(dateString) {
+        var pattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+        if (!pattern.test(dateString)) {
+            return dateString; 
+        }
+        var parts = moment(dateString).format('MMM/DD/YYYY h:mm')
+        return parts;
+    }
+    let[number,setNumber]=useState("")
+     function formatearNumero(numero) {
+        const regex = /^\+?593\d{9}$/;
+        let dato = numero.trim()
+        // Comprobar si el número coincide con la expresión regular
+        if (regex.test(dato)) {
+            return dato
+        }
+        else if (dato.length === 9) {
+            return "593" + dato
+        } else return undefined;
+    }
+    function actualizarsolicitud() {
+        //setDisable(true)
+        let datos = {
+            "asunto": solicitud.asunto,
+            "cedula": solicitud.cedula,
+            "Nombre": solicitud.Nombre,
+            "fecha": solicitud.fecha,
+            "estado": solicitud.estado,
+            "Prioridad": solicitud.Prioridad,
+            "Tipo": solicitud.Tipo,
+            "cantiadad": solicitud.cantiadad,
+            "observacion": solicitud.observacion
+        }
+        console.log(datos, parseInt(id))
+        Actualizarsolicitud(datos, parseInt(id)).then(async oup => {
+            console.log(oup)
+            if (oup.status) {
+                let informa = {
+                    "user_id": formatearNumero(number),
+                    "message": solicitud.observacion,
+                }
+                
+               if( formatearNumero(number)!=undefined){
+                   let inf = await EnviaWhast(informa)
+                   window.location.reload()
+                   return
+                }
+               // window.location.reload()
+            } else {
+                //setDisable(false)
+               // usedispatch(setModal({ nombre: "", payloa: "" }))
+
+            }
+        }).catch(err => {
+          // setDisable(false)
+            console.log(err)
         })
     }
     useEffect(() => {
@@ -44,14 +103,24 @@ export default function DetallesView() {
 
                 <Grid item xs={12} md={7}>
                     <MainCard>
-                        <Grid xs={6}></Grid>
+
                         <Grid className="mx-auto">
                             <Typography variante="h1" gutterBottom>
-                                <Title>h1. Ant Design</Title>
-                                <Title level={2}>h2. Ant Design</Title>
-                                <Title level={3}>h3. Ant Design</Title>
-                                <Title level={4}>h4. Ant Design</Title>
-                                <Title level={5}>h5. Ant Design</Title> </Typography>
+                                <Title>Tipo de solicitud: {solicitud.Tipo}  </Title>
+                                <Title level={2}>{solicitud.Tipo == "Trabajos" ? "Empleados: " + solicitud.Nombre : ""}
+                                    {solicitud.Tipo != "Trabajos" ? "Nombre: " + solicitud.Nombre + " Cédula: " + solicitud.cedula:""}
+                                                                  </Title>
+                                <Title level={3}>{solicitud.Tipo == "Trabajos" ? "Inicio: " + validateDateFormat(solicitud.cantiadad) + " Cierre: " + validateDateFormat(solicitud.Prioridad) : ""}
+                                    {solicitud.Tipo == "Anticipo" ? "Cantidad de: $" + validateDateFormat(solicitud.cantiadad) + " Para el día: " + validateDateFormat(solicitud.Prioridad) : ""}
+                                    {solicitud.Tipo == "Permiso" ? "Duracion (días:hora) " + validateDateFormat(solicitud.cantiadad) + " Para el dia: " + validateDateFormat(solicitud.Prioridad) : ""}
+                                </Title>
+                                <Title level={4}>{"Fecha de notificación: " + moment(solicitud.fecha).format("MMM/DD/YYYY hh:mm")}</Title>
+
+                                <textarea disabled style={{ height: "200px" }}
+                                    value={solicitud.asunto}
+                                    className=" form-control">
+                                </textarea>
+                            </Typography>
                         </Grid>
                     </MainCard>
                 </Grid>
@@ -59,6 +128,7 @@ export default function DetallesView() {
                     <MainCard>
                         <div className="container row">
                             <div className="col-12">
+                                <p className=" form-label">Estado</p>
                                 <select className="form-control" name="estado" value={solicitud.estado} onChange={(e) => handelChange(e.target)}>
                                     <option value={"Rechazado"}>Rechazado</option>
                                     <option value={"Pendiente"}>Pendiente</option>
@@ -74,6 +144,15 @@ export default function DetallesView() {
                                 }} className=" form-control">
 
                                 </textarea>
+                            </div>
+                            <div className="col-12">
+                                <p className=" form-label text-dark col-12 py-2">Número celular a responder (no es obligatorio)</p>
+                                <input className=" form-control" value={number} onChange={(e) => setNumber(e.target.value)} type="number" placeholder="593999999999">
+
+                                </input>
+                            </div>
+                            <div className="col-12 text-center py-2">
+                                <button className="btn btn-success" onClick={actualizarsolicitud} >Actualizar </button>
                             </div>
                         </div>
                     </MainCard>

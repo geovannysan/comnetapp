@@ -64,7 +64,6 @@ const Profile = () => {
     const handleLogout = async () => {
         // logout
     };
-     console.log(user)
     const anchorRef = useRef(null);
     const [open, setOpen] = useState(false);
     const handleToggle = () => {

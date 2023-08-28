@@ -100,19 +100,7 @@ export const Loginadmin = async (parms) => {
     })
     return data
 }
-export const Actualizarsolicitud = async (parms) => {
-    try {
-        let { data } = await axios.post("http://api.ticketsecuador.ec/mikroti/solicitu/actualiza/{idcliente}", parms, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-            }
-        })
-        return data
-    } catch (error) {
-        return error
-    }
-}
+
 export const listarSolicitud = async (parms) => {
     try {
         let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/solicitu/lista/" + parms, {
@@ -128,12 +116,40 @@ export const listarSolicitud = async (parms) => {
 }
 export const Solicitudid = async (id) => {
     try {
-        let { data } = await axios.get("http://localhost:3009/solicitu/solicitu/" + id, {
+        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/solicitu/solicitu/" + id, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Actualizarsolicitud = async (parms, id) => {
+    try {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/solicitu/actualiza/" + id, parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const EnviaWhast = async (parms) => {
+    /*
+    {
+    "user_ids":["593993713942"],
+    "message":"Hola buenas tardes",
+     "link":"Hola"
+    }
+    */
+    try {
+        let { data } = await axios.post("https://core.xfiv.chat/whatsapp_qr_ticket/api/v1/send", parms)
         return data
     } catch (error) {
         return error
