@@ -104,7 +104,8 @@ const FacturasView = () => {
                     <th >Fecha</th>
                     <th ># de factura</th>
 
-                    <th >iva </th>
+                    <th >estado </th>
+                     <th >iva </th>
                     <th >subtotal </th>
                     <th >total </th>
                     <th >Ver </th>
@@ -132,6 +133,8 @@ const FacturasView = () => {
                         <td className=" font-weight-bold">
                             {item.numfactura}
                         </td>
+                        <td className="text-xs font-weight-bold">
+                            {item.estado=="0"?"No Emitido":"Emitido"}</td>
                         <td className="text-xs font-weight-bold">
                             {item.iva}</td>
 
