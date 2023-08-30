@@ -122,9 +122,9 @@ export default function SolicitudView() {
                             {item.asunto}</td>
                         <td className=" font-weight-bold" style={{
                             whiteSpace: "initial"
-                        }}>{item.Tipo == "Trabajos" ? item.Tipo + "\n Tecnico Responsable:" + item.Nombre + "\n Hora inicio:" + item.cantiadad + "\n Hora de cirre:" + item.Prioridad : ""}
+                        }}>{item.Tipo == "Trabajos" ? item.Tipo + "\n Tecnico Responsable:" + item.Nombre + "\n Hora inicio:" + moment(item.cantiadad).format('YYYY/MM/DD h:mm a') + "\n Hora de cirre:" + moment(item.Prioridad).format('YYYY/MM/DD h:mm a') : ""}
                             {item.Tipo == "Anticipo" ? item.Tipo + "\nSolicitante:" + item.Nombre + "\n Valor solicitado:" + item.cantiadad : ""}
-                            {item.Tipo == "Permiso" ? item.Tipo + "\nSolicitante:" + item.Nombre + "\n Días" + item.cantiadad + "\n Fecha solicitada:" + item.Prioridad : ""}
+                            {item.Tipo == "Permiso" ? item.Tipo + "\nSolicitante:" + item.Nombre + "\n Días" + item.cantiadad + "\n Fecha solicitada:" + moment(item.Prioridad).format('YYYY/MM/DD h:mm a') : ""}
                         </td>
                         <td className="text-xs font-weight-bold">{item.cedula}</td>
                         <td className="text-xs font-weight-bold">{moment(item.fecha).format('YYYY/MM/DD')}</td>

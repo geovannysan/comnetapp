@@ -33,7 +33,7 @@ export default function DetallesView() {
         if (!pattern.test(dateString)) {
             return dateString; 
         }
-        var parts = moment(dateString).format('MMM/DD/YYYY h:mm')
+        var parts = moment(dateString).format('MMM-DD-YYYY h:mm a')
         return parts;
     }
     let[number,setNumber]=useState("")

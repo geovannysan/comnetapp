@@ -32,6 +32,7 @@ import Selectopction from 'components/Selectshear';
 import { Facturaid, MostrarFacturas, autenticar } from 'util/Queryportal';
 import { BuscaclienteContifico, BuscarProductoContific, Consultarcedula, CreaProducto, CrearClienteContifico, IncremetoCon, IncremetoFacturaS, PagoFacturacomnet } from 'util/Querycontifico';
 import jsPDF from "jspdf"
+import { userlog } from 'util/User';
 
 function SimpleDialogop(props) {
     const { onClose, open, servicios } = props;
@@ -89,6 +90,9 @@ function SimpleDialog(props) {
         </Dialog>
     );
 }
+let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+
+
 const PagosView = () => {
     const [openServ, setOpenSer] = useState(false);
     const [servicio, setservisicos] = useState([])
@@ -254,6 +258,7 @@ const PagosView = () => {
         estado: "",
         id: "",
     })
+    let nombres = userlog()
     const [singleSelect, setSingleSelect] = useState({ value: "", label: "", });
     const [list, seTlist] = useState([])
     function creaComprobante() {
@@ -287,7 +292,7 @@ const PagosView = () => {
         doc.text(3, 43, "Mes: " + Mes[hoy]);
         doc.text(3, 49, "*******************************************************************");
         doc.text(35, 54, "DESCUENTO $0.00");
-        doc.text(40, 58, "TOTAL: " + descri.items[0]["total2"]);
+        doc.text(40, 58, "TOTAL: " + totalcon.total.toFixed(2));
         doc.text(40, 62, "SALDO: $0.00");
         doc.text(3, 65, "*******************************************************************");
         doc.text(20, 69, "CLIENTE")
@@ -720,7 +725,19 @@ const PagosView = () => {
                             return
                         }
                         console.log(ouput)
-                       
+                        let datos = {
+                            nombre: ouput.datos[0].nombre,
+                            estado: ouput.datos[0].estado,
+                            cedula: ouput.datos[0].cedula,
+                            movil: ouput.datos[0].movil,
+                            direccion_principal: ouput.datos[0].direccion_principal,
+                            correo: ouput.datos[0].correo,
+                            facturacion: {
+                                ...ouput.datos[0].facturacion
+                            },
+                            servicios: ouput.datos[0].servicios
+                        }
+                        setUser({ ...datos })
                         if (ouput.datos[0].servicios != undefined) {
                             BuscarProductoContific(ouput.datos[0].servicios[0].idperfil).then(salida => {
                                 if (salida.length > 0) {
@@ -1008,9 +1025,9 @@ const PagosView = () => {
                     })
                     setDescrip({ factura: { ...ouput.factura }, items: ouput.items })
                     settotal(ouput.factura.total)
-                    console.log(totalcon.total.toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
-                    console.log((totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)))
-                    console.log({
+                    console.log(parseFloat(totalcon.total).toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
+                    console.log((parseFloat(totalcon.total).toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)))
+                    /*console.log({
                         "codigo_barra": null,
                         "porcentaje_iva": "12",
                         "categoria_id": "91qdGvZgXhY6nbN8",
@@ -1023,16 +1040,28 @@ const PagosView = () => {
                         "nombre": usuario.servicios[0]["perfil"],
                         "codigo": usuario.servicios[0]["idperfil"],
                         "estado": "A"
-                    })
+                    })*/
                     if (cedula.trim().length < 10) {
                         return
                     }
-                    if (totalcon.total.toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
+                    if (parseFloat(totalcon.total).toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
                         setMensaje({
-                            mensaje: "creando producto contifico",
+                            mensaje: "Cambiando precio producto contifico",
                             estado: true
                         })
-                        IncremetoCon().then(salida => {
+                        let valor = parseFloat(ouput.factura.total).toFixed(2);
+                        /* console.log({
+                             total: valor,
+                             estado: estado,
+                             id: JSON.parse(produ).id,
+                         })*/
+                        setOpen(false)
+
+                        setValor({
+                            ...totalcon,
+                            total: valor,
+                        })
+                       /* IncremetoCon().then(salida => {
                             console.log(salida)
                             if (salida.status) {
                                 let facnum = salida.result[0].contadores
@@ -1059,7 +1088,7 @@ const PagosView = () => {
                                             ]
                                         })
                                         return
-                                    }*/
+                                    }*
                                     console.log({
                                         "codigo_barra": null,
                                         "porcentaje_iva": "12",
@@ -1081,7 +1110,7 @@ const PagosView = () => {
                                          total: valor,
                                          estado: estado,
                                          id: JSON.parse(produ).id,
-                                     })*/
+                                     })*
                                     setValor({
                                         total: valor,
                                         estado: estado,
@@ -1093,19 +1122,20 @@ const PagosView = () => {
                                     setOpen(false)
                                     openNotificationWithIcon('error', "Hubo un error inesperado al crear producto contifico", "" + err.status)
 
-                                })
+                                })*
                             }
                         }).catch(err => {
                             setOpen(false)
                             openNotificationWithIcon('error', "Hubo un error inesperado al crear procuto contifico", "" + err)
 
-                        })
+                        })*/
                         return
                     }
                     setOpen(false)
                 }
 
             }).catch(err => {
+                console.log(err)
                 setOpen(false)
                 openNotificationWithIcon('error', "Hubo un error ", "" + err)
             })
@@ -1132,6 +1162,7 @@ const PagosView = () => {
         // creaComprobante() 
         // if(true) return
         if (lugar.label.includes("CALL")) {
+            
             console.log(banco.value)
             if (datos.asunto.trim().length == 0 && banco.label.trim() == "") {
                 setOpen(false)
@@ -1212,7 +1243,7 @@ const PagosView = () => {
                                     "subtotal_0": 0,
                                     "subtotal_12": (totalcon.total) / 1.12,
                                     "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
-                                    "total": totalcon.total.toFixed(2),
+                                   "total": parseFloat(totalcon.total).toFixed(2),
                                     "detalles": [
                                         {
                                             "producto_id": totalcon.id,
@@ -1228,7 +1259,7 @@ const PagosView = () => {
                                     "cobros": [
                                         {
                                             "forma_cobro": lugar.value.split("-")[0],
-                                            "monto": totalcon.total.toFixed(2),
+                                           "monto": parseFloat(totalcon.total).toFixed(2),
                                             "cuenta_bancaria_id": banco.value,
                                             "numero_comprobante": datos.asunto,
                                             "fecha": formattedToday,
@@ -1283,6 +1314,7 @@ const PagosView = () => {
             }
         }
         if (lugar.label.includes("TARJETA")) {
+            
             if (datos.asunto.trim().length == 0 && banco.label.trim() == "") {
                 setOpen(false)
                 openNotificationWithIcon('error', "Ingrese número de Autorización", "")
@@ -1366,7 +1398,7 @@ const PagosView = () => {
                             "subtotal_0": 0,
                             "subtotal_12": (totalcon.total) / 1.12,
                             "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
-                            "total": totalcon.total.toFixed(2),
+                           "total": parseFloat(totalcon.total).toFixed(2),
                             "detalles": [
                                 {
                                     "producto_id": totalcon.id,
@@ -1382,7 +1414,7 @@ const PagosView = () => {
                             "cobros": [
                                 {
                                     "forma_cobro": lugar.value.split("-")[0],
-                                    "monto": totalcon.total.toFixed(2),
+                                   "monto": parseFloat(totalcon.total).toFixed(2),
                                     "tipo_ping": "D",
                                     "fecha": formattedToday,
                                 }
@@ -1436,7 +1468,7 @@ const PagosView = () => {
             setMensaje({
                 mensaje: "Registrando factura",
                 estado: true
-            })
+            })          
             PagoFacturacomnet(datosdefactura).then(fact => {
                 if (fact.estado == "exito") {
                     /*  $.get("demo.asp", function (data, status) {
@@ -1500,7 +1532,7 @@ const PagosView = () => {
                                     "subtotal_0": 0,
                                     "subtotal_12": (totalcon.total) / 1.12,
                                     "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
-                                    "total": totalcon.total.toFixed(2),
+                                   "total": parseFloat(totalcon.total).toFixed(2),
                                     "detalles": [
                                         {
                                             "producto_id": totalcon.id,
@@ -1516,7 +1548,7 @@ const PagosView = () => {
                                     "cobros": [
                                         {
                                             "forma_cobro": lugar.value.split("-")[0],
-                                            "monto": totalcon.total.toFixed(2),
+                                           "monto": parseFloat(totalcon.total).toFixed(2),
                                             "fecha": formattedToday,
                                         }
                                     ]
