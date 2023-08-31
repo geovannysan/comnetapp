@@ -1,19 +1,49 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { listarSolicitud } from "util/Queryportal";
+import { EliminarSolict, listarSolicitud } from "util/Queryportal";
 import { userlog } from "util/User";
 import MainCard from 'components/MainCard';
 import moment from "moment/moment";
+import { DeleteOutlined } from '@ant-design/icons';
+import { Button, message, Popconfirm } from 'antd';
 export default function SolicitudView() {
     const [datos, setDatos] = useState([])
     let history = useNavigate()
     const [spiner, setSpiner] = useState("d-none")
     const [spinerdos, setSpinerdos] = useState("d-none")
+    const [openStates, setOpenStates] = useState({});
+
+    const handleOpenChange = (itemId) => (newOpenState) => {
+        setOpenStates((prevOpenStates) => ({
+            ...prevOpenStates,
+            [itemId]: newOpenState,
+        }));
+    };
+
+    const confirm = (itemId) => {
+        EliminarSolict(itemId).then(oup => {
+            if (oup.estado) {
+                history("/")
+                setTimeout(function () {
+                    history("/Solicitud")
+                }, 1000)
+            }
+        })
+
+
+        /*   */
+        //console.log(itemId)
+    };
+
+    const cancel = () => {
+    };
+
     async function abreir(e) {
         history("/detalle/" + e.Id)
-        // setInfo(e)
-        //setShowAlert(true)
-    }
+    };
+
+
+
     useEffect(() => {
         listarSolicitud(2).then(sali => {
             console.log(sali)
@@ -92,17 +122,12 @@ export default function SolicitudView() {
         return (
             <thead className="">
                 <tr className="border ">
-                    
                     <th  >Asunto</th>
                     <th >Información completa</th>
                     <th >Ingreso</th>
                     <th >Fecha de registro</th>
-
                     <th >Estado </th>
                     <th >Ver </th>
-
-
-
                 </tr>
             </thead>
         )
@@ -110,19 +135,18 @@ export default function SolicitudView() {
     }
     const showDatos = () => {
         try {
-            console.log(datos)
             return datos.map((item, index) => {
                 // console.log(item)
                 return (
                     <tr key={index}>
-                        
+
                         <td className="text-xs font-weight-bold " style={{
                             whiteSpace: "initial"
                         }}>
                             {item.asunto}</td>
                         <td className=" font-weight-bold" style={{
                             whiteSpace: "initial"
-                        }}>{item.Tipo == "Trabajos" ? item.Tipo + "\n Tecnico Responsable:" + item.Nombre + "\n Hora inicio:" + moment(item.cantiadad).format('YYYY/MM/DD h:mm a') + "\n Hora de cirre:" + moment(item.Prioridad).format('YYYY/MM/DD h:mm a') : ""}
+                        }}>{item.Tipo == "Trabajos" ? item.Tipo + "\n Tecnico Responsable:" + item.Nombre + "\n Hora inicio:" + moment(item.cantiadad).format('YYYY/MM/DD h:mm a') + "\n Hora de cirre: " + moment(item.Prioridad).format('YYYY/MM/DD h:mm a') : ""}
                             {item.Tipo == "Anticipo" ? item.Tipo + "\nSolicitante:" + item.Nombre + "\n Valor solicitado:" + item.cantiadad : ""}
                             {item.Tipo == "Permiso" ? item.Tipo + "\nSolicitante:" + item.Nombre + "\n Días" + item.cantiadad + "\n Fecha solicitada:" + moment(item.Prioridad).format('YYYY/MM/DD h:mm a') : ""}
                         </td>
@@ -135,7 +159,19 @@ export default function SolicitudView() {
                         </td>
 
                         <td className="text-xs font-weight-bold">
-                        <button className="btn btn-success" onClick={()=>abreir(item)} >ver</button>
+                            <button className="btn btn-sm btn-success" onClick={() => abreir(item)}>ver</button>
+                            <Popconfirm
+                                title="Eliminar solicitud"
+                                description="Estas seguro@ de eliminar esta solicitud?"
+                                open={openStates[item.Id] || false}
+                                onOpenChange={handleOpenChange(item.Id)}
+                                onConfirm={() => confirm(item.Id)}
+                                onCancel={cancel}
+                                okText="Si"
+                                cancelText="No"
+                            >
+                                <button className="btn btn-sm btn-danger"><DeleteOutlined /> </button>
+                            </Popconfirm>
                         </td>
 
 

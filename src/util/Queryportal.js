@@ -140,6 +140,19 @@ export const Actualizarsolicitud = async (parms, id) => {
         return error
     }
 }
+export const EliminarSolict = async(id)=>{
+    try {
+        let { data } = await axios.delete("https://api.ticketsecuador.ec/mikroti/Eliminarsolicitud/" + id, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
 export const EnviaWhast = async (parms) => {
     /*
     {

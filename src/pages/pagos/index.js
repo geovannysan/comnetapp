@@ -29,10 +29,10 @@ import { SearchOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import { useState } from 'react';
 import Selectopction from 'components/Selectshear';
-import { Facturaid, MostrarFacturas, autenticar } from 'util/Queryportal';
+import { CreaLaFacturapor, Facturaid, MostrarFacturas, autenticar } from 'util/Queryportal';
 import { BuscaclienteContifico, BuscarProductoContific, Consultarcedula, CreaProducto, CrearClienteContifico, IncremetoCon, IncremetoFacturaS, PagoFacturacomnet } from 'util/Querycontifico';
 import jsPDF from "jspdf"
-import { userlog } from 'util/User';
+import { Mes, userlog } from 'util/User';
 
 function SimpleDialogop(props) {
     const { onClose, open, servicios } = props;
@@ -292,7 +292,7 @@ const PagosView = () => {
         doc.text(3, 43, "Mes: " + Mes[hoy]);
         doc.text(3, 49, "*******************************************************************");
         doc.text(35, 54, "DESCUENTO $0.00");
-        doc.text(40, 58, "TOTAL: " + totalcon.total.toFixed(2));
+        doc.text(40, 58, "TOTAL: " + parseFloat(totalcon.total).toFixed(2));
         doc.text(40, 62, "SALDO: $0.00");
         doc.text(3, 65, "*******************************************************************");
         doc.text(20, 69, "CLIENTE")
@@ -327,6 +327,8 @@ const PagosView = () => {
     }
     function buscar() {
         setBusca(true)
+        seTlist([])
+        document.getElementById("pagos").reset();
         if (cedula.trim() == "") return
         if (cedula.trim().length > 5 && cedula.trim().length < 10) {
             setBusca(false)
@@ -536,7 +538,7 @@ const PagosView = () => {
             })
             return
         }
-        setBusca(false)
+       // setBusca(false)
         setOpen(true)
         setMensaje({
             mensaje: "Buscando Cliente en el Portal",
@@ -545,6 +547,7 @@ const PagosView = () => {
         settotal("")
         autenticar(cedula.trim()).then(ouput => {
             console.log(ouput)
+            setBusca(false)
             setimpri(false)
             if (ouput.estado === "exito") {
                 setSingleSelect({ value: "", label: "" })
@@ -1721,7 +1724,7 @@ const PagosView = () => {
             </MainCard>
             <MainCard contentSX={{ p: 2.25 }}>
 
-                <form noValidate style={{ paddingTop: '15px' }}>
+                {busca?"":   <form id='pagos' noValidate style={{ paddingTop: '15px' }}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={12} >
                             {list.length > 0 ? <Stack spacing={1}>
@@ -1851,7 +1854,7 @@ const PagosView = () => {
                         </Grid>
 
                     </Grid>
-                </form>
+                </form>}
             </MainCard>
 
 

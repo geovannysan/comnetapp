@@ -107,16 +107,16 @@ export default function DetallesView() {
                         <Grid className="mx-auto">
                             <Typography variante="h1" gutterBottom>
                                 <Title>Tipo de solicitud: {solicitud.Tipo}  </Title>
-                                <Title level={2}>{solicitud.Tipo == "Trabajos" ? "Empleados: " + solicitud.Nombre : ""}
+                                <Title level={4}>{solicitud.Tipo == "Trabajos" ? "Empleados: " + solicitud.Nombre : ""}
                                     {solicitud.Tipo != "Trabajos" ? "Nombre: " + solicitud.Nombre + " Cédula: " + solicitud.cedula:""}
                                                                   </Title>
-                                <Title level={3}>{solicitud.Tipo == "Trabajos" ? "Inicio: " + validateDateFormat(solicitud.cantiadad) + " Cierre: " + validateDateFormat(solicitud.Prioridad) : ""}
+                                <Title level={4}>{solicitud.Tipo == "Trabajos" ? "Inicio: " + validateDateFormat(solicitud.cantiadad) + " Cierre: " + validateDateFormat(solicitud.Prioridad) : ""}
                                     {solicitud.Tipo == "Anticipo" ? "Cantidad de: $" + validateDateFormat(solicitud.cantiadad) + " Para el día: " + validateDateFormat(solicitud.Prioridad) : ""}
                                     {solicitud.Tipo == "Permiso" ? "Duracion (días:hora) " + validateDateFormat(solicitud.cantiadad) + " Para el dia: " + validateDateFormat(solicitud.Prioridad) : ""}
                                 </Title>
                                 <Title level={4}>{"Fecha de notificación: " + moment(solicitud.fecha).format("MMM/DD/YYYY hh:mm")}</Title>
 
-                                <textarea disabled style={{ height: "200px" }}
+                                <textarea  style={{ height: "200px" }}
                                     value={solicitud.asunto}
                                     className=" form-control">
                                 </textarea>
