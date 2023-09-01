@@ -27,7 +27,7 @@ import SettingTab from './SettingTab';
 
 // assets
 import avatar1 from 'assets/images/users/avatar-1.png';
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { LogoutOutlined, SettingOutlined, UserOutlined,DollarOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { setDatosuser, setlogin } from '../../../../../store/reducers/menu';
@@ -64,6 +64,9 @@ const Profile = () => {
     const handleLogout = async () => {
         // logout
     };
+    function Regresar(){
+        history("/pagos")
+    }
     const anchorRef = useRef(null);
     const [open, setOpen] = useState(false);
     const handleToggle = () => {
@@ -93,6 +96,20 @@ const Profile = () => {
 
     return (
         <Box sx={{ flexShrink: 0, ml: 0.75 }}>
+            <ButtonBase
+                sx={{
+                    p: 0.25,
+                    bgcolor: open ? iconBackColorOpen : 'transparent',
+                    borderRadius: 1,
+                    '&:hover': { bgcolor: 'secondary.lighter' }
+                }}
+                onClick={Regresar}
+            >
+                <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
+                <DollarOutlined/>
+                <Typography variant="subtitle1">Registrar pagos</Typography>
+                </Stack>
+            </ButtonBase>
             <ButtonBase
                 sx={{
                     p: 0.25,
