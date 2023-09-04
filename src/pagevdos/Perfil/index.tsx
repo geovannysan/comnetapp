@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react"
 import { userlog } from "../../utils/User"
+import { UserUpdate, autenticar } from "../../utils/Queryuser"
+import AlerModal from "../../components/Modal/Modal"
+import { useDispatch, useSelector } from "react-redux"
+import { setModal } from "../../StoreRedux/Slice/UserSlice"
 
 export default function PerfilViews() {
     let dtos = userlog()
+    let aler = useSelector((state:any)=>state.usuario)
+    let dispatch = useDispatch()
     const [datos, setDatos] = useState({
         nombre: "",
         cedula: "",
@@ -16,6 +22,27 @@ export default function PerfilViews() {
             [e.name]: e.value
         })
     }
+    function Actualizardatos(){
+        let dtos = userlog()
+       // console.log(Object.values(datos))
+        //console.log(datos)
+        //console.log(Object.values(datos).every((e: any) => e))
+        if(!Object.values(datos).every((e:any)=>e ))return
+        
+       // if(true) return
+        dispatch(setModal({ nombre: "Alerta", payloa: "Actualizando datos del perfil" }))
+        UserUpdate({ "idcliente": dtos.id, ...datos }).then(e=>{
+            if (e.estado = "exito") {
+                console.log(e)
+                autenticar(dtos.cedula).then(e=>{
+
+                })
+                dispatch(setModal({ nombre: "", payloa: "" }))
+            }else{
+            }
+        })
+    }
+
     useEffect(() => {
        // console.log(dtos)
         setDatos(
@@ -32,6 +59,7 @@ export default function PerfilViews() {
     }, [])
     return (
         <div>
+            <AlerModal/>
             <div className="container-fluid h-20 pb-5 bg-welcome bg-welcome-radius px-0">
                 {/* <!--header welcome-->*/}
                 <div className="container-fluid pt-2 h-40 text-end btn-group-vertical">
@@ -122,7 +150,8 @@ export default function PerfilViews() {
                                 <label>Telefono</label>
                             </div>
                             <div className=" text-center">
-                                <button className="btn btn-sm  bg-blue-gradient text-white rounded-pill btn-size-1 py-25 shadow-2">
+                                <button 
+                                    onClick={Actualizardatos} className="btn btn-sm  bg-blue-gradient text-white rounded-pill btn-size-1 py-25 shadow-2">
 
                                     Actualizar</button>
                             </div>

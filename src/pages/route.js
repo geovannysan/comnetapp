@@ -1,14 +1,17 @@
-import ComprovanteViews from "./Comprobantes";
-import Inicipage from "./Home/Home";
-import InformeViews from "./Informes";
-import Soportviews from "./Soporte";
-import FacturaViews from "./Comprobantes/Facturas";
-import DocuumentosViews from "./Documentos";
-import SpeddView from "../components/Spedd";
-import { PerfilView } from "./Perfil";
-import { OpcionesView } from "./Home/Opciones";
-import ProfileView from "./Home/Perfil";
-import FacturasView from "./Home/Facturas";
+import { lazy } from "react";
+import ComprovanteViews from lazy(() => "./Comprobantes");
+import Inicipage from lazy(() => "./Home/Home");
+import InformeViews from lazy(()=> "./Informes");
+import Soportviews from lazy(() => "./Soporte");
+import FacturaViews from lazy(() => "./Comprobantes/Facturas");
+import DocuumentosViews from lazy(() => "./Documentos");
+import SpeddView from lazy(() => "../components/Spedd");
+import { PerfilView } from lazy(() => "./Perfil");
+import { OpcionesView } from lazy(() => "./Home/Opciones");
+import ProfileView from lazy(() => "./Home/Perfil");
+import FacturasView from lazy(() => "./Home/Facturas");
+
+
 export  function Lugar(){
     return(
         <div className="container"> 

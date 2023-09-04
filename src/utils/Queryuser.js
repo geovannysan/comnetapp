@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { operador } from './variables';
 //let Host = "http://45.224.96.50/api/v1/"
 let Hostv1 = "https://api.t-ickets.com/mikroti"
 //let Hostv1 = "https://api.t-ickets.com/mikroti/mikroti"

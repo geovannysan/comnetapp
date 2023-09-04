@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Equipos, ListarTicket, Newtickte } from "../../utils/Queryuser"
 import * as moment from "moment"
 import { userlog } from "../../utils/User"
-import { useIonLoading } from "@ionic/react"
+import { IonFab, IonFabButton, IonIcon, useIonLoading } from "@ionic/react"
 import SweetAlert from "react-bootstrap-sweetalert";
 import AlerModal from "../../components/Modal/Modal"
 import { setModal, setSeñal, setSoport } from "../../StoreRedux/Slice/UserSlice"
@@ -18,6 +18,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
+import { radioOutline } from "ionicons/icons"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -27,6 +28,7 @@ export default function SoporteView() {
     const dispat = useDispatch()
     const soportes = useSelector((state) => state.usuario.soporte)
     const señal = useSelector((state) => state.usuario.señal)
+    const modal = useSelector((state) => state.usuario.modal)
     let dtos = userlog()
 
     const [btn, setBtn] = useState(false)
@@ -84,6 +86,22 @@ export default function SoporteView() {
 
         })
     }, [])
+    function Soportenew(){
+        let tick = userlog()
+       // dispat(dispat(setSoport({ soporte: false })))
+       //dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
+        ListarTicket(tick.id).then(response => {
+            if (response.estado == "exito") {
+                console.log(response)
+                let soport = response.data.tickets.filter(e => e.estado == "abierto")
+              
+                    Soporte(soport.length)
+                
+            }
+        }).catch(err => {
+
+        })
+    }
     function Soporte(so) {
         let datos = localStorage.getItem("INFOUSER")
         let infos = localStorage.getItem("USERLOGIN")
@@ -348,6 +366,12 @@ export default function SoporteView() {
     console.log("agregado")
     return (
         <div className="container-fluid px-0 vh-100">
+
+            {modal.nombre == "Alerta" ? "" : <IonFab slot="fixed" vertical="bottom" horizontal="end">
+                <IonFabButton onClick={() => Soportenew()}>
+                    <IonIcon icon={radioOutline}></IonIcon>
+                </IonFabButton>
+            </IonFab>}
             <AlerModal />
 
 

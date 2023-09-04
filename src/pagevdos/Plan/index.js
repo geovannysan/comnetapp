@@ -12,19 +12,19 @@ import { userlog } from "../../utils/User";
 
 export default function PlanView() {
     let history = useHistory()
-    const infouser = useSelector((state:any) => state.usuario.user)
+    const infouser = useSelector((state) => state.usuario.user)
     const dispat = useDispatch()
-    const soportes = useSelector((state:any) => state.usuario.soporte)
-    const señal = useSelector((state:any) => state.usuario.señal)
+    const soportes = useSelector((state) => state.usuario.soporte)
+    const señal = useSelector((state) => state.usuario.señal)
 
-    function Soporte(so:any) {
+    function Soporte(so) {
         let datos = localStorage.getItem("INFOUSER")
-        let infos:any = localStorage.getItem("USERLOGIN")
+        let infos = localStorage.getItem("USERLOGIN")
         let users = JSON.parse(infos)
-        let infouser:any = obtenervaariables(users.servicios[0].smartolt)
+        let infouser = obtenervaariables(users.servicios[0].smartolt)
         dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
         Equipos(users.servicios[0].nodo).then(ou => {
-            // dismiss()
+          
             if (ou.estado == "exito") {
                 if (ou.routers.length > 0) {
                     console.log(ou)
@@ -55,24 +55,13 @@ export default function PlanView() {
                                 let board = ouput.onu_details["board"]
                                 let poart = ouput.onu_details["port"]
                                 console.log(ouput.onu_details, ou)
-                                let oltstatus = ou.response.find((e:any) => e.board == board && e.pon_port == poart)
+                                let oltstatus = ou.response.find((e) => e.board == board && e.pon_port == poart)
                                 console.log("Detalleoltport->", oltstatus)
                                 if (!oltstatus.operational_status.includes("Up")) {
                                     dispat(setSoport({ soporte: true }))
                                     //agregar mensaje
                                     /**crear pantalla con mensaje daño masivo y no se genera tickte */
-                                    /*present({
-                                        message: 'crear pantalla con mensaje daño masivo y no se genera tickte',
-                                        cssClass: 'custom-loading',
-                                        duration: 4500,
-                                        buttons: [
-                                            {
-                                                text: "cerrar",
-                                                role: "cancel",
- 
-                                            }
-                                        ]
-                                    })*/
+                                   
                                 }
                                 else {
                                     dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado onu" }))
@@ -91,12 +80,8 @@ export default function PlanView() {
                                                 }
                                                 if (so == 0) {
                                                     dispat(setModal({ nombre: "Alerta", payloa: "Creando ticket de soporte" }))
-                                                    /*  present({
-                                                          message: 'Creando ticket de soporte',
-                                                          cssClass: 'custom-loading',
-                                                          duration: 4500,
-                                                      })*/
-                                                    /*Newtickte(info).then(oput => {
+                                                    
+                                                    Newtickte(info).then(oput => {
                                                         // dismiss()
                                                         dispat(setSoport({ soporte: true }))
                                                         console.log(oput)
@@ -104,20 +89,10 @@ export default function PlanView() {
                                                         console.log(err)
                                                     })
                                                     dispat(setSoport({ soporte: true }))
-                                                    return*/
+                                                    return
                                                 }
                                                 /* crear tickte */
-                                                /*  present({
-                                                      message: 'crear pantalla con mensaje de Los',
-                                                      cssClass: 'custom-loading',
-                                                      duration: 4500,
-                                                      buttons: [
-                                                          {
-                                                              text: "cerrar",
-                                                              role: "cancel",  
-                                                          }
-                                                      ]
-                                                  })*/
+                                                
                                                 setTimeout(function () {
                                                     dispat(setModal({ nombre: "", payloa: "" }))
                                                 }, 1000)
@@ -126,18 +101,7 @@ export default function PlanView() {
                                             if (ouputv.onu_status == "Power fail") {
                                                 dispat(setSoport({ soporte: true }))
                                                 //agregar mensaje
-                                                /* present({
-                                                     message: 'crear gif intructivo. seria un modal con el gif',
-                                                     cssClass: 'custom-loading',
-                                                     duration: 4500,
-                                                     buttons: [
-                                                         {
-                                                             text: "cerrar",
-                                                             role: "cancel",
- 
-                                                         }
-                                                     ]
-                                                 })*/
+                                              
                                                 /* Revisar conexio gif intructivo */
                                                 return
                                             }
@@ -145,12 +109,7 @@ export default function PlanView() {
                                                 //agregar mensaje
                                                 dispat(setSoport({ soporte: true }))
                                                 //dismiss()
-                                                /*presentlo({
-                                                    message: 'Comprobando estado de la señal',
-                                                    cssClass: 'custom-loading',
-                                                    spinner: "bubbles",
-                                                    duration: 3500
-                                                })*/
+                                             
                                                 Get_onu_signal(users.servicios[0].id).then(ouput => {
                                                     if (ouput.status) {
                                                         //dismiss()
@@ -165,12 +124,7 @@ export default function PlanView() {
                                                         dispat(setSoport({ soporte: true }))
                                                         if (se < 29) {
                                                             //agregar mensaje
-                                                            /** mostrar servicio ok */
-                                                            /*present({
-                                                                message: 'Buena señal',
-                                                                cssClass: 'custom-loading',
-                                                                duration: 4500,
-                                                            })*/
+                                                            /** mostrar servicio ok */                                                          
                                                         }
                                                         if (se > 26.50 && se < 29) {
                                                             //agregar mensaje
@@ -192,11 +146,6 @@ export default function PlanView() {
 
                                                                 dispat(setModal({ nombre: "Alerta", payloa: "Creando ticket de soporte" }))
                                                                 //agregar mensaje
-                                                                /*  present({
-                                                                      message: 'Creando ticket de soporte',
-                                                                      cssClass: 'custom-loading',
-                                                                      duration: 4500,
-                                                                  })*/
 
                                                                 Newtickte(info).then(oput => {
                                                                     // dismiss()
@@ -279,8 +228,18 @@ export default function PlanView() {
         })
     }
     useEffect(()=>{
-        let tick:any = userlog()
-        Soporte(1)
+        let tick = userlog()
+        ListarTicket(tick.id).then(response => {
+            if (response.estado == "exito") {
+                let soport = response.data.tickets.filter(e => e.estado == "abierto")
+                if (!soportes) {
+                    Soporte(soport.length)
+                }
+            }
+        }).catch(err => {
+
+        })
+        //Soporte(1)
     }, [infouser])
 
 
@@ -452,7 +411,7 @@ export default function PlanView() {
                                                 fontSize:"1.4vh"
                                                 /*"font-size: 1.4vh;"*/}}>Señal: <span>-23.65 dBm</span></span>
                                         </li>
-                                        <a href="" className="bg-white shadow-1 none-style border px-4 py-1 rounded-pill text-center text-celeste" 
+                                        <a onClick={() => history.push("/home/soporte")} className="bg-white shadow-1 none-style border px-4 py-1 rounded-pill text-center text-celeste" 
                                         style={{
                                             fontSize:"1.6vh"
                                             /*"font-size: 1.6vh;"*/}}>Soporte Técnico</a>

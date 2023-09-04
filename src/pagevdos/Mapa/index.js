@@ -3,12 +3,13 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonFabList, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPopover, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState, useRef } from 'react';
-import { checkbox, colorPalette, document, ellipsisVerticalCircle, globeOutline, locate, mapOutline } from 'ionicons/icons';
+import { checkbox, colorPalette, document, ellipsisVerticalCircle, globeOutline, golfSharp, locate, mapOutline } from 'ionicons/icons';
 import { Fab, Menu, MenuItem } from '@mui/material';
 import { Add as AddIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
 import './index.css'
 import mapaicon from "../../imagen/PUNTO DE PAGO_Mesa de trabajo 1.png"
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 
 const openGoogleMapsNavigation = (e) => {
     const latitude = e[0]; // Latitud
@@ -69,6 +70,7 @@ function LocationMarkers({ position }) {
 export function MapsVies() {
     const [anchorEl, setAnchorEl] = useState(null);
     let posicion = useSelector(state => state.usuario.positio)
+    let history = useHistory()
 
     const handleOpenMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -105,9 +107,11 @@ export function MapsVies() {
         console.log([...e])
         setLocate(
             [...e]);
-        /*setLocate([...e]);*/
         setShowPopover({ showPopover: false, event: undefined });
-        // setzomm(18)
+    }
+  function  regregsar(){
+      setShowPopover({ showPopover: false, event: undefined });
+      history.goBack()
     }
     useEffect(() => {
         if ('geolocation' in navigator) {
@@ -152,26 +156,14 @@ export function MapsVies() {
                     </Marker>
                 ))}
 
-                <IonFab className='d-none' vertical="bootom" horizontal="end" edge={true}>
-                    <IonFabButton onClick={handleOpenMenu}>
-                        <IonIcon icon={mapOutline}></IonIcon>
-
-                    </IonFabButton>
-                </IonFab> 
+                
                 <LocationMarker/>
                 
                {locate.length>0? <LocationMarkers
                     position={locate}
                 />:""}
-                <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseMenu}
-                >
-                    <MenuItem onClick={handleCloseMenu}>Option 1</MenuItem>
-                    <MenuItem onClick={handleCloseMenu}>Option 2</MenuItem>
-                    <MenuItem onClick={handleCloseMenu}>Option 3</MenuItem>
-                </Menu>
+           
+          
                 <IonFab vertical="top" horizontal="end" slot="fixed">
                     <IonFabButton onClick={openPopover}>
                         <ion-icon icon={ellipsisVerticalCircle}></ion-icon>
@@ -191,6 +183,9 @@ export function MapsVies() {
                         </IonItem>
                         <IonItem button onClick={() => Agregardat([-2.309304, -79.936441,])}>
                             <IonLabel>Ciudad de Díos</IonLabel>
+                        </IonItem>
+                        <IonItem button onClick={() => regregsar()}>
+                            <IonLabel>Menú principal</IonLabel>
                         </IonItem>
                     </IonList>
                 </IonPopover>
