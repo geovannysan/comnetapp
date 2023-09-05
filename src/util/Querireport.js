@@ -1,7 +1,7 @@
 import axios from "axios"
 export const Listareportes = async () => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/reportes/" + 0, {
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/reportes/" + 0, {
             "startDate": "",
             "endDate": ""
         })
@@ -12,7 +12,7 @@ export const Listareportes = async () => {
 }
 export const ListarFacturas = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/listarfactura", parms)
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/listarfactura", parms)
         return data
     } catch (error) {
         return error

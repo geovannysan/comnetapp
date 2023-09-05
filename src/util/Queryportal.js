@@ -6,7 +6,7 @@ let Host = "https://portal.comnet.ec/api/v1/";
 //let userlog() = JSON.parse(sessionStorage.getItem("USERLOGIN"))
 export const Logearse = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/Login", parms)
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/Login", parms)
         return data
     } catch (error) {
         return error
@@ -15,7 +15,7 @@ export const Logearse = async (parms) => {
 export const autenticar = async (parms) => {
     console.log(userlog())
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/PortalApi/GetClientsDetails", { cedula: parms, operador: userlog().password })
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/GetClientsDetails", { cedula: parms, operador: userlog().password })
         console.log(data)
         return data
     } catch (error) {
@@ -36,7 +36,7 @@ export const ListarTicket = async (parm) => {
 }
 export const ListarFactura = async (parms) => {
     try {
-        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
         if (JSON.parse(data).estado === "exito") {
 
             let id = await JSON.parse(data).facturas[0].id
@@ -59,7 +59,7 @@ export const ListarFactura = async (parms) => {
 export const MostrarFacturas = async (parms) => {
 
     try {
-        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/PortalApi/GetInvoices/" + parms + "/" + userlog().password)
         return data
 
     } catch (error) {
@@ -68,7 +68,7 @@ export const MostrarFacturas = async (parms) => {
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/PortalApi/GetInvoice/" + parms + "/" + userlog().password)
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/PortalApi/GetInvoice/" + parms + "/" + userlog().password)
         return data
 
     } catch (error) {
@@ -92,7 +92,7 @@ export const CreaLaFacturapor = async (parms) => {
     }
 }
 export const Loginadmin = async (parms) => {
-    const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/auth_admin", parms, {
+    const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/auth_admin", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -103,7 +103,7 @@ export const Loginadmin = async (parms) => {
 
 export const listarSolicitud = async (parms) => {
     try {
-        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/solicitu/lista/" + parms, {
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/solicitu/lista/" + parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -116,7 +116,7 @@ export const listarSolicitud = async (parms) => {
 }
 export const Solicitudid = async (id) => {
     try {
-        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/solicitu/solicitu/" + id, {
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/solicitu/solicitu/" + id, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -129,7 +129,7 @@ export const Solicitudid = async (id) => {
 }
 export const Actualizarsolicitud = async (parms, id) => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/solicitu/actualiza/" + id, parms, {
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/solicitu/actualiza/" + id, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -142,7 +142,7 @@ export const Actualizarsolicitud = async (parms, id) => {
 }
 export const EliminarSolict = async(id)=>{
     try {
-        let { data } = await axios.delete("https://api.ticketsecuador.ec/mikroti/Eliminarsolicitud/" + id, {
+        let { data } = await axios.delete("https://api.t-ickets.com/mikroti/Eliminarsolicitud/" + id, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

@@ -23,7 +23,7 @@ function Toastainit(he, msg, rm, add) {
 }
 const buscarcliente = async (datos) => {
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/consultar_cedula", datos, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/consultar_cedula", datos, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -36,7 +36,7 @@ const buscarcliente = async (datos) => {
 }
 const crearsuscrito = async (datos) => {
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/crear_suscriptor", datos, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_suscriptor", datos, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -51,7 +51,7 @@ const crearsuscrito = async (datos) => {
 }
 async function Buscarcedula(cedula) {
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/cedula/" + cedula)
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/cedula/" + cedula)
         const { success } = data
         if (success) {
             return data;
