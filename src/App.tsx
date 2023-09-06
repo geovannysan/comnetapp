@@ -104,6 +104,7 @@ const animationBuilder = (baseEl: any, opts?: any) => {
 };
 setupIonicReact();
 const setStatusBarStyleLight = async () => {
+  await StatusBar.setBackgroundColor({ color:"#3880ff"})
   await StatusBar.setStyle({ style: Style.Light });
 };
 const App: React.FC = () => {
@@ -122,6 +123,7 @@ const App: React.FC = () => {
 
     let datos = userlog()
     console.log(datos)
+    setStatusBarStyleLight()
     if (datos != null) {
 
       //console.log(salida)

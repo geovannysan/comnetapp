@@ -84,11 +84,16 @@ export default function LoginView() {
         if (datos.cedula.trim() !== "" && datos.codigo.trim() !== "") {
             Logearusar({ "cedula": datos.cedula, "passwors": datos.codigo }).then(ou => {
                 if (ou.estado == "exito") {
-                    localStorage.setItem("Perfiles", JSON.stringify([...ou.datos]))
-                    localStorage.setItem("USERLOGIN", JSON.stringify({ ...ou.datos[0] }))
-                    console.log(ou.datos)
-                    console.log(ou.datos[0].id)
-                    usedispat(setDatosuser(ou.datos[0]))
+                let datos=    ou.datos.map((e:any)=>{
+                        let servicio = e.servicios[e.servicios.length - 1]
+                        return {
+                            ...e,
+                            servicios:[servicio]
+                        }
+                    })
+                    localStorage.setItem("Perfiles", JSON.stringify([...datos]))
+                    localStorage.setItem("USERLOGIN", JSON.stringify({ ...datos[0] }))
+                    usedispat(setDatosuser(datos[0]))
                     usedispat(setlogin({ estado: true }))
                     history.push("/home")
                 } else {
@@ -99,7 +104,6 @@ export default function LoginView() {
                         position: "bottom"
                     });
                 }
-
                 console.log(ou)
             }).catch(err => {
                 console.log(err)

@@ -1,11 +1,10 @@
 import { MapContainer, TileLayer, Marker, Popup, useMapEvent, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonFabList, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPopover, IonTitle, IonToolbar } from '@ionic/react';
-import { useEffect, useState, useRef } from 'react';
-import { checkbox, colorPalette, document, ellipsisVerticalCircle, globeOutline, golfSharp, locate, mapOutline } from 'ionicons/icons';
-import { Fab, Menu, MenuItem } from '@mui/material';
-import { Add as AddIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
+import { IonButton, IonFab, IonFabButton, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
+import { useEffect, useState } from 'react';
+import {  ellipsisVerticalCircle } from 'ionicons/icons';
+
 import './index.css'
 import mapaicon from "../../imagen/PUNTO DE PAGO_Mesa de trabajo 1.png"
 import { useSelector } from 'react-redux';
@@ -117,7 +116,7 @@ export function MapsVies() {
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    const { latitude, longitude } = position.coords;
+                   // const { latitude, longitude } = position.coords;
                     console.log(position)
                     setUserLocation([-2.129304, -79.936441,]);
                 },

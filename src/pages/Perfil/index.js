@@ -3,6 +3,7 @@ import "./Perfil.css"
 import { userlog } from "../../utils/User"
 import { UserUpdate } from "../../utils/Queryuser"
 import { IonAvatar, useIonLoading, useIonToast } from "@ionic/react";
+import DialogoServicio from "../../components/Alert/Servicios";
 export function PerfilView() {
     const [present] = useIonToast();
     const [buton, setButon] = useState(false)
@@ -80,8 +81,13 @@ export function PerfilView() {
 
 
     }, [])
+    let [serv,setDatosn]=useState(false)
+    function handleClose(){
+        setDatosn(!serv)
+    }
     return (
         <div className=" container">
+           
             <div className="row">
 
                 <div className="col-lg-4">

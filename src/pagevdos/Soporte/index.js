@@ -6,8 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Equipos, ListarTicket, Newtickte } from "../../utils/Queryuser"
 import * as moment from "moment"
 import { userlog } from "../../utils/User"
-import { IonFab, IonFabButton, IonIcon, useIonLoading } from "@ionic/react"
-import SweetAlert from "react-bootstrap-sweetalert";
+import { IonFab, IonFabButton, IonIcon, useIonLoading, useIonToast } from "@ionic/react"
 import AlerModal from "../../components/Modal/Modal"
 import { setModal, setSeñal, setSoport } from "../../StoreRedux/Slice/UserSlice"
 
@@ -30,7 +29,7 @@ export default function SoporteView() {
     const señal = useSelector((state) => state.usuario.señal)
     const modal = useSelector((state) => state.usuario.modal)
     let dtos = userlog()
-
+    const [present] = useIonToast();
     const [btn, setBtn] = useState(false)
     const [open, setOpen] = React.useState(false);
 
@@ -78,25 +77,33 @@ export default function SoporteView() {
         ListarTicket(tick.id).then(response => {
             if (response.estado == "exito") {
                 let soport = response.data.tickets.filter(e => e.estado == "abierto")
+                //console.log(response.data)
+               // return
                 if (!soportes) {
-                    Soporte(soport.length)
+                  
+                    Soporte(soport)
                 }
+            }else{
+                if (!soportes) Soporte(0)
             }
         }).catch(err => {
 
         })
     }, [])
-    function Soportenew(){
+    function Soportenew() {
         let tick = userlog()
-       // dispat(dispat(setSoport({ soporte: false })))
-       //dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
+        //console.log(tick)
         ListarTicket(tick.id).then(response => {
+            console.log(response)
             if (response.estado == "exito") {
                 console.log(response)
                 let soport = response.data.tickets.filter(e => e.estado == "abierto")
-              
-                    Soporte(soport.length)
-                
+                console.log(response)
+                //return
+                Soporte(soport)
+            }
+            else{
+                  Soporte(0)
             }
         }).catch(err => {
 
@@ -107,7 +114,9 @@ export default function SoporteView() {
         let infos = localStorage.getItem("USERLOGIN")
         let users = JSON.parse(infos)
         let infouser = obtenervaariables(users.servicios[0].smartolt)
+        console.log(infouser)
         dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
+       
         Equipos(users.servicios[0].nodo).then(ou => {
             // dismiss()
             if (ou.estado == "exito") {
@@ -144,20 +153,6 @@ export default function SoporteView() {
                                 console.log("Detalleoltport->", oltstatus)
                                 if (!oltstatus.operational_status.includes("Up")) {
                                     dispat(setSoport({ soporte: true }))
-                                    //agregar mensaje
-                                    /**crear pantalla con mensaje daño masivo y no se genera tickte */
-                                    /*present({
-                                        message: 'crear pantalla con mensaje daño masivo y no se genera tickte',
-                                        cssClass: 'custom-loading',
-                                        duration: 4500,
-                                        buttons: [
-                                            {
-                                                text: "cerrar",
-                                                role: "cancel",
- 
-                                            }
-                                        ]
-                                    })*/
                                 }
                                 else {
                                     dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado onu" }))
@@ -176,11 +171,6 @@ export default function SoporteView() {
                                                 }
                                                 if (so == 0) {
                                                     dispat(setModal({ nombre: "Alerta", payloa: "Creando ticket de soporte" }))
-                                                    /*  present({
-                                                          message: 'Creando ticket de soporte',
-                                                          cssClass: 'custom-loading',
-                                                          duration: 4500,
-                                                      })*/
                                                     Newtickte(info).then(oput => {
                                                         // dismiss()
                                                         dispat(setSoport({ soporte: true }))
@@ -191,18 +181,14 @@ export default function SoporteView() {
                                                     dispat(setSoport({ soporte: true }))
                                                     return
                                                 }
-                                                /* crear tickte */
-                                                /*  present({
-                                                      message: 'crear pantalla con mensaje de Los',
-                                                      cssClass: 'custom-loading',
-                                                      duration: 4500,
-                                                      buttons: [
-                                                          {
-                                                              text: "cerrar",
-                                                              role: "cancel",  
-                                                          }
-                                                      ]
-                                                  })*/
+
+                                                present({
+                                                    message: "Ya tines Ticket pendiente",
+                                                    cssClass: 'custom-toast',
+                                                    duration: 1500,
+                                                    position: "bottom"
+                                                });
+
                                                 setTimeout(function () {
                                                     dispat(setModal({ nombre: "", payloa: "" }))
                                                 }, 1000)
@@ -293,7 +279,12 @@ export default function SoporteView() {
 
                                                                 return
                                                             } else {
-
+                                                                present({
+                                                                    message: "Ya tines Ticket pendiente",
+                                                                    cssClass: 'custom-toast',
+                                                                    duration: 1500,
+                                                                    position: "bottom"
+                                                                });
                                                                 /*present({
                                                                     message: 'Tienes un ticke abierto ',
                                                                     cssClass: 'custom-loading',
@@ -363,11 +354,11 @@ export default function SoporteView() {
             console.log(err)
         })
     }
-    console.log("agregado")
+    
     return (
         <div className="container-fluid px-0 vh-100">
 
-            {modal.nombre == "Alerta" ? "" : <IonFab slot="fixed" vertical="bottom" horizontal="end">
+            {modal.nombre == "Alerta" ? "" : <IonFab slot="fixed" className="d-none" vertical="bottom" horizontal="end">
                 <IonFabButton onClick={() => Soportenew()}>
                     <IonIcon icon={radioOutline}></IonIcon>
                 </IonFabButton>
@@ -473,7 +464,7 @@ export default function SoporteView() {
                                             <span className="" ><img src="img/opcion soporte/signal-wifi.png" className="img-fluid" style={{ height: "2vh" }} alt="" /> </span>
                                             <span className="text-muted" style={{ fontSize: "1.4vh" }}>Señal: <span>-23.65 dBm</span></span>
                                         </li>
-                                        <a href="" className="bg-white shadow-1 none-style border px-4 rounded-pill text-center text-celeste" style={{ fontSize: "1.6vh" }}>Sin Servicio</a>
+                                        <a onClick={() => Soportenew()} className="bg-white shadow-1 none-style border px-4 rounded-pill text-center text-celeste" style={{ fontSize: "1.6vh" }}>Sin Servicio</a>
                                     </div>
                                 </div>
                             </div>
@@ -487,7 +478,32 @@ export default function SoporteView() {
                         </div>}
                         {/*<!--cierre card opcion-->*/}
 
-                        <div className="row col-12 shadow-3  rounded-4 mx-auto my-2 h-15 bg-white py-0">
+                        {btn ? <div className="row col-12 shadow-3  rounded-4 mx-auto my-2 h-15 bg-white py-0">
+                            {/* <!--card opcion-->*/}
+                            <div className="col-8 h-100 border rounded-start-4">
+                                <div className="row w-100 mx-auto h-100">
+                                    <div className="col-12 h-100 btn-group-vertical">
+                                        <li className="list-unstyled my-md-1" style={{ width: "100%", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+                                            <span className="" ><img src="img/opcion soporte/signal-wifi.png" className="img-fluid" style={{ height: "2vh" }} alt="" /></span>
+                                            <span className="text-muted" style={{ fontSize: "1.4vh" }}>Estado: <span>
+                                                {señal.onu_signal == "Very good" ? "Muy buena" : ""}
+                                                {señal.onu_signal == "Warning" ? "Buena" : ""}
+                                                {señal.onu_signal == "Critical" ? "Mala" : ""}</span></span>
+                                        </li>
+                                        <a className="bg-white shadow-1 none-style  border px-4 rounded-pill text-center text-celeste" style={{ fontSize: "1.8vh" }}>Lentitud</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-4 px-1 d-no h-100 rounded-end-4 bg-red-gradient">
+                                <div className="col-12 h-100 w-100 btn-group-vertical">
+                                    <div className="container h-100 text-center btn-group-vertical">
+                                        <img src="img/opcion soporte/estado-internet.png" className="img-fluid drop-shadow-2 mx-auto" style={{ height: "8vh" }} alt="" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div> : <div className="row col-12 shadow-3  rounded-4 mx-auto my-2 h-15 bg-white py-0">
                             {/* <!--card opcion-->*/}
                             <div className="col-8 h-100 border rounded-start-4">
                                 <div className="row w-100 mx-auto h-100">
@@ -512,7 +528,8 @@ export default function SoporteView() {
                                 </div>
                             </div>
 
-                        </div>{/*<!--cierre card opcion-->*/}
+                        </div>}
+                        {/*<!--cierre card opcion-->*/}
 
                         <div className="row col-12 shadow-3  rounded-4 mx-auto my-2 h-15 bg-white py-0">
                             {/*<!--card opcion-->*/}

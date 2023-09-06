@@ -284,6 +284,10 @@ ion-badge.activo {
     vertical-align: top !important;
     line-height: 1px ;
 }
+.darkicon{
+    background-color: #030207 !important;
+    color: #030207 !important;
+}
 /*rgba(239, 242, 245, 0.812)*/
 .ion-toolbar-transparent {
     background: #2284e7cf;

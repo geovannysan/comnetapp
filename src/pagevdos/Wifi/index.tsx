@@ -2,19 +2,11 @@ import { useSelector } from "react-redux"
 import { Changessihide, Deviceslist, Estadossi, Nombressi, Refresssi } from "../../utils/Querystados"
 import { useEffect, useState } from "react"
 import { setNicknameslice } from "../../StoreRedux/Slice/UserSlice"
-import Button from '@mui/material/Button';
 import "./index.css"
 import DeviceView from "../../pages/Home/Modaldevices"
 import * as React from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Modal } from "react-bootstrap";
 import ModalViews from "../../components/Modal";
 import { Cambiarclave, Cambiarname } from "../../utils/Queryuser";
-import AlerView from "../../components/Alert";
 import DialogViewa from "../../components/Alert/Dialog";
 
 
@@ -56,7 +48,7 @@ export default function WifiView(){
             "booleas": e,
             "confi": campo
         }).then(ou => {
-            console.log(ou)
+            //console.log(ou)
             Refresssi({
                 "info": datos.ID_EXTERNO_ONU,
                 "booleas": "" + !wifi,

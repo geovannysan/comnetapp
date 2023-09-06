@@ -64,7 +64,7 @@ export default function HomeView() {
                             <div className="col-12 pb-4 text-center estado" ><b className="me-1">Servicio: </b>{datos.estado == "ACTIVO" ? <span className="icon-circle border p-1 pe-2 rounded-pill color ">{datos.estado}</span> : <span className="icon-circle border p-1 pe-2 rounded-pill  ">{datos.estado}</span>} </div>
                             <div className="col-4 p-0 my-2 ">
                                 <div className="container p-1">
-                                    <a href="/home/perfil"><img src="img/botones-home/mis-datos-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/home/perfil")} ><img src="img/botones-home/mis-datos-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 ">
@@ -79,12 +79,12 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
-                                    <a href="/home/wifi"><img src="img/botones-home/mi-wifi-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/home/wifi")} ><img src="img/botones-home/mi-wifi-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2">
                                 <div className="container p-1">
-                                    <a href="/pagos"><img src="img/botones-home/reportar-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/pagos")} href="/pagos"><img src="img/botones-home/reportar-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 ">

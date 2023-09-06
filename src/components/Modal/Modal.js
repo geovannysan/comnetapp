@@ -1,4 +1,4 @@
-import { Modal } from "react-bootstrap";
+import { Modal } from "@mui/material";
 import { LineWave, Radio ,Triangle} from "react-loader-spinner";
 import { useSelector } from "react-redux";
 export default function AlerModal(){
@@ -6,11 +6,11 @@ export default function AlerModal(){
     return(
        
         <Modal 
-            show={(datos.nombre=="Alerta")}
+            open={(datos.nombre=="Alerta")}
         centered
         id="Alerta"
         >
-        <Modal.Body className="m-auto text-center d-flex flex-column justify-content-center align-items-center" >
+        <div className="h-100 m-auto text-center d-flex flex-column justify-content-center align-items-center" >
                 <Triangle
                     height="100"
                     width="100"
@@ -21,7 +21,7 @@ export default function AlerModal(){
                     visible={true}
                 />
                 <span className=" text-white">{datos.payloa}</span>
-             </Modal.Body>
+             </div>
           
             
         </Modal>

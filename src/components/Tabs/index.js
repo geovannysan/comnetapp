@@ -2,14 +2,13 @@ import { IonIcon, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from "@ion
 
 import HomeView from "../../pagevdos/Home";
 import { Redirect, Route, Switch, useHistory } from "react-router";
-import { add, home, person, settings, wifi } from "ionicons/icons";
+import { home, person, settings, wifi } from "ionicons/icons";
 import SoporteView from "../../pagevdos/Soporte";
 import WifiView from "../../pagevdos/Wifi";
-import { PerfilView } from "../../pages/Perfil";
 import PerfilViews from "../../pagevdos/Perfil";
 
 export default function TabsView() {
-    let history = useHistory();
+   
     return (
         <IonTabs>
             <IonRouterOutlet>

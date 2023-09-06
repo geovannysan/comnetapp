@@ -1,9 +1,6 @@
 import { IonPopover, IonContent, IonList, IonItem, createAnimation, IonBadge, useIonToast, useIonLoading } from '@ionic/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import Collapse from "react-bootstrap/Collapse"
-import { OverlayTrigger } from 'react-bootstrap';
-import { Popover } from 'react-bootstrap';
 import { useEffect, useRef, useState } from 'react';
 import { Equipos, ListarFactura, OLTcardDETA } from '../../utils/Queryuser';
 import { setOpctionslice, setPlan } from '../../StoreRedux/Slice/UserSlice';

@@ -13,7 +13,6 @@ import {
   IonPage,
 } from '@ionic/react';
 import { useLocation } from 'react-router-dom';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
 import {
   archiveOutline, archiveSharp,
   homeSharp,

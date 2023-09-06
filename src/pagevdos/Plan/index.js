@@ -521,13 +521,13 @@ export default function PlanView() {
                 </div>
             </div>
             {/*<!--fin card info-->*/}
-            <div className="container-fluid h-7 bg-blue-gradient d-none ">
+            <div className="container-fluid h-7 bg-blue-gradient ">
                 <div className="container h-100 btn-group-vertical">
                     <div className="container">
                         <div className="row justify-content-center">
-                            <div className="col-auto mx-3 text-center "><a className="none-style fs-22" href="home.html"><span className="icon-home-3  text-white"></span></a></div>
-                            <div className="col-auto mx-3 text-center"><a className="none-style fs-22" href=""><span className="icon-plus-squared text-white"></span></a></div>
-                            <div className="col-auto mx-3 text-center"><a className="none-style fs-22" href="datos.html"><span className="icon-user-4 text-white"></span></a></div>
+                            <div className="col-auto mx-3 text-center d-none"><a className="none-style fs-22" href="home.html"><span className="icon-home-3  text-white"></span></a></div>
+                            <div className="col-auto mx-3 text-center d-none"><a className="none-style fs-22" href=""><span className="icon-plus-squared text-white"></span></a></div>
+                            <div className="col-auto mx-3 text-center d-none"><a className="none-style fs-22" href="datos.html"><span className="icon-user-4 text-white"></span></a></div>
                         </div>
                     </div>
                 </div>

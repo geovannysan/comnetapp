@@ -1,5 +1,5 @@
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from "@ionic/react";
-import { exit, reorderFour, close, chevronForward } from "ionicons/icons";
+import {close,chevronForward} from "ionicons/icons";
 
 export default function DeviceView(props: any) {
     let { showModal, setModal, devices, nickname } = props
@@ -10,16 +10,20 @@ export default function DeviceView(props: any) {
             backdropDismiss={false}
 
         >
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle className="text-white">
+            <IonHeader >
+                <IonToolbar className=""
+                style={{
+                    color:"#ffffs"
+                }}
+                >
+                    <IonTitle className="text-dark">
                         {nickname}
                     </IonTitle>
                     <IonButtons slot="end"  >
-                        <IonButton
+                        <IonButton color={"dark"}
 
                             onClick={() => setModal(false)}>
-                            <IonIcon icon={close}></IonIcon>
+                            <IonIcon className="text-dark" icon={close}></IonIcon>
                         </IonButton>
 
                     </IonButtons>
