@@ -118,7 +118,9 @@ const FacturasView = () => {
     }
     const showDatos = () => {
         try {
-            console.log(factura)
+            console.log(factura.map((ite)=>{
+                console.log(JSON.parse( ite.mensajes))
+            }))
             return factura.map((item, index) => {
                 let js = JSON.parse(item.mensajes)
                 return (
