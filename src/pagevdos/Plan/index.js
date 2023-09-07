@@ -1,4 +1,4 @@
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar, createAnimation } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
@@ -241,11 +241,28 @@ export default function PlanView() {
         })
         //Soporte(1)
     }, [infouser])
+   
+        const customEnterAnimation = (baseEl) => {
+            const animation = createAnimation()
+                .addElement(baseEl)
+                .duration(500)
+                .fromTo('opacity', '0', '1');
+            return animation;
+        };
 
-
+        const customLeaveAnimation = (baseEl) => {
+            const animation = createAnimation()
+                .addElement(baseEl)
+                .duration(500)
+                .fromTo('opacity', '1', '0');
+            return animation;
+        };
+    
     return (
-
-        <div className="container-fluid px-0 vh-100">
+        <IonPage
+            className="fade-in-enter fade-in-leave"
+        >
+        <div  className="container-fluid px-0 vh-100">
             {/*<!--Contenedor General-->*/}
 
             <div className="container-fluid h-20 pb-5 bg-welcome bg-welcome-radius px-0">
@@ -537,6 +554,7 @@ export default function PlanView() {
 
 
         </div>
+        </IonPage>
 
     )
 }

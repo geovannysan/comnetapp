@@ -2,7 +2,7 @@ import { IonBackButton, IonButton, IonButtons, IonHeader, IonIcon, IonTitle, Ion
 import { arrowBack, ellipse } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { MostrarFacturas } from "../../utils/Queryuser";
+import { FacturasAtorizada, MostrarFacturas } from "../../utils/Queryuser";
 import { useSelector } from "react-redux";
 import { FileUploader } from "react-drag-drop-files";
 import Box from '@mui/material/Box';
@@ -52,6 +52,11 @@ export default function PAgosViewa() {
                 })
 
             }).catch(err => {
+                console.log(err)
+            })
+            FacturasAtorizada(datos.cedula).then(ouput=>{
+                console.log(ouput)
+            }).catch(err=>{
                 console.log(err)
             })
         }
@@ -244,12 +249,12 @@ export default function PAgosViewa() {
                                         </div>
                                     </div>
                                     <div className="col-12 h-40  btn-group-vertical bg-white rounded-bottom-4">
-                                        {
-                                            totalfact.total > 0 ? <a className="mx-auto text-white none-style bg-orange px-3 py-1 rounded-pill shadow-2"
+                                        
+                                            <a className="mx-auto text-white none-style bg-orange px-3 py-1 rounded-pill shadow-2"
                                                 style={{
                                                     fontSize: "1.7vh"
                                                     /*"font-size: 1.7vh;"*/
-                                                }} href="">Reportar</a> : ""}
+                                                }} href="">Ver Facturas </a> 
                                     </div>
                                 </div>
                             </div>{/*<!--ciere card opcion-->*/}
@@ -332,9 +337,9 @@ export default function PAgosViewa() {
                     <ArrowCircleLeft />
                 </Fab>
             </Zoom>}
-            <div className="container-fluid h-7 bg-blue-gradient d-none ">
+            <div className="container-fluid h-7 bg-blue-gradient  ">
                 <div className="container h-100 btn-group-vertical">
-                    <div className="container">
+                    <div className="container d-none">
                         <div className="row justify-content-center">
                             <div className="col-auto mx-3 text-center "><a className="none-style fs-22" href="home.html"><span className="icon-home-3  text-white"></span></a></div>
                             <div className="col-auto mx-3 text-center"><a className="none-style fs-22" href=""><span className="icon-plus-squared text-white"></span></a></div>

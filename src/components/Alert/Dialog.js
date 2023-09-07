@@ -18,6 +18,7 @@ export default function DialogViewa(props) {
         //console.log('Nombre:', datos);
         setAlert("")
     };
+    
     return (
         <>
             <Dialog open={alert} TransitionComponent={Transition} onClose={()=>setAlert("")}>
@@ -27,9 +28,9 @@ export default function DialogViewa(props) {
                     </DialogContentText>
                    {subheader}
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={()=>setAlert("")}>Cancelar</Button>
-                    <Button onClick={()=>Confirmcall()}>Confirmar</Button>
+                <DialogActions className=' d-flex justify-content-between'>
+                    <Button className='btn btn-sm   text-white rounded-pill btn-size-1 py-25 shadow-2' color='error' variant={"contained"} onClick={()=>setAlert("")}>Cancelar</Button>
+                    <Button className='btn btn-sm  bg-blue-gradient text-white rounded-pill btn-size-1 py-25 shadow-2' color={"success"} variant={"contained"} onClick={()=>Confirmcall()}>Confirmar</Button>
                 </DialogActions>
             </Dialog>
         </>

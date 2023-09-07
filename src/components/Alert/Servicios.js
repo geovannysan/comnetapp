@@ -16,7 +16,6 @@ export default function DialogoServicio(prosp) {
     }
     return (
         <Dialog onClose={handleClose} open={open}>
-            <DialogTitle>Perfil</DialogTitle>
             <List sx={{ pt: 0 }}>
                 {servicios.map((email, i) => (
                     <ListItem disableGutters>
@@ -26,7 +25,9 @@ export default function DialogoServicio(prosp) {
                                     <PersonPinCircle />
                                 </Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary={email.correo} secondary={email.nombre + "\n" + email.direccion_principal} />
+                            <ListItemText primary={email.correo} secondary={email.nombre + "\n" + email.direccion_principal} 
+                           
+                            />
                         </ListItemButton>
                     </ListItem>
                 ))}

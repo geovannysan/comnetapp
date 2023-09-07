@@ -3,14 +3,15 @@ import { userlog } from "../../utils/User"
 import { UserUpdate, autenticar } from "../../utils/Queryuser"
 import AlerModal from "../../components/Modal/Modal"
 import { useDispatch, useSelector } from "react-redux"
-import { setDatosuser, setModal } from "../../StoreRedux/Slice/UserSlice"
-import { Button } from "@mui/material"
-import { IonAccordion, IonButton, IonFab, IonFabButton, IonIcon, IonItem, IonLabel } from "@ionic/react"
+import { setDatosuser, setModal, setlogin } from "../../StoreRedux/Slice/UserSlice"
+import { IonFab, IonFabButton, IonIcon } from "@ionic/react"
 import DialogoServicio from "../../components/Alert/Servicios"
-import { exit } from "ionicons/icons"
-
+import { powerOutline } from "ionicons/icons"
+import { useHistory } from "react-router"
+import DialogViewa from "../../components/Alert/Dialog"
 export default function PerfilViews() {
     let dtos = userlog()
+    let history = useHistory()
     let aler = useSelector((state: any) => state.usuario)
     let dispatch = useDispatch()
     const [datos, setDatos] = useState({
@@ -28,16 +29,10 @@ export default function PerfilViews() {
     }
     function Actualizardatos() {
         let dtos = userlog()
-        // console.log(Object.values(datos))
-        //console.log(datos)
-        //console.log(Object.values(datos).every((e: any) => e))
         if (!Object.values(datos).every((e: any) => e)) return
-
-        // if(true) return
         dispatch(setModal({ nombre: "Alerta", payloa: "Actualizando datos del perfil" }))
         UserUpdate({ "idcliente": dtos.id, ...datos }).then(salida => {
             if (salida.estado = "exito") {
-
                 autenticar(dtos.cedula).then(e => {
                     if (e.estado == "exito") {
                         console.log(e.datos)
@@ -51,10 +46,8 @@ export default function PerfilViews() {
                         console.log(datos.filter((f: any) => f.id == dtos.id)[0])
                         localStorage.setItem("Perfiles", JSON.stringify([...datos]))
                         localStorage.setItem("USERLOGIN", JSON.stringify({ ...datos.filter((f: any) => f.id == dtos.id)[0] }))
-
                         dispatch(setDatosuser({ ...datos.filter((f: any) => f.id == dtos.id)[0] }))
                     }
-
                 })
                 dispatch(setModal({ nombre: "", payloa: "" }))
             } else {
@@ -65,8 +58,15 @@ export default function PerfilViews() {
     function handleClose() {
         setDatosn(!serv)
     }
+    let [Alert, setAlert] = useState("")
+    function cerrarSession() {
+
+        localStorage.clear()
+        dispatch(setlogin({ estado: false }))
+        history.push("/")
+
+    }
     useEffect(() => {
-        // console.log(dtos)
         setDatos({
             nombre: dtos.nombre,
             cedula: dtos.cedula,
@@ -81,6 +81,13 @@ export default function PerfilViews() {
             <DialogoServicio
                 handleClose={handleClose}
                 open={serv}
+            />
+            <DialogViewa
+                setAlert={setAlert}
+                alert={(Alert == "cerrar")}
+                header={"Desea cerrar la sesión"}
+                subheader={""}
+                Confirmcall={() => cerrarSession()}
             />
             <div className="container-fluid h-20 pb-2 bg-welcome bg-welcome-radius px-0">
                 {/* <!--header welcome-->*/}
@@ -99,7 +106,7 @@ export default function PerfilViews() {
                             </div>
                         </div>
                         <div onClick={() => setDatosn(true)} className=" cursor  text-white d-flex justify-content-center text-center pt-1 ">
-                            <p>Perfil# {aler.user.id.toString().padStart(5, '0')}</p>
+                            <p>Perfil # {aler.user.id.toString().padStart(7, '0')}</p>
                             <i className="bi bi-caret-down px-3"></i>
 
                         </div>
@@ -193,10 +200,10 @@ export default function PerfilViews() {
 
 
             </div>
-            <IonFab slot="fixed" vertical="bottom" horizontal="end">
-               <IonFabButton>
-                <IonIcon  icon={exit}/>
-               </IonFabButton>
+            <IonFab slot="fixed" vertical="top" horizontal="center">
+                <IonFabButton onClick={() => setAlert("cerrar")} color={"light"} className=" shadow-lg" size="small">
+                    <IonIcon icon={powerOutline} />
+                </IonFabButton>
             </IonFab>
         </div>)
 }

@@ -11,12 +11,9 @@ import DialogViewa from "../../components/Alert/Dialog";
 
 
 export default function WifiView(){
-    const datos = useSelector((state: any) => state.usuario.user)
-
-    const [devices, setDevices] = useState([])
-
+    const datos = useSelector((state: any) => state.usuario.user);
+    const [devices, setDevices] = useState([]);
     const [Alert, setAlert] = useState('');
-
     const [showModal, setModal] = useState(false);
     const [señal, setSeñal] = useState({
         onu_signal_value: "",

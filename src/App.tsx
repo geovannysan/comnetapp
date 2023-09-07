@@ -1,45 +1,30 @@
-import { IonApp, IonButton, IonButtons, IonCardSubtitle, IonHeader, IonIcon, IonMenuButton, IonRouterOutlet, IonSplitPane, IonTabBar, IonTabButton, IonTabs, IonTitle, IonToolbar, createAnimation, isPlatform, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, createAnimation, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Menu from './components/Menu';
-import Page from './pages/Page';
-import Inicio from './pages/Login/index'
-
-/* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
-/* Optional CSS utils that can be commented out */
 import '@ionic/react/css/padding.css';
 import '@ionic/react/css/float-elements.css';
 import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
-/* Theme variables */
 import './theme/variables.css';
-//import './theme/boostrap.css';
-//import './theme/animate.css';
 import "./theme/style.css";
 import "./theme/tablas.css";
 import "./theme/rizes.css";
-//import "./theme/anima.css";
 import { useEffect, useState } from 'react';
-
 import { userlog } from './utils/User';
 import { StatusBar, Style } from '@capacitor/status-bar';
-import { setDatosuser, setlogin, setPlan } from './StoreRedux/Slice/UserSlice';
-import { ListarFactura, autenticar } from './utils/Queryuser';
+import { setDatosuser, setlogin } from './StoreRedux/Slice/UserSlice';
+import { autenticar } from './utils/Queryuser';
 import OneSignal from 'onesignal-cordova-plugin';
 import { initializeOneSignal } from './Onesignajs'
 import { getPlatforms } from '@ionic/react';
-import { add, home, person, pulse } from 'ionicons/icons';
 import LoginView from './pagevdos/Inicio/login';
-import RegistroView from './pages/Login/Register';
 import RegisterViews from './pagevdos/Inicio/register';
 import TabsView from './components/Tabs';
 import PAgosViewa from './pagevdos/Pagos';
@@ -56,55 +41,45 @@ function OneSignalInit(user: any): void {
   OneSignal.promptForPushNotificationsWithUserResponse(function (accepted) {
     console.log("User accepted notifications: " + accepted);
   });
-  const externalUserId = "ID_EXTERNO"; // Reemplaza con tu ID externo único
+  const externalUserId = "ID_EXTERNO";
 
   OneSignal.setExternalUserId(user.id, (results: any) => {
     console.log('Results of setting external user id');
     console.log(results);
-
-    // Push can be expected in almost every situation with a success status, but
-    // as a pre-caution its good to verify it exists
     if (results.push && results.push.success) {
       console.log('Results of setting external user id push status:');
       console.log(results.push.success);
     }
-
-    // Verify the email is set or check that the results have an email success status
     if (results.email && results.email.success) {
       console.log('Results of setting external user id email status:');
       console.log(results.email.success);
     }
-
-    // Verify the number is set or check that the results have an sms success status
     if (results.sms && results.sms.success) {
       console.log('Results of setting external user id sms status:');
       console.log(results.sms.success);
     }
   })
-
 }
-const animationBuilder = (baseEl: any, opts?: any) => {
-  const enteringAnimation = createAnimation()
-    .addElement(opts.enteringEl)
-    .fromTo('transform', 'translateX(100px)', 'translateX(0px)')
-    .fromTo('opacity', 0, 1)
-    .duration(350);
-
-  const leavingAnimation = createAnimation()
-    .addElement(opts.leavingEl)
-    .fromTo('transform', 'translateX(0px)', 'translateX(100px)')
-
-    .duration(350);
-
+const customEnterAnimation = (baseEl:any) => {
   const animation = createAnimation()
-    .addAnimation(enteringAnimation)
-    .addAnimation(leavingAnimation);
+    .addElement(baseEl)
+    .duration(500)
+    .fromTo('opacity', '0', '1');
+  return animation;
+};
 
+const customLeaveAnimation = (baseEl:any) => {
+  const animation = createAnimation()
+    .addElement(baseEl)
+    .duration(500)
+    .fromTo('opacity', '1', '0');
   return animation;
 };
 setupIonicReact();
+const gradientBackground = 'linear-gradient(90deg, rgba(0, 129, 199, 1) 0%, rgba(26, 36, 91, 1) 100%)';
+
 const setStatusBarStyleLight = async () => {
-  await StatusBar.setBackgroundColor({ color:"#3880ff"})
+  await StatusBar.setBackgroundColor({ color: gradientBackground })
   await StatusBar.setStyle({ style: Style.Light });
 };
 const App: React.FC = () => {
@@ -133,11 +108,11 @@ const App: React.FC = () => {
       //console.log(datos)
       autenticar(datos.cedula).then(salida => {
         if (salida.estado == "exito") {
-         // console.log(salida.datos)
-         // userdispach(setlogin({ estado: true }))
+          // console.log(salida.datos)
+          // userdispach(setlogin({ estado: true }))
           userdispach(setDatosuser({ ...salida.datos[0] }))
-        }else{
-          
+        } else {
+
         }
 
       }).catch(err => {
@@ -193,7 +168,8 @@ const App: React.FC = () => {
       <IonReactRouter>
         {user.authb ?
           <IonReactRouter>
-            <IonRouterOutlet animation={animationBuilder}>
+            <IonRouterOutlet animated={true}
+            >
               <Switch>
 
                 <Route path="/home">
