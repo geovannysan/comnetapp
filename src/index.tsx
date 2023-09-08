@@ -5,6 +5,7 @@ import { stores } from './StoreRedux/store';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import '@ionic/react/css/ionic.bundle.css'
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(

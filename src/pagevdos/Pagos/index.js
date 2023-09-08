@@ -1,5 +1,5 @@
-import { IonBackButton, IonButton, IonButtons, IonHeader, IonIcon, IonTitle, IonToolbar } from "@ionic/react";
-import { arrowBack, ellipse } from "ionicons/icons";
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from "@ionic/react";
+import { arrowBack, cloudCircleOutline, ellipse } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { FacturasAtorizada, MostrarFacturas } from "../../utils/Queryuser";
@@ -9,7 +9,9 @@ import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { Zoom, useTheme } from "@mui/material";
-import { Add, ArrowBackIosNew, ArrowCircleLeft, EditNotificationsOutlined } from "@mui/icons-material";
+import { Add, ArrowBackIosNew, ArrowCircleLeft, ChevronLeftOutlined, DownloadDone, EditNotificationsOutlined } from "@mui/icons-material";
+import FacturaViews from "../../pages/Comprobantes/Facturas";
+import Facturapdf from "./FacturaView";
 export default function PAgosViewa() {
     let history = useHistory()
     const theme = useTheme();
@@ -22,14 +24,14 @@ export default function PAgosViewa() {
         bottom: 16,
         right: 16,
     };
-    const datos = useSelector((state: any) => state.usuario.user)
+    const datos = useSelector((state) => state.usuario.user)
     const fileTypes = ["JPEG", "PNG", "GIF"];
-    const [report,setReport]=useState(false)
-    const [file, setFile] = useState<any>(null);
-    const handleChange = (file:any) => {
+    const [report, setReport] = useState(false)
+    const [file, setFile] = useState(null);
+    const handleChange = (file) => {
         setFile(file);
     };
-    function Pagados(){
+    function Pagados() {
         setReport(!report)
     }
     const [totalfact, setFactu] = useState({
@@ -37,15 +39,25 @@ export default function PAgosViewa() {
         valor: ""
     })
     const [facturacion, setFacturaci] = useState([])
+    const [lista, setLista] = useState(false)
+    const [link,setLink]=useState("")
+    const [isOpen, setIsOpen] = useState(false);
+    function AbrirFactura(e){
+        console.log(e)
+       setLink(e)
+        setIsOpen(true)
+
+    }
     useEffect(() => {
         console.log(datos.id)
         if (datos.id != undefined) {
             MostrarFacturas(datos.id).then(salida => {
                 console.log(salida)
-                const sumaTotal = salida.facturas.reduce((acumulador: any, objeto: any) => {
+                if (salida.estado == "error") return
+                const sumaTotal = salida.facturas.reduce((acumulador, objeto) => {
                     return acumulador + parseFloat(objeto.total);
                 }, 0);
-                console.log(sumaTotal)
+                //console.log(sumaTotal)
                 setFactu({
                     total: salida.facturas.length,
                     valor: sumaTotal
@@ -54,9 +66,12 @@ export default function PAgosViewa() {
             }).catch(err => {
                 console.log(err)
             })
-            FacturasAtorizada(datos.cedula).then(ouput=>{
-                console.log(ouput)
-            }).catch(err=>{
+            FacturasAtorizada(datos.cedula).then(ouput => {
+                if (ouput.estado) {
+                    console.log(ouput)
+                    setFacturaci(ouput.facturas)
+                }
+            }).catch(err => {
                 console.log(err)
             })
         }
@@ -66,7 +81,21 @@ export default function PAgosViewa() {
     return (
 
         <div className="container-fluid px-0 vh-100">{/*<!--Contenedor General-->*/}
-
+            <IonModal isOpen={isOpen}>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Factura</IonTitle>
+                        <IonButtons slot="end">
+                            <IonButton onClick={() => setIsOpen(false)}>Cerra</IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent className="p-0">
+                  {link==""?"": <Facturapdf
+                   link={link}
+                   />}
+                </IonContent>
+            </IonModal>
             <div className="container-fluid h-20 pb-5 bg-welcome bg-welcome-radius px-0">{/*<!--header welcome-->*/}
                 <IonToolbar className=" ion-no-border">
                     <IonButtons slot="start">
@@ -111,7 +140,7 @@ export default function PAgosViewa() {
 
             <div className="col-12 col-md-8 col-xl-2 mx-auto h-73 ">
                 {/*<!--card info-->*/}
-                {!report ?<div className="container-fluid h-100 btn-group-vertical  " >
+                {lista || report ? "" : <div className="container-fluid h-100 btn-group-vertical  " >
                     <div className="container-fluid btn-group-vertical h-100">
                         <div className="row flex-row-reverse col-12 shadow-3  rounded-4 mx-auto my-2 h-33 bg-white py-0">
                             {/*<!--card opcion-->*/}
@@ -249,12 +278,12 @@ export default function PAgosViewa() {
                                         </div>
                                     </div>
                                     <div className="col-12 h-40  btn-group-vertical bg-white rounded-bottom-4">
-                                        
-                                            <a className="mx-auto text-white none-style bg-orange px-3 py-1 rounded-pill shadow-2"
-                                                style={{
-                                                    fontSize: "1.7vh"
-                                                    /*"font-size: 1.7vh;"*/
-                                                }} href="">Ver Facturas </a> 
+
+                                        <a className="mx-auto text-white none-style bg-orange px-3 py-1 rounded-pill shadow-2"
+                                            style={{
+                                                fontSize: "1.7vh"
+                                                /*"font-size: 1.7vh;"*/
+                                            }} onClick={() => setLista(!lista)}>Ver Facturas </a>
                                     </div>
                                 </div>
                             </div>{/*<!--ciere card opcion-->*/}
@@ -271,7 +300,6 @@ export default function PAgosViewa() {
                                             /*"height: 7vh;"*/
                                         }} alt="" />
                                 </div>
-
                                 <div className="col-12 h-60  rounded-bottom-4">
                                     <div className="col-12 h-60 bg-white mx-auto btn-group-vertical pt-2">
                                         <div className="row col-12 mx-auto justify-content-center pt-2">
@@ -306,37 +334,82 @@ export default function PAgosViewa() {
 
 
                     </div>
-                </div>
-                :<div className=" container-fluid h-100 d-flex justify-content-center align-items-center ">
-                    <div className="text-center">
-                        <FileUploader
-                            multiple={true}
-                            handleChange={handleChange}
-                            name="file"
-                            types={fileTypes}
-                        />
-                        <p>{file ? `Imagen cargada: ${file[0].name}` : "no hay archivo subido"}</p>
-                    </div>
-                   
-
                 </div>}
+                {!report ? ""
+                    : <div className=" container-fluid h-100 d-flex justify-content-center align-items-center ">
+                        <div className="text-center">
+                            <FileUploader
+                                multiple={true}
+                                handleChange={handleChange}
+                                name="file"
+                                types={fileTypes}
+                            />
+                            <p>{file ? `Imagen cargada: ${file[0].name}` : "no hay archivo subido"}</p>
+                        </div>
+
+
+                    </div>}
+                {lista ?
+                    <IonContent className=" text-center">
+                        <IonTitle className=" fw-bold py-2">Lista de Facturas emitidas</IonTitle>
+                        <IonList>
+                            {facturacion.length > 0 ?
+
+                                facturacion.map((e, i) => {
+                                    let fechas = e.fecha.split("T")[0]
+                                    return (
+                                        <IonItem key={i}>
+                                            <IonLabel slot="">
+                                                <h3>FAC: {e.numfactura}</h3>
+
+                                                <h3>{fechas} </h3>
+
+                                            </IonLabel>
+                                            <IonLabel slot="end">
+                                                <IonButton onClick={() => AbrirFactura(e.mensajes.url_ride)} >
+                                                    <IonIcon icon={cloudCircleOutline} />
+                                                </IonButton>
+                                            </IonLabel>
+                                        </IonItem>)
+                                }) : ""
+                            }
+                        </IonList>
+                    </IonContent>
+                    : ""}
             </div>{/*<!--fin card info-->*/}
-            {!report?"":   
-            <Zoom
-                key={"primary"}
-               in
-                timeout={transitionDuration}
-                style={{
-                    transitionDelay: `${1? transitionDuration.exit : 0}ms`,
-                }}
-                unmountOnExit
-            >
-                <Fab size="small" sx={fabStyle} aria-label={"Add"} color={"primary"} 
-                    onClick={Pagados}
+            {!report ? "" :
+                <Zoom
+                    key={"primary"}
+                    in
+                    timeout={transitionDuration}
+                    style={{
+                        transitionDelay: `${1 ? transitionDuration.exit : 0}ms`,
+                    }}
+                    unmountOnExit
                 >
-                    <ArrowCircleLeft />
-                </Fab>
-            </Zoom>}
+                    <Fab size="small" sx={fabStyle} aria-label={"Add"} color={"primary"}
+                        onClick={Pagados}
+                    >
+                        <ChevronLeftOutlined />
+                    </Fab>
+                </Zoom>}
+            {!lista ? "" :
+                <Zoom
+                    key={"primary"}
+                    in
+                    timeout={transitionDuration}
+                    style={{
+                        transitionDelay: `${1 ? transitionDuration.exit : 0}ms`,
+                    }}
+                    unmountOnExit
+                >
+                    <Fab size="small" sx={fabStyle} aria-label={"Add"} color={"primary"}
+                        onClick={() => setLista(!lista)}
+                    >
+                        <ChevronLeftOutlined />
+                    </Fab>
+                </Zoom>
+            }
             <div className="container-fluid h-7 bg-blue-gradient  ">
                 <div className="container h-100 btn-group-vertical">
                     <div className="container d-none">

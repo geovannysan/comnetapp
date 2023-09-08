@@ -24,7 +24,6 @@ export const Logearusar = async (parms) => {
     try {
         console.log(Hostv1 + "/Login", parms)
         let { data } = await axios.post(Hostv1 + "/Login", parms)
-
         return data
     } catch (error) {
         return error
@@ -33,7 +32,6 @@ export const Logearusar = async (parms) => {
 export const ListarTicket = async (parm) => {
     try {
         let { data } = await axios.post(Hostv1 + "/PortalApi/ListTicket", {
-            //"token": token,
             "idcliente": parm
         }, {
             headers: {
@@ -49,7 +47,6 @@ export const ListarTicket = async (parm) => {
 export const ListarFactura = async (parms) => {
     try {
         let { data } = await axios.post(Hostv1 + "/PortalApi/GetInvoices", {
-            //"token": token,
             "limit": "1",
             "idcliente": parseInt(parms)
         }, {
@@ -64,7 +61,6 @@ export const ListarFactura = async (parms) => {
             console.log(id, parms)
             let datos = await axios.post(Hostv1 + "/PortalApi/GetInvoice",
                 {
-                    // "token": token,
                     "idfactura": id
                 }, {
                 headers: {
@@ -72,15 +68,11 @@ export const ListarFactura = async (parms) => {
                     'Content-Type': 'application/json',
                 },
             })
-            //console.log(datos)
             let arr = datos.data.items[0].descrp.split("\r\n")
             return arr
-
         }
-
     } catch (error) {
         return error
-
     }
 }
 export const MostrarFacturas = async (parms) => {
@@ -133,8 +125,6 @@ export const Facturaid = async (parms) => {
     } catch (error) {
         return error
     }
-
-
 }
 export const Equipos = async (parms) => {
     try {
@@ -150,7 +140,6 @@ export const OLTcardDETA = async (parms) => {
         return data
     } catch (error) {
         return error
-
     }
 }
 export const Cambiarclave = async (parms) => {
@@ -177,7 +166,6 @@ export const UserUpdate = async (parms) => {
         return error
     }
 }
-
 export const Newtickte = async (parms) => {
     try {
         let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/CreaTicket", parms)

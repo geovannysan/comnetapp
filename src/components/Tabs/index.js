@@ -1,12 +1,15 @@
 import { IonFab, IonFabButton, IonIcon, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from "@ionic/react";
 
-import HomeView from "../../pagevdos/Home";
+//import HomeView ;
+
 import { Redirect, Route, Switch, useHistory } from "react-router";
 import { home, person, powerOutline, settings, wifi } from "ionicons/icons";
 import SoporteView from "../../pagevdos/Soporte";
 import WifiView from "../../pagevdos/Wifi";
 import PerfilViews from "../../pagevdos/Perfil";
-
+import { lazy } from "react";
+import Loadable from "../Loadable";
+const HomeView = Loadable( lazy(() => import('../../pagevdos/Home')))
 export default function TabsView() {
 
     return (

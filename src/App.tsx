@@ -24,12 +24,10 @@ import { autenticar } from './utils/Queryuser';
 import OneSignal from 'onesignal-cordova-plugin';
 import { initializeOneSignal } from './Onesignajs'
 import { getPlatforms } from '@ionic/react';
-import LoginView from './pagevdos/Inicio/login';
-import RegisterViews from './pagevdos/Inicio/register';
-import TabsView from './components/Tabs';
-import PAgosViewa from './pagevdos/Pagos';
 import PlanView from './pagevdos/Plan';
 import { MapsVies } from './pagevdos/Mapa';
+import { routes } from './pagevdos/routersub';
+let {LoginView,RegisterViews,PAgosViewa,TabsView }=routes
 
 function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
