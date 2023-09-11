@@ -27,7 +27,7 @@ import { getPlatforms } from '@ionic/react';
 import PlanView from './pagevdos/Plan';
 import { MapsVies } from './pagevdos/Mapa';
 import { routes } from './pagevdos/routersub';
-let {LoginView,RegisterViews,PAgosViewa,TabsView }=routes
+let { LoginView, RegisterViews, PAgosViewa, TabsView } = routes
 
 function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
@@ -58,7 +58,7 @@ function OneSignalInit(user: any): void {
     }
   })
 }
-const customEnterAnimation = (baseEl:any) => {
+const customEnterAnimation = (baseEl: any) => {
   const animation = createAnimation()
     .addElement(baseEl)
     .duration(500)
@@ -66,7 +66,7 @@ const customEnterAnimation = (baseEl:any) => {
   return animation;
 };
 
-const customLeaveAnimation = (baseEl:any) => {
+const customLeaveAnimation = (baseEl: any) => {
   const animation = createAnimation()
     .addElement(baseEl)
     .duration(500)
@@ -163,51 +163,41 @@ const App: React.FC = () => {
   };*/
   return (
     <IonApp>
-      <IonReactRouter>
-        {user.authb ?
-          <IonReactRouter>
-            <IonRouterOutlet animated={true}
-            >
-              <Switch>
+      {user.authb ?
+        <IonReactRouter>
+          <IonRouterOutlet 
+          >
 
-                <Route path="/home">
-                  <TabsView />
-                </Route>
-                <Route path="/pagos">
-                  <PAgosViewa />
-                </Route>
-                <Route path="/plan">
-                  <PlanView />
-                </Route>
-                <Route path="/cambios">
-                </Route>
-                <Route path="/termino">
-                </Route>
-                <Route path="/mapas">
-                  <MapsVies />
-                </Route>
-                <Route path="/" >
-                  <Redirect to="/home/inicio" />
-                </Route>
+              <Route path="/pagos" >
+                <PAgosViewa />
+              </Route>
+              <Route path="/plan">
+                <PlanView />
+              </Route>
+              <Route path="/mapas">
+                <MapsVies />
+              </Route>
+              
+              <Route path="/home">
+                <TabsView />
+              </Route>
 
-              </Switch>
-
-            </IonRouterOutlet>
-          </IonReactRouter>
-          :
-
+          </IonRouterOutlet>
+        </IonReactRouter>
+        :
+        <IonReactRouter>
           <IonRouterOutlet>
             <Route path="/">
               <LoginView />
             </Route>
-            <Route path="registro">
-              <RegisterViews />
+            <Route path="/registro">
+              <LoginView />
             </Route>
           </IonRouterOutlet>
+        </IonReactRouter>
 
 
-        }
-      </IonReactRouter>
+      }
     </IonApp >
 
   );
