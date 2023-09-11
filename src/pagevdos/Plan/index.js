@@ -260,7 +260,7 @@ export default function PlanView() {
     
     return (
         <IonPage
-            className="fade-in-enter fade-in-leave"
+            className=""
         >
         <div  className="container-fluid px-0 vh-100">
             {/*<!--Contenedor General-->*/}

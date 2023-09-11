@@ -9,7 +9,7 @@ import { ListarFactura, Logearusar, autenticar } from '../../utils/Queryuser';
 import { eye, eyeOff } from 'ionicons/icons';
 export default function LoginView() {
     let usedispat = useDispatch()
-    let history = useHistory()
+    let historys = useHistory()
     const [present] = useIonToast();
     const [datos, setDatos] = useState({
         cedula: "",
@@ -43,7 +43,7 @@ export default function LoginView() {
                                 usedispat(setPlan(datos.length > 1 ? [datos[0], datos[3], datos[4], datos[5]] : datos))
                                 usedispat(setDatosuser(e.datos[0]))
                                 usedispat(setlogin({ estado: true }))
-                                history.push("/home")
+                                historys.push("/home")
                             }
                         }).catch(err => {
 
@@ -93,9 +93,11 @@ export default function LoginView() {
                     })
                     localStorage.setItem("Perfiles", JSON.stringify([...datos]))
                     localStorage.setItem("USERLOGIN", JSON.stringify({ ...datos[0] }))
+                    window.location.href="/home"
+                    //historys.push("/home/soporte")
                     usedispat(setDatosuser(datos[0]))
                     usedispat(setlogin({ estado: true }))
-                    history.push("/home")
+                   
                 } else {
                     present({
                         message: ou.mensaje,
@@ -182,7 +184,7 @@ export default function LoginView() {
 
                         <div className="">
                             <div className="px-5">
-                                <input className="textbox-25" placeholder="Contraseña" />
+                                <input className="textbox-25" placeholder="Contraseña" /> 
                             </div>
 
                         </div>

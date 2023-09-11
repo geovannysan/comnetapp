@@ -27,7 +27,8 @@ import { getPlatforms } from '@ionic/react';
 import PlanView from './pagevdos/Plan';
 import { MapsVies } from './pagevdos/Mapa';
 import { routes } from './pagevdos/routersub';
-let { LoginView, RegisterViews, PAgosViewa, TabsView } = routes
+import PAgosViewa from './pagevdos/Pagos';
+let { LoginView, RegisterViews, TabsView } = routes
 
 function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
@@ -109,6 +110,7 @@ const App: React.FC = () => {
           // console.log(salida.datos)
           // userdispach(setlogin({ estado: true }))
           userdispach(setDatosuser({ ...salida.datos[0] }))
+
         } else {
 
         }
@@ -161,40 +163,33 @@ const App: React.FC = () => {
 
     console.log('Notificación programada creada.');
   };*/
+  console.log(user.authb)
   return (
     <IonApp>
       {user.authb ?
         <IonReactRouter>
-          <IonRouterOutlet 
+          <IonRouterOutlet
           >
 
-              <Route path="/pagos" >
-                <PAgosViewa />
-              </Route>
-              <Route path="/plan">
-                <PlanView />
-              </Route>
-              <Route path="/mapas">
-                <MapsVies />
-              </Route>
-              
-              <Route path="/home">
-                <TabsView />
-              </Route>
+            <Route path="/pagos" >
+              <PAgosViewa />
+            </Route>
+            <Route path="/plan">
+              <PlanView />
+            </Route>
+            <Route path="/mapas">
+              <MapsVies />
+            </Route>
+            <Route path="/home">
+              <TabsView />
+            </Route>
 
           </IonRouterOutlet>
         </IonReactRouter>
         :
-        <IonReactRouter>
-          <IonRouterOutlet>
-            <Route path="/">
-              <LoginView />
-            </Route>
-            <Route path="/registro">
-              <LoginView />
-            </Route>
-          </IonRouterOutlet>
-        </IonReactRouter>
+
+        <LoginView />
+
 
 
       }

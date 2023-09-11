@@ -39,7 +39,7 @@ export default function TabsView() {
                     </Switch>
 
                 </IonRouterOutlet>
-                <IonTabBar slot='bottom' className="IonTabBar ta">
+                <IonTabBar slot='bottom' className="IonTabBar ta"> 
                     <IonTabButton tab='tab1' className="tab" href="/home/inicio" >
                         <IonIcon aria-hidden="true" icon={home} />
                     </IonTabButton>
