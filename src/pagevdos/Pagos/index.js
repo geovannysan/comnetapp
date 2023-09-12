@@ -1,15 +1,13 @@
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonPage, IonTitle, IonToolbar } from "@ionic/react";
-import { arrowBack, cloudCircleOutline, ellipse } from "ionicons/icons";
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { arrowBack, chevronBack, cloudCircleOutline, documentText } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { FacturasAtorizada, MostrarFacturas } from "../../utils/Queryuser";
 import { useSelector } from "react-redux";
 import { FileUploader } from "react-drag-drop-files";
-import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
 import { Zoom, useTheme } from "@mui/material";
-import { Add, ArrowBackIosNew, ArrowCircleLeft, ChevronLeftOutlined, DownloadDone, EditNotificationsOutlined } from "@mui/icons-material";
+import { ChevronLeftOutlined } from "@mui/icons-material"; 
 import FacturaViews from "../../pages/Comprobantes/Facturas";
 import Facturapdf from "./FacturaView";
 export default function PAgosViewa() {
@@ -48,6 +46,10 @@ export default function PAgosViewa() {
         setIsOpen(true)
 
     }
+   function downloadViewImage(url) {
+        window.open(encodeURI(url), "_system", "location=yes");
+    }
+    
     useEffect(() => {
         console.log(datos.id)
         if (datos.id != undefined) {
@@ -100,7 +102,7 @@ export default function PAgosViewa() {
                     <IonToolbar className=" ion-no-border">
                         <IonButtons slot="start">
                             <IonButton onClick={() => history.goBack()}>
-                                <IonIcon icon={arrowBack} />
+                                <IonIcon icon={chevronBack} />
                             </IonButton>
                         </IonButtons>
                         <IonButtons slot="end">
@@ -366,8 +368,8 @@ export default function PAgosViewa() {
 
                                                 </IonLabel>
                                                 <IonLabel slot="end">
-                                                    <IonButton onClick={() => AbrirFactura(e.mensajes.url_ride)} >
-                                                        <IonIcon icon={cloudCircleOutline} />
+                                                    <IonButton color={"danger"} onClick={() => downloadViewImage(e.mensajes.url_ride)} >
+                                                        <IonIcon icon={documentText} />
                                                     </IonButton>
                                                 </IonLabel>
                                             </IonItem>)

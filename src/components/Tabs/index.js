@@ -1,4 +1,4 @@
-import { IonFab, IonFabButton, IonIcon, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from "@ionic/react";
+import { IonFab, IonFabButton, IonIcon, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, createAnimation } from "@ionic/react";
 
 //import HomeView ;
 
@@ -11,14 +11,32 @@ import { lazy } from "react";
 import Loadable from "../Loadable";
 const HomeView = Loadable( lazy(() => import('../../pagevdos/Home')))
 export default function TabsView() {
+    const animationBuilder = (baseEl, opts) => {
+        const enteringAnimation = createAnimation()
+            .addElement(opts.enteringEl)
+            .fromTo('transform', 'translateY(100px)', 'translateY(0px)')
+            .fromTo('opacity', 0, 1)
+            .duration(350);
 
+        const leavingAnimation = createAnimation()
+            .addElement(opts.leavingEl)
+            .fromTo('transform', 'translateY(0px)', 'translateY(100px)')
+
+            .duration(350);
+
+        const animation = createAnimation()
+            .addAnimation(enteringAnimation)
+            .addAnimation(leavingAnimation);
+
+        return animation;
+    };
     return (
         <div>
             
 
             <IonTabs>
 
-                <IonRouterOutlet>
+                <IonRouterOutlet >
                     <Switch>
                         <Route path="/home/inicio">
                             <HomeView />
@@ -34,7 +52,7 @@ export default function TabsView() {
                             <PerfilViews />
                         </Route>
                         <Route path="/home" >
-                            <Redirect to="/home/inicio" />
+                            <Redirect from="/home" to="/home/inicio" />
                         </Route>
                     </Switch>
 

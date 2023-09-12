@@ -1,5 +1,5 @@
 import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar, createAnimation } from "@ionic/react";
-import { arrowBack } from "ionicons/icons";
+import { arrowBack, chevronBack } from "ionicons/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { obtenervaariables } from "../../pages/Home/parsesmart";
@@ -269,8 +269,8 @@ export default function PlanView() {
                 {/*<!--header welcome-->*/}
                 <IonToolbar className=" ion-no-border">
                     <IonButtons slot="start">
-                        <IonButton onClick={() => history.goBack()}>
-                            <IonIcon icon={arrowBack} />
+                        <IonButton color={"danger"} onClick={() => history.goBack()}>
+                            <IonIcon icon={chevronBack} /> 
                         </IonButton>
                     </IonButtons>
                     <IonButtons slot="end">

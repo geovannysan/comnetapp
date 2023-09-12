@@ -1,9 +1,9 @@
 import { MapContainer, TileLayer, Marker, Popup, useMapEvent, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { IonButton, IonFab, IonFabButton, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
+import { IonButton, IonButtons, IonFab, IonFabButton, IonIcon, IonItem, IonLabel, IonList, IonPage, IonPopover, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
-import {  ellipsisVerticalCircle } from 'ionicons/icons';
+import {  chevronBack, ellipsisVerticalCircle } from 'ionicons/icons';
 
 import './index.css'
 import mapaicon from "../../imagen/PUNTO DE PAGO_Mesa de trabajo 1.png"
@@ -140,8 +140,14 @@ export function MapsVies() {
         setShowPopover({ showPopover: false, event: undefined });
     };
     return (
-        <>
-
+        <IonPage>
+            <IonToolbar className='bg-blue-gradient'>
+                <IonButtons slot='start'>
+                    <IonButton onClick={() => history.goBack()}>
+                    <IonIcon icon={chevronBack} />
+                    </IonButton> 
+                </IonButtons>
+            </IonToolbar>
             <MapContainer center={posicion} zoom={zomm} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -190,6 +196,6 @@ export function MapsVies() {
                 </IonPopover>
             </MapContainer>
 
-        </>
+        </IonPage>
     )
 }

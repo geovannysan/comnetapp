@@ -12,6 +12,7 @@
     "@capacitor/keyboard": "4.1.0",
     "@capacitor/local-notifications": "^4.1.0",
     "@capacitor/network": "^5.0.2",
+    "@capacitor/splash-screen": "^5.0.6",
     "@capacitor/status-bar": "^4.1.1",
     "@ionic-native/onesignal": "^5.36.0",
     "@ionic/react": "^6.0.0",

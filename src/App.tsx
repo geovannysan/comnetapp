@@ -1,6 +1,6 @@
 import { IonApp, IonRouterOutlet, createAnimation, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
@@ -28,7 +28,7 @@ import PlanView from './pagevdos/Plan';
 import { MapsVies } from './pagevdos/Mapa';
 import { routes } from './pagevdos/routersub';
 import PAgosViewa from './pagevdos/Pagos';
-let { LoginView, RegisterViews, TabsView } = routes
+let { LoginView, TabsView } = routes
 
 function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
@@ -40,7 +40,6 @@ function OneSignalInit(user: any): void {
   OneSignal.promptForPushNotificationsWithUserResponse(function (accepted) {
     console.log("User accepted notifications: " + accepted);
   });
-  const externalUserId = "ID_EXTERNO";
 
   OneSignal.setExternalUserId(user.id, (results: any) => {
     console.log('Results of setting external user id');
@@ -59,36 +58,44 @@ function OneSignalInit(user: any): void {
     }
   })
 }
-const customEnterAnimation = (baseEl: any) => {
-  const animation = createAnimation()
-    .addElement(baseEl)
-    .duration(500)
-    .fromTo('opacity', '0', '1');
-  return animation;
-};
 
-const customLeaveAnimation = (baseEl: any) => {
-  const animation = createAnimation()
-    .addElement(baseEl)
-    .duration(500)
-    .fromTo('opacity', '1', '0');
-  return animation;
-};
 setupIonicReact();
 const gradientBackground = 'linear-gradient(90deg, rgba(0, 129, 199, 1) 0%, rgba(26, 36, 91, 1) 100%)';
 
 const setStatusBarStyleLight = async () => {
-  await StatusBar.setBackgroundColor({ color: gradientBackground })
-  await StatusBar.setStyle({ style: Style.Light });
+  await StatusBar.setBackgroundColor({ color: '#0081c7' })
+  await StatusBar.show()
+  await StatusBar.setStyle({ style: Style.Default });
 };
 const App: React.FC = () => {
   let user = useSelector((state: any) => state.usuario)
   let userdispach = useDispatch()
   const [initialized, setInitialized] = useState(false);
 
+  var usehistory = useHistory()
+  function entrar() {
+    usehistory.push("/")
+  }
+  const animationBuilder = (baseEl: any, opts?: any) => {
+    const enteringAnimation = createAnimation()
+      .addElement(opts.enteringEl)
+      .fromTo('transform', 'translateY(100px)', 'translateY(0px)')
+      .fromTo('opacity', 0, 0.3)
+      .duration(350);
 
+    const leavingAnimation = createAnimation()
+      .addElement(opts.leavingEl)
+      .fromTo('transform', 'translateY(0px)', 'translateY(100px)')
+      .fromTo('opacity', 0.3, 0)
+      .duration(350);
 
+    const animation = createAnimation()
+      .addAnimation(enteringAnimation)
+      .addAnimation(leavingAnimation);
 
+    return animation;
+  };
+  //history.push("/home")
   useEffect(() => {
     // StatusBar.setBackgroundColor({ color: '#0000' });
     // StatusBar.setStyle()
@@ -99,23 +106,14 @@ const App: React.FC = () => {
     console.log(datos)
     setStatusBarStyleLight()
     if (datos != null) {
-
-      //console.log(salida)
       userdispach(setlogin({ estado: true }))
-      //userdispach(setDatosuser({ ...datos }))
-      // createSingleTaskNotification()
-      //console.log(datos)
       autenticar(datos.cedula).then(salida => {
         if (salida.estado == "exito") {
-          // console.log(salida.datos)
-          // userdispach(setlogin({ estado: true }))
           userdispach(setDatosuser({ ...salida.datos[0] }))
-
         } else {
-
         }
 
-      }).catch(err => {
+      }).catch(() => {
 
       })
       console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"), getPlatforms())
@@ -168,9 +166,10 @@ const App: React.FC = () => {
     <IonApp>
       {user.authb ?
         <IonReactRouter>
-          <IonRouterOutlet
+          <IonRouterOutlet animation={animationBuilder}
           >
 
+            
             <Route path="/pagos" >
               <PAgosViewa />
             </Route>
@@ -182,6 +181,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/home">
               <TabsView />
+            </Route>
+            <Route exact path="/">
+              <Redirect from='*' to="/home" />
             </Route>
 
           </IonRouterOutlet>
