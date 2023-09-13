@@ -76,7 +76,7 @@ const FacturasView = () => {
                             [10, 20, 30, 50, "All"],
                         ],
 
-                        order: [[1, 'desc']],
+                        order: [[2, 'desc']],
 
                     });
                 })
@@ -103,7 +103,7 @@ const FacturasView = () => {
                     <th  >Id Factura</th>
                     <th >Fecha</th>
                     <th ># de factura</th>
-
+                    <th ># cédula</th>
                     <th >estado </th>
                      <th >iva </th>
                     <th >subtotal </th>
@@ -118,9 +118,7 @@ const FacturasView = () => {
     }
     const showDatos = () => {
         try {
-            console.log(factura.map((ite)=>{
-                console.log(JSON.parse( ite.mensajes))
-            }))
+           
             return factura.map((item, index) => {
                 let js = JSON.parse(item.mensajes)
                 return (
@@ -134,6 +132,9 @@ const FacturasView = () => {
                         </td>
                         <td className=" font-weight-bold">
                             {item.numfactura}
+                        </td>
+                        <td className=" font-weight-bold">
+                            {item.estado != "0" ?  js.persona.cedula:""}
                         </td>
                         <td className="text-xs font-weight-bold">
                             {item.estado=="0"?"No Emitido":"Emitido"}</td>

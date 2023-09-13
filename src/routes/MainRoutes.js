@@ -13,6 +13,7 @@ const FacturasView = Loadable(lazy(() => import('pages/Facturas/index')));
 const MainRoutes = {
     path: '/',
     element: <MainLayout />,
+    
     children: [
         {
             path: '/',
@@ -50,6 +51,10 @@ const MainRoutes = {
         {
             path: 'reporte',
             element: <SamplePage />
+        },
+        {
+            path: 'page/inicio',
+            element: <DashboardDefault />
         },
         /*{
             path: 'pageview',
