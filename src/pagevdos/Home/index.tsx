@@ -60,7 +60,7 @@ export default function HomeView() {
                 {/*<!--card info-->*/}
                 <div className="container-fluid h-100 btn-group-vertical" >
                     <div className="container-fluid mt-n5">
-                        <div className="row mt-n3 " id="menu-servicios">
+                        <div className={datos.estado == "SUSPENDIDO" ? "row mt-n3 suspendido":"row mt-n3  "} id="menu-servicios">
                             <div className="col-12 pb-4 text-center estado" ><b className="me-1">Servicio: </b>{datos.estado == "ACTIVO" ? <span className="icon-circle border p-1 pe-2 rounded-pill color ">{datos.estado}</span> : <span className="icon-circle border p-1 pe-2 rounded-pill  ">{datos.estado}</span>} </div>
                             <div className="col-4 p-0 my-2 ">
                                 <div className="container p-1">

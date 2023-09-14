@@ -9,27 +9,12 @@ import WifiView from "../../pagevdos/Wifi";
 import PerfilViews from "../../pagevdos/Perfil";
 import { lazy } from "react";
 import Loadable from "../Loadable";
+import { useSelector } from "react-redux";
 const HomeView = Loadable( lazy(() => import('../../pagevdos/Home')))
 export default function TabsView() {
-    const animationBuilder = (baseEl, opts) => {
-        const enteringAnimation = createAnimation()
-            .addElement(opts.enteringEl)
-            .fromTo('transform', 'translateY(100px)', 'translateY(0px)')
-            .fromTo('opacity', 0, 1)
-            .duration(350);
+     
+    const datos = useSelector((state)=>state.usuario.user)
 
-        const leavingAnimation = createAnimation()
-            .addElement(opts.leavingEl)
-            .fromTo('transform', 'translateY(0px)', 'translateY(100px)')
-
-            .duration(350);
-
-        const animation = createAnimation()
-            .addAnimation(enteringAnimation)
-            .addAnimation(leavingAnimation);
-
-        return animation;
-    };
     return (
         <div>
             
@@ -57,14 +42,14 @@ export default function TabsView() {
                     </Switch>
 
                 </IonRouterOutlet>
-                <IonTabBar slot='bottom' className="IonTabBar ta"> 
-                    <IonTabButton tab='tab1' className="tab" href="/home/inicio" >
+                <IonTabBar slot='bottom' className={datos.estado == "SUSPENDIDO" ?"IonTabBar ta suspendido":"IonTabBar ta"}> 
+                    <IonTabButton tab='tab1' className="tab " href="/home/inicio" >
                         <IonIcon aria-hidden="true" icon={home} />
                     </IonTabButton>
-                    <IonTabButton tab='tab2' className="tab" href="/home/soporte" >
+                    <IonTabButton tab='tab2' className="tab block" href="/home/soporte" >
                         <IonIcon aria-hidden="true" icon={settings} />
                     </IonTabButton>
-                    <IonTabButton tab='tab3' className="tab" href="/home/wifi">
+                    <IonTabButton tab='tab3' className="tab block" href="/home/wifi">
                         <IonIcon aria-hidden="true" icon={wifi} />
                     </IonTabButton>
                     <IonTabButton tab='tab4' className="tab" href="/home/perfil">

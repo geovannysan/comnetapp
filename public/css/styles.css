@@ -166,7 +166,13 @@
     filter:opacity(40%) grayscale(100%) ;
     pointer-events: none;
 }
-.suspendido div.estado .color{
+
+.suspendido ion-tab-button.block {
+    filter: opacity(40%) grayscale(100%);
+    pointer-events: none;
+}
+
+.suspendido div.estado .color {
     color: var(--bs-rojo);
 }
 
