@@ -471,7 +471,7 @@ export default function PlanView() {
                                                 fontSize:"1.4vh"
                                                 /*"font-size: 1.4vh;"*/}}>Estado: <span>Excelente</span></span>
                                         </li>
-                                        <a href="" className="bg-white shadow-1 none-style  border px-4 py-1 rounded-pill text-center text-celeste" 
+                                        <a onClick={()=> history.push("/test")} className="bg-white shadow-1 none-style  border px-4 py-1 rounded-pill text-center text-celeste" 
                                         style={{
                                             fontSize:"1.8vh"
                                             /*"font-size: 1.8vh;"*/}}>Realizar Test</a>
@@ -512,7 +512,7 @@ export default function PlanView() {
                                                 fontSize:"1.4vh"
                                                 /*"font-size: 1.4vh;"*/}}>plan advance-antig</span>
                                         </li>
-                                        <a href="" className="bg-white shadow-1 none-style border px-4  rounded-pill text-center text-celeste" 
+                                        <a onClick={()=>history.push("/tes")} className="bg-white shadow-1 none-style border px-4  rounded-pill text-center text-celeste" 
                                         style={{
                                             fontSize:"1.8vh"
                                             /*"font-size: 1.8vh;"*/}}>Speed-Test</a>

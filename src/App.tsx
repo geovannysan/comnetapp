@@ -28,7 +28,8 @@ import PlanView from './pagevdos/Plan';
 import { MapsVies } from './pagevdos/Mapa';
 import { routes } from './pagevdos/routersub';
 import PAgosViewa from './pagevdos/Pagos';
-let { LoginView, TabsView } = routes
+import SpeddView from './components/Spedd';
+let { LoginView, TabsView, Tesvel } = routes
 
 function OneSignalInit(user: any): void {
   OneSignal.setLogLevel(0, 0);
@@ -182,9 +183,13 @@ const App: React.FC = () => {
             <Route path="/home">
               <TabsView />
             </Route>
+            <Route path="/test">
+              <SpeddView/>
+            </Route>
             <Route exact path="/">
               <Redirect from='*' to="/home" />
             </Route>
+
 
           </IonRouterOutlet>
         </IonReactRouter>
