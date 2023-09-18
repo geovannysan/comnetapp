@@ -14,9 +14,27 @@ const FacturasView = () => {
                 "estado": "0",
                 "idfactura": ""
             })
-            console.log(datos, fact)
+            console.log(fact)
+            let facturas = []
+            let facturaPromesas = datos.data.map(async (e) => {
+                let datos = JSON.parse(e.mensajes)
+                if (datos.persona != undefined) {
+                  
+                    facturas.push({ ...e, mensajes: datos, cliente: datos.persona["cedula"] })
+                }else{
+                    facturas.push({ ...e, mensajes: datos, cliente: datos.cliente["cedula"] })
+                }
+            })
+            const factur = await Promise.all(facturaPromesas);
+            /*datos.data.map(e => {
+                let informa = JSON.parse(e.mensajes)
+                e.mensajes = JSON.parse(e.mensajes)
+                
+                e.cliente = informa.persona.telefonos == undefined ? "" : "informa.persona.telefonos"
+                return { ...e }
+            })*/
             //if (datos.estado) setFactura([...factura, ...datos.data])
-            if (fact.estado && datos.estado) setFactura([...factura, ...fact.data, ...datos.data])
+            if (fact.estado && datos.estado) setFactura([...factura, ...facturas])
             if (!$.fn.DataTable.isDataTable("#doc")) {
                 $(document).ready(function () {
                     $("#doc").dataTable({
@@ -105,7 +123,7 @@ const FacturasView = () => {
                     <th ># de factura</th>
                     <th ># cédula</th>
                     <th >estado </th>
-                     <th >iva </th>
+                    <th >iva </th>
                     <th >subtotal </th>
                     <th >total </th>
                     <th >Ver </th>
@@ -118,9 +136,12 @@ const FacturasView = () => {
     }
     const showDatos = () => {
         try {
-           
-            return factura.map((item, index) => {
-                let js = JSON.parse(item.mensajes)
+
+            return factura.filter(es => es.estado != "0").map((item, index) => {
+                //  item.estado == "0" ? console.log(item) : ""
+             
+                //let cedula = item.mensajes.persona["cedula"]
+
                 return (
                     <tr key={index}>
                         <td className="text-xs font-weight-bold " style={{
@@ -134,10 +155,10 @@ const FacturasView = () => {
                             {item.numfactura}
                         </td>
                         <td className=" font-weight-bold">
-                            {item.estado != "0" ?  js.persona.cedula:""}
+                            {item.estado == "0" ? "No Emitido" : item.cliente}
                         </td>
                         <td className="text-xs font-weight-bold">
-                            {item.estado=="0"?"No Emitido":"Emitido"}</td>
+                            {item.estado == "0" ? "No Emitido" : "Emitido"}</td>
                         <td className="text-xs font-weight-bold">
                             {item.iva}</td>
 
