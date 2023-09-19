@@ -1511,7 +1511,12 @@ const PagosView = () => {
                                     "estado": "G",
                                     "electronico": true,
                                     "autorizacion": null,
-                                    "caja_id": null,
+                                    "caja_id": null,                                    
+                                    "descripcion": descri.items[0]["descrp"],
+                                    "subtotal_0": 0,
+                                    "subtotal_12": (totalcon.total) / 1.12,
+                                    "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
+                                   "total": parseFloat(totalcon.total).toFixed(2),
                                     "cliente": {
                                         "ruc": null,
                                         "cedula": usuario.cedula.trim(),
@@ -1531,11 +1536,6 @@ const PagosView = () => {
                                         "email": "facturacion@speed.ec",
                                         "es_extranjero": false
                                     },
-                                    "descripcion": descri.items[0]["descrp"],
-                                    "subtotal_0": 0,
-                                    "subtotal_12": (totalcon.total) / 1.12,
-                                    "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
-                                   "total": parseFloat(totalcon.total).toFixed(2),
                                     "detalles": [
                                         {
                                             "producto_id": totalcon.id,
