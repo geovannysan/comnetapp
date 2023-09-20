@@ -75,14 +75,15 @@ export const Facturaid = async (parms) => {
         return error
     }
 }
-export const CreaLaFacturapor = async (parms) => {
+export const CreaLaFacturapor = async (parms, idfacttu) => {
     try {
 
-        let { data } = await axios({
-            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/documento/', data: parms, headers: {
-                'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
-            }
-        })
+        /*  let { data } = await axios({
+              method: 'post', url: 'https://api.contifico.com/sistema/api/v1/documento/', data: parms, headers: {
+                  'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
+              }
+          })*/
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/newdocumento/" + idfacttu + "/" + userlog().Id, { "parms": { ...parms } })
         return data
 
     } catch (error) {
@@ -140,7 +141,7 @@ export const Actualizarsolicitud = async (parms, id) => {
         return error
     }
 }
-export const EliminarSolict = async(id)=>{
+export const EliminarSolict = async (id) => {
     try {
         let { data } = await axios.delete("https://api.t-ickets.com/mikroti/Eliminarsolicitud/" + id, {
             headers: {

@@ -1044,9 +1044,6 @@ const PagosView = () => {
                         "codigo": usuario.servicios[0]["idperfil"],
                         "estado": "A"
                     })*/
-                    if (cedula.trim().length < 10) {
-                        return
-                    }
                     if (parseFloat(totalcon.total).toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
                         setMensaje({
                             mensaje: "Cambiando precio producto contifico",
@@ -1278,12 +1275,12 @@ const PagosView = () => {
                                     console.log(salida)
                                     let fat = "001-001-00000" + facnum
 
-                                    if (salida.documento === fat) {
+                                    if (salida.documento) {
                                         // creaComprobante()
                                         setimpri(true)
                                         document.getElementById("pagos").reset();
                                         setOpen(false)
-                                        openNotificationWithIcon('success', "Factura creada", "Factura número 001-001-00000" + facnum + " creada con éxito")
+                                        openNotificationWithIcon('success', "Factura creada", "Factura número 001-001-00000" + salida.documento + " creada con éxito")
 
 
                                     }
@@ -1431,11 +1428,11 @@ const PagosView = () => {
                         CreaLaFacturapor(fac, singleSelect.value).then(salida => {
                             let fat = "001-001-00000" + facnum
                             console.log(salida)
-                            if (salida.documento === fat) {
+                            if (salida.documento ) {
                                 document.getElementById("pagos").reset();
                                 seTlist([])
                                 setOpen(false)
-                                openNotificationWithIcon('success', "Factura electrónica creada", "número:" + facnum)
+                                openNotificationWithIcon('success', "Factura electrónica creada", "número:" + salida.documento)
                             }
                             console.log(salida)
                         }).catch(erro => {
@@ -1560,12 +1557,12 @@ const PagosView = () => {
                                     setOpen(false)
                                     let fat = "001-001-00000" + facnum
                                     console.log(salida)
-                                    if (salida.documento === fat) {
+                                    if (salida.documento ) {
                                         setimpri(true)
                                         seTlist([])
                                         document.getElementById("pagos").reset();
                                         setOpen(false)
-                                        openNotificationWithIcon('success', "Factura electronica creada con éxito", "numero " + facnum)
+                                        openNotificationWithIcon('success', "Factura electronica creada con éxito", "numero " + salida.documento)
                                     }
                                     console.log(salida)
                                 }).catch(error => {

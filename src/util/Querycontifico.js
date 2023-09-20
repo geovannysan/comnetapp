@@ -112,9 +112,10 @@ export const BuscarProductoContific = async (parms) => {
 export const IncremetoFacturaS = async () => {
     try {
         //https://api.t-ickets.com/mikroti/FactuApi/incrementodos
-        let { data } = await axios({
+       /* let { data } = await axios({
             method: 'post', url: 'https://portalfac.netbot.ec/incrementov.php'
-        })
+        })*/
+        let data = { status: true, result: [{ contadores :0}]}
         return data
     } catch (error) {
         return error
