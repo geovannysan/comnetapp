@@ -215,7 +215,13 @@ const PagosView = () => {
     const [impri, setimpri] = useState(false)
     const [busca, setBusca] = useState(false)
     const [lugar, setLugar] = useState({ value: "", label: "" })
+    function validarCorreoElectronico(correo) {
+        // Expresión regular para validar una dirección de correo electrónico
+        const expresionRegularCorreo = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
+        // Utilizamos test() para verificar si el correo coincide con la expresión regular
+        return expresionRegularCorreo.test(correo);
+    }
 
     const [banco, setBanco] = useState({ value: "", label: "" })
     const [datos, setDatos] = useState({
@@ -292,7 +298,7 @@ const PagosView = () => {
         doc.text(3, 43, "Mes: " + Mes[hoy]);
         doc.text(3, 49, "*******************************************************************");
         doc.text(35, 54, "DESCUENTO $0.00");
-        doc.text(40, 58, "TOTAL: " + parseFloat(totalcon.total).toFixed(2));
+        doc.text(40, 58, "TOTAL: " + parseFloat(total).toFixed(2));
         doc.text(40, 62, "SALDO: $0.00");
         doc.text(3, 65, "*******************************************************************");
         doc.text(20, 69, "CLIENTE")
@@ -1028,8 +1034,8 @@ const PagosView = () => {
                     })
                     setDescrip({ factura: { ...ouput.factura }, items: ouput.items })
                     settotal(ouput.factura.total)
-                    console.log(parseFloat(totalcon.total).toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
-                    console.log((parseFloat(totalcon.total).toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)))
+                    console.log(parseFloat(total).toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
+                    console.log((parseFloat(total).toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)))
                     /*console.log({
                         "codigo_barra": null,
                         "porcentaje_iva": "12",
@@ -1044,7 +1050,7 @@ const PagosView = () => {
                         "codigo": usuario.servicios[0]["idperfil"],
                         "estado": "A"
                     })*/
-                    if (parseFloat(totalcon.total).toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
+                    if (parseFloat(total).toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
                         setMensaje({
                             mensaje: "Cambiando precio producto contifico",
                             estado: true
@@ -1226,7 +1232,7 @@ const PagosView = () => {
                                         "telefonos": usuario.movil,
                                         "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
                                         "tipo": "N",
-                                        "email": usuario.correo,
+                                        "email":  validarCorreoElectronico(usuario.correo) ? usuario.correo : "",
                                         "es_extranjero": false
                                     },
                                     "vendedor": {
@@ -1241,25 +1247,25 @@ const PagosView = () => {
                                     //contifico[0].
                                     "descripcion": descri.items[0]["descrp"],
                                     "subtotal_0": 0,
-                                    "subtotal_12": (totalcon.total) / 1.12,
-                                    "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
-                                   "total": parseFloat(totalcon.total).toFixed(2),
+                                    "subtotal_12": (total) / 1.12,
+                                    "iva": (parseFloat((total) - parseFloat((total) / 1.12))).toFixed(2),
+                                   "total": parseFloat(total).toFixed(2),
                                     "detalles": [
                                         {
                                             "producto_id": totalcon.id,
                                             "cantidad": 1,
-                                            "precio": (totalcon.total) / 1.12,
+                                            "precio": (total) / 1.12,
                                             "porcentaje_iva": 12,
                                             "porcentaje_descuento": 0,
                                             "base_cero": 0,
-                                            "base_gravable": (totalcon.total) / 1.12,
+                                            "base_gravable": (total) / 1.12,
                                             "base_no_gravable": 0
                                         }
                                     ],
                                     "cobros": [
                                         {
                                             "forma_cobro": lugar.value.split("-")[0],
-                                           "monto": parseFloat(totalcon.total).toFixed(2),
+                                           "monto": parseFloat(total).toFixed(2),
                                             "cuenta_bancaria_id": banco.value,
                                             "numero_comprobante": datos.asunto,
                                             "fecha": formattedToday,
@@ -1381,7 +1387,7 @@ const PagosView = () => {
                                 "telefonos": usuario.movil,
                                 "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
                                 "tipo": "N",
-                                "email": usuario.correo,
+                                "email": validarCorreoElectronico(usuario.correo) ? usuario.correo : "",
                                 "es_extranjero": false
                             },
                             "vendedor": {
@@ -1396,25 +1402,25 @@ const PagosView = () => {
                             //contifico[0].
                             "descripcion": descri.items[0]["descrp"],
                             "subtotal_0": 0,
-                            "subtotal_12": (totalcon.total) / 1.12,
-                            "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
-                           "total": parseFloat(totalcon.total).toFixed(2),
+                            "subtotal_12": (total) / 1.12,
+                            "iva": (parseFloat((total) - parseFloat((total) / 1.12))).toFixed(2),
+                           "total": parseFloat(total).toFixed(2),
                             "detalles": [
                                 {
                                     "producto_id": totalcon.id,
                                     "cantidad": 1,
-                                    "precio": (totalcon.total) / 1.12,
+                                    "precio": (total) / 1.12,
                                     "porcentaje_iva": 12,
                                     "porcentaje_descuento": 0,
                                     "base_cero": 0,
-                                    "base_gravable": (totalcon.total) / 1.12,
+                                    "base_gravable": (total) / 1.12,
                                     "base_no_gravable": 0
                                 }
                             ],
                             "cobros": [
                                 {
                                     "forma_cobro": lugar.value.split("-")[0],
-                                   "monto": parseFloat(totalcon.total).toFixed(2),
+                                   "monto": parseFloat(total).toFixed(2),
                                     "tipo_ping": "D",
                                     "fecha": formattedToday,
                                 }
@@ -1511,9 +1517,9 @@ const PagosView = () => {
                                     "caja_id": null,                                    
                                     "descripcion": descri.items[0]["descrp"],
                                     "subtotal_0": 0,
-                                    "subtotal_12": (totalcon.total) / 1.12,
-                                    "iva": (parseFloat((totalcon.total) - parseFloat((totalcon.total) / 1.12))).toFixed(2),
-                                   "total": parseFloat(totalcon.total).toFixed(2),
+                                    "subtotal_12": (total) / 1.12,
+                                    "iva": (parseFloat((total) - parseFloat((total) / 1.12))).toFixed(2),
+                                   "total": parseFloat(total).toFixed(2),
                                     "cliente": {
                                         "ruc": null,
                                         "cedula": usuario.cedula.trim(),
@@ -1521,7 +1527,7 @@ const PagosView = () => {
                                         "telefonos": usuario.movil,
                                         "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
                                         "tipo": "N",
-                                        "email": usuario.correo,
+                                        "email": validarCorreoElectronico(usuario.correo) ? usuario.correo : "",
                                         "es_extranjero": false
                                     },
                                     "vendedor": {
@@ -1537,18 +1543,18 @@ const PagosView = () => {
                                         {
                                             "producto_id": totalcon.id,
                                             "cantidad": 1,
-                                            "precio": (totalcon.total) / 1.12,
+                                            "precio": (total) / 1.12,
                                             "porcentaje_iva": 12,
                                             "porcentaje_descuento": 0,
                                             "base_cero": 0,
-                                            "base_gravable": (totalcon.total) / 1.12,
+                                            "base_gravable": (total) / 1.12,
                                             "base_no_gravable": 0
                                         }
                                     ],
                                     "cobros": [
                                         {
                                             "forma_cobro": lugar.value.split("-")[0],
-                                           "monto": parseFloat(totalcon.total).toFixed(2),
+                                           "monto": parseFloat(total).toFixed(2),
                                             "fecha": formattedToday,
                                         }
                                     ]
@@ -1685,7 +1691,7 @@ const PagosView = () => {
                             </div>}
                         </Typography>
                         <Typography variant="h6"  >
-                            Id contifico: {totalcon.id}/ Estado contifico : {totalcon.estado} / Total producto : {parseFloat(totalcon.total).toFixed(2)} <p className="px-2">{JSON.stringify(impri)}</p>
+                            Id contifico: {totalcon.id}/ Estado contifico : {totalcon.estado} / Total producto : {parseFloat(total).toFixed(2)} <p className="px-2">{JSON.stringify(impri)}</p>
                         </Typography>
                     </Grid>
                     <div className="col-12 col-md-6 d-flex  align-items-center">
