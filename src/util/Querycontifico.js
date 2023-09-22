@@ -72,9 +72,16 @@ export const Consultarcedula = async (parms) => {
 
 //no encuentra por ruc ni crea por ruc
 export const CrearClienteContifico = async (parms) => {
+    let parmsme = parms.cedula.trim() == "" || parms.cedula.trim().length>10 ? {
+        ...parms,
+       // es_extranjero
+    }:{
+            ...parms,
+            es_extranjero: (parms.cedula.trim().length <9)
+    }
     try {
         let { data } = await axios({
-            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/persona/?pos=4511aa3d-fce0-4441-a3e1-0961bd3357af', data: parms, headers: {
+            method: 'post', url: 'https://api.contifico.com/sistema/api/v1/persona/?pos=4511aa3d-fce0-4441-a3e1-0961bd3357af', data: parmsme, headers: {
                 'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
             }
         })

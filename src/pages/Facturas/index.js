@@ -19,9 +19,9 @@ const FacturasView = () => {
             let facturaPromesas = datos.data.map(async (e) => {
                 let datos = JSON.parse(e.mensajes)
                 if (datos.persona != undefined) {
-                  
+
                     facturas.push({ ...e, mensajes: datos, cliente: datos.persona["cedula"] })
-                }else{
+                } else {
                     facturas.push({ ...e, mensajes: datos, cliente: datos.cliente["cedula"] })
                 }
             })
@@ -84,10 +84,9 @@ const FacturasView = () => {
                                 "responsive": true
                             }
                         ],
-                        dom: "Bfrtip",
+                        dom: 'Bfrtip',
                         buttons: [
-
-
+                            'copy', 'csv', 'excel', 'pdf'
                         ],
                         lengthMenu: [
                             [10, 20, 30, 50, -1],
@@ -123,8 +122,10 @@ const FacturasView = () => {
                     <th ># de factura</th>
                     <th ># cédula</th>
                     <th >estado </th>
+                    <th >ID operador </th>
                     <th >iva </th>
                     <th >subtotal </th>
+
                     <th >total </th>
                     <th >Ver </th>
 
@@ -139,7 +140,7 @@ const FacturasView = () => {
 
             return factura.filter(es => es.estado != "0").map((item, index) => {
                 //  item.estado == "0" ? console.log(item) : ""
-             
+
                 //let cedula = item.mensajes.persona["cedula"]
 
                 return (
@@ -160,8 +161,10 @@ const FacturasView = () => {
                         <td className="text-xs font-weight-bold">
                             {item.estado == "0" ? "No Emitido" : "Emitido"}</td>
                         <td className="text-xs font-weight-bold">
+                            {item.Idadmin}
+                        </td>
+                        <td className="text-xs font-weight-bold">
                             {item.iva}</td>
-
                         <td className="text-xs font-weight-bold">
                             {item.subtotal_12}
                         </td>
