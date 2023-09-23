@@ -334,229 +334,228 @@ const PagosView = () => {
     function buscar() {
         setBusca(true)
         seTlist([])
-        
-        document.getElementById("pagos").reset();
+        document.getElementById("pagos") != undefined ? document.getElementById("pagos").reset() : ""
         if (cedula.trim() == "") return
-       /* if (cedula.trim().length > 5 && cedula.trim().length < 10) {
-            setDatos({
-                total: "",
-                transacion: "",
-                lugarpago: "",
-                asunto: "",
-                fecha: "",
-                cedula: "",
-                tipo: "",
-                Factura: "",
-                linkimagen: "",
-                mensaje: ""
-            })
-            setBusca(false)
-            setOpen(true)
-            setMensaje({
-                mensaje: "Busacando Cliente portal",
-                estado: true
-            })
-            autenticar(cedula.trim()).then(ouput => {
-                console.log(ouput)
-                setimpri(false)
-                if (ouput.estado === "exito") {
-
-                    setMensaje({
-                        mensaje: "Buscando Facturas comnet",
-                        estado: true
-                    })
-                    seTlist([])
-                    setSingleSelect({ value: "", label: "" })
-                    let infor = ouput.datos.find(e => e.estado == "ACTIVO")
-                    console.log(infor.id)
-                    // if()
-                    MostrarFacturas(infor.id).then(ouput => {
-                        console.log(ouput)
-                        if (ouput.estado === "exito") {
-                            // dismiss()
-                            setOpen(false)
-                            console.log(ouput)
-                            let datos = ouput.facturas.map((el, index) => {
-                                return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
-                            })
-                            datos.unshift({ value: "", label: "Selecione Factura" })
-                            seTlist(datos)
-                            comprobante({ value: "", label: "Selecione Factura" })
-                        } else {
-                            setOpen(false)
-                            openNotificationWithIcon('success', "Rinformación", "No hay facturas pendientes")
-                        }
-                    }).catch(err => {
-                        console.log(err)
-                        setOpen(false)
-                        openNotificationWithIcon('error', "Alerta", "" + ouput.mensaje)
-
-                    })
-
-                    if (ouput.datos.length == 2) {
-                        if (ouput.datos[1].estado === "ACTIVO") {
-                            let datos = {
-                                nombre: ouput.datos[1].nombre,
-                                estado: ouput.datos[1].estado,
-                                cedula: ouput.datos[1].cedula,
-                                movil: ouput.datos[1].movil,
-                                direccion_principal: ouput.datos[1].direccion_principal,
-                                correo: ouput.datos[1].correo,
-                                facturacion: {
-                                    ...ouput.datos[1].facturacion
-                                },
-                                servicios: ouput.datos[1].servicios
-                            }
-                            setUser({ ...datos })
-                        }
-
-                        if (ouput.datos[1].estado === "SUSPENDIDO") {
-                            let datos = {
-                                nombre: ouput.datos[1].nombre,
-                                estado: ouput.datos[1].estado,
-                                cedula: ouput.datos[1].cedula,
-                                movil: ouput.datos[1].movil,
-                                direccion_principal: ouput.datos[1].direccion_principal,
-                                correo: ouput.datos[1].correo,
-                                facturacion: {
-                                    ...ouput.datos[1].facturacion
-                                },
-                                servicios: ouput.datos[1].servicios
-                            }
-                            setUser({ ...datos })
-                        }
-                        if (ouput.datos.estado[1] === "RETIRADO") {
-                            let datos = {
-                                nombre: ouput.datos[1].nombre,
-                                estado: ouput.datos[1].estado,
-                                cedula: ouput.datos[1].cedula,
-                                movil: ouput.datos[1].movil,
-                                direccion_principal: ouput.datos[1].direccion_principal,
-                                correo: ouput.datos[1].correo,
-                                facturacion: {
-                                    ...ouput.datos[1].facturacion
-                                }
-                                , servicios: ouput.datos[1].servicios
-                            }
-
-                            setUser({ ...datos })
-                        }
-                        return
-                    }
-                    if (ouput.datos[0].estado === "ACTIVO") {
-                        let datos = {
-                            nombre: ouput.datos[0].nombre,
-                            estado: ouput.datos[0].estado,
-                            cedula: ouput.datos[0].cedula,
-                            movil: ouput.datos[0].movil,
-                            direccion_principal: ouput.datos[0].direccion_principal,
-                            correo: ouput.datos[0].correo,
-                            facturacion: {
-                                ...ouput.datos[0].facturacion
-                            },
-                            servicios: ouput.datos[0].servicios
-                        }
-                        setUser({ ...datos })
-                    }
-
-                    if (ouput.datos[0].estado === "SUSPENDIDO") {
-                        let datos = {
-                            nombre: ouput.datos[0].nombre,
-                            estado: ouput.datos[0].estado,
-                            cedula: ouput.datos[0].cedula,
-                            movil: ouput.datos[0].movil,
-                            direccion_principal: ouput.datos[0].direccion_principal,
-                            correo: ouput.datos[0].correo,
-                            facturacion: {
-                                ...ouput.datos[0].facturacion
-                            },
-                            servicios: ouput.datos[0].servicios
-                        }
-                        setUser({ ...datos })
-                    }
-                    if (ouput.datos.estado[0] === "RETIRADO") {
-                        let datos = {
-                            nombre: ouput.datos[0].nombre,
-                            estado: ouput.datos[0].estado,
-                            cedula: ouput.datos[0].cedula,
-                            movil: ouput.datos[0].movil,
-                            direccion_principal: ouput.datos[0].direccion_principal,
-                            correo: ouput.datos[0].correo,
-                            facturacion: {
-                                ...ouput.datos[0].facturacion
-                            }
-                            , servicios: ouput.datos[0].servicios
-                        }
-
-                        setUser({ ...datos })
-                    }
-                }
-                if (ouput.estado === "error") {
-                    setOpen(false)
-                    openNotificationWithIcon('error', "Alerta", "" + ouput.mensaje)
-
-                    /*dismiss()
-                    present({
-                        message: ouput.mensaje,
-                        cssClass: '-danger',
-                        duration: 4500,
-                        position: "middle",
-                        buttons: [
-                            {
-                                text: "cerrar",
-                                role: "cancel",
-
-                            }
-                        ]
-                    });*
-
-                    console.log("err")
-                    setUser({
-                        nombre: "",
-                        estado: "",
-                        cedula: "",
-                        movil: "",
-                        direccion_principal: "",
-                        correo: "",
-                        facturacion: {
-                            facturas_nopagadas: 0,
-                            total_facturas: "0000"
-                        }
-                        , servicios: []
-                    })
-                }
-            }).catch(err => {
-                /* dismiss()
-                 present({
-                     message: "Hubo un error" + err,
-                     cssClass: '',
-                     duration: 4500,
-                     position: "middle",
-                     buttons: [
-                         {
-                             text: "cerrar",
-                             role: "cancel",
+        /* if (cedula.trim().length > 5 && cedula.trim().length < 10) {
+             setDatos({
+                 total: "",
+                 transacion: "",
+                 lugarpago: "",
+                 asunto: "",
+                 fecha: "",
+                 cedula: "",
+                 tipo: "",
+                 Factura: "",
+                 linkimagen: "",
+                 mensaje: ""
+             })
+             setBusca(false)
+             setOpen(true)
+             setMensaje({
+                 mensaje: "Busacando Cliente portal",
+                 estado: true
+             })
+             autenticar(cedula.trim()).then(ouput => {
+                 console.log(ouput)
+                 setimpri(false)
+                 if (ouput.estado === "exito") {
+ 
+                     setMensaje({
+                         mensaje: "Buscando Facturas comnet",
+                         estado: true
+                     })
+                     seTlist([])
+                     setSingleSelect({ value: "", label: "" })
+                     let infor = ouput.datos.find(e => e.estado == "ACTIVO")
+                     console.log(infor.id)
+                     // if()
+                     MostrarFacturas(infor.id).then(ouput => {
+                         console.log(ouput)
+                         if (ouput.estado === "exito") {
+                             // dismiss()
+                             setOpen(false)
+                             console.log(ouput)
+                             let datos = ouput.facturas.map((el, index) => {
+                                 return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
+                             })
+                             datos.unshift({ value: "", label: "Selecione Factura" })
+                             seTlist(datos)
+                             comprobante({ value: "", label: "Selecione Factura" })
+                         } else {
+                             setOpen(false)
+                             openNotificationWithIcon('success', "Rinformación", "No hay facturas pendientes")
                          }
-                     ]
-                 })/ */
-                /* dismiss()
-                 present({
-                     message: err,
-                     cssClass: '-danger',
+                     }).catch(err => {
+                         console.log(err)
+                         setOpen(false)
+                         openNotificationWithIcon('error', "Alerta", "" + ouput.mensaje)
+ 
+                     })
+ 
+                     if (ouput.datos.length == 2) {
+                         if (ouput.datos[1].estado === "ACTIVO") {
+                             let datos = {
+                                 nombre: ouput.datos[1].nombre,
+                                 estado: ouput.datos[1].estado,
+                                 cedula: ouput.datos[1].cedula,
+                                 movil: ouput.datos[1].movil,
+                                 direccion_principal: ouput.datos[1].direccion_principal,
+                                 correo: ouput.datos[1].correo,
+                                 facturacion: {
+                                     ...ouput.datos[1].facturacion
+                                 },
+                                 servicios: ouput.datos[1].servicios
+                             }
+                             setUser({ ...datos })
+                         }
+ 
+                         if (ouput.datos[1].estado === "SUSPENDIDO") {
+                             let datos = {
+                                 nombre: ouput.datos[1].nombre,
+                                 estado: ouput.datos[1].estado,
+                                 cedula: ouput.datos[1].cedula,
+                                 movil: ouput.datos[1].movil,
+                                 direccion_principal: ouput.datos[1].direccion_principal,
+                                 correo: ouput.datos[1].correo,
+                                 facturacion: {
+                                     ...ouput.datos[1].facturacion
+                                 },
+                                 servicios: ouput.datos[1].servicios
+                             }
+                             setUser({ ...datos })
+                         }
+                         if (ouput.datos.estado[1] === "RETIRADO") {
+                             let datos = {
+                                 nombre: ouput.datos[1].nombre,
+                                 estado: ouput.datos[1].estado,
+                                 cedula: ouput.datos[1].cedula,
+                                 movil: ouput.datos[1].movil,
+                                 direccion_principal: ouput.datos[1].direccion_principal,
+                                 correo: ouput.datos[1].correo,
+                                 facturacion: {
+                                     ...ouput.datos[1].facturacion
+                                 }
+                                 , servicios: ouput.datos[1].servicios
+                             }
+ 
+                             setUser({ ...datos })
+                         }
+                         return
+                     }
+                     if (ouput.datos[0].estado === "ACTIVO") {
+                         let datos = {
+                             nombre: ouput.datos[0].nombre,
+                             estado: ouput.datos[0].estado,
+                             cedula: ouput.datos[0].cedula,
+                             movil: ouput.datos[0].movil,
+                             direccion_principal: ouput.datos[0].direccion_principal,
+                             correo: ouput.datos[0].correo,
+                             facturacion: {
+                                 ...ouput.datos[0].facturacion
+                             },
+                             servicios: ouput.datos[0].servicios
+                         }
+                         setUser({ ...datos })
+                     }
+ 
+                     if (ouput.datos[0].estado === "SUSPENDIDO") {
+                         let datos = {
+                             nombre: ouput.datos[0].nombre,
+                             estado: ouput.datos[0].estado,
+                             cedula: ouput.datos[0].cedula,
+                             movil: ouput.datos[0].movil,
+                             direccion_principal: ouput.datos[0].direccion_principal,
+                             correo: ouput.datos[0].correo,
+                             facturacion: {
+                                 ...ouput.datos[0].facturacion
+                             },
+                             servicios: ouput.datos[0].servicios
+                         }
+                         setUser({ ...datos })
+                     }
+                     if (ouput.datos.estado[0] === "RETIRADO") {
+                         let datos = {
+                             nombre: ouput.datos[0].nombre,
+                             estado: ouput.datos[0].estado,
+                             cedula: ouput.datos[0].cedula,
+                             movil: ouput.datos[0].movil,
+                             direccion_principal: ouput.datos[0].direccion_principal,
+                             correo: ouput.datos[0].correo,
+                             facturacion: {
+                                 ...ouput.datos[0].facturacion
+                             }
+                             , servicios: ouput.datos[0].servicios
+                         }
+ 
+                         setUser({ ...datos })
+                     }
+                 }
+                 if (ouput.estado === "error") {
+                     setOpen(false)
+                     openNotificationWithIcon('error', "Alerta", "" + ouput.mensaje)
+ 
+                     /*dismiss()
+                     present({
+                         message: ouput.mensaje,
+                         cssClass: '-danger',
+                         duration: 4500,
+                         position: "middle",
+                         buttons: [
+                             {
+                                 text: "cerrar",
+                                 role: "cancel",
+ 
+                             }
+                         ]
+                     });*
+ 
+                     console.log("err")
+                     setUser({
+                         nombre: "",
+                         estado: "",
+                         cedula: "",
+                         movil: "",
+                         direccion_principal: "",
+                         correo: "",
+                         facturacion: {
+                             facturas_nopagadas: 0,
+                             total_facturas: "0000"
+                         }
+                         , servicios: []
+                     })
+                 }
+             }).catch(err => {
+                 /* dismiss()
+                  present({
+                      message: "Hubo un error" + err,
+                      cssClass: '',
                       duration: 4500,
-                     position: "middle",
-                     buttons: [
-                         {
-                             text: "cerrar",
-                             role: "cancel",
-     
-                         }
-                     ]
-                 });*
-                //console.log(err)
-            })
-            return
-        }*/
+                      position: "middle",
+                      buttons: [
+                          {
+                              text: "cerrar",
+                              role: "cancel",
+                          }
+                      ]
+                  })/ */
+        /* dismiss()
+         present({
+             message: err,
+             cssClass: '-danger',
+              duration: 4500,
+             position: "middle",
+             buttons: [
+                 {
+                     text: "cerrar",
+                     role: "cancel",
+ 
+                 }
+             ]
+         });*
+        //console.log(err)
+    })
+    return
+}*/
         // setBusca(false)
         setOpen(true)
         setMensaje({
@@ -1224,13 +1223,10 @@ const PagosView = () => {
                     if (fact.estado == "exito") {
                         //dismiss()
 
-                        if (cedula.trim().length < 10) {
-                            setimpri(true)
-                            //setOpen(false)
-                            openNotificationWithIcon('succes', "Factura Pagada en portal", "")
+                        setimpri(true)
+                        //setOpen(false)
+                        openNotificationWithIcon('succes', "Factura Pagada en portal", "")
 
-                            return
-                        }
                         setOpen(true)
                         setMensaje({
                             mensaje: "Ageragando numero de Factura",
@@ -1385,11 +1381,8 @@ const PagosView = () => {
             })
             PagoFacturacomnet(datosdefactura).then(fact => {
                 if (fact.estado == "exito") {
-                    if (cedula.trim().length < 10) {
                         setimpri(true)
-                        openNotificationWithIcon('error', "Pagado en el portal", "")
-                        return
-                    }
+                        openNotificationWithIcon('success', "Pagado en el portal", "")
                     setOpen(true)
                     setMensaje({
                         mensaje: "Obteniendo número de factura",
@@ -1511,13 +1504,11 @@ const PagosView = () => {
                     /*  $.get("demo.asp", function (data, status) {
                           alert("Data: " + data + "\nStatus: " + status);
                       });*/
-                    if (cedula.trim().length < 10) {
                         setimpri(true)
                         setOpen(false)
                         openNotificationWithIcon('success', "Pagado en el portal", "")
-                        return
-                    }
-                    if (!cedula.trim().length < 10) {
+                     
+                    if (true) {
                         setOpen(true)
                         setMensaje({
                             mensaje: "Obteniendo numero de factura",
@@ -1658,7 +1649,13 @@ const PagosView = () => {
         }
     }
 
-
+    const handleKeyPress = (event) => {
+        // Aquí puedes manejar la lógica de teclas según tus necesidades
+        if (event.key === 'Enter') {
+          // Por ejemplo, ejecutar una acción al presionar la tecla Enter
+         buscar()
+        }
+      };
     return (
         <div>
             <SimpleDialogop
@@ -1672,46 +1669,11 @@ const PagosView = () => {
                 estado={mesaje.estado}
             />
             {contextHolder}
+            <Grid container spacing={3}>
+                        <Grid item xs={12} md={6} >
             <MainCard contentSX={{ p: 2.25 }} style={{ marginBottom: "15px" }}>
                 <div className="">
-                    <div className="col-4 col-md-5 d-flex   align-items-center text-white ps-3 ">
-                        <h5 className=" text-dark">
-                            Buscar cliente
-                        </h5>
-                    </div>
-                    <div className="  ">
-                        <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }}>
-                            <FormControl sx={{ width: { xs: '100%', md: '100%' } }}>
-                                <OutlinedInput
-                                    size="small"
-                                    id="header-search"
-                                    startAdornment={
-                                        <InputAdornment position="start" sx={{ mr: -0.5 }}>
-                                            <SearchOutlined />
-                                        </InputAdornment>
-                                    }
-                                    onKe
-                                    onChange={(e) => setCedul(e.target.value)}
-
-                                    aria-describedby="header-search-text"
-                                    inputProps={{
-                                        'aria-label': 'weight'
-                                    }}
-                                   
-                                    endAdornment={
-                                        <Button
-                                            onClick={buscar}
-                                            position="start" sx={{ mr: -0.5 }}>
-                                            <SearchOutlined />
-                                        </Button>
-                                    }
-                                    placeholder="cédula"
-                                />
-                            </FormControl>
-                        </Box>
-
-
-                    </div>
+                    
                     <Grid style={{ paddingTop: "15px" }} spacing={1.5}>
 
                         <Typography variant="h6" className="py-2"  >
@@ -1758,7 +1720,48 @@ const PagosView = () => {
                     </div>
                 </div>
             </MainCard>
+            </Grid>
+            
+            <Grid item xs={12} md={6} >
             <MainCard contentSX={{ p: 2.25 }}>
+            <div className="col-4 col-md-5 d-flex   align-items-center text-white ps-3 ">
+                        <h5 className=" text-dark">
+                            Buscar cliente
+                        </h5>
+                    </div>
+                    <div className="  ">
+                        <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }}>
+                            <FormControl sx={{ width: { xs: '100%', md: '100%' } }}>
+                                <OutlinedInput
+                                    size="small"
+                                    id="header-search"
+                                    startAdornment={
+                                        <InputAdornment position="start" sx={{ mr: -0.5 }}>
+                                            <SearchOutlined />
+                                        </InputAdornment>
+                                    }
+                                    onKeyPress={handleKeyPress}
+                                    onChange={(e) => setCedul(e.target.value)}
+
+                                    aria-describedby="header-search-text"
+                                    inputProps={{
+                                        'aria-label': 'weight'
+                                    }}
+
+                                    endAdornment={
+                                        <Button
+                                            onClick={buscar}
+                                            position="start" sx={{ mr: -0.5 }}>
+                                            <SearchOutlined />
+                                        </Button>
+                                    }
+                                    placeholder="cédula"
+                                />
+                            </FormControl>
+                        </Box>
+
+
+                    </div>
 
                 {busca ? "" : <form id='pagos' noValidate style={{ paddingTop: '15px' }}>
                     <Grid container spacing={3}>
@@ -1808,7 +1811,7 @@ const PagosView = () => {
                         </Grid>
 
                         {lugar.value.includes("TRA") ?
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={12}>
                                 <Stack spacing={1}>
                                     <InputLabel htmlFor="firstname-signup">Bancos</InputLabel>
                                     <Selectopction
@@ -1874,13 +1877,13 @@ const PagosView = () => {
                                 <div className=" text-center ">
 
                                     {cedula.length >= 10 ?
-                                        <button className=" btn-primary m-1 mt-5 p-2  btn"
+                                        <button className=" btn-primary m-1 mt-1 p-2  btn"
                                             disabled={impri}
                                             onClick={(e) => RegistrarPago(e)}
                                         >
                                             Registrar Pago
                                         </button> :
-                                        <button className=" btn btn-primary m-1 mt-5 p-2 "
+                                        <button className=" btn btn-primary m-1 mt-1 p-2 "
                                             disabled={impri}
                                             onClick={(e) => RegistrarPago(e)}
                                         >Registro Comnet</button>
@@ -1892,6 +1895,8 @@ const PagosView = () => {
                     </Grid>
                 </form>}
             </MainCard>
+            </Grid>
+            </Grid>
 
 
         </div>
