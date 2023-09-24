@@ -1225,7 +1225,7 @@ const PagosView = () => {
 
                         setimpri(true)
                         //setOpen(false)
-                        openNotificationWithIcon('succes', "Factura Pagada en portal", "")
+                        openNotificationWithIcon('success', "Factura Pagada en portal", "")
 
                         setOpen(true)
                         setMensaje({
@@ -1254,7 +1254,7 @@ const PagosView = () => {
                                         "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
                                         "tipo": "N",
                                         "email": validarCorreoElectronico(usuario.correo) ? usuario.correo : "",
-                                        "es_extranjero": false
+                                        es_extranjero: (usuario.cedula.trim().length <9)
                                     },
                                     "vendedor": {
                                         "ruc": "0992782129001",
@@ -1263,7 +1263,7 @@ const PagosView = () => {
                                         "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
                                         "tipo": "J",
                                         "email": "facturacion@speed.ec",
-                                        "es_extranjero": false
+                                        es_extranjero: (usuario.cedula.trim().length <9)
                                     },
                                     //contifico[0].
                                     "descripcion": descri.items[0]["descrp"],
@@ -1412,7 +1412,7 @@ const PagosView = () => {
                                 "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
                                 "tipo": "N",
                                 "email": validarCorreoElectronico(usuario.correo) ? usuario.correo : "",
-                                "es_extranjero": false
+                                es_extranjero: (usuario.cedula.trim().length <9)
                             },
                             "vendedor": {
                                 "ruc": "0992782129001",
@@ -1421,7 +1421,7 @@ const PagosView = () => {
                                 "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
                                 "tipo": "J",
                                 "email": "facturacion@speed.ec",
-                                "es_extranjero": false
+                                es_extranjero: (usuario.cedula.trim().length <9)
                             },
                             //contifico[0].
                             "descripcion": descri.items[0]["descrp"],
@@ -1550,7 +1550,7 @@ const PagosView = () => {
                                         "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
                                         "tipo": "N",
                                         "email": validarCorreoElectronico(usuario.correo) ? usuario.correo : "",
-                                        "es_extranjero": false
+                                        es_extranjero: (usuario.cedula.trim().length <9)
                                     },
                                     "vendedor": {
                                         "ruc": "0992782129001",
@@ -1559,7 +1559,7 @@ const PagosView = () => {
                                         "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
                                         "tipo": "J",
                                         "email": "facturacion@speed.ec",
-                                        "es_extranjero": false
+                                        es_extranjero: (usuario.cedula.trim().length <9)
                                     },
                                     "detalles": [
                                         {
