@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, createAnimation, setupIonicReact } from '@ionic/react';
+import { IonApp, IonItem, IonLabel, IonList, IonListHeader, IonRouterOutlet, IonSkeletonText, IonThumbnail, createAnimation, setupIonicReact, useIonToast } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,6 +29,8 @@ import { MapsVies } from './pagevdos/Mapa';
 import { routes } from './pagevdos/routersub';
 import PAgosViewa from './pagevdos/Pagos';
 import SpeddView from './components/Spedd';
+import { Network } from '@capacitor/network';
+
 let { LoginView, TabsView, Tesvel } = routes
 
 function OneSignalInit(user: any): void {
@@ -68,9 +70,35 @@ const setStatusBarStyleLight = async () => {
   await StatusBar.show()
   await StatusBar.setStyle({ style: Style.Default });
 };
+const APPv1: React.FC = () => {
+  return (<>
+    <IonList>
+      <IonListHeader>
+        <IonSkeletonText animated={true} style={{ width: '80px' }}></IonSkeletonText>
+      </IonListHeader>
+      <IonItem>
+        <IonThumbnail slot="start">
+          <IonSkeletonText animated={true}></IonSkeletonText>
+        </IonThumbnail>
+        <IonLabel>
+          <h3>
+            <IonSkeletonText animated={true} style={{ width: '80%' }}></IonSkeletonText>
+          </h3>
+          <p>
+            <IonSkeletonText animated={true} style={{ width: '60%' }}></IonSkeletonText>
+          </p>
+          <p>
+            <IonSkeletonText animated={true} style={{ width: '30%' }}></IonSkeletonText>
+          </p>
+        </IonLabel>
+      </IonItem>
+    </IonList>
+  </>)
+}
 const App: React.FC = () => {
   let user = useSelector((state: any) => state.usuario)
   let userdispach = useDispatch()
+  const [present] = useIonToast();
   const [initialized, setInitialized] = useState(false);
 
   var usehistory = useHistory()
@@ -97,46 +125,63 @@ const App: React.FC = () => {
     return animation;
   };
   //history.push("/home")
+  Network.addListener('networkStatusChange', status => {
+    setInitialized(status.connected)
+    present({
+      message: status.connected ? "Teléfono conectador a red" : "No hay conexión a Internet",
+      duration: 1500,
+    });
+    console.log('Network status changed', status);
+  });
   useEffect(() => {
     // StatusBar.setBackgroundColor({ color: '#0000' });
     // StatusBar.setStyle()
     // StatusBar.setStyle({ Style.dark: 'dark' });
 
+    Network.addListener('networkStatusChange', status => {
+      setInitialized(status.connected)
+      present({
+        message: status.connected ? "Teléfono conectador a red" : "No hay conexión a Internet",
+        duration: 1500,
+      });
+      console.log('Network status changed', status);
 
-    let datos = userlog()
-    console.log(datos)
-    setStatusBarStyleLight()
-    if (datos != null) {
-      userdispach(setlogin({ estado: true }))
-      autenticar(datos.cedula).then(salida => {
-        if (salida.estado == "exito") {
-          userdispach(setDatosuser({ ...salida.datos[0] }))
+      let datos = userlog()
+      console.log(datos)
+
+      setStatusBarStyleLight()
+      if (status.connected && datos != null) {
+        userdispach(setlogin({ estado: true }))
+        autenticar(datos.cedula).then(salida => {
+          if (salida.estado == "exito") {
+            userdispach(setDatosuser({ ...salida.datos[0] }))
+          } else {
+          }
+
+        }).catch(() => {
+
+        })
+        console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"), getPlatforms())
+        if (getPlatforms().some(e => e == "android") && getPlatforms().length == 1) {
+          OneSignalInit(datos)
+
+          //OneSignal.startInit('TU_APP_ID')
+
+
+          /*  OneSignal.setNotificationOpenedHandler((openedResult) => {
+              // Aquí puedes manejar la apertura de la notificación
+              console.log('Notificación abierta:', openedResult);
+            });/*/
         } else {
+
+          // initializeOneSignal();
+          /* ReactOnesigna.setNotificationOpenedHandler((notification:any) => {
+             // Aquí puedes manejar la apertura de la notificación
+             console.log('Notificación abierta:', notification);
+           });*/
         }
-
-      }).catch(() => {
-
-      })
-      console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"), getPlatforms())
-      if (getPlatforms().some(e => e == "android") && getPlatforms().length == 1) {
-        OneSignalInit(datos)
-
-        //OneSignal.startInit('TU_APP_ID')
-
-
-        /*  OneSignal.setNotificationOpenedHandler((openedResult) => {
-            // Aquí puedes manejar la apertura de la notificación
-            console.log('Notificación abierta:', openedResult);
-          });/*/
-      } else {
-
-        // initializeOneSignal();
-        /* ReactOnesigna.setNotificationOpenedHandler((notification:any) => {
-           // Aquí puedes manejar la apertura de la notificación
-           console.log('Notificación abierta:', notification);
-         });*/
       }
-    }
+    });
   }, [])
 
   /*const createSingleTaskNotification = async () => {
@@ -170,7 +215,7 @@ const App: React.FC = () => {
           <IonRouterOutlet animation={animationBuilder}
           >
 
-            
+
             <Route path="/pagos" >
               <PAgosViewa />
             </Route>
@@ -181,10 +226,10 @@ const App: React.FC = () => {
               <MapsVies />
             </Route>
             <Route path="/home">
-              <TabsView />
+              {!initialized ? <APPv1 /> : <TabsView />}
             </Route>
             <Route path="/test">
-              <SpeddView/>
+              <SpeddView />
             </Route>
             <Route exact path="/">
               <Redirect from='*' to="/home" />
