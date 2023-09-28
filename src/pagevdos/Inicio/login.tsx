@@ -83,6 +83,7 @@ export default function LoginView() {
 
         if (datos.cedula.trim() !== "" && datos.codigo.trim() !== "") {
             Logearusar({ "cedula": datos.cedula, "passwors": datos.codigo }).then(ou => {
+                console.log(ou)
                 if (ou.estado == "exito") {
                 let datos=    ou.datos.map((e:any)=>{
                         let servicio = e.servicios[e.servicios.length - 1]

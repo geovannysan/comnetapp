@@ -30,6 +30,8 @@ import { routes } from './pagevdos/routersub';
 import PAgosViewa from './pagevdos/Pagos';
 import SpeddView from './components/Spedd';
 import { Network } from '@capacitor/network';
+import Pagoslist from './pagevdos/Pagos/Pagoslist';
+import CargarComprobante from './pagevdos/Pagos/Pagarfactura';
 
 let { LoginView, TabsView, Tesvel } = routes
 
@@ -72,7 +74,7 @@ const setStatusBarStyleLight = async () => {
 };
 const APPv1: React.FC = () => {
   return (<>
-    <IonList>
+    <div>
       <IonListHeader>
         <IonSkeletonText animated={true} style={{ width: '80px' }}></IonSkeletonText>
       </IonListHeader>
@@ -81,6 +83,7 @@ const APPv1: React.FC = () => {
           <IonSkeletonText animated={true}></IonSkeletonText>
         </IonThumbnail>
         <IonLabel>
+
           <h3>
             <IonSkeletonText animated={true} style={{ width: '80%' }}></IonSkeletonText>
           </h3>
@@ -92,7 +95,110 @@ const APPv1: React.FC = () => {
           </p>
         </IonLabel>
       </IonItem>
-    </IonList>
+      <div className="col-12 col-md-8 col-xl-2 mx-auto h-73 ">
+        {/*<!--card info-->*/}
+        <div className="container-fluid h-100 btn-group-vertical" >
+          <div className="container-fluid mt-n5">
+            <div id="menu-servicios">
+
+              <div className="row mt-n3  " id="menu-servicios">
+                <div className="col-12 pb-4 text-center estado" ><b className="me-1">Servicio: </b> </div>
+                <div className="col-4 p-0 my-4 ">
+                  <div className="container p-1">
+                    <a className='m-2'>
+                      <IonThumbnail slot="start">
+                        <IonSkeletonText animated={true} style={{ width: '104px', height: "108px" }}></IonSkeletonText>
+                      </IonThumbnail>
+
+                    </a>
+                  </div>
+                </div>
+                <div className="col-4 p-0 my-5 ">
+                  <div className="container p-1">
+                    <a  >
+                      <IonThumbnail slot="start">
+                        <IonSkeletonText animated={true} style={{ width: '104px', height: "108px" }}></IonSkeletonText>
+                      </IonThumbnail>
+
+                    </a>
+                  </div>
+                </div>
+                <div className="col-4 p-0 my-5 block">
+                  <div className="container p-1">
+                    <a  >
+                      <IonThumbnail slot="start">
+                        <IonSkeletonText animated={true} style={{ width: '104px', height: "108px" }}></IonSkeletonText>
+                      </IonThumbnail>
+
+                    </a>
+                  </div>
+                </div>
+                <div className="col-4 p-0 my-5 block">
+                  <div className="container p-1">
+                    <a  >
+                      <IonThumbnail slot="start">
+                        <IonSkeletonText animated={true} style={{ width: '104px', height: "108px" }}></IonSkeletonText>
+                      </IonThumbnail>
+
+                    </a>
+                  </div>
+                </div>
+                <div className="col-4 p-0 my-5">
+                  <div className="container p-1">
+                    <a  >
+                      <IonThumbnail slot="start">
+                        <IonSkeletonText animated={true} style={{ width: '104px', height: "108px" }}></IonSkeletonText>
+                      </IonThumbnail>
+
+                    </a>
+                  </div>
+                </div>
+                <div className="col-4 p-0 my-5 ">
+                  <div className="container p-1">
+                    <a  >
+                      <IonThumbnail slot="start">
+                        <IonSkeletonText animated={true} style={{ width: '104px', height: "108px" }}></IonSkeletonText>
+                      </IonThumbnail>
+
+                    </a>
+                  </div>
+                </div>
+                <div className="col-4 p-0 my-5 block d-none">
+                  <div className="container p-1">
+                    <a  >
+                      <IonThumbnail slot="start">
+                        <IonSkeletonText animated={true} style={{ width: '104px', height: "108px" }}></IonSkeletonText>
+                      </IonThumbnail>
+
+                    </a>
+                  </div>
+                </div>
+                <div className="col-4 p-0 my-5">
+                  <div className="container p-1">
+                    <a  >
+                      <IonThumbnail slot="start">
+                        <IonSkeletonText animated={true} style={{ width: '104px', height: "108px" }}></IonSkeletonText>
+                      </IonThumbnail>
+
+                    </a>
+                  </div>
+                </div>
+                <div className="col-4 p-0 my-5">
+                  <div className="container p-1">
+                    <a  >
+                      <IonThumbnail slot="start">
+                        <IonSkeletonText animated={true} style={{ width: '104px', height: "108px" }}></IonSkeletonText>
+                      </IonThumbnail>
+
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </>)
 }
 const App: React.FC = () => {
@@ -126,6 +232,10 @@ const App: React.FC = () => {
   };
   //history.push("/home")
   Network.addListener('networkStatusChange', status => {
+    if (!initialized) {
+      console.log("nuevos")
+      window.location.href = "/"
+    }
     setInitialized(status.connected)
     present({
       message: status.connected ? "Teléfono conectador a red" : "No hay conexión a Internet",
@@ -133,55 +243,54 @@ const App: React.FC = () => {
     });
     console.log('Network status changed', status);
   });
+  async function NuevosDatos() {
+    const status = await Network.getStatus();
+    setInitialized(status.connected)
+    console.log('Network status:', status);
+  }
   useEffect(() => {
     // StatusBar.setBackgroundColor({ color: '#0000' });
     // StatusBar.setStyle()
     // StatusBar.setStyle({ Style.dark: 'dark' });
-
-    Network.addListener('networkStatusChange', status => {
-      setInitialized(status.connected)
-      present({
-        message: status.connected ? "Teléfono conectador a red" : "No hay conexión a Internet",
-        duration: 1500,
-      });
-      console.log('Network status changed', status);
-
-      let datos = userlog()
-      console.log(datos)
-
-      setStatusBarStyleLight()
-      if (status.connected && datos != null) {
-        userdispach(setlogin({ estado: true }))
-        autenticar(datos.cedula).then(salida => {
-          if (salida.estado == "exito") {
-            userdispach(setDatosuser({ ...salida.datos[0] }))
-          } else {
-          }
-
-        }).catch(() => {
-
-        })
-        console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"), getPlatforms())
-        if (getPlatforms().some(e => e == "android") && getPlatforms().length == 1) {
-          OneSignalInit(datos)
-
-          //OneSignal.startInit('TU_APP_ID')
+    NuevosDatos()
 
 
-          /*  OneSignal.setNotificationOpenedHandler((openedResult) => {
-              // Aquí puedes manejar la apertura de la notificación
-              console.log('Notificación abierta:', openedResult);
-            });/*/
+    let datos = userlog()
+    console.log(datos)
+
+    setStatusBarStyleLight()
+    if (datos != null) {
+      userdispach(setlogin({ estado: true }))
+      autenticar(datos.cedula).then(salida => {
+        if (salida.estado == "exito") {
+          userdispach(setDatosuser({ ...salida.datos[0] }))
         } else {
-
-          // initializeOneSignal();
-          /* ReactOnesigna.setNotificationOpenedHandler((notification:any) => {
-             // Aquí puedes manejar la apertura de la notificación
-             console.log('Notificación abierta:', notification);
-           });*/
         }
+
+      }).catch(() => {
+
+      })
+      console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"), getPlatforms())
+      if (getPlatforms().some(e => e == "android") && getPlatforms().length == 1) {
+        OneSignalInit(datos)
+
+        //OneSignal.startInit('TU_APP_ID')
+
+
+        /*  OneSignal.setNotificationOpenedHandler((openedResult) => {
+            // Aquí puedes manejar la apertura de la notificación
+            console.log('Notificación abierta:', openedResult);
+          });/*/
+      } else {
+
+        // initializeOneSignal();
+        /* ReactOnesigna.setNotificationOpenedHandler((notification:any) => {
+           // Aquí puedes manejar la apertura de la notificación
+           console.log('Notificación abierta:', notification);
+         });*/
       }
-    });
+    }
+
   }, [])
 
   /*const createSingleTaskNotification = async () => {
@@ -214,7 +323,12 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonRouterOutlet animation={animationBuilder}
           >
-
+            <Route path="/Deposito">
+              <Pagoslist />
+            </Route>
+            <Route path="/Comprobante">
+              <CargarComprobante />
+            </Route>
 
             <Route path="/pagos" >
               <PAgosViewa />
@@ -222,9 +336,12 @@ const App: React.FC = () => {
             <Route path="/plan">
               <PlanView />
             </Route>
+           
             <Route path="/mapas">
               <MapsVies />
             </Route>
+           
+            
             <Route path="/home">
               {!initialized ? <APPv1 /> : <TabsView />}
             </Route>

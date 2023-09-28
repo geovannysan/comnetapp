@@ -180,3 +180,14 @@ a {
         padding-left: calc(var(--nav-width) + 188px)
     }
 }
+
+ .zoom-div {
+     width: 100px;
+     height: 100px;
+     text-align: center;
+     opacity: 0;
+     /* Inicialmente oculto */
+     transform: scale(0);
+     /* Inicialmente a escala 0 */
+     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+ }

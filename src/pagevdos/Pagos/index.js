@@ -3,16 +3,18 @@ import { arrowBack, chevronBack, cloudCircleOutline, documentText } from "ionico
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { FacturasAtorizada, MostrarFacturas } from "../../utils/Queryuser";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FileUploader } from "react-drag-drop-files";
 import Fab from '@mui/material/Fab';
 import { Zoom, useTheme } from "@mui/material";
-import { ChevronLeftOutlined } from "@mui/icons-material"; 
+import { ChevronLeftOutlined } from "@mui/icons-material";
 import FacturaViews from "../../pages/Comprobantes/Facturas";
 import Facturapdf from "./FacturaView";
+import { setFactura } from "../../StoreRedux/Slice/UserSlice";
 export default function PAgosViewa() {
     let history = useHistory()
     const theme = useTheme();
+    let dispatch = useDispatch()
     const transitionDuration = {
         enter: theme.transitions.duration.enteringScreen,
         exit: theme.transitions.duration.leavingScreen,
@@ -30,7 +32,22 @@ export default function PAgosViewa() {
         setFile(file);
     };
     function Pagados() {
-        setReport(!report)
+        MostrarFacturas(datos.id).then(salida => {
+            console.log(salida)
+            if (salida.estado == "error") return
+            const sumaTotal = salida.facturas
+            if (sumaTotal.length == 1) {
+                dispatch(setFactura({ ...sumaTotal[0] }))
+                history.push("/Comprobante")
+            } else if (sumaTotal.length > 1) {
+
+            }
+
+
+        }).catch(err => {
+            console.log(err)
+        })
+        //setReport(!report)
     }
     const [totalfact, setFactu] = useState({
         total: 0,
@@ -46,10 +63,10 @@ export default function PAgosViewa() {
         setIsOpen(true)
 
     }
-   function downloadViewImage(url) {
+    function downloadViewImage(url) {
         window.open(encodeURI(url), "_system", "location=yes");
     }
-    
+
     useEffect(() => {
         console.log(datos.id)
         if (datos.id != undefined) {

@@ -87,7 +87,7 @@ export const MostrarFacturas = async (parms) => {
 
 export const FacturasAtorizada = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti//MovilApi/Facturas", {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/MovilApi/Facturas", {
             "cedula": parms
         }, {
             headers: {
