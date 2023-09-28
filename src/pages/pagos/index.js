@@ -701,6 +701,9 @@ const PagosView = () => {
                                         }
 
                                     }).catch(err => {
+                                        setOpen(false)
+                                        openNotificationWithIcon('error', "Atento", "no se creo cliente contifico")
+
                                         console.log(err)
                                     })
                                 }
@@ -1686,7 +1689,7 @@ const PagosView = () => {
                             </div>}
                         </Typography>
                         <Typography variant="h6"  >
-                            Id contifico: {totalcon.id}/ Estado contifico : {totalcon.estado} / Total producto : {parseFloat(total).toFixed(2)} <p className="px-2">{JSON.stringify(impri)}</p>
+                                    Id contifico: {totalcon.id}/ Estado contifico : {totalcon.estado} / Total producto : {parseFloat(totalcon.total).toFixed(2)} <p className="px-2">{JSON.stringify(impri)}</p>
                         </Typography>
                     </Grid>
                     <div className="col-12 col-md-6 d-flex  align-items-center">
@@ -1824,8 +1827,8 @@ const PagosView = () => {
                                             { value: "5gQbWnq5S9V3a6w2", label: "CTA CTE BCO GUAYAQUIL 18018624 COMPUTECNICS" },
                                             { value: "xGge0VLoTopvbADR", label: "CTA CTE BCO PACIFICO 8069530 COMPUTECNICS" },
                                             { value: "1mBdJqpkurVOb0J6", label: "CTA BCO PACIFICO PERSONAL 1051475596" },
-                                            { value: "EMaxvlg16iMz8d5G", label: "CTA BCO PICHINCHA 6164998400" }
-                                        ]}
+                                            { value: "Q9jaKZqohE6Kek5K", label: "CTA BCO PICHINCHA 6164998400" }
+                                         ]}
                                         value={banco}
                                         placeholder="Banco"
                                         onChange={setBanco}

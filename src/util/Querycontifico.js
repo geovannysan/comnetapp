@@ -16,7 +16,16 @@ export const BuscaclienteContifico = async (parms) => {
                     "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
                 }
             })
-            return data
+            if(!data.length==0){
+                return data
+            }
+            let datas = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?cedula=" + parms.substring(0, parms.length - 3), {
+                headers: {
+                    "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
+                }
+            })
+            return datas.data
+            
         } catch (error) {
             return error
         }
@@ -176,7 +185,7 @@ export const PagoFacturacomnet = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/PagosdelPortal",
             {
                 ...parms,
-                "operador": nombres.password
+                "operador":nombres.cedula
             }
         )
         return data

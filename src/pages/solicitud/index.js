@@ -113,7 +113,7 @@ export default function SolicitudView() {
         }).catch(errr => {
             console.log(errr)
         })
-        if (userlog().password == "0930570395" || userlog().password == "0999999999") {
+        if (userlog().cedula == "0930570395" || userlog().cedula == "0999999999") {
             console.log(userlog())
 
         }
@@ -185,10 +185,9 @@ export default function SolicitudView() {
         <>
 
 
+            {userlog().cedula == "0930570395" || userlog().cedula == "0999999999"? 
             <MainCard contentSX={{ p: 2.25 }} style={{ marginBottom: "15px" }}>
-
-
-                <div className={spiner + " table-responsive"}>
+                <div className={spiner + "table-responsive"}>
 
                     <table id={"doc"} className="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
                         style={{
@@ -221,7 +220,7 @@ export default function SolicitudView() {
                         <span className="sr-only"></span>
                     </div>
                 </div>
-            </MainCard>
+            </MainCard>:""}
         </>
 
     )

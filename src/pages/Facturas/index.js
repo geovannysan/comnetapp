@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { ListarFacturas } from "util/Querireport"
 import moment from "moment/moment";
+import MainCard from "components/MainCard";
 
 const FacturasView = () => {
     const [factura, setFactura] = useState([])
@@ -14,7 +15,7 @@ const FacturasView = () => {
                 "estado": "0",
                 "idfactura": ""
             })
-            console.log(fact)
+            console.log(datos)
             let facturas = []
             let facturaPromesas = datos.data.map(async (e) => {
                 let datos = JSON.parse(e.mensajes)
@@ -43,6 +44,7 @@ const FacturasView = () => {
                         "pageLength": 10,
                         "bDestroy": true,
                         "sSearch": false,
+                        paging:true,
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando page _PAGE_ de _PAGES_",
                             "sSearch": "",
@@ -78,10 +80,10 @@ const FacturasView = () => {
                             {
 
                                 "responsivePriority": 1,
-                                className: "hidden-xs",
+                                className: "hidden-lg",
                                 targets: -1,
-                                visible: false,
-                                "responsive": true
+                                visible: true,
+                                "responsive": false
                             }
                         ],
                         dom: 'Bfrtip',
@@ -93,7 +95,7 @@ const FacturasView = () => {
                             [10, 20, 30, 50, "All"],
                         ],
 
-                        order: [[2, 'desc']],
+                        order: [[3, 'desc']],
 
                     });
                 })
@@ -114,8 +116,8 @@ const FacturasView = () => {
     }, [])
     const thead = () => {
         return (
-            <thead className="">
-                <tr className="border ">
+            <thead className="bg-primary">
+                <tr className="bg-primary ">
 
                     <th  >Id Factura</th>
                     <th >Fecha</th>
@@ -125,7 +127,6 @@ const FacturasView = () => {
                     <th >ID operador </th>
                     <th >iva </th>
                     <th >subtotal </th>
-
                     <th >total </th>
                     <th >Ver </th>
 
@@ -139,9 +140,6 @@ const FacturasView = () => {
         try {
 
             return factura.filter(es => es.estado != "0").map((item, index) => {
-                //  item.estado == "0" ? console.log(item) : ""
-
-                //let cedula = item.mensajes.persona["cedula"]
 
                 return (
                     <tr key={index}>
@@ -161,18 +159,19 @@ const FacturasView = () => {
                         <td className="text-xs font-weight-bold">
                             {item.estado == "0" ? "No Emitido" : "Emitido"}</td>
                         <td className="text-xs font-weight-bold">
-                            {item.Idadmin}
+                            {item.admin.username}
                         </td>
                         <td className="text-xs font-weight-bold">
-                            {item.iva}</td>
+                            {parseFloat(item.iva).toFixed(2)}</td>
                         <td className="text-xs font-weight-bold">
-                            {item.subtotal_12}
+                            { parseFloat(item.subtotal_12).toFixed(2)}
                         </td>
                         <td className="text-xs font-weight-bold">
-                            {item.total}
+                            {parseFloat( item.total).toFixed(2)}
                         </td>
-                        <td className="text-xs font-weight-bold">
-                            <button className="btn btn-success"  >ver</button>
+                  
+                        <td className=" font-weight-bold">
+                            <button className="btn btn-success" onClick={()=>console.log("nuevos datos")}  >ver</button>
                         </td>
                         {/* <td className="text-xs font-weight-bold"  ><code style={{ maxWidth:"400px"}}> <pre>{JSON.stringify(js).replace(/,/g, ",\n")}</pre>
                         </code> </td>
@@ -183,16 +182,18 @@ const FacturasView = () => {
     }
     return (
         <div>
-            <table id={"doc"} className="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
-                style={{
-                    width: "100%",
-                }}>
-                {thead()}
+            <MainCard contentSX={{ p: 2.25 }}>
+                <table id={"doc"} className="table table-striped "
+                    style={{
+                        width: "100%",
+                    }}>
+                    {thead()}
 
-                <tbody>
-                    {showDatos()}
-                </tbody>
-            </table>
+                    <tbody>
+                        {showDatos()}
+                    </tbody>
+                </table>
+            </MainCard>
         </div>)
 }
 export default FacturasView
