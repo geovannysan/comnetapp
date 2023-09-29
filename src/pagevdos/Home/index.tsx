@@ -67,7 +67,7 @@ export default function HomeView() {
                                     <a onClick={() => history.push("/home/perfil")} ><img src="img/botones-home/mis-datos-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
-                            <div className="col-4 p-0 my-2 ">
+                            <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
                                     <a onClick={() => history.push("/plan") }><img src="img/botones-home/mi-plan-boton-wifi.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>

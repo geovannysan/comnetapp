@@ -40,7 +40,7 @@ export default function PAgosViewa() {
                 dispatch(setFactura({ ...sumaTotal[0] }))
                 history.push("/Comprobante")
             } else if (sumaTotal.length > 1) {
-
+                history.push("/Facturas")
             }
 
 
@@ -85,14 +85,14 @@ export default function PAgosViewa() {
             }).catch(err => {
                 console.log(err)
             })
-            FacturasAtorizada(datos.cedula).then(ouput => {
+           /* FacturasAtorizada(datos.cedula).then(ouput => {
                 if (ouput.estado) {
                     console.log(ouput)
                     setFacturaci(ouput.facturas)
                 }
             }).catch(err => {
                 console.log(err)
-            })
+            })*/
         }
 
     }, [datos])
@@ -302,7 +302,7 @@ export default function PAgosViewa() {
                                                 style={{
                                                     fontSize: "1.7vh"
                                                     /*"font-size: 1.7vh;"*/
-                                                }} onClick={() => setLista(!lista)}>Ver Facturas </a>
+                                                }} onClick={() => history.push("Facturas")}>Ver Facturas </a>
                                         </div>
                                     </div>
                                 </div>{/*<!--ciere card opcion-->*/}

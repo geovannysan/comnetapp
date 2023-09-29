@@ -10,7 +10,7 @@ import { Cambiarclave, Cambiarname } from "../../utils/Queryuser";
 import DialogViewa from "../../components/Alert/Dialog";
 
 
-export default function WifiView(){
+export default function WifiView() {
     const datos = useSelector((state: any) => state.usuario.user);
     const [devices, setDevices] = useState([]);
     const [Alert, setAlert] = useState('');
@@ -18,7 +18,8 @@ export default function WifiView(){
     const [señal, setSeñal] = useState({
         onu_signal_value: "",
         onu_status: "",
-        onu_signal: ""})
+        onu_signal: ""
+    })
 
     const [wifi, setFifi] = useState(false)
     const [open, setOpen] = React.useState(false);
@@ -34,11 +35,11 @@ export default function WifiView(){
             return
         }
         console.log(e)
-       /* presentlo({
-            message: 'Actualizando contraseña...',
-            cssClass: 'custom-loading',
-            spinner: "bubbles",
-        })*/
+        /* presentlo({
+             message: 'Actualizando contraseña...',
+             cssClass: 'custom-loading',
+             spinner: "bubbles",
+         })*/
         let campo = datos.ID_EXTERNO_ONU.includes("IGD") ? "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_TP_PreSharedKey" : "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.PreSharedKey.1.PreSharedKey"
         Cambiarclave({
             "info": datos.ID_EXTERNO_ONU,
@@ -53,10 +54,10 @@ export default function WifiView(){
             }).then(salida => {
                 cargarssi()
                 setShowAlert("")
-               //dismiss()
+                //dismiss()
                 console.log(salida)
             }).catch(err => {
-             //   dismiss()
+                //   dismiss()
                 console.log(err)
             })
         }).catch(err => {
@@ -113,16 +114,16 @@ export default function WifiView(){
                 console.log(salida)
             }).catch(err => {
                 //dismiss()
-              /*  present({
-                    message: 'Hubo un error',
-                    cssClass: 'custom-loading',
-                    duration: 3500,
-                })*/
+                /*  present({
+                      message: 'Hubo un error',
+                      cssClass: 'custom-loading',
+                      duration: 3500,
+                  })*/
                 console.log(err)
             })
         }).catch(err => {
             setShowAlert("")
-          //  dismiss()
+            //  dismiss()
             /*present({
                 message: 'Hubo un error',
                 cssClass: 'custom-loading',
@@ -138,7 +139,7 @@ export default function WifiView(){
             Deviceslist({ "info": datos.ID_EXTERNO_ONU }).then(ouput => {
                 //console.log(ouput)
                 if (ouput.length > 0) {
-                    console.log("error list",ouput)
+                    console.log("error list", ouput)
                     let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
                     setDevices(Object.values(dtso))
                     console.log(Object.values(dtso))
@@ -150,7 +151,7 @@ export default function WifiView(){
                 console.log(ouput)
                 if (ouput.length > 0) {
                     let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSID"]._value
-                   setNickname(dst)
+                    setNickname(dst)
                     setNicknameslice({ nickname: dst })
                     console.log(dst)
                 }
@@ -172,16 +173,16 @@ export default function WifiView(){
 
         }
     }
-    function cerrarnuevo(e:string){
+    function cerrarnuevo(e: string) {
         setAlert("")
         setShowAlert(e)
 
     }
-    useEffect(()=>{
+    useEffect(() => {
         console.log("wifi")
         cargarssi()
-    },[])
-    return(
+    }, [])
+    return (
         <>
             <DeviceView
                 showModal={showModal}
@@ -235,24 +236,24 @@ export default function WifiView(){
                 ssi={""} submitHAndel={cambiarPWS}
                 header={"Cambiar clave wifi"}
             />
-            
+
             <div className="container-fluid px-0 vh-100 ">
                 {/*<!--Contenedor General-->*/}
 
                 <div className="container-fluid h-20 pb-5 bg-welcome bg-welcome-radius px-0">
                     {/*<!--header welcome-->*/}
                     <div className="container mx-autopt-2 h-50 text-end btn-group-vertical">
-                        <img src="img/speed logo name.png" className="img-fluid ms-auto" style={{height:"50px"}} alt=""/>
+                        <img src="img/speed logo name.png" className="img-fluid ms-auto" style={{ height: "50px" }} alt="" />
                     </div>
                     <div className="container-fluid h-50 bg-welcome-radius px-0">
                         <div className="container  h-100 ">
                             <div className="row h-100 pt-2 justify-content-center">
                                 <div className="col-5 w-50 text-end p-0">
-                                    <img src="img/opcion wifi/mi wifi.png" style={{height:"8vh"}} className="img-fluid " alt=""/>
+                                    <img src="img/opcion wifi/mi wifi.png" style={{ height: "8vh" }} className="img-fluid " alt="" />
                                 </div>
                                 <div className="col-auto w-50 btn-group-vertical text-white">
-                                    <p className="text-uppercase subtitulo" style={{fontSize:"1.8vh"}}>OPCIÓN</p>
-                                    <h5 className="mt-n4 text-uppercase titulo" style={{fontSize:"2.7vh"}} >Mi Wifi</h5>
+                                    <p className="text-uppercase subtitulo" style={{ fontSize: "1.8vh" }}>OPCIÓN</p>
+                                    <h5 className="mt-n4 text-uppercase titulo" style={{ fontSize: "2.7vh" }} >Mi Wifi</h5>
                                 </div>
                             </div>
                         </div>
@@ -262,7 +263,7 @@ export default function WifiView(){
 
 
 
-                {datos.ID_EXTERNO_ONU == "" ?"":<div className="col-12 col-md-8 col-xl-2 mx-auto h-73 ">
+                {datos.ID_EXTERNO_ONU == "" ? "" : <div className="col-12 col-md-8 col-xl-2 mx-auto h-73 ">
                     {/*<!--card info-->*/}
                     <div className="container-fluid h-100 btn-group-vertical" >
                         <div className="container-fluid btn-group-vertical h-100  ">
@@ -270,15 +271,15 @@ export default function WifiView(){
                                 {/*<!--card opcion-->*/}
                                 <div className="col-8 h-100 border rounded-start-4">
                                     <div className="row w-80 h-100">
-                                        <div className="container h-50 pt-2">   
-                                        {/*<!--card texto-->*/}
-                                            <div className="col-12 text-muted" style={{fontSize:"1.6vh"}}>Nombre de Red</div>
+                                        <div className="container h-50 pt-2">
+                                            {/*<!--card texto-->*/}
+                                            <div className="col-12 text-muted" style={{ fontSize: "1.6vh" }}>Nombre de Red</div>
                                             <div className="col-12 mt-1 text-celeste" style={{ fontSize: "1.6vh" }}><span id="nombre_de_red">{nickname}</span></div>
                                         </div>
                                         {/* <!--cierre card texto-->*/}
                                         <div className="container h-50 btn-group-vertical ">
                                             {/*<!--card btn-->*/}
-                                            <div className="col-12 "><a onClick={() => setAlert("cambiarssi")} className="text-purple py-2 none-style shadow-3 border rounded-pill px-4 " style={{fontSize:"1.4vh"}}>Cambiar</a></div>
+                                            <div className="col-12 "><a onClick={() => setAlert("cambiarssi")} className="text-purple py-2 none-style shadow-3 border rounded-pill px-4 " style={{ fontSize: "1.4vh" }}>Cambiar</a></div>
                                         </div>
                                         {/*<!--cierre card btn-->*/}
                                     </div>
@@ -286,7 +287,7 @@ export default function WifiView(){
 
                                 <div className="col-4 d-no h-100 rounded-end-4 bg-purpura-gradient">
                                     <div className="col-12 h-100 w-100 btn-group-vertical">
-                                        <img src="img/opcion wifi/wifi signal.png" className="img-fluid" alt=""/>
+                                        <img src="img/opcion wifi/wifi signal.png" className="img-fluid" alt="" />
                                     </div>
                                 </div>
                             </div>
@@ -296,18 +297,18 @@ export default function WifiView(){
                                 {/*<!--card opcion-->*/}
                                 <div className="col-8 h-100 border rounded-start-4">
                                     <div className="row w-80 h-100">
-                                        <div className="container h-50 pt-2">  
-                                        {/* <!--card texto-->*/}
-                                            <div className="col-12 text-muted" 
-                                            style={{fontSize:"1.6vh"}}>Clave WIFI</div>
-                                            <div className="col-12 mt-1 text-celeste" 
-                                            style={{fontSize:"1.8vh"}}><span id="nombre_de_red">*****************</span></div>
+                                        <div className="container h-50 pt-2">
+                                            {/* <!--card texto-->*/}
+                                            <div className="col-12 text-muted"
+                                                style={{ fontSize: "1.6vh" }}>Clave WIFI</div>
+                                            <div className="col-12 mt-1 text-celeste"
+                                                style={{ fontSize: "1.8vh" }}><span id="nombre_de_red">*****************</span></div>
                                         </div>
                                         {/* <!--cierre card texto-->*/}
                                         <div className="container h-50 btn-group-vertical ">
                                             {/*<!--card btn-->*/}
-                                            <div className="col-12 "><a onClick={() => setAlert("password")} className="text-purple py-2 none-style shadow-3 border rounded-pill px-4 " 
-                                            style={{fontSize:"1.4vh"}}>Cambiar</a></div>
+                                            <div className="col-12 "><a onClick={() => setAlert("password")} className="text-purple py-2 none-style shadow-3 border rounded-pill px-4 "
+                                                style={{ fontSize: "1.4vh" }}>Cambiar</a></div>
                                         </div>
                                         {/*<!--cierre card btn-->*/}
                                     </div>
@@ -315,7 +316,7 @@ export default function WifiView(){
 
                                 <div className="col-4 d-no h-100 rounded-end-4 bg-purpura-gradient">
                                     <div className="col-12 h-100 w-100 btn-group-vertical">
-                                        <img src="img/opcion wifi/wifi pass.png" className="img-fluid" alt=""/>
+                                        <img src="img/opcion wifi/wifi pass.png" className="img-fluid" alt="" />
                                     </div>
                                 </div>
                             </div>
@@ -326,10 +327,10 @@ export default function WifiView(){
                                 {/*<!--card opcion-->*/}
                                 <div className="col-8 h-100 border rounded-start-4">
                                     <div className="row w-80 h-100">
-                                        <div className="container h-50 pt-2">   
-                                        {/*<!--card texto-->*/}
-                                            <div className="col-12 text-muted" style={{fontSize:"1.6vh"}}>Estado RED WIFI</div>
-                                            <div className="col-12 mt-1 text-celeste" style={{ fontSize: "1.6vh" }}><span id="nombre_de_red">{!wifi?"OCULTO":"VISIBLE"}</span></div>
+                                        <div className="container h-50 pt-2">
+                                            {/*<!--card texto-->*/}
+                                            <div className="col-12 text-muted" style={{ fontSize: "1.6vh" }}>Estado RED WIFI</div>
+                                            <div className="col-12 mt-1 text-celeste" style={{ fontSize: "1.6vh" }}><span id="nombre_de_red">{!wifi ? "OCULTO" : "VISIBLE"}</span></div>
                                         </div>
                                         {/* <!--cierre card texto-->*/}
                                         <div className="container h-50 btn-group-vertical ">
@@ -342,7 +343,7 @@ export default function WifiView(){
 
                                 <div className="col-4 d-no h-100 rounded-end-4 bg-purpura-gradient">
                                     <div className="col-12 h-100 w-100 btn-group-vertical">
-                                        <img src="img/opcion wifi/ocultar wifi.png" className="img-fluid" alt=""/>
+                                        <img src="img/opcion wifi/ocultar wifi.png" className="img-fluid" alt="" />
                                     </div>
                                 </div>
                             </div>
@@ -353,17 +354,17 @@ export default function WifiView(){
                                 {/*<!--card opcion-->*/}
                                 <div className="col-8 h-100 border rounded-start-4">
                                     <div className="row w-80 h-100">
-                                        <div className="container h-50 pt-2">   
-                                        {/*<!--card texto-->*/}
-                                            <div className="col-12 text-muted" 
-                                            style={{fontSize:"1.6vh"}}>Ver Dispositivos</div>
-                                            <div className="col-12 mt-1 text-celeste" 
-                                            style={{fontSize:"1.6vh"}}><span id="nombre_de_red">CONECTADOS</span></div>
-                                        </div>                                         
+                                        <div className="container h-50 pt-2">
+                                            {/*<!--card texto-->*/}
+                                            <div className="col-12 text-muted"
+                                                style={{ fontSize: "1.6vh" }}>Ver Dispositivos</div>
+                                            <div className="col-12 mt-1 text-celeste"
+                                                style={{ fontSize: "1.6vh" }}><span id="nombre_de_red">CONECTADOS</span></div>
+                                        </div>
                                         {/*<!--cierre card texto-->*/}
                                         <div className="container h-50 btn-group-vertical ">
                                             {/*<!--card btn-->*/}
-                                            <div className="col-12 "><a  className="text-purple py-2 none-style shadow-3 border rounded-pill px-4 " onClick={() => setModal(true)} style={{fontSize:"1.4vh"}}>Ver Lista</a></div>
+                                            <div className="col-12 "><a className="text-purple py-2 none-style shadow-3 border rounded-pill px-4 " onClick={() => setModal(true)} style={{ fontSize: "1.4vh" }}>Ver Lista</a></div>
                                         </div>
                                         {/*<!--cierre card btn-->*/}
                                     </div>
@@ -371,7 +372,7 @@ export default function WifiView(){
 
                                 <div className="col-4 d-no h-100 rounded-end-4 bg-purpura-gradient">
                                     <div className="col-12 h-100 w-100 btn-group-vertical">
-                                        <img src="img/opcion wifi/ver dispositivos.png" className="img-fluid" alt=""/>
+                                        <img src="img/opcion wifi/ver dispositivos.png" className="img-fluid" alt="" />
                                     </div>
                                 </div>
                             </div>
@@ -379,7 +380,7 @@ export default function WifiView(){
                         </div>
                     </div>
                 </div>}
-                {datos.ID_EXTERNO_ONU != "" ?"":<div className="col-12 col-md-8 col-xl-2 mx-auto h-73 ">
+                {datos.ID_EXTERNO_ONU != "" ? "" : <div className="col-12 col-md-8 col-xl-2 mx-auto h-73 ">
                     <section className="page_404">
                         <div className="container">
                             <div className="row">
@@ -387,21 +388,16 @@ export default function WifiView(){
                                     <div className="col-sm-10 col-sm-offset-1  text-center">
                                         <div className="four_zero_four_bg">
                                             <h2 style={{
-                                                fontSize:"3em"
+                                                fontSize: "3em"
                                             }} className="text-center ">UPS!</h2>
-
-
                                         </div>
-
                                         <div className="contant_box_404">
                                             <h3 className="h2">
-                                               Comunniquese con soporte</h3>
-
-                                            <p> Este perfil no dispone de un <span className=" fw-bold">EXTERNAL ID</span> 
+                                                Comunniquese con soporte</h3>
+                                            <p> Este perfil no dispone de un <span className=" fw-bold">EXTERNAL ID</span>
                                             </p>
-
                                             <a href="https://api.whatsapp.com/send?phone=593997500911&text=Vi%20su%20pagina%20web,%20quiero%20contratar%20sus%20servicios%20para%20mi%20domicilio" className="link_404 py-3 rounded-circle shadow"><i className="bi bi-whatsapp " style={{
-                                                fontSize:"1.5em"
+                                                fontSize: "1.5em"
                                             }}></i></a>
                                         </div>
                                     </div>
@@ -428,7 +424,7 @@ export default function WifiView(){
 
 
             </div>
-            
+
         </>
     )
 }

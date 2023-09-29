@@ -32,6 +32,7 @@ import SpeddView from './components/Spedd';
 import { Network } from '@capacitor/network';
 import Pagoslist from './pagevdos/Pagos/Pagoslist';
 import CargarComprobante from './pagevdos/Pagos/Pagarfactura';
+import FacturaslisView from './pagevdos/Pagos/Faturalist';
 
 let { LoginView, TabsView, Tesvel } = routes
 
@@ -205,7 +206,7 @@ const App: React.FC = () => {
   let user = useSelector((state: any) => state.usuario)
   let userdispach = useDispatch()
   const [present] = useIonToast();
-  const [initialized, setInitialized] = useState(false);
+  const [initialized, setInitialized] = useState(true);
 
   var usehistory = useHistory()
   function entrar() {
@@ -326,10 +327,13 @@ const App: React.FC = () => {
             <Route path="/Deposito">
               <Pagoslist />
             </Route>
+            <Route path="/Facturas">
+              <FacturaslisView />
+            </Route>
             <Route path="/Comprobante">
               <CargarComprobante />
             </Route>
-
+            
             <Route path="/pagos" >
               <PAgosViewa />
             </Route>

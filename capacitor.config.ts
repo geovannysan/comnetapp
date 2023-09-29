@@ -5,7 +5,6 @@ const config: CapacitorConfig = {
   appName: 'portal',
   webDir: 'build',
   bundledWebRuntime: false,
-  "server": { "allowNavigation": ["https://portal.comnet.ec"] },
   plugins: {
     LocalNotifications: {
      
