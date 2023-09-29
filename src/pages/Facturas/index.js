@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { ListarFacturas } from "util/Querireport"
-import moment from "moment/moment";
+//import moment from "moment/moment";
 import MainCard from "components/MainCard";
 
 const FacturasView = () => {
@@ -17,7 +17,7 @@ const FacturasView = () => {
             })
             console.log(datos)
             let facturas = []
-            let facturaPromesas = datos.data.map(async (e) => {
+            datos.data.map(async (e) => {
                 let datos = JSON.parse(e.mensajes)
                 if (datos.persona != undefined) {
 
@@ -26,7 +26,7 @@ const FacturasView = () => {
                     facturas.push({ ...e, mensajes: datos, cliente: datos.cliente["cedula"] })
                 }
             })
-            const factur = await Promise.all(facturaPromesas);
+          //  const factur = await Promise.all(facturaPromesas);
             /*datos.data.map(e => {
                 let informa = JSON.parse(e.mensajes)
                 e.mensajes = JSON.parse(e.mensajes)
@@ -50,7 +50,7 @@ const FacturasView = () => {
                             "sSearch": "",
                             "searchPlaceholder": "",
                             'paginate': {
-                                'previous': '<span class="prev-icon"><i class="fa fa-arrow-left"> </i> </span>',
+                                'previous': '<span class="prev-icon">Ant </span>',
                                 'next': '<span class="next-icon"> <i class="fa fa-arrow-right"> </i></span>'
                             }
                         },
@@ -95,7 +95,7 @@ const FacturasView = () => {
                             [10, 20, 30, 50, "All"],
                         ],
 
-                        order: [[3, 'desc']],
+                        order: [[2, 'desc']],
 
                     });
                 })

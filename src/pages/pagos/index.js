@@ -217,10 +217,10 @@ const PagosView = () => {
     const [lugar, setLugar] = useState({ value: "", label: "" })
     function validarCorreoElectronico(correo) {
         // Expresión regular para validar una dirección de correo electrónico
-        const expresionRegularCorreo = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        const expresionRegularCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         // Utilizamos test() para verificar si el correo coincide con la expresión regular
-        return expresionRegularCorreo.test(correo);
+        return expresionRegularCorreo.test(correo.replace(".@", "@"));
     }
 
     const [banco, setBanco] = useState({ value: "", label: "" })
@@ -1256,8 +1256,8 @@ const PagosView = () => {
                                         "telefonos": usuario.movil,
                                         "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
                                         "tipo": "N",
-                                        "email": validarCorreoElectronico(usuario.correo) ? usuario.correo : "",
-                                        es_extranjero: (usuario.cedula.trim().length <9)
+                                        "email": validarCorreoElectronico(usuario.correo) ? usuario.correo.replace(".@","@") : "",
+                                        es_extranjero: (usuario.cedula.trim().length < 9)
                                     },
                                     "vendedor": {
                                         "ruc": "0992782129001",
@@ -1266,7 +1266,7 @@ const PagosView = () => {
                                         "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
                                         "tipo": "J",
                                         "email": "facturacion@speed.ec",
-                                        es_extranjero: (usuario.cedula.trim().length <9)
+                                        es_extranjero: (usuario.cedula.trim().length < 9)
                                     },
                                     //contifico[0].
                                     "descripcion": descri.items[0]["descrp"],
@@ -1384,8 +1384,8 @@ const PagosView = () => {
             })
             PagoFacturacomnet(datosdefactura).then(fact => {
                 if (fact.estado == "exito") {
-                        setimpri(true)
-                        openNotificationWithIcon('success', "Pagado en el portal", "")
+                    setimpri(true)
+                    openNotificationWithIcon('success', "Pagado en el portal", "")
                     setOpen(true)
                     setMensaje({
                         mensaje: "Obteniendo número de factura",
@@ -1414,8 +1414,8 @@ const PagosView = () => {
                                 "telefonos": usuario.movil,
                                 "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
                                 "tipo": "N",
-                                "email": validarCorreoElectronico(usuario.correo) ? usuario.correo : "",
-                                es_extranjero: (usuario.cedula.trim().length <9)
+                                "email": validarCorreoElectronico(usuario.correo) ? usuario.correo.replace(".@","@") : "",
+                                es_extranjero: (usuario.cedula.trim().length < 9)
                             },
                             "vendedor": {
                                 "ruc": "0992782129001",
@@ -1424,7 +1424,7 @@ const PagosView = () => {
                                 "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
                                 "tipo": "J",
                                 "email": "facturacion@speed.ec",
-                                es_extranjero: (usuario.cedula.trim().length <9)
+                                es_extranjero: (usuario.cedula.trim().length < 9)
                             },
                             //contifico[0].
                             "descripcion": descri.items[0]["descrp"],
@@ -1507,10 +1507,10 @@ const PagosView = () => {
                     /*  $.get("demo.asp", function (data, status) {
                           alert("Data: " + data + "\nStatus: " + status);
                       });*/
-                        setimpri(true)
-                        setOpen(false)
-                        openNotificationWithIcon('success', "Pagado en el portal", "")
-                     
+                    setimpri(true)
+                    setOpen(false)
+                    openNotificationWithIcon('success', "Pagado en el portal", "")
+
                     if (true) {
                         setOpen(true)
                         setMensaje({
@@ -1552,8 +1552,8 @@ const PagosView = () => {
                                         "telefonos": usuario.movil,
                                         "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
                                         "tipo": "N",
-                                        "email": validarCorreoElectronico(usuario.correo) ? usuario.correo : "",
-                                        es_extranjero: (usuario.cedula.trim().length <9)
+                                        "email": validarCorreoElectronico(usuario.correo) ? usuario.correo.replace(".@","@") : "",
+                                        es_extranjero: (usuario.cedula.trim().length < 9)
                                     },
                                     "vendedor": {
                                         "ruc": "0992782129001",
@@ -1562,7 +1562,7 @@ const PagosView = () => {
                                         "direccion": "COOP. PANCHO JACOME MZ 240 SL20",
                                         "tipo": "J",
                                         "email": "facturacion@speed.ec",
-                                        es_extranjero: (usuario.cedula.trim().length <9)
+                                        es_extranjero: (usuario.cedula.trim().length < 9)
                                     },
                                     "detalles": [
                                         {
@@ -1655,10 +1655,10 @@ const PagosView = () => {
     const handleKeyPress = (event) => {
         // Aquí puedes manejar la lógica de teclas según tus necesidades
         if (event.key === 'Enter') {
-          // Por ejemplo, ejecutar una acción al presionar la tecla Enter
-         buscar()
+            // Por ejemplo, ejecutar una acción al presionar la tecla Enter
+            buscar()
         }
-      };
+    };
     return (
         <div>
             <SimpleDialogop
@@ -1673,232 +1673,232 @@ const PagosView = () => {
             />
             {contextHolder}
             <Grid container spacing={3}>
-                        <Grid item xs={12} md={6} >
-            <MainCard contentSX={{ p: 2.25 }} style={{ marginBottom: "15px" }}>
-                <div className="">
-                    
-                    <Grid style={{ paddingTop: "15px" }} spacing={1.5}>
+                <Grid item xs={12} md={6} >
+                    <MainCard contentSX={{ p: 2.25 }} style={{ marginBottom: "15px" }}>
+                        <div className="">
 
-                        <Typography variant="h6" className="py-2"  >
-                            {usuario.nombre == "" ? "" : <div className={usuario.facturacion.facturas_nopagadas == "0" ? " bg-secondary container-fluid   text-center py-2 rounded-2  " : " bg-danger container-fluid   text-center py-2 rounded-2 "}>
-                                <span className=" text-white">   {
-                                    "El cliente cuenta con " + usuario.facturacion.facturas_nopagadas + " Facturas vencidas (Total:" + usuario.facturacion.total_facturas + ")"
+                            <Grid style={{ paddingTop: "15px" }} spacing={1.5}>
 
-                                }
-                                </span>
-                            </div>}
-                        </Typography>
-                        <Typography variant="h6"  >
+                                <Typography variant="h6" className="py-2"  >
+                                    {usuario.nombre == "" ? "" : <div className={usuario.facturacion.facturas_nopagadas == "0" ? " bg-secondary container-fluid   text-center py-2 rounded-2  " : " bg-danger container-fluid   text-center py-2 rounded-2 "}>
+                                        <span className=" text-white">   {
+                                            "El cliente cuenta con " + usuario.facturacion.facturas_nopagadas + " Facturas vencidas (Total:" + usuario.facturacion.total_facturas + ")"
+
+                                        }
+                                        </span>
+                                    </div>}
+                                </Typography>
+                                <Typography variant="h6"  >
                                     Id contifico: {totalcon.id}/ Estado contifico : {totalcon.estado} / Total producto : {parseFloat(totalcon.total).toFixed(2)} <p className="px-2">{JSON.stringify(impri)}</p>
-                        </Typography>
-                    </Grid>
-                    <div className="col-12 col-md-6 d-flex  align-items-center">
-                        <h5 className=" text-dark">{usuario.nombre}
-                        </h5>
-                        {usuario.estado === "ACTIVO" ? <span className='badge p-3 bg-success mx-3'>ACTIVO</span> : ""}
-                        {usuario.estado === "SUSPENDIDO" ? <span className='badge p-3 bg-danger mx-3'>SUSPENDIDO</span> : ""}
-                        {usuario.estado === "RETIRADO" ? <span className='badge p-3 bg-warnig mx-3'>RETIRADO</span> : ""}
+                                </Typography>
+                            </Grid>
+                            <div className="col-12 col-md-6 d-flex  align-items-center">
+                                <h5 className=" text-dark">{usuario.nombre}
+                                </h5>
+                                {usuario.estado === "ACTIVO" ? <span className='badge p-3 bg-success mx-3'>ACTIVO</span> : ""}
+                                {usuario.estado === "SUSPENDIDO" ? <span className='badge p-3 bg-danger mx-3'>SUSPENDIDO</span> : ""}
+                                {usuario.estado === "RETIRADO" ? <span className='badge p-3 bg-warnig mx-3'>RETIRADO</span> : ""}
 
-                    </div>
-                    <div className=" container text-center mb-3 py-3">
+                            </div>
+                            <div className=" container text-center mb-3 py-3">
 
-                        <span className=""
-                            style={{
-                                fontWeight: "bold"
-                            }}
-                        >Comprobante a pagar</span>
-                        {factura.urlpdf == "" ?
-                            <a href={factura.urlpdf}
-                                target="_blank"
-                            >
-                                <i className="px-2 bi bi-file-earmark-pdf"></i>
-                            </a>
-                            : <i className="px-2 bi bi-file-earmark-pdf"></i>}
-                        {!impri ? "" : <button className=" btn btn-defaul"
-                            onClick={creaComprobante}
-                        >
-                            <i className=" px-3 bi bi-printer-fill"></i>Imprimir Comprobante
-                        </button>}
-
-                    </div>
-                </div>
-            </MainCard>
-            </Grid>
-            
-            <Grid item xs={12} md={6} >
-            <MainCard contentSX={{ p: 2.25 }}>
-            <div className="col-4 col-md-5 d-flex   align-items-center text-white ps-3 ">
-                        <h5 className=" text-dark">
-                            Buscar cliente
-                        </h5>
-                    </div>
-                    <div className="  ">
-                        <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }}>
-                            <FormControl sx={{ width: { xs: '100%', md: '100%' } }}>
-                                <OutlinedInput
-                                    size="small"
-                                    id="header-search"
-                                    startAdornment={
-                                        <InputAdornment position="start" sx={{ mr: -0.5 }}>
-                                            <SearchOutlined />
-                                        </InputAdornment>
-                                    }
-                                    onKeyPress={handleKeyPress}
-                                    onChange={(e) => setCedul(e.target.value)}
-
-                                    aria-describedby="header-search-text"
-                                    inputProps={{
-                                        'aria-label': 'weight'
+                                <span className=""
+                                    style={{
+                                        fontWeight: "bold"
                                     }}
+                                >Comprobante a pagar</span>
+                                {factura.urlpdf == "" ?
+                                    <a href={factura.urlpdf}
+                                        target="_blank"
+                                    >
+                                        <i className="px-2 bi bi-file-earmark-pdf"></i>
+                                    </a>
+                                    : <i className="px-2 bi bi-file-earmark-pdf"></i>}
+                                {!impri ? "" : <button className=" btn btn-defaul"
+                                    onClick={creaComprobante}
+                                >
+                                    <i className=" px-3 bi bi-printer-fill"></i>Imprimir Comprobante
+                                </button>}
 
-                                    endAdornment={
-                                        <Button
-                                            onClick={buscar}
-                                            position="start" sx={{ mr: -0.5 }}>
-                                            <SearchOutlined />
-                                        </Button>
-                                    }
-                                    placeholder="cédula"
-                                />
-                            </FormControl>
-                        </Box>
+                            </div>
+                        </div>
+                    </MainCard>
+                </Grid>
 
+                <Grid item xs={12} md={6} >
+                    <MainCard contentSX={{ p: 2.25 }}>
+                        <div className="col-4 col-md-5 d-flex   align-items-center text-white ps-3 ">
+                            <h5 className=" text-dark">
+                                Buscar cliente
+                            </h5>
+                        </div>
+                        <div className="  ">
+                            <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }}>
+                                <FormControl sx={{ width: { xs: '100%', md: '100%' } }}>
+                                    <OutlinedInput
+                                        size="small"
+                                        id="header-search"
+                                        startAdornment={
+                                            <InputAdornment position="start" sx={{ mr: -0.5 }}>
+                                                <SearchOutlined />
+                                            </InputAdornment>
+                                        }
+                                        onKeyPress={handleKeyPress}
+                                        onChange={(e) => setCedul(e.target.value)}
 
-                    </div>
+                                        aria-describedby="header-search-text"
+                                        inputProps={{
+                                            'aria-label': 'weight'
+                                        }}
 
-                {busca ? "" : <form id='pagos' noValidate style={{ paddingTop: '15px' }}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={12} >
-                            {list.length > 0 ? <Stack spacing={1}>
-                                <InputLabel>Factura a Pagar </InputLabel>
-                                <Selectopction
-                                    name="factura"
-                                    options={list}
-                                    value={singleSelect}
-                                    placeholder="Factura"
-                                    onChange={(e) => comprobante(e)} />
-                            </Stack> :
-                                <Stack spacing={1}>
-                                    <InputLabel>Facturas a Pagar </InputLabel>
-                                    <select className='form-control' disabled>
-                                        <option ></option>
-                                    </select>
-                                </Stack>
-                            }
-
-                        </Grid>
-                        <Grid item xs={12} md={12}>
-                            <Stack spacing={1}>
-                                <InputLabel htmlFor="firstname-signup">Formas de pago</InputLabel>
-                                <Selectopction
-                                    name="Forma"
-                                    options={[
-                                        { value: "EF-Oficina/Matriz", label: "Efectivo Oficina/Matriz" },
-                                        { value: "EF-Oficina/Ecocity", label: "Efectivo Oficina/Ecocity" },
-                                        { value: "TC-Oficina/Matriz", label: "CALL Datalink" },
-                                        { value: "TRA-Oficina/Matriz", label: "CALL PRODUBANCO" },
-                                        { value: "TRA-Oficina/Ecocity", label: "CALL BANCO PICHINCHA EMP" },
-                                        { value: "TRA-Ecocity", label: "CALL BANCO PICHINCHA PRS" },
-                                        { value: "TRA-Ecoty", label: "CALL BANCO GUAYAQUIL PRS" },
-                                        { value: "TRA-bancoguay", label: "CALL BANCO GUAYAQUIL EMP" },
-                                        { value: "TRA-bancopac", label: "CALL BANCO PACIFICO PRS" },
-                                        { value: "TRA-pacifico", label: "CALL BANCO PACIFICO EMP" },
-
-                                    ]}
-                                    value={lugar}
-                                    placeholder="Forma"
-                                    onChange={setLugar}
-                                />
-
-                            </Stack>
-                        </Grid>
-
-                        {lugar.value.includes("TRA") ?
-                            <Grid item xs={12} md={12}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="firstname-signup">Bancos</InputLabel>
-                                    <Selectopction
-                                        name="Banco"
-                                        options={[
-                                            { value: "", label: "" },
-
-                                            { value: "Q9pdBBVzt6yqd8KE", label: "CTA CTE BCO PICHINCHA 2100106995 COMPUTECNICS" },
-                                            { value: "vj6e9QgXc3DneWBV", label: "CTA CTE BCO PRODUBANCO 1058194005 COMPUTECNICS" },
-                                            { value: "5gQbWnq5S9V3a6w2", label: "CTA CTE BCO GUAYAQUIL 18018624 COMPUTECNICS" },
-                                            { value: "xGge0VLoTopvbADR", label: "CTA CTE BCO PACIFICO 8069530 COMPUTECNICS" },
-                                            { value: "1mBdJqpkurVOb0J6", label: "CTA BCO PACIFICO PERSONAL 1051475596" },
-                                            { value: "Q9jaKZqohE6Kek5K", label: "CTA BCO PICHINCHA 6164998400" }
-                                         ]}
-                                        value={banco}
-                                        placeholder="Banco"
-                                        onChange={setBanco}
+                                        endAdornment={
+                                            <Button
+                                                onClick={buscar}
+                                                position="start" sx={{ mr: -0.5 }}>
+                                                <SearchOutlined />
+                                            </Button>
+                                        }
+                                        placeholder="cédula"
                                     />
-                                </Stack>
-                            </Grid> : ""}
+                                </FormControl>
+                            </Box>
 
 
-                        <Grid item xs={12} md={6}>
-                            <Stack spacing={1}>
-                                <InputLabel htmlFor="lastname-signup">Nº transación</InputLabel>
-                                <OutlinedInput
-                                    fullWidth
-                                    name="asunto"
-                                    value={datos.asunto}
-                                    onChange={(e) => handelChange(e.target)}
-                                />
+                        </div>
 
-                            </Stack>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Stack spacing={1}>
-                                <InputLabel htmlFor="company-signup">Total a pagar</InputLabel>
-                                <OutlinedInput
-                                    fullWidth
-                                    name="valor"
-                                    value={total}
-                                    onChange={handelChangeT}
-                                    inputProps={{}}
-                                />
-
-                            </Stack>
-                        </Grid>
-                        <Grid item xs={12} md={12}>
-                            <Stack spacing={1}>
-                                <InputLabel htmlFor="company-signup">Notas</InputLabel>
-                                <textarea className=' form-control'
-                                    rows={4}
-                                    name="mensaje"
-                                    value={datos.mensaje}
-                                    onChange={(e) => handelChange(e.target)}
-
-                                />
-
-                            </Stack>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Divider className="">
-                                <div className=" text-center ">
-
-                                    {cedula.length >= 10 ?
-                                        <button className=" btn-primary m-1 mt-1 p-2  btn"
-                                            disabled={impri}
-                                            onClick={(e) => RegistrarPago(e)}
-                                        >
-                                            Registrar Pago
-                                        </button> :
-                                        <button className=" btn btn-primary m-1 mt-1 p-2 "
-                                            disabled={impri}
-                                            onClick={(e) => RegistrarPago(e)}
-                                        >Registro Comnet</button>
+                        {busca ? "" : <form id='pagos' noValidate style={{ paddingTop: '15px' }}>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} md={12} >
+                                    {list.length > 0 ? <Stack spacing={1}>
+                                        <InputLabel>Factura a Pagar </InputLabel>
+                                        <Selectopction
+                                            name="factura"
+                                            options={list}
+                                            value={singleSelect}
+                                            placeholder="Factura"
+                                            onChange={(e) => comprobante(e)} />
+                                    </Stack> :
+                                        <Stack spacing={1}>
+                                            <InputLabel>Facturas a Pagar </InputLabel>
+                                            <select className='form-control' disabled>
+                                                <option ></option>
+                                            </select>
+                                        </Stack>
                                     }
-                                </div>
-                            </Divider>
-                        </Grid>
 
-                    </Grid>
-                </form>}
-            </MainCard>
-            </Grid>
+                                </Grid>
+                                <Grid item xs={12} md={12}>
+                                    <Stack spacing={1}>
+                                        <InputLabel htmlFor="firstname-signup">Formas de pago</InputLabel>
+                                        <Selectopction
+                                            name="Forma"
+                                            options={[
+                                                { value: "EF-Oficina/Matriz", label: "Efectivo Oficina/Matriz" },
+                                                { value: "EF-Oficina/Ecocity", label: "Efectivo Oficina/Ecocity" },
+                                                { value: "TC-Oficina/Matriz", label: "CALL Datalink" },
+                                                { value: "TRA-Oficina/Matriz", label: "CALL PRODUBANCO" },
+                                                { value: "TRA-Oficina/Ecocity", label: "CALL BANCO PICHINCHA EMP" },
+                                                { value: "TRA-Ecocity", label: "CALL BANCO PICHINCHA PRS" },
+                                                { value: "TRA-Ecoty", label: "CALL BANCO GUAYAQUIL PRS" },
+                                                { value: "TRA-bancoguay", label: "CALL BANCO GUAYAQUIL EMP" },
+                                                { value: "TRA-bancopac", label: "CALL BANCO PACIFICO PRS" },
+                                                { value: "TRA-pacifico", label: "CALL BANCO PACIFICO EMP" },
+
+                                            ]}
+                                            value={lugar}
+                                            placeholder="Forma"
+                                            onChange={setLugar}
+                                        />
+
+                                    </Stack>
+                                </Grid>
+
+                                {lugar.value.includes("TRA") ?
+                                    <Grid item xs={12} md={12}>
+                                        <Stack spacing={1}>
+                                            <InputLabel htmlFor="firstname-signup">Bancos</InputLabel>
+                                            <Selectopction
+                                                name="Banco"
+                                                options={[
+                                                    { value: "", label: "" },
+
+                                                    { value: "Q9pdBBVzt6yqd8KE", label: "CTA CTE BCO PICHINCHA 2100106995 COMPUTECNICS" },
+                                                    { value: "vj6e9QgXc3DneWBV", label: "CTA CTE BCO PRODUBANCO 1058194005 COMPUTECNICS" },
+                                                    { value: "5gQbWnq5S9V3a6w2", label: "CTA CTE BCO GUAYAQUIL 18018624 COMPUTECNICS" },
+                                                    { value: "xGge0VLoTopvbADR", label: "CTA CTE BCO PACIFICO 8069530 COMPUTECNICS" },
+                                                    { value: "1mBdJqpkurVOb0J6", label: "CTA BCO PACIFICO PERSONAL 1051475596" },
+                                                    { value: "Q9jaKZqohE6Kek5K", label: "CTA BCO PICHINCHA 6164998400" }
+                                                ]}
+                                                value={banco}
+                                                placeholder="Banco"
+                                                onChange={setBanco}
+                                            />
+                                        </Stack>
+                                    </Grid> : ""}
+
+
+                                <Grid item xs={12} md={6}>
+                                    <Stack spacing={1}>
+                                        <InputLabel htmlFor="lastname-signup">Nº transación</InputLabel>
+                                        <OutlinedInput
+                                            fullWidth
+                                            name="asunto"
+                                            value={datos.asunto}
+                                            onChange={(e) => handelChange(e.target)}
+                                        />
+
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <Stack spacing={1}>
+                                        <InputLabel htmlFor="company-signup">Total a pagar</InputLabel>
+                                        <OutlinedInput
+                                            fullWidth
+                                            name="valor"
+                                            value={total}
+                                            onChange={handelChangeT}
+                                            inputProps={{}}
+                                        />
+
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={12} md={12}>
+                                    <Stack spacing={1}>
+                                        <InputLabel htmlFor="company-signup">Notas</InputLabel>
+                                        <textarea className=' form-control'
+                                            rows={4}
+                                            name="mensaje"
+                                            value={datos.mensaje}
+                                            onChange={(e) => handelChange(e.target)}
+
+                                        />
+
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Divider className="">
+                                        <div className=" text-center ">
+
+                                            {cedula.length >= 10 ?
+                                                <button className=" btn-primary m-1 mt-1 p-2  btn"
+                                                    disabled={impri}
+                                                    onClick={(e) => RegistrarPago(e)}
+                                                >
+                                                    Registrar Pago
+                                                </button> :
+                                                <button className=" btn btn-primary m-1 mt-1 p-2 "
+                                                    disabled={impri}
+                                                    onClick={(e) => RegistrarPago(e)}
+                                                >Registro Comnet</button>
+                                            }
+                                        </div>
+                                    </Divider>
+                                </Grid>
+
+                            </Grid>
+                        </form>}
+                    </MainCard>
+                </Grid>
             </Grid>
 
 

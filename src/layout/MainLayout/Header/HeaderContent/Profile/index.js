@@ -99,14 +99,14 @@ const Profile = () => {
             <ButtonBase
                 sx={{
                     p: 0.25,
-                    bgcolor: open ? iconBackColorOpen : 'transparent',
+                   
                     borderRadius: 1,
                     '&:hover': { bgcolor: 'secondary.lighter' }
                 }}
                 onClick={Regresar}
             >
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-                <DollarOutlined/>
+                    <Avatar sx={{ width: 32, height: 32 }} ><DollarOutlined/></Avatar>   
                 <Typography variant="subtitle1">Registrar pagos</Typography>
                 </Stack>
             </ButtonBase>
@@ -125,7 +125,7 @@ const Profile = () => {
             >
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
                     <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
-                    <Typography variant="subtitle1">{user.usuario}</Typography>
+                    <Typography variant="subtitle1">{user.username}</Typography>
                 </Stack>
             </ButtonBase>
             <Popper
@@ -168,7 +168,7 @@ const Profile = () => {
                                                     <Stack direction="row" spacing={1.25} alignItems="center">
                                                         <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                                                         <Stack>
-                                                            <Typography variant="h6">{user.usuario}</Typography>
+                                                            <Typography variant="h6">{user.username}</Typography>
                                                             <Typography variant="body2" color="textSecondary">
                                                                 {user.nombre}
                                                             </Typography>

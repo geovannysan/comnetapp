@@ -112,6 +112,7 @@ const SalesColumnChart = () => {
 
         Listareportes().then(salida => {
             if (salida.success) {
+                console.log(salida)
                 const subtotalSum = salida.data.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2);
                 setValor(subtotalSum)
             }
