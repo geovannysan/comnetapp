@@ -18,3 +18,11 @@ export const ListarFacturas = async (parms) => {
         return error
     }
 }
+export const Arreglarerror = async()=> {
+    try {
+        let { data } = await axios.get("https://api.t-ickets.com/MovilApi/Facturaserror")
+        return data
+    } catch (error) {
+        return error
+    }
+}

@@ -34,7 +34,7 @@ import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
 import { ListarReportes } from '../../util/Queryportal';
-import { Listareportes } from 'util/Querireport';
+import { Arreglarerror, ListarFacturas, Listareportes } from 'util/Querireport';
 
 // avatar style
 const avatarSX = {
@@ -85,6 +85,16 @@ const DashboardDefault = () => {
         }
 
     )
+    async function VerificaError() {
+        let fact = await ListarFacturas({
+            "estado": "0",
+            "idfactura": ""
+        })
+        if (fact.data.length > 0) {
+            await Arreglarerror()
+        }
+
+    }
     useEffect(() => {
         Listareportes().then(salida => {
             if (salida.success) {
@@ -92,7 +102,7 @@ const DashboardDefault = () => {
 
                 setInfo({
                     ...salida.info[0],
-                    subtotal:subtotalSum
+                    subtotal: subtotalSum
                 })
             }
             const subtotalData = {
@@ -122,7 +132,7 @@ const DashboardDefault = () => {
         }).catch(err => {
             console.log(err)
         })
-
+        VerificaError()
     }, [])
     return (
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>
@@ -137,40 +147,40 @@ const DashboardDefault = () => {
                 <AnalyticEcommerce title="Total Clientes app" count={info.comnetusers_count} percentage={info.comnetusers_count} color="success" />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AnalyticEcommerce title="Total Solicitudes" count={info.solicitud} percentage={info.solicitud} color="warning"  />
+                <AnalyticEcommerce title="Total Solicitudes" count={info.solicitud} percentage={info.solicitud} color="warning" />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                
-            <AnalyticEcommerce title="Subtotal registrado" count={"$"+info.subtotal}  extra="totales Global del mes "  />{/*
+
+                <AnalyticEcommerce title="Subtotal registrado" count={"$" + info.subtotal} extra="totales Global del mes " />{/*
                 <AnalyticEcommerce title="Total Sales" count="$35,078" percentage={27.4} isLoss color="warning" extra="$20,395" />
  */}           </Grid>
 
             <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
             {/* row 2 */}
-            <Grid  item xs={12} md={7} lg={8}>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                        <Grid item>
-                            <Typography variant="h5"> Report utimos 7 días </Typography>
-                        </Grid>
-                        <Grid item>
-                        </Grid>
+            <Grid item xs={12} md={7} lg={8}>
+                <Grid container alignItems="center" justifyContent="space-between">
+                    <Grid item>
+                        <Typography variant="h5"> Report utimos 7 días </Typography>
                     </Grid>
-                    <MainCard sx={{ mt: 1.75 }}>
-                        <Stack spacing={1.5} sx={{ mb: -12 }}>
-                            <Typography variant="h6" color="secondary">
-                            Subtotal 
-                            </Typography>
-                        <Typography variant="h4">{"$" + info.subtotal} </Typography>
-                        </Stack>
-                        <SalesColumnChart />
-                    </MainCard>
+                    <Grid item>
+                    </Grid>
                 </Grid>
+                <MainCard sx={{ mt: 1.75 }}>
+                    <Stack spacing={1.5} sx={{ mb: -12 }}>
+                        <Typography variant="h6" color="secondary">
+                            Subtotal
+                        </Typography>
+                        <Typography variant="h4">{"$" + info.subtotal} </Typography>
+                    </Stack>
+                    <SalesColumnChart />
+                </MainCard>
+            </Grid>
             <div style={{
                 display: "none"
             }}>
-                
-                <Grid  item xs={12} md={7} lg={8}>
+
+                <Grid item xs={12} md={7} lg={8}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Unique Visitor</Typography>
@@ -202,7 +212,7 @@ const DashboardDefault = () => {
                         </Box>
                     </MainCard>
                 </Grid>
-                <Grid  item xs={12} md={7} lg={8}>
+                <Grid item xs={12} md={7} lg={8}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Unique Visitor</Typography>
@@ -234,7 +244,7 @@ const DashboardDefault = () => {
                         </Box>
                     </MainCard>
                 </Grid>
-                <Grid  item xs={12} md={5} lg={4}>
+                <Grid item xs={12} md={5} lg={4}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Income Overview</Typography>
@@ -255,7 +265,7 @@ const DashboardDefault = () => {
                 </Grid>
 
                 {/* row 3 */}
-                <Grid  item xs={12} md={7} lg={8}>
+                <Grid item xs={12} md={7} lg={8}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Recent Orders</Typography>
@@ -266,7 +276,7 @@ const DashboardDefault = () => {
                         <OrdersTable />
                     </MainCard>
                 </Grid>
-                <Grid  item xs={12} md={5} lg={4}>
+                <Grid item xs={12} md={5} lg={4}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Analytics Report</Typography>
@@ -293,7 +303,7 @@ const DashboardDefault = () => {
                 </Grid>
 
                 {/* row 4 */}
-                <Grid  item xs={12} md={7} lg={8}>
+                <Grid item xs={12} md={7} lg={8}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Sales Report</Typography>
@@ -325,7 +335,7 @@ const DashboardDefault = () => {
                         <SalesColumnChart />
                     </MainCard>
                 </Grid>
-                <Grid  item xs={12} md={5} lg={4}>
+                <Grid item xs={12} md={5} lg={4}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Transaction History</Typography>
