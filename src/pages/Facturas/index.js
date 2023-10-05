@@ -35,7 +35,8 @@ const FacturasView = () => {
                 return { ...e }
             })*/
             //if (datos.estado) setFactura([...factura, ...datos.data])
-            if (fact.estado && datos.estado) setFactura([...factura, ...facturas])
+            console.log(facturas)
+            if (fact.estado && datos.estado) setFactura([...factura, ...facturas.sort((a, b) => b.Id - a.Id)])
             if (!$.fn.DataTable.isDataTable("#doc")) {
                 $(document).ready(function () {
                     $("#doc").dataTable({
@@ -95,7 +96,7 @@ const FacturasView = () => {
                             [10, 20, 30, 50, "All"],
                         ],
 
-                        order: [[2, 'desc']],
+                        order: [[0, 'desc']],
 
                     });
                 })
@@ -118,7 +119,7 @@ const FacturasView = () => {
         return (
             <thead className="bg-primary">
                 <tr className="bg-primary ">
-
+                    <th  >#</th>
                     <th  >Id Factura</th>
                     <th >Fecha</th>
                     <th ># de factura</th>
@@ -143,6 +144,10 @@ const FacturasView = () => {
 
                 return (
                     <tr key={index}>
+                        <td className="text-xs font-weight-bold " style={{
+                            whiteSpace: "initial"
+                        }}>
+                            {item.Id}</td>
                         <td className="text-xs font-weight-bold " style={{
                             whiteSpace: "initial"
                         }}>
