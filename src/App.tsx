@@ -33,6 +33,7 @@ import { Network } from '@capacitor/network';
 import Pagoslist from './pagevdos/Pagos/Pagoslist';
 import CargarComprobante from './pagevdos/Pagos/Pagarfactura';
 import FacturaslisView from './pagevdos/Pagos/Faturalist';
+import axios from 'axios';
 
 let { LoginView, TabsView, Tesvel } = routes
 
@@ -235,6 +236,7 @@ const App: React.FC = () => {
   Network.addListener('networkStatusChange', status => {
     if (!initialized) {
       console.log("nuevos")
+      
       window.location.href = "/"
     }
     setInitialized(status.connected)
@@ -246,9 +248,33 @@ const App: React.FC = () => {
   });
   async function NuevosDatos() {
     const status = await Network.getStatus();
+    const networkInfo:any = await Network.getStatus();
+    const connectionType = networkInfo.connectionType;
+
+
     setInitialized(status.connected)
     console.log('Network status:', status);
+    //if (connectionType === 'wifi') {
+    //const ipAddresses = await Network.getIpAddresses();
+
+      // Si la conexión es Wi-Fi, puedes obtener la dirección IP
+    //console.log(networkInfo.getIpAddresses());
+    await getIpAddress()
+   // }
   }
+  const getIpAddress = async () => {
+    try {
+      const response = await axios.get('https://api.ipify.org?format=json');
+      if (response.data && response.data.ip) {
+        console.log(response,response.data.ip);
+      } else {
+        console.log('No se pudo obtener la dirección IP');
+      }
+    } catch (error) {
+      console.error(error);
+      console.log('Error al obtener la dirección IP');
+    }
+  };
   useEffect(() => {
     // StatusBar.setBackgroundColor({ color: '#0000' });
     // StatusBar.setStyle()
@@ -317,7 +343,6 @@ const App: React.FC = () => {
 
     console.log('Notificación programada creada.');
   };*/
-  console.log(user.authb)
   return (
     <IonApp>
       {user.authb ?

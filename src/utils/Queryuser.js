@@ -14,7 +14,8 @@ export const autenticar = async (parms) => {
                 'Content-Type': 'application/json',
             },
         })
-        console.log(data)
+       //    localStorage.setItem("nuevos",JSON.stringify( data))
+       // console.log(data)
         return data
     } catch (error) {
         return error

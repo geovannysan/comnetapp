@@ -80,7 +80,6 @@ export default function LoginView() {
         }
     }
     function Iniciarsession() {
-
         if (datos.cedula.trim() !== "" && datos.codigo.trim() !== "") {
             Logearusar({ "cedula": datos.cedula, "passwors": datos.codigo }).then(ou => {
                 console.log(ou)
@@ -98,7 +97,6 @@ export default function LoginView() {
                     //historys.push("/home/soporte")
                     usedispat(setDatosuser(datos[0]))
                     usedispat(setlogin({ estado: true }))
-                   
                 } else {
                     present({
                         message: ou.mensaje,

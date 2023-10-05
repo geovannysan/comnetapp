@@ -2,10 +2,16 @@ import { useEffect, useState } from "react";
 import "./Spedd.css"
 import { IonContent, IonHeader, IonIcon, IonItem, IonButton, IonButtons, IonToolbar, IonList, IonModal, IonCardContent, IonCardTitle, IonCardSubtitle, IonTitle, IonPage, IonBackButton } from "@ionic/react";
 import { close } from "ionicons/icons";
+import { useHistory } from "react-router";
 export default function SpeddView() {
 
     const [downlink, setDownlink] = useState(null);
     const [showModal, setShowModal] = useState(true);
+    let history = useHistory()
+    function cerre(){
+        history.push("/plan")
+        window.open(encodeURI("https://speedecuador.speedtestcustom.com"))
+    }
     useEffect(() => {
         const updateNetworkSpeed = () => {
             if (navigator.connection && navigator.connection.downlink) {
@@ -111,7 +117,7 @@ export default function SpeddView() {
                             </IonTitle>
 
                             <IonButtons slot="end">
-                                <IonButton onClick={() => setShowModal(false)}>
+                                <IonButton onClick={() => cerre()/*setShowModal(false)*/}>
                                     Aceptar
                                 </IonButton>
                             </IonButtons>

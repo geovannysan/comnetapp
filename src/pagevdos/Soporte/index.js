@@ -18,12 +18,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { radioOutline } from "ionicons/icons"
+import { useHistory } from "react-router"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 export default function SoporteView() {
     const infouser = useSelector((state) => state.usuario.user)
+    let history = useHistory()
     const dispat = useDispatch()
     const soportes = useSelector((state) => state.usuario.soporte)
     const señal = useSelector((state) => state.usuario.señal)
@@ -34,7 +36,7 @@ export default function SoporteView() {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
-        setOpen(true);
+        setOpen(!open);
     };
 
     const handleClose = () => {
@@ -78,12 +80,12 @@ export default function SoporteView() {
             if (response.estado == "exito") {
                 let soport = response.data.tickets.filter(e => e.estado == "abierto")
                 //console.log(response.data)
-               // return
+                // return
                 if (!soportes) {
-                  
+
                     Soporte(soport)
                 }
-            }else{
+            } else {
                 if (!soportes) Soporte(0)
             }
         }).catch(err => {
@@ -102,8 +104,8 @@ export default function SoporteView() {
                 //return
                 Soporte(soport)
             }
-            else{
-                  Soporte(0)
+            else {
+                Soporte(0)
             }
         }).catch(err => {
 
@@ -116,7 +118,7 @@ export default function SoporteView() {
         let infouser = obtenervaariables(users.servicios[0].smartolt)
         console.log(infouser)
         dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
-       
+
         Equipos(users.servicios[0].nodo).then(ou => {
             // dismiss()
             if (ou.estado == "exito") {
@@ -142,6 +144,7 @@ export default function SoporteView() {
                                 /*
                                 //agregar mensaje
                                 */
+                                dispat(setModal({ nombre: "", payloa: "" }))
                                 return
                             }
                             console.log(ouput.onu_details.administrative_status)
@@ -155,9 +158,10 @@ export default function SoporteView() {
                                     dispat(setSoport({ soporte: true }))
                                 }
                                 else {
+                                    console.log("Gt_onu_status")
                                     dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado onu" }))
                                     Gt_onu_status(users.servicios[0].id).then(ouputv => {
-                                        console.log("Gt_onu_status->" + ouputv)
+                                        console.log("Gt_onu_status->" + JSON.stringify(ouputv))
                                         if (ouputv.status) {
                                             if (ouputv.onu_status == "Los") {
                                                 let info = {
@@ -183,9 +187,8 @@ export default function SoporteView() {
                                                 }
 
                                                 present({
-                                                    message: "Ya tines Ticket pendiente",
-                                                    cssClass: 'custom-toast',
-                                                    duration: 1500,
+                                                    message: "Ya tines un Ticket de soporte pendiente",
+                                                    duration: 4500,
                                                     position: "bottom"
                                                 });
 
@@ -234,22 +237,23 @@ export default function SoporteView() {
                                                         let se = ouput.onu_signal_1490.replace("-", "").replace("dBm", "")
                                                         console.log(se)
                                                         dispat(setSoport({ soporte: true }))
-                                                        if (se < 29) {
+                                                        /*if (se < 29) {
                                                             //agregar mensaje
                                                             /** mostrar servicio ok */
-                                                            /*present({
-                                                                message: 'Buena señal',
-                                                                cssClass: 'custom-loading',
-                                                                duration: 4500,
-                                                            })*/
-                                                        }
-                                                        if (se > 26.50 && se < 29) {
-                                                            //agregar mensaje
-                                                            /** tickte de revision */
-                                                        }
+                                                        /*present({
+                                                            message: 'Buena señal',
+                                                            cssClass: 'custom-loading',
+                                                            duration: 4500,
+                                                        })*
+                                                    }
+                                                    if (se > 26.50 && se < 29) {
+                                                        //agregar mensaje
+                                                        /** tickte de revision *
+                                                    }*/
                                                         if (se > 29) {
                                                             //agregar mensaje
                                                             /**visita tecnica */
+                                                            console.log("entro")
                                                             let info = {
                                                                 "idcliente": users.id,
                                                                 "asunto": "Revision de señal",
@@ -271,9 +275,20 @@ export default function SoporteView() {
 
                                                                 Newtickte(info).then(oput => {
                                                                     // dismiss()
+                                                                    if (ouput.estado = "exito") {
+                                                                        dispat(setModal({ nombre: "", payloa: "" }))
+                                                                        present({
+                                                                            message: 'Se a creando un ticket de soporte',
+                                                                            duration: 5000,
+                                                                        })
+                                                                    }
                                                                     console.log(oput)
 
                                                                 }).catch(err => {
+                                                                    present({
+                                                                        message: 'No se creo el ticket de usuario',
+                                                                        duration: 5000,
+                                                                    })
                                                                     console.log(err)
                                                                 })
 
@@ -291,9 +306,14 @@ export default function SoporteView() {
                                                                     duration: 4500,
                                                                 })*/
                                                             }
-                                                        }
+                                                        }else{
+                                                        present({
+                                                            message: 'El servicio no cuenta con problemas ',
+                                                            duration: 5000,
+                                                        })}
                                                     } else {
-                                                        //agregar mensaje
+                                                        //agregar mensaje no hubo problemasa 
+
                                                         dispat(setSoport({ soporte: true }))
                                                         /*present({
                                                              message: 'Hubo un error intente mas tarde',
@@ -313,15 +333,21 @@ export default function SoporteView() {
                                             }
 
                                         } else {
+                                            console.log("mmmm")
                                             dispat(setSoport({ soporte: true }))
                                             //agregar mensaje
                                         }
+                                    }).catch(err => {
+                                        console.log(err)
+                                        dispat(setModal({ nombre: "", payloa: "" }))
                                     })
                                     dispat(setModal({ nombre: "", payloa: "" }))
+
 
                                 }
 
                             }).catch(err => {
+                                dispat(setModal({ nombre: "", payloa: "" }))
                                 console.log(err)
                             })
                         }
@@ -354,7 +380,7 @@ export default function SoporteView() {
             console.log(err)
         })
     }
-    
+
     return (
         <div className="container-fluid px-0 vh-100">
 
@@ -373,7 +399,7 @@ export default function SoporteView() {
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle>Reportar inconvenientes</DialogTitle>
+                <DialogTitle>{!btn ? "Reportar inconvenientes" :"Ocultar botón de, autosoporte"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
 
@@ -464,7 +490,7 @@ export default function SoporteView() {
                                             <span className="" ><img src="img/opcion soporte/signal-wifi.png" className="img-fluid" style={{ height: "2vh" }} alt="" /> </span>
                                             <span className="text-muted" style={{ fontSize: "1.4vh" }}>Señal: <span>-23.65 dBm</span></span>
                                         </li>
-                                        <a onClick={() => Soportenew()} className="bg-white shadow-1 none-style border px-4 rounded-pill text-center text-celeste" style={{ fontSize: "1.6vh" }}>Sin Servicio</a>
+                                        <a onClick={() => Soportenew()} className="bg-white shadow-1 none-style border px-4 rounded-pill text-center text-celeste" style={{ fontSize: "1.6vh" }}>Auto soporte</a>
                                     </div>
                                 </div>
                             </div>
@@ -490,7 +516,7 @@ export default function SoporteView() {
                                                 {señal.onu_signal == "Warning" ? "Buena" : ""}
                                                 {señal.onu_signal == "Critical" ? "Mala" : ""}</span></span>
                                         </li>
-                                        <a className="bg-white shadow-1 none-style  border px-4 rounded-pill text-center text-celeste" style={{ fontSize: "1.8vh" }}>Lentitud</a>
+                                        <a className="bg-white shadow-1 none-style  border px-4 rounded-pill text-center text-celeste" onClick={handleClickOpen} style={{ fontSize: "1.8vh" }}>regresar</a>
                                     </div>
                                 </div>
                             </div>
@@ -540,7 +566,7 @@ export default function SoporteView() {
                                             <span className="" ><img src="img/opcion pagos/icon-plan.png" className="img-fluid" style={{ height: "2vh" }} alt="" /></span>
                                             <span className="text-muted text-uppercase" style={{ fontSize: "1.4vh" }}>{dtos.servicios[0].perfil}</span>
                                         </li>
-                                        <a href="" className="bg-white shadow-1 none-style border px-4  rounded-pill text-center text-celeste" style={{ fontSize: "1.8vh" }}>Speed-Test</a>
+                                        <a onClick={history.push("/home/soporte")} className="bg-white shadow-1 none-style border px-4  rounded-pill text-center text-celeste" style={{ fontSize: "1.8vh" }}>Speed-Test</a>
                                     </div>
                                 </div>
                             </div>

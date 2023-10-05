@@ -1,31 +1,66 @@
-import { IonButton, IonToolbar, IonContent, IonButtons, IonIcon, IonItem, IonLabel, IonList, IonTitle, IonPage } from "@ionic/react"
-import { documentText, chevronBack } from "ionicons/icons"
+import { IonButton, IonToolbar, IonContent, IonButtons, IonIcon, IonItem, IonLabel, IonList, IonTitle, IonPage, IonHeader, IonModal } from "@ionic/react"
+import { documentText, chevronBack, documentAttach} from "ionicons/icons"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { FacturasAtorizada, MostrarFacturas } from "../../utils/Queryuser"
 import { useHistory } from "react-router"
+import Facturapdf from "./FacturaView"
 
 export default function FacturaslisView() {
     let user = useSelector(state => state.usuario.user)
     const [facturacion, setFacturaci] = useState([])
     let history = useHistory()
+    let fechahoy = new Date().toLocaleString()
+    var partesFecha = fechahoy.split(',')[0].split('/');
+    var dia = partesFecha[0];
+    var mes = partesFecha[1];
+    var anio = partesFecha[2];
+    var fechaFormateada = anio + '-' + mes.padStart(2, '0') + '-' + dia.padStart(2, '0');
     async function ListaFacturasinpagas() {
         try {
             let salida = await FacturasAtorizada(user.cedula)
             if (!salida.estado) return
+            console.log(salida)
             setFacturaci(salida.facturas)
         } catch (error) {
 
         }
     }
+    const [link, setLink] = useState("")
+    const [isOpen, setIsOpen] = useState(false);
+    function AbrirFactura(e) {
+        console.log(e)
+        setLink(e)
+        setIsOpen(true)
+
+    }
     function downloadViewImage(url) {
+        //console.log(url)
+       // setLink(url)
+        //setIsOpen(true)
         window.open(encodeURI(url), "_system", "location=yes");
     }
     useEffect(() => {
         ListaFacturasinpagas()
     }, [])
+   // console.log(fechaFormateada)
     return (
         <IonPage>
+            <IonModal isOpen={isOpen}>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Factura</IonTitle>
+                        <IonButtons slot="end">
+                            <IonButton onClick={() => setIsOpen(false)}>Cerra</IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent className="p-0">
+                    {link == "" ? "" : <Facturapdf
+                        link={link}
+                    />}
+                </IonContent>
+            </IonModal>
             <div className="container-fluid px-0 vh-100">{/*<!--Contenedor General-->*/}
 
                 <div className="container-fluid h-20 pb-5 bg-welcome bg-welcome-radius px-0">{/*<!--header welcome-->*/}
@@ -87,8 +122,8 @@ export default function FacturaslisView() {
 
                                             </IonLabel>
                                             <IonLabel slot="end">
-                                                <IonButton color={"danger"} onClick={() => downloadViewImage(e.mensajes.url_ride)} >
-                                                    <IonIcon icon={documentText} />
+                                                <IonButton disabled={(e.mensajes["autorizacion"]==null)} color={"danger"} onClick={() => downloadViewImage(e.mensajes.url_ride)} >
+                                                    <IonIcon icon={documentAttach} />
                                                 </IonButton>
                                             </IonLabel>
                                         </IonItem>)
