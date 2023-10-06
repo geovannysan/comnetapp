@@ -55,7 +55,7 @@ export default function SoporteView() {
                 console.log('Handler was called!');
             });
         });
-        if (obtenervaariables(infouser.servicios[0].smartolt).onu_external_id != "") {
+        if (infouser.servicios[0].smartolt != "" && obtenervaariables(infouser.servicios[0].smartolt).onu_external_id != "") {
 
             Get_onu_signal(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput => {
                 if (ouput.status) {
@@ -117,10 +117,12 @@ export default function SoporteView() {
         let users = JSON.parse(infos)
         let infouser = obtenervaariables(users.servicios[0].smartolt)
         console.log(infouser)
+        //if (infouser.servicios[0].smartolt == "" ){ return}
         dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
 
         Equipos(users.servicios[0].nodo).then(ou => {
             // dismiss()
+            console.log(ou)
             if (ou.estado == "exito") {
                 if (ou.routers.length > 0) {
                     console.log(ou)
@@ -136,7 +138,8 @@ export default function SoporteView() {
                         return
                     }
                     DetalleOlt(users.servicios[0].id).then(ouput => {
-                        console.log(users.servicios[0].id, ouput)
+                        console.log(ouput)
+                      //  console.log(users.servicios[0].id, ouput)
                         if (ouput.status) {
                             dispat(setModal({ nombre: "Alerta", payloa: "Comprobando puertos olt" }))
                             if (ouput.onu_details.administrative_status != "Enabled") {
@@ -306,11 +309,12 @@ export default function SoporteView() {
                                                                     duration: 4500,
                                                                 })*/
                                                             }
-                                                        }else{
-                                                        present({
-                                                            message: 'El servicio no cuenta con problemas ',
-                                                            duration: 5000,
-                                                        })}
+                                                        } else {
+                                                            present({
+                                                                message: 'El servicio no cuenta con problemas ',
+                                                                duration: 5000,
+                                                            })
+                                                        }
                                                     } else {
                                                         //agregar mensaje no hubo problemasa 
 
@@ -399,7 +403,7 @@ export default function SoporteView() {
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle>{!btn ? "Reportar inconvenientes" :"Ocultar botón de, autosoporte"}</DialogTitle>
+                <DialogTitle>{!btn ? "Reportar inconvenientes" : "Ocultar botón de, autosoporte"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
 

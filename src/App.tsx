@@ -30,6 +30,7 @@ import { routes } from './pagevdos/routersub';
 import PAgosViewa from './pagevdos/Pagos';
 import SpeddView from './components/Spedd';
 import { Network } from '@capacitor/network';
+import { Device } from '@capacitor/device';
 import Pagoslist from './pagevdos/Pagos/Pagoslist';
 import CargarComprobante from './pagevdos/Pagos/Pagarfactura';
 import FacturaslisView from './pagevdos/Pagos/Faturalist';
@@ -248,12 +249,13 @@ const App: React.FC = () => {
   });
   async function NuevosDatos() {
     const status = await Network.getStatus();
+    const info = await Device.getInfo();
     const networkInfo:any = await Network.getStatus();
     const connectionType = networkInfo.connectionType;
 
 
     setInitialized(status.connected)
-    console.log('Network status:', status);
+    console.log(info,'Network status:', status);
     //if (connectionType === 'wifi') {
     //const ipAddresses = await Network.getIpAddresses();
 

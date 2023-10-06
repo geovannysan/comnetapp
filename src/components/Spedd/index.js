@@ -9,7 +9,8 @@ export default function SpeddView() {
     const [showModal, setShowModal] = useState(true);
     let history = useHistory()
     function cerre(){
-        history.push("/plan")
+        history.goBack()
+        setShowModal(false)
         window.open(encodeURI("https://speedecuador.speedtestcustom.com"))
     }
     useEffect(() => {

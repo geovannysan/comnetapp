@@ -130,6 +130,7 @@ export const Facturaid = async (parms) => {
 export const Equipos = async (parms) => {
     try {
         let { data } = await axios.get("https://api.t-ickets.com/mikroti/PortalApi/Listequipo/" + parms)
+        console.log(data)
         return data
     } catch (error) {
         return error
