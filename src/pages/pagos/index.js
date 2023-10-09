@@ -331,6 +331,13 @@ const PagosView = () => {
 
         doc.output('dataurlnewwindow');
     }
+    function validarCorreoElectronico(correo) {
+        // Expresión regular para validar una dirección de correo electrónico
+        const expresionRegularCorreo = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    
+        // Utilizamos test() para verificar si el correo coincide con la expresión regular
+        return expresionRegularCorreo.test(correo);
+    }
     function buscar() {
         setBusca(true)
         seTlist([])
@@ -598,7 +605,7 @@ const PagosView = () => {
                             "porcentaje_descuento": "0",
                             "es_cliente": true,
                             "origen": "Panel de Facturacion",
-                            "email": ouput.datos[0].correo,
+                            "email":  validarCorreoElectronico(ouput.datos[0].correo) ?ouput.datos[0].correo:"",
                             "cedula": ouput.datos[0].cedula.trim(),
                             "Provincia": "Guayaquil",
                             "adicional1_cliente": "Cliente de Internet"
@@ -614,7 +621,7 @@ const PagosView = () => {
                             "es_cliente": true,
                             "origen": "Panel de Facturacion",
                             "cedula": ouput.datos[0].cedula.trim().substring(0, 10),
-                            "email": ouput.datos[0].correo,
+                            "email": validarCorreoElectronico(ouput.datos[0].correo) ?ouput.datos[0].correo:"",
                             "ruc": ouput.datos[0].cedula.trim(),
                             "Provincia": "Guayaquil",
                             "adicional1_cliente": "Cliente de Internet"

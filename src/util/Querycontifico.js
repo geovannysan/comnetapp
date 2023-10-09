@@ -95,7 +95,7 @@ export const CrearClienteContifico = async (parms) => {
             }
         })
         console.log(data.response.data)
-        return data
+        return [data]
 
     } catch (error) {
         console.log(error.response.data);
