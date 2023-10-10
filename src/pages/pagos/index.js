@@ -595,7 +595,7 @@ const PagosView = () => {
                 BuscaclienteContifico(cedula.trim()).then(ouputs => {
                     console.log(ouputs)
                     if (ouputs.length == 0) {
-                        let datos = ouput.datos[0].cedula.trim().length == 10 ? {
+                        let datos = ouput.datos[0].cedula.trim().length < 11 ? {
                             "tipo": "N",
                             "personaasociada_id": null,
                             "nombre_comercial": ouput.datos[0].nombre,
@@ -637,7 +637,7 @@ const PagosView = () => {
                             if (crea.response.status == 400) {
                                 setimpri(true)
                                 setOpen(false)
-                                openNotificationWithIcon('error', "Alerta", "El cliente no de creo en contifico")
+                                openNotificationWithIcon('error', "Alerta", "El cliente no se creo en contifico")
 
                                 if (ouput.datos[0].cedula.length > 10) {
                                     setOpen(true)
