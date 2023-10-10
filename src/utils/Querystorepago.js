@@ -31,3 +31,12 @@ export const OCRApi = async (parms) => {
         return error
     }
 }
+
+export const PAgosViewaapp = async (parms) => {
+    try {
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/Registro", parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}

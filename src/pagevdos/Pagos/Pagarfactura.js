@@ -4,17 +4,19 @@ import { useSelector } from "react-redux";
 import { IonButton, IonIcon, IonPage, IonButtons, IonToolbar, useIonToast, IonLabel } from "@ionic/react";
 import { chevronBack } from "ionicons/icons";
 import { useHistory } from "react-router";
-import { OCRApi, Obtenerlinkimagen } from "../../utils/Querystorepago";
+import { OCRApi, Obtenerlinkimagen, PAgosViewaapp } from "../../utils/Querystorepago";
 
 export default function CargarComprobante() {
-    const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
+    const fileTypes = ["JPEG", "PNG", "GIF", "JPG", "JFIF"];
+
     let history = useHistory()
     let factura = useSelector(state => state.usuario.facttura)
-
+    const datos = useSelector((state) => state.usuario.user)
     let user = useSelector(state => state.usuario.user)
     const [report, setReport] = useState(false)
     const [file, setFile] = useState(null);
     const [present] = useIonToast();
+    const [disable, setDisable] = useState(false)
     const [campos, setCampos] = useState({
         valor: "",
         control: ""
@@ -24,48 +26,17 @@ export default function CargarComprobante() {
         "pasarela": "",
         "cantidad": "",
         "idtransaccion": "",
-        "nota": ""
+        "nota": "",
+        "operador": "appspeed",
+        "idcliente": datos.id,
+        "idcuenta": "",
+        "fechapago": ""
     })
     const handleChange = async (file) => {
         console.log(file[0])
         setFile(file);
     };
 
-    /*
-    {
-        "beneficiario": "Computecnicsnet S.A.",
-        "banco": "BANCO PICHINCHA",
-        "valor": 15,
-        "comprobante": "TRANSFERENCIA",
-        "numero_documento": "17326450",
-        "numer_cuenta": "******6995",
-        "hora": null,
-        "fecha": "19 jul. 2023",
-        "afavor": 0
-    }
-       { value: "EF-Oficina/Matriz", label: "Efectivo Oficina/Matriz" },
-                                        { value: "EF-Oficina/Ecocity", label: "Efectivo Oficina/Ecocity" },
-                                        { value: "TC-Oficina/Matriz", label: "CALL Datalink" },
-                                        { value: "TRA-Oficina/Matriz", label: "CALL PRODUBANCO" },
-                                        { value: "TRA-Oficina/Ecocity", label: "CALL BANCO PICHINCHA EMP" },
-                                        { value: "TRA-Ecocity", label: "CALL BANCO PICHINCHA PRS" },
-                                        { value: "TRA-Ecoty", label: "CALL BANCO GUAYAQUIL PRS" },
-                                        { value: "TRA-bancoguay", label: "CALL BANCO GUAYAQUIL EMP" },
-                                        { value: "TRA-bancopac", label: "CALL BANCO PACIFICO PRS" },
-                                        { value: "TRA-pacifico", label: "CALL BANCO PACIFICO EMP" },
-
-
-     { value: "Q9pdBBVzt6yqd8KE", label: "CTA CTE BCO PICHINCHA 2100106995 COMPUTECNICS" },
-                                            { value: "vj6e9QgXc3DneWBV", label: "CTA CTE BCO PRODUBANCO 1058194005 COMPUTECNICS" },
-                                            { value: "5gQbWnq5S9V3a6w2", label: "CTA CTE BCO GUAYAQUIL 18018624 COMPUTECNICS" },
-                                            { value: "xGge0VLoTopvbADR", label: "CTA CTE BCO PACIFICO 8069530 COMPUTECNICS" },
-                                            { value: "1mBdJqpkurVOb0J6", label: "CTA BCO PACIFICO PERSONAL 1051475596" },
-                                            { value: "Q9jaKZqohE6Kek5K", label: "CTA BCO PICHINCHA 6164998400" }
-                          
-    */
-    // Agregar eventos de clic para mostrar y ocultar el div
-    //miDiv.addEventListener('click', mostrarConZoom);
-    // document.body.addEventListener('click', ocultarConZoom);
     let formapago = {
         "pichincha": "CALL BANCO PICHINCHA EMP",
         "pacifico": "CALL BANCO PACIFICO EMP",
@@ -92,6 +63,7 @@ export default function CargarComprobante() {
                 "valor_pagar": campos.valor
             }
             let consulta = await OCRApi(datos)
+            console.log(consulta)
             if (consulta.success) {
                 let datos = consulta.data
                 let { beneficiario, valor, numero_documento, banco } = datos
@@ -107,16 +79,19 @@ export default function CargarComprobante() {
                     setReport(false)
                     return
                 }
-                if (banco.toLowerCase().includes("pichincha")) setPagos({ ...datopagos, pasarela: formapago["pichincha"] })
-                if (banco.toLowerCase().includes("pichincha")) setPagos({ ...datopagos, pasarela: idcuneta["pichincha"] })
-                if (banco.toLowerCase().includes("pacifico")) setPagos({ ...datopagos, pasarela: idcuneta["pacifico"] })
-                if (banco.toLowerCase().includes("pacifico")) setPagos({ ...datopagos, pasarela: formapago["pacifico"] })
-                if (banco.toLowerCase().includes("guayaquil")) setPagos({ ...datopagos, pasarela: idcuneta["guayaquil"] })
-                if (banco.toLowerCase().includes("guayaquil")) setPagos({ ...datopagos, pasarela: formapago["guayaquil"] })
-                if (banco.toLowerCase().includes("produbanco")) setPagos({ ...datopagos, pasarela: idcuneta["produbanco"] })
-                if (banco.toLowerCase().includes("produbanco")) setPagos({ ...datopagos, pasarela: formapago["produbanco"] })
-                setPagos({ ...datopagos, idtransaccion: numero_documento, cantidad: valor, nota: formapago["pichincha"] + "/" + numero_documento })
-
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                let mm = today.getMonth() + 1; // Months start at 0!
+                let dd = today.getDate();
+                if (dd < 10) dd = '0' + dd;
+                if (mm < 10) mm = '0' + mm;
+                const formattedToday = yyyy + '-' + mm + '-' + dd;
+                setDisable(true)
+                if (banco.toLowerCase().includes("pichincha")) setPagos({ ...datopagos, fechapago: formattedToday, idcuenta: idcuneta["pichincha"], pasarela: formapago["pichincha"], idtransaccion: numero_documento, cantidad: valor, nota: formapago["pichincha"] + "/" + numero_documento + "/"+imagen })
+                if (banco.toLowerCase().includes("pacifico")) setPagos({ ...datopagos, fechapago: formattedToday, idcuenta: idcuneta["pacifico"], pasarela: formapago["pacifico"], idtransaccion: numero_documento, cantidad: valor, nota: formapago["pichincha"] + "/" + numero_documento + "/" + imagen })
+                if (banco.toLowerCase().includes("guayaquil")) setPagos({ ...datopagos, fechapago: formattedToday, idcuenta: idcuneta["guayaquil"], pasarela: formapago["guayaquil"], idtransaccion: numero_documento, cantidad: valor, nota: formapago["pichincha"] + "/" + numero_documento + "/" + imagen })
+                if (banco.toLowerCase().includes("produbanco")) setPagos({ ...datopagos, fechapago: formattedToday, idcuenta: idcuneta["produbanco"], pasarela: formapago["produbanco"], idtransaccion: numero_documento, cantidad: valor, nota: formapago["pichincha"] + "/" + numero_documento + "/" + imagen })
+                
             } else {
                 present({
                     message: "Hubo problemas con su comprobante comunicate con +593 98 085 0287",
@@ -145,6 +120,35 @@ export default function CargarComprobante() {
             });
             setReport(false)
             console.log(error)
+        }
+    }
+    const ReportarPago = async () => {
+        console.log(Object.values(datopagos), Object.values(datopagos).every(e => e == ""))
+        if (Object.values(datopagos).every(e => e == "")) {
+            present({
+                message: "Faltan datos por cargar",
+                position: "bottom",
+                buttons: [
+                    {
+                        text: 'Cerrar',
+                        role: 'cancel',
+                    }
+                ]
+            });
+        } else {
+            setDisable(false)
+            PAgosViewaapp({ ...datopagos, TRA: "TRA" }).then(ouput => {
+               
+                console.log(ouput)
+                if (ouput.estado == "exito") {
+                    setDisable(true)
+                    history.push("/")
+                    window.location.reload()
+                }
+            }).catch(err => {
+                console.log(err)
+                setDisable(true)
+            })
         }
     }
     const Comprobar = () => {
@@ -192,7 +196,7 @@ export default function CargarComprobante() {
                             </div>
                         </div>
                         <div className=" d-flex flex-column ">
-                            <IonButton className=" bg-speed" shape="round"  >Reportar</IonButton>
+                            <IonButton className=" bg-speed" disabled={!disable} shape="round" onClick={ReportarPago}  >Reportar</IonButton>
                             <IonButton className=" bg-speed" shape="round" onClick={() => window.location.reload()}>Subir otro comprobante</IonButton>
                         </div>
                     </div>

@@ -396,7 +396,7 @@ export default function WifiView() {
                                                 Comunniquese con soporte</h3>
                                             <p> Este perfil no dispone de un <span className=" fw-bold">EXTERNAL ID</span>
                                             </p>
-                                            <a href="https://api.whatsapp.com/send?phone=593997500911&text=Vi%20su%20pagina%20web,%20quiero%20contratar%20sus%20servicios%20para%20mi%20domicilio" className="link_404 py-3 rounded-circle shadow"><i className="bi bi-whatsapp " style={{
+                                            <a href="https://api.whatsapp.com/send?phone=593980850287&text=Vi%20su%20pagina%20web,%20quiero%20contratar%20sus%20servicios%20para%20mi%20domicilio" className="link_404 py-3 rounded-circle shadow"><i className="bi bi-whatsapp " style={{
                                                 fontSize: "1.5em"
                                             }}></i></a>
                                         </div>

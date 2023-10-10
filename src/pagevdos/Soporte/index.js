@@ -111,6 +111,11 @@ export default function SoporteView() {
 
         })
     }
+    function cerre() {
+        //history.goBack()
+        //setShowModal(false)
+        window.open(encodeURI("https://speedecuador.speedtestcustom.com"))
+    }
     function Soporte(so) {
         let datos = localStorage.getItem("INFOUSER")
         let infos = localStorage.getItem("USERLOGIN")
@@ -299,8 +304,7 @@ export default function SoporteView() {
                                                             } else {
                                                                 present({
                                                                     message: "Ya tines Ticket pendiente",
-                                                                    cssClass: 'custom-toast',
-                                                                    duration: 1500,
+                                                                    duration: 2500,
                                                                     position: "bottom"
                                                                 });
                                                                 /*present({
@@ -570,7 +574,7 @@ export default function SoporteView() {
                                             <span className="" ><img src="img/opcion pagos/icon-plan.png" className="img-fluid" style={{ height: "2vh" }} alt="" /></span>
                                             <span className="text-muted text-uppercase" style={{ fontSize: "1.4vh" }}>{dtos.servicios[0].perfil}</span>
                                         </li>
-                                        <a onClick={history.push("/home/soporte")} className="bg-white shadow-1 none-style border px-4  rounded-pill text-center text-celeste" style={{ fontSize: "1.8vh" }}>Speed-Test</a>
+                                        <a onClick={cerre} className="bg-white shadow-1 none-style border px-4  rounded-pill text-center text-celeste" style={{ fontSize: "1.8vh" }}>Speed-Test</a>
                                     </div>
                                 </div>
                             </div>

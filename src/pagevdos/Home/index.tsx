@@ -106,7 +106,7 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2">
                                 <div className="container p-1">
-                                    <a href="https://api.whatsapp.com/send?phone=593997500911&text=Hola%20que%20%tal"><img src="img/botones-home/contactanos-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="https://api.whatsapp.com/send?phone=593980850287&text=Hola%20que%20%tal"><img src="img/botones-home/contactanos-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                         </div>
