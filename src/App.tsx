@@ -50,6 +50,7 @@ function OneSignalInit(user: any): void {
   });
 
   OneSignal.setExternalUserId(user.id, (results: any) => {
+    alert(JSON.stringify( results))
     console.log('Results of setting external user id');
     console.log(results);
     if (results.push && results.push.success) {
@@ -65,6 +66,7 @@ function OneSignalInit(user: any): void {
       console.log(results.sms.success);
     }
   })
+ 
 }
 
 setupIonicReact();
@@ -300,6 +302,7 @@ const App: React.FC = () => {
 
       })
       console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"), getPlatforms())
+      //OneSignalInit(datos)
       if (getPlatforms().some(e => e == "android") && getPlatforms().length == 1) {
         OneSignalInit(datos)
 

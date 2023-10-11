@@ -143,7 +143,7 @@ export default function CargarComprobante() {
                 if (ouput.estado == "exito") {
                     setDisable(true)
                     history.push("/")
-                    window.location.reload()
+                    //window.location.reload()
                 }
             }).catch(err => {
                 console.log(err)
