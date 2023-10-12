@@ -75,6 +75,15 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
+ion-checkbox {
+  --size: 32px;
+  --background-checked: #342df0;
+}
+
+ion-checkbox::part(container) {
+  border-radius: 6px;
+  border: 2px solid #342df0;
+}
 /*
 @media (prefers-color-scheme: dark) {
 

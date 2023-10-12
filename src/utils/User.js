@@ -1,3 +1,5 @@
+import axios from "axios"
+
 export const userlog =()=>{
     try {
         let datos = JSON.parse( localStorage.getItem("USERLOGIN"))
@@ -8,3 +10,7 @@ export const userlog =()=>{
         return error
     }
 }
+
+export const Axiosroot = axios.create({
+    baseURL:"http://localhost:3009/"
+})

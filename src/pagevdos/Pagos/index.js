@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonButtons, IonContent, IonHeader, IonCheckbox, IonIcon, IonItem, IonLabel, IonList, IonModal, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack, chevronBack, cloudCircleOutline, documentText } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
@@ -11,6 +11,7 @@ import { ChevronLeftOutlined } from "@mui/icons-material";
 import FacturaViews from "../../pages/Comprobantes/Facturas";
 import Facturapdf from "./FacturaView";
 import { setFactura } from "../../StoreRedux/Slice/UserSlice";
+import DialogViewapago from "../../components/Alert/Dialogpago";
 export default function PAgosViewa() {
     let history = useHistory()
     const theme = useTheme();
@@ -25,30 +26,14 @@ export default function PAgosViewa() {
         right: 16,
     };
     const datos = useSelector((state) => state.usuario.user)
+    const factura_a_pagar = useSelector((state) => state.usuario.facttura)
     const fileTypes = ["JPEG", "PNG", "GIF"];
     const [report, setReport] = useState(false)
     const [file, setFile] = useState(null);
     const handleChange = (file) => {
         setFile(file);
     };
-    function Pagados() {
-        MostrarFacturas(datos.id).then(salida => {
-            console.log(salida)
-            if (salida.estado == "error") return
-            const sumaTotal = salida.facturas
-            if (sumaTotal.length == 1) {
-                dispatch(setFactura({ ...sumaTotal[0] }))
-                history.push("/Comprobante")
-            } else if (sumaTotal.length > 1) {
-                history.push("/Facturas")
-            }
 
-
-        }).catch(err => {
-            console.log(err)
-        })
-        //setReport(!report)
-    }
     const [totalfact, setFactu] = useState({
         total: 0,
         valor: ""
@@ -85,34 +70,80 @@ export default function PAgosViewa() {
             }).catch(err => {
                 console.log(err)
             })
-           /* FacturasAtorizada(datos.cedula).then(ouput => {
-                if (ouput.estado) {
-                    console.log(ouput)
-                    setFacturaci(ouput.facturas)
-                }
-            }).catch(err => {
-                console.log(err)
-            })*/
+            /* FacturasAtorizada(datos.cedula).then(ouput => {
+                 if (ouput.estado) {
+                     console.log(ouput)
+                     setFacturaci(ouput.facturas)
+                 }
+             }).catch(err => {
+                 console.log(err)
+             })*/
         }
 
     }, [datos])
+    let [dilaogo, setAlert] = useState(false)
+    function Pagados() {
+        MostrarFacturas(datos.id).then(salida => {
+            console.log(salida)
+            if (salida.estado == "error") return
+            const sumaTotal = salida.facturas
+            if (sumaTotal.length == 1) {
+                dispatch(setFactura({ ...sumaTotal[0] }))
+                setAlert(true)
+                //history.push("/Comprobante")
+            } else if (sumaTotal.length > 1) {
+                history.push("/Facturas")
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+    function Generalink(){
+        let datos = {
+            document:"",
+            name:"",
+            email:"",
+            phones:"",
+            address:"",
+            description:"",
+            amount:"",            
+            porcentaje:"",
+            idfactura:"",
+            subtotal:""
+        }
 
+    }
+    function ReportarComprobante(){
+        history.push("/Comprobante")
+    }
     return (
         <IonPage>
+            <DialogViewapago
+                setAlert={setAlert}
+                alert={dilaogo}
+                header={"Escoje el metodo de pago"}
+                ComfirmaDepo={() => setAlert(false)}
+                subheader={"Reporta tu comprobante de Deposito\n o Genera link de pago con tarjeta.\n Recueda los pagos con tarjetas generan recargos adicionales"}
+                ConfrimaTarje={ReportarComprobante}
+            />
             <div className="container-fluid px-0 vh-100">{/*<!--Contenedor General-->*/}
-                <IonModal isOpen={isOpen}>
+                <IonModal isOpen={false} initialBreakpoint={0.50} breakpoints={[0, 0.25, 0.5, 0.75]}>
                     <IonHeader>
                         <IonToolbar>
-                            <IonTitle>Factura</IonTitle>
-                            <IonButtons slot="end">
-                                <IonButton onClick={() => setIsOpen(false)}>Cerra</IonButton>
-                            </IonButtons>
+                            <IonTitle slot="center">Factura</IonTitle>
+
                         </IonToolbar>
                     </IonHeader>
                     <IonContent className="p-0">
-                        {link == "" ? "" : <Facturapdf
-                            link={link}
-                        />}
+                        <IonItem>
+                            <IonCheckbox slot="start"></IonCheckbox>
+                            <IonLabel>Pagar con tarjeta </IonLabel>
+                        </IonItem>
+                        <IonItem>
+                            <IonCheckbox slot="start"></IonCheckbox>
+                            <IonLabel>Reportar Deposito </IonLabel>
+                        </IonItem>
+
                     </IonContent>
                 </IonModal>
                 <div className="container-fluid h-20 pb-5 bg-welcome bg-welcome-radius px-0">{/*<!--header welcome-->*/}
@@ -180,7 +211,8 @@ export default function PAgosViewa() {
                                                 <span className="text-muted text-uppercase"
                                                     style={{
                                                         fontSize: "1.4vh"/*
-                                            "font-size: 1.4vh;"*/}}>plan advance-antig</span>
+                                                        plan advance-antig
+                                            "font-size: 1.4vh;"*/}}></span>
                                             </li>
                                             <li className="list-unstyled my-md-1" style={{
 
@@ -193,8 +225,10 @@ export default function PAgosViewa() {
                                                 <span className="text-muted text-uppercase"
                                                     style={{
                                                         fontSize: "1.4vh"
-                                                        /*"font-size: 1.4vh;"*/
-                                                    }}>COMNET_MANCHENO</span>
+                                                        /*
+                                                        COMNET_MANCHENO
+                                                        "font-size: 1.4vh;"*/
+                                                    }}></span>
                                             </li>
                                             <li className="list-unstyled my-md-1" style={{
                                                 width: "100%",

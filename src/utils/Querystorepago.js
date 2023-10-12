@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Axiosroot } from "./User";
 
 export const Obtenerlinkimagen = async (parm) => {
     try {
@@ -35,6 +36,14 @@ export const OCRApi = async (parms) => {
 export const PAgosViewaapp = async (parms) => {
     try {
         let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/Registro", parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Generalink = async (parms) => {
+    try {
+        let { data } = await Axiosroot.post("MovilApi/linkpago", parms)
         return data
     } catch (error) {
         return error
