@@ -94,11 +94,11 @@ export const CrearClienteContifico = async (parms) => {
                 'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
             }
         })
-        console.log(data.response.data)
-        return [data]
+        //console.log(data.response.data)
+        return data
 
     } catch (error) {
-        console.log(error.response.data);
+       // console.log(error.response.data);
         return error
     }
 }

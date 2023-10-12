@@ -26,6 +26,7 @@ import { Formik } from 'formik';
 import FirebaseSocial from './FirebaseSocial';
 import AnimateButton from 'components/@extended/AnimateButton';
 
+import { Spin, notification } from 'antd';
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { Logearse } from '../../../util/Queryportal';
@@ -46,6 +47,15 @@ const AuthLogin = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+    const [api, contextHolder] = notification.useNotification();
+    const openNotificationWithIcon = (type, mensaje, description) => {
+        api[type]({
+            message: "" + mensaje,
+            description:
+                "" + description,
+            placement: 'bottom'
+        });
+    };
     function iniciarsecion(user,passw) {
         let info = {
             username: user.trim(),
@@ -58,9 +68,15 @@ const AuthLogin = () => {
                 usedispat(setDatosuser({ ...oupt.user }))
                 usedispat(setlogin({ estado: true }))
                 history("/dashboard/panel")
+                return
             }else{
-                alert(""+JSON.stringify(oupt))
+               // openNotificationWithIcon('error', "Alerta", "Hubo un error contraseña o usuario incorecto" )
+
+               // alert(""+JSON.stringify(oupt))
             }
+            openNotificationWithIcon('error', "Alerta", "Hubo un error contraseña o usuario incorecto")
+
+
             console.log(oupt)
         }).catch(err => {
             console.log(err)
@@ -69,6 +85,7 @@ const AuthLogin = () => {
 
     return (
         <>
+            {contextHolder}
             <Formik
                 initialValues={{
                     email: '',

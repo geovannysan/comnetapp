@@ -634,6 +634,45 @@ const PagosView = () => {
                             estado: true
                         })
                         CrearClienteContifico(datos).then(crea => {
+                            console.log(crea)
+                            if (Object.keys(crea).length > 1) {
+                                setContifico([crea])
+                                setOpen(true)
+                                setMensaje({
+                                    mensaje: "buscando facturas inpagas",
+                                    estado: true
+                                })
+
+                                MostrarFacturas(ouput.datos[0].id).then(ouput => {
+                                    if (ouput.estado === "exito") {
+                                        // dismiss()
+                                        setOpen(false)
+                                        openNotificationWithIcon('success', "Alerta", "Facturas Encontradas")
+
+                                        console.log(ouput)
+                                        let datos = ouput.facturas.map((el, index) => {
+                                            return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
+                                        })
+                                        datos.unshift({ value: "", label: "Selecione Factura" })
+                                        seTlist(datos)
+                                        //setSingleSelect({ value: "", label: "Selecione Factura" })
+                                        comprobante({ value: "", label: "Selecione Factura" })
+                                    } else {
+                                        setOpen(false)
+                                        openNotificationWithIcon('success', "Alerta", "No se encontro facturas inpagas")
+                                        //dismiss()
+                                    }
+                                }).catch(err => {
+                                    console.log(err)
+                                    setOpen(false)
+                                    openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado")
+                                })
+                                return
+                            } else {
+                                setOpen(false)
+                                openNotificationWithIcon('error', "Alerta", "Error no se creo cliente contifico ")
+                                return
+                            }
                             if (crea.response.status == 400) {
                                 setimpri(true)
                                 setOpen(false)
@@ -718,45 +757,11 @@ const PagosView = () => {
 
                                 return
                             }
-                            if (Object.keys(crea).length > 1) {
-                                setContifico([crea])
-                                setOpen(true)
-                                setMensaje({
-                                    mensaje: "buscando facturas inpagas",
-                                    estado: true
-                                })
-
-                                MostrarFacturas(ouput.datos[0].id).then(ouput => {
-                                    if (ouput.estado === "exito") {
-                                        // dismiss()
-                                        setOpen(false)
-                                        openNotificationWithIcon('success', "Alerta", "Facturas Encontradas")
-
-                                        console.log(ouput)
-                                        let datos = ouput.facturas.map((el, index) => {
-                                            return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
-                                        })
-                                        datos.unshift({ value: "", label: "Selecione Factura" })
-                                        seTlist(datos)
-                                        //setSingleSelect({ value: "", label: "Selecione Factura" })
-                                        comprobante({ value: "", label: "Selecione Factura" })
-                                    } else {
-                                        setOpen(false)
-                                        openNotificationWithIcon('success', "Alerta", "No se encontro facturas inpagas")
-                                        //dismiss()
-                                    }
-                                }).catch(err => {
-                                    console.log(err)
-                                    setOpen(false)
-                                    openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado")
-                                })
-                            } else {
-                                setOpen(false)
-                                openNotificationWithIcon('error', "Alerta", "Error no se creo cliente contifico ")
-                            }
+                           
                         }).catch(err => {
                             setOpen(false)
-                            openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado al crear cliente contifico" + err)
+                            console.log(err)
+                            openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado al crear cliente contifico" + JSON.stringify(err))
                         })
                     }
                     else if (ouputs.length > 0) {
