@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { Changessihide, Deviceslist, Estadossi, Nombressi, Refresssi } from "../../utils/Querystados"
+import { Changessihide, Devicescom, Deviceslist, Estadossi, Nombressi, Refresssi } from "../../utils/Querystados"
 import { useEffect, useState } from "react"
 import { setNicknameslice } from "../../StoreRedux/Slice/UserSlice"
 import "./index.css"
@@ -133,9 +133,14 @@ export default function WifiView() {
         })
         console.log(e)
     }
-    function cargarssi() {
+    let [count,setCount]= useState(0)
+    async function cargarssi() {
         if (datos.ID_EXTERNO_ONU != "") {
             console.log(datos)
+            let conectados = await Devicescom({ "info": datos.ID_EXTERNO_ONU })
+            if(conectados.length>0){
+                setCount(conectados[0].LANDevice["1"].Hosts["_value"])
+            }
             Deviceslist({ "info": datos.ID_EXTERNO_ONU }).then(ouput => {
                 //console.log(ouput)
                 if (ouput.length > 0) {
@@ -359,7 +364,7 @@ export default function WifiView() {
                                             <div className="col-12 text-muted"
                                                 style={{ fontSize: "1.6vh" }}>Ver Dispositivos</div>
                                             <div className="col-12 mt-1 text-celeste"
-                                                style={{ fontSize: "1.6vh" }}><span id="nombre_de_red">CONECTADOS</span></div>
+                                                style={{ fontSize: "1.6vh" }}><span id="nombre_de_red">CONECTADOS: {count}</span></div>
                                         </div>
                                         {/*<!--cierre card texto-->*/}
                                         <div className="container h-50 btn-group-vertical ">

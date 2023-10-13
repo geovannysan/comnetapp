@@ -14,8 +14,8 @@ export const autenticar = async (parms) => {
                 'Content-Type': 'application/json',
             },
         })
-       //    localStorage.setItem("nuevos",JSON.stringify( data))
-       // console.log(data)
+        //    localStorage.setItem("nuevos",JSON.stringify( data))
+        // console.log(data)
         return data
     } catch (error) {
         return error
@@ -116,13 +116,8 @@ export const MostrarFacturasdeuda = async (parms) => {
 }
 export const Facturaid = async (parms) => {
     try {
-        let { data } = await axios.post(Hostv1 + "/PortalApi/GetInvoice",
-            {
-                //"token":token,
-                "idfactura": parseInt(parms)
-            })
+        let { data } = await axios.get(Hostv1 + "/PortalApi/GetInvoice/" + parms + "/appspeed")
         return data
-
     } catch (error) {
         return error
     }

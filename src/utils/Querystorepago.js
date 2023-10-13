@@ -41,7 +41,7 @@ export const PAgosViewaapp = async (parms) => {
         return error
     }
 }
-export const Generalink = async (parms) => {
+export const Generalinkpago = async (parms) => {
     try {
         let { data } = await Axiosroot.post("MovilApi/linkpago", parms)
         return data

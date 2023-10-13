@@ -45,6 +45,15 @@ export const Deviceslist = async (parms) => {
         return error
     }
 }
+/* Numero de conectados */
+export const Devicescom=async(parms)=>{
+    try {
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/Devicescont", parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
 /* nombre de la red  */
 export const Nombressi = async (parms) => {
     try {

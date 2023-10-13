@@ -35,9 +35,6 @@ export default function FacturaslisView() {
 
     }
     function downloadViewImage(url) {
-        //console.log(url)
-       // setLink(url)
-        //setIsOpen(true)
         window.open(encodeURI(url), "_system", "location=yes");
     }
     useEffect(() => {
@@ -47,9 +44,9 @@ export default function FacturaslisView() {
     return (
         <IonPage>
             <IonModal isOpen={isOpen}>
-                <IonHeader>
-                    <IonToolbar>
-                        <IonTitle>Factura</IonTitle>
+                <IonHeader >
+                    <IonToolbar >
+                        <IonTitle >Factura</IonTitle>
                         <IonButtons slot="end">
                             <IonButton onClick={() => setIsOpen(false)}>Cerra</IonButton>
                         </IonButtons>

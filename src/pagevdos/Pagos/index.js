@@ -2,7 +2,7 @@ import { IonButton, IonButtons, IonContent, IonHeader, IonCheckbox, IonIcon, Ion
 import { arrowBack, chevronBack, cloudCircleOutline, documentText } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { FacturasAtorizada, MostrarFacturas } from "../../utils/Queryuser";
+import { Facturaid, FacturasAtorizada, MostrarFacturas } from "../../utils/Queryuser";
 import { useDispatch, useSelector } from "react-redux";
 import { FileUploader } from "react-drag-drop-files";
 import Fab from '@mui/material/Fab';
@@ -12,6 +12,7 @@ import FacturaViews from "../../pages/Comprobantes/Facturas";
 import Facturapdf from "./FacturaView";
 import { setFactura } from "../../StoreRedux/Slice/UserSlice";
 import DialogViewapago from "../../components/Alert/Dialogpago";
+import { Generalinkpago } from "../../utils/Querystorepago";
 export default function PAgosViewa() {
     let history = useHistory()
     const theme = useTheme();
@@ -89,7 +90,7 @@ export default function PAgosViewa() {
             const sumaTotal = salida.facturas
             if (sumaTotal.length == 1) {
                 dispatch(setFactura({ ...sumaTotal[0] }))
-                setAlert(true)
+                //  setAlert(false)
                 //history.push("/Comprobante")
             } else if (sumaTotal.length > 1) {
                 history.push("/Facturas")
@@ -98,23 +99,56 @@ export default function PAgosViewa() {
             console.log(err)
         })
     }
-    function Generalink(){
-        let datos = {
-            document:"",
-            name:"",
-            email:"",
-            phones:"",
-            address:"",
-            description:"",
-            amount:"",            
-            porcentaje:"",
-            idfactura:"",
-            subtotal:""
+    function Generalink() {
+        setAlert(false)
+        Obtenerlinkdepago()
+    }
+    const Obtenerlinkdepago = async () => {
+        try {
+          let datas = await MostrarFacturas(datos.id)
+            let data = await Facturaid(parseInt(datas.facturas[0].id))
+            console.log(data)
+            if (data.estado == "exito") {
+                const sumaTotal = data.factura
+                let amout =""+( parseFloat(sumaTotal.total) * 1.08)
+                let cuerpo = {
+                    document: datos.cedula,
+                    name: datos.nombre,
+                    email: "geovanny1santiago@gmail.com",
+                    phones: datos.movil,
+                    address: datos.direccion_principal,
+                    description: data.items[0]["descrp"],
+                    amount: parseFloat(amout).toFixed(2),
+                    porcentaje: 1.08,
+                    idfactura: sumaTotal.id,
+                    subtotal: sumaTotal.total
+                }
+                console.log(cuerpo)
+              // let link = await Generalinkpago(cuerpo)
+              //  console.log(link)
+               /* if (link.success) {
+                    //window.open(encodeURI(link.url), "_system", "location=yes");
+                    setIsOpen(true)
+                    setLink(link.url)
+                }*/
+            }
+            return
+        } catch (error) {
+            console.log(error)
+            return error
         }
+    }
+
+    function ReportarComprobante() {
+        Pagados()
+        history.push("/Comprobante")
+        setAlert(false)
 
     }
-    function ReportarComprobante(){
-        history.push("/Comprobante")
+    function CerrarLink() {
+        history.push("/")
+        setIsOpen(false)
+        window.location.reload()
     }
     return (
         <IonPage>
@@ -122,10 +156,25 @@ export default function PAgosViewa() {
                 setAlert={setAlert}
                 alert={dilaogo}
                 header={"Escoje el metodo de pago"}
-                ComfirmaDepo={() => setAlert(false)}
+                ComfirmaDepo={ReportarComprobante}
                 subheader={"Reporta tu comprobante de Deposito\n o Genera link de pago con tarjeta.\n Recueda los pagos con tarjetas generan recargos adicionales"}
-                ConfrimaTarje={ReportarComprobante}
+                ConfrimaTarje={() => Generalink()}
             />
+            <IonModal isOpen={isOpen}>
+                <IonHeader className=" bg-welcome">
+                    <IonToolbar className="ion-no-border">
+                        <IonTitle></IonTitle>
+                        <IonButtons slot="end">
+                            <IonButton className=" text-white" onClick={() => CerrarLink()}>Cerra</IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent className="p-0">
+                    {link == "" ? "" : <Facturapdf
+                        link={link}
+                    />}
+                </IonContent>
+            </IonModal>
             <div className="container-fluid px-0 vh-100">{/*<!--Contenedor General-->*/}
                 <IonModal isOpen={false} initialBreakpoint={0.50} breakpoints={[0, 0.25, 0.5, 0.75]}>
                     <IonHeader>
@@ -287,7 +336,7 @@ export default function PAgosViewa() {
                                          "height: 9.5vh;"*/}} alt="" />
                                         </div>
                                         <div className="container h-30 btn-group-vertical ">
-                                            {totalfact.total > 0 ? <a onClick={Pagados} className="text-uppercase text-orange fw-bold none-style bg-white shadow-1 px-4 py-15 rounded-pill border mx-auto"
+                                            {totalfact.total > 0 ? <a onClick={() => setAlert(true)} className="text-uppercase text-orange fw-bold none-style bg-white shadow-1 px-4 py-15 rounded-pill border mx-auto"
                                                 style={{
                                                     fontSize: "1.8vh"
                                                     /*"font-size: 1.8vh;"*/

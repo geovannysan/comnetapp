@@ -549,7 +549,7 @@ export default function SoporteView() {
                                                 {señal.onu_signal == "Warning" ? "Buena" : ""}
                                                 {señal.onu_signal == "Critical" ? "Mala" : ""}</span></span>
                                         </li>
-                                        <a className="bg-white shadow-1 none-style  border px-4 rounded-pill text-center text-celeste" onClick={handleClickOpen} style={{ fontSize: "1.8vh" }}>Lentitud</a>
+                                        <a className="bg-white shadow-1 none-style  border px-4 rounded-pill text-center text-celeste" onClick={handleClickOpen} style={{ fontSize: "1.8vh" }}>Soporte</a>
                                     </div>
                                 </div>
                             </div>

@@ -50,7 +50,7 @@ function OneSignalInit(user: any): void {
   });
 
   OneSignal.setExternalUserId(user.id, (results: any) => {
-    alert(JSON.stringify( results))
+   
     console.log('Results of setting external user id');
     console.log(results);
     if (results.push && results.push.success) {
