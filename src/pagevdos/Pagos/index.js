@@ -261,7 +261,7 @@ export default function PAgosViewa() {
                                                     style={{
                                                         fontSize: "1.4vh"/*
                                                         plan advance-antig
-                                            "font-size: 1.4vh;"*/}}></span>
+                                            "font-size: 1.4vh;"*/}}>{datos.servicios[0].tiposervicio}</span>
                                             </li>
                                             <li className="list-unstyled my-md-1" style={{
 
@@ -277,7 +277,7 @@ export default function PAgosViewa() {
                                                         /*
                                                         COMNET_MANCHENO
                                                         "font-size: 1.4vh;"*/
-                                                    }}></span>
+                                                    }}>{datos.servicios[0].status_user}</span>
                                             </li>
                                             <li className="list-unstyled my-md-1" style={{
                                                 width: "100%",

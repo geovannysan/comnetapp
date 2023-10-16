@@ -66,7 +66,7 @@ export default function WifiView() {
             console.log(err)
         })
     }
-
+    
     function Confirmcall() {
         Changessihide({
             "info": datos.ID_EXTERNO_ONU,
@@ -138,8 +138,9 @@ export default function WifiView() {
         if (datos.ID_EXTERNO_ONU != "") {
             console.log(datos)
             let conectados = await Devicescom({ "info": datos.ID_EXTERNO_ONU })
+            console.log(conectados)
             if(conectados.length>0){
-                setCount(conectados[0].LANDevice["1"].Hosts["_value"])
+                setCount(conectados[0].InternetGatewayDevice.LANDevice["1"].Hosts.HostNumberOfEntries["_value"])
             }
             Deviceslist({ "info": datos.ID_EXTERNO_ONU }).then(ouput => {
                 //console.log(ouput)
@@ -194,6 +195,7 @@ export default function WifiView() {
                 setModal={setModal}
                 nickname={nickname}
                 devices={devices}
+                setDevices={setDevices}
             />
             <DialogViewa
                 setAlert={setAlert}

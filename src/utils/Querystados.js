@@ -48,7 +48,7 @@ export const Deviceslist = async (parms) => {
 /* Numero de conectados */
 export const Devicescom=async(parms)=>{
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/mikroti/MovilApi/Devicescont", parms)
+        let { data } = await axios.post("http://localhost:3009/MovilApi/Devicescont", parms)
         return data
     } catch (error) {
         return error
