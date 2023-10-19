@@ -32,9 +32,12 @@ export default function CargarComprobante() {
         "idcuenta": "",
         "fechapago": ""
     })
+    const [imagnlugar,setImagen]= useState("")
     const handleChange = async (file) => {
         console.log(file[0])
+        const imageUrl = URL.createObjectURL(file[0]);
         setFile(file);
+        setImagen(imageUrl)
     };
 
     let formapago = {
@@ -207,8 +210,10 @@ export default function CargarComprobante() {
             </div> :
                 <div className=" container-fluid h-100   d-flex flex-column justify-content-center align-items-center ">
                     <div className="h-40">
-                        <img src="/img/cohete.gif">
-                        </img>
+                        {!file ?  <img src="/img/cohete.gif">
+                        </img>:
+                            <img src={imagnlugar} style={{maxHeight:"350px"}}>
+                            </img>}
                     </div>
                     <div className="text-center h-50">
                         <FileUploader

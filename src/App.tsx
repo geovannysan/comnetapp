@@ -50,7 +50,7 @@ function OneSignalInit(user: any): void {
   });
 
   OneSignal.setExternalUserId(user.id, (results: any) => {
-   
+
     console.log('Results of setting external user id');
     console.log(results);
     if (results.push && results.push.success) {
@@ -66,7 +66,7 @@ function OneSignalInit(user: any): void {
       console.log(results.sms.success);
     }
   })
- 
+
 }
 
 setupIonicReact();
@@ -239,7 +239,7 @@ const App: React.FC = () => {
   Network.addListener('networkStatusChange', status => {
     if (!initialized) {
       console.log("nuevos")
-      
+
       window.location.href = "/"
     }
     setInitialized(status.connected)
@@ -252,25 +252,25 @@ const App: React.FC = () => {
   async function NuevosDatos() {
     const status = await Network.getStatus();
     const info = await Device.getInfo();
-    const networkInfo:any = await Network.getStatus();
+    const networkInfo: any = await Network.getStatus();
     const connectionType = networkInfo.connectionType;
 
 
     setInitialized(status.connected)
-    console.log(info,'Network status:', status);
+    console.log(info, 'Network status:', status);
     //if (connectionType === 'wifi') {
     //const ipAddresses = await Network.getIpAddresses();
 
-      // Si la conexión es Wi-Fi, puedes obtener la dirección IP
+    // Si la conexión es Wi-Fi, puedes obtener la dirección IP
     //console.log(networkInfo.getIpAddresses());
-    await getIpAddress()
-   // }
+    // await getIpAddress()
+    // }
   }
   const getIpAddress = async () => {
     try {
       const response = await axios.get('https://api.ipify.org?format=json');
       if (response.data && response.data.ip) {
-        console.log(response,response.data.ip);
+        console.log(response, response.data.ip);
       } else {
         console.log('No se pudo obtener la dirección IP');
       }
@@ -325,29 +325,7 @@ const App: React.FC = () => {
 
   }, [])
 
-  /*const createSingleTaskNotification = async () => {
-    // Comprobar si la notificación ya existe
-    const { notifications } = await LocalNotifications.getPending();
-    if (notifications.length > 0) {
-      console.log('La notificación ya existe. No se creará una nueva.');
-      return;
-    }
 
-    // Crear la notificación
-    const notifs = [{
-      title: 'Título de la notificación',
-      body: 'Cuerpo de la notificación',
-      id: 1,
-      schedule: { at: new Date(Date.now() + 5000) }, // Programar para 5 segundos en el futuro
-      smallIcon: 'res://icon',
-     
-      
-    }];
-
-    await LocalNotifications.schedule({ notifications: notifs });
-
-    console.log('Notificación programada creada.');
-  };*/
   return (
     <IonApp>
       {user.authb ?
@@ -363,19 +341,19 @@ const App: React.FC = () => {
             <Route path="/Comprobante">
               <CargarComprobante />
             </Route>
-            
+
             <Route path="/pagos" >
               <PAgosViewa />
             </Route>
             <Route path="/plan">
               <PlanView />
             </Route>
-           
+
             <Route path="/mapas">
               <MapsVies />
             </Route>
-           
-            
+
+
             <Route path="/home">
               {!initialized ? <APPv1 /> : <TabsView />}
             </Route>

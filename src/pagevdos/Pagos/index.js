@@ -105,12 +105,12 @@ export default function PAgosViewa() {
     }
     const Obtenerlinkdepago = async () => {
         try {
-          let datas = await MostrarFacturas(datos.id)
+            let datas = await MostrarFacturas(datos.id)
             let data = await Facturaid(parseInt(datas.facturas[0].id))
             console.log(data)
             if (data.estado == "exito") {
                 const sumaTotal = data.factura
-                let amout =""+( parseFloat(sumaTotal.total) * 1.08)
+                let amout = "" + (parseFloat(sumaTotal.total) * 1.08)
                 let cuerpo = {
                     document: datos.cedula,
                     name: datos.nombre,
@@ -121,16 +121,21 @@ export default function PAgosViewa() {
                     amount: parseFloat(amout).toFixed(2),
                     porcentaje: 1.08,
                     idfactura: sumaTotal.id,
+                    idecliente: sumaTotal.idcliente,
                     subtotal: sumaTotal.total
                 }
                 console.log(cuerpo)
-              // let link = await Generalinkpago(cuerpo)
-              //  console.log(link)
-               /* if (link.success) {
+                let link = await Generalinkpago(cuerpo)
+                console.log(link)
+                if (link.success) {
+                    //   if (link.estado){
                     //window.open(encodeURI(link.url), "_system", "location=yes");
                     setIsOpen(true)
                     setLink(link.url)
-                }*/
+                    // }else{
+                    //     history.push("")
+                    //}
+                }
             }
             return
         } catch (error) {

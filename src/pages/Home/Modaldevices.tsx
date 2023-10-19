@@ -11,51 +11,63 @@ export function EstadoView(props: any) {
         </div>
     )
 }
-export default function DeviceView(props: any,recargar:void) {
-    let { showModal, setModal,  nickname } = props
-        const datos = useSelector((state: any) => state.usuario.user);
+export default function DeviceView(props: any, recargar: void) {
+    let { showModal, setModal, nickname } = props
+    const datos = useSelector((state: any) => state.usuario.user);
     const [devices, setDevices] = useState([]);
     //let nuevo = () => showModal(false)
-   function Recargarlista(){
-       setDevices([])
-         Refresssi({
-                "info": datos.ID_EXTERNO_ONU,
-                "booleas": ""
-            }).then((salida:any) => {
-                //cargarssi()
-               // setShowAlert("")
-                 Deviceslist({ "info": datos.ID_EXTERNO_ONU }).then((ouput:any) => {
-                //console.log(ouput)
-                if (ouput.length > 0) {
-                    console.log("error list", ouput)
-                    let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
-                    setDevices(Object.values(dtso))
-                    console.log(Object.values(dtso))
-                }
-            }).catch((err:any) => {
-                console.log(err)
-            })
-                //dismiss()
-                console.log(salida)
-            }).catch((err:any) => {
-                //   dismiss()
-                console.log(err)
-            })
-       
+    function Recargarlista() {
+        setDevices([])
+        Refresssi({
+            "info": datos.ID_EXTERNO_ONU,
+            "booleas": ""
+        }).then((salida: any) => {
+            //cargarssi()
+            // setShowAlert("")
+            console.log(salida)
+            if (salida) {
+                Deviceslist({ "info": datos.ID_EXTERNO_ONU }).then((ouput: any) => {
+                    //console.log(ouput)
+                    if (ouput.length > 0) {
+                        console.log("error list", ouput)
+                        let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
+                        const arrayDeObjetos: any = Object.keys(dtso).filter((key: any) => !isNaN(key)).map((clave) => ({
+                            host: clave,
+                            ...dtso[clave]
+                        }));
+                        setDevices(arrayDeObjetos)
+                        // setDevices(Object.values(dtso))
+                        console.log(arrayDeObjetos)
+                    }
+                }).catch((err: any) => {
+                    console.log(err)
+                })
+            }
+            //dismiss()
+            console.log(salida)
+        }).catch((err: any) => {
+            //   dismiss()
+            console.log(err)
+        })
+
     }
-    useEffect(()=>{
+    useEffect(() => {
         Deviceslist({ "info": datos.ID_EXTERNO_ONU }).then((ouput: any) => {
             //console.log(ouput)
             if (ouput.length > 0) {
                 console.log("error list", ouput)
                 let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
-                setDevices(Object.values(dtso))
-                console.log(Object.values(dtso))
+                const arrayDeObjetos: any = Object.keys(dtso).filter((key: any) => !isNaN(key)).map((clave) => ({
+                    host: clave,
+                    ...dtso[clave]
+                }));
+                setDevices(arrayDeObjetos)
+                console.log(arrayDeObjetos)
             }
         }).catch((err: any) => {
             console.log(err)
         })
-    },[])
+    }, [showModal])
     return (
 
         <IonModal isOpen={showModal}
@@ -63,20 +75,20 @@ export default function DeviceView(props: any,recargar:void) {
             backdropDismiss={false}
 
         >
-            <IonHeader >
+            <IonHeader className=" bg-welcome">
                 <IonToolbar className=""
                     style={{
                         color: "#ffffs"
                     }}
                 >
-                    <IonTitle className="text-dark">
+                    <IonTitle className="text-white">
                         {nickname}
                     </IonTitle>
                     <IonButtons slot="end"  >
-                        <IonButton color={"dark"}
+                        <IonButton
 
                             onClick={() => setModal(false)}>
-                            <IonIcon className="text-dark" icon={close}></IonIcon>
+                            <IonIcon className="text-white" icon={close}></IonIcon>
                         </IonButton>
 
                     </IonButtons>
@@ -124,7 +136,7 @@ export default function DeviceView(props: any,recargar:void) {
                     }) :
 
                         <IonItem>
-                           
+
                             <IonLabel>
                                 <h3>
                                     <IonSkeletonText animated={true} style={{ width: '80%' }}></IonSkeletonText>
@@ -146,11 +158,11 @@ export default function DeviceView(props: any,recargar:void) {
             <IonFooter>
                 <IonToolbar className="text-center py-2">
                     <IonTitle>Actualizar lista de Dispositivo</IonTitle>
-                   
-                        <button onClick={Recargarlista} className="btn btn-sm bg-success   text-white rounded-pill btn-size-1 py-20 shadow-2">
-                            Recargar
-                        </button>
-                    
+
+                    <button onClick={Recargarlista} className="btn btn-sm bg-success   text-white rounded-pill btn-size-1 py-20 shadow-2">
+                        Recargar
+                    </button>
+
                 </IonToolbar>
             </IonFooter>
         </IonModal>
