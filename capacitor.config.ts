@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'portal',
+  appId: 'www.speed.com.ec',
+  appName: 'speed',
   webDir: 'build',
   bundledWebRuntime: false,
   plugins: {

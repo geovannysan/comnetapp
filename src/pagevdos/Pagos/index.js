@@ -114,7 +114,7 @@ export default function PAgosViewa() {
                 let cuerpo = {
                     document: datos.cedula,
                     name: datos.nombre,
-                    email: "geovanny1santiago@gmail.com",
+                    email: datos.correo,
                     phones: datos.movil,
                     address: datos.direccion_principal,
                     description: data.items[0]["descrp"],
@@ -140,6 +140,7 @@ export default function PAgosViewa() {
             return
         } catch (error) {
             console.log(error)
+            alert(""+error)
             return error
         }
     }

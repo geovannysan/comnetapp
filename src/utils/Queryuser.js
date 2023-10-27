@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Axiosroot } from './User';
 //let Host = "http://45.224.96.50/api/v1/"
 let Hostv1 = "https://api.t-ickets.com/mikroti"
 //let Hostv1 = "https://api.t-ickets.com/mikroti/mikroti"
@@ -79,7 +80,7 @@ export const ListarFactura = async (parms) => {
 export const MostrarFacturas = async (parms) => {
 
     try {
-        let { data } = await axios.get("https://api.ticketsecuador.ec/mikroti/PortalApi/GetInvoices/" + parms + "/appspeed")
+        let { data } = await axios.get(Hostv1 + "/PortalApi/GetInvoices/" + parms + "/appspeed")
         return data
     } catch (error) {
         return error
@@ -88,7 +89,7 @@ export const MostrarFacturas = async (parms) => {
 
 export const FacturasAtorizada = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/mikroti/MovilApi/Facturas", {
+        let { data } = await axios.post(Hostv1 + "/MovilApi/Facturas", {
             "cedula": parms
         }, {
             headers: {
@@ -166,6 +167,14 @@ export const UserUpdate = async (parms) => {
 export const Newtickte = async (parms) => {
     try {
         let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/CreaTicket", parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const TokenOnesigna = async (parms) => {
+    try {
+        let { data } = await Axiosroot.put("MovilApi/token", parms)
         return data
     } catch (error) {
         return error

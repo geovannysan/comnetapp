@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 import { userlog } from './utils/User';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { setDatosuser, setlogin } from './StoreRedux/Slice/UserSlice';
-import { autenticar } from './utils/Queryuser';
+import { TokenOnesigna, autenticar } from './utils/Queryuser';
 import OneSignal from 'onesignal-cordova-plugin';
 import { initializeOneSignal } from './Onesignajs'
 import { getPlatforms } from '@ionic/react';
@@ -38,7 +38,7 @@ import axios from 'axios';
 
 let { LoginView, TabsView, Tesvel } = routes
 
-function OneSignalInit(user: any): void {
+function OneSignalInit(user: any, cedula: any): void {
   OneSignal.setLogLevel(0, 0);
   OneSignal.setAppId("1b5d9596-a75f-4a2d-b38f-4ae7231e48a3");
   OneSignal.setNotificationOpenedHandler(function (jsonData) {
@@ -53,9 +53,21 @@ function OneSignalInit(user: any): void {
 
     console.log('Results of setting external user id');
     console.log(results);
+    //alert(JSON.stringify(results))
     if (results.push && results.push.success) {
+      OneSignal.getDeviceState((response) => {
+        //alert("getDeviceState" + JSON.stringify(response))
+        let info = {
+          userid: response.userId,
+          token: response.pushToken,
+          cedula: cedula
+        }
+        temp = info
+        TokenOnesigna(info).then(salida => console.log(salida))
+      })
       console.log('Results of setting external user id push status:');
       console.log(results.push.success);
+      //alert(JSON.stringify(results.push))
     }
     if (results.email && results.email.success) {
       console.log('Results of setting external user id email status:');
@@ -66,7 +78,10 @@ function OneSignalInit(user: any): void {
       console.log(results.sms.success);
     }
   })
+  let temp;
 
+
+  //alert(JSON.stringify( OneSignal.getDeviceState))
 }
 
 setupIonicReact();
@@ -279,6 +294,7 @@ const App: React.FC = () => {
       console.log('Error al obtener la dirección IP');
     }
   };
+
   useEffect(() => {
     // StatusBar.setBackgroundColor({ color: '#0000' });
     // StatusBar.setStyle()
@@ -288,7 +304,6 @@ const App: React.FC = () => {
 
     let datos = userlog()
     console.log(datos)
-
     setStatusBarStyleLight()
     if (datos != null) {
       userdispach(setlogin({ estado: true }))
@@ -303,8 +318,13 @@ const App: React.FC = () => {
       })
       console.log(getPlatforms().length == 1, getPlatforms().some(e => e != "mobileweb"), getPlatforms())
       //OneSignalInit(datos)
-      if (getPlatforms().some(e => e == "android") && getPlatforms().length == 1) {
-        OneSignalInit(datos)
+      //  OneSignalInit(datos)
+      //  document.addEventListener("deviceready", OneSignalInit, false);
+      console.log(getPlatforms().some(e => e == "android"), getPlatforms())
+      if (getPlatforms().some(e => e == "android")) {
+        OneSignalInit(datos, datos.cedula)
+        //document.addEventListener("deviceready", OneSignalInit(datos, datos.cedula), false);
+
 
         //OneSignal.startInit('TU_APP_ID')
 

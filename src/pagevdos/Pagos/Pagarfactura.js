@@ -41,10 +41,10 @@ export default function CargarComprobante() {
     };
 
     let formapago = {
-        "pichincha": "CALL BANCO PICHINCHA EMP",
-        "pacifico": "CALL BANCO PACIFICO EMP",
-        "guayaquil": "CALL BANCO GUAYAQUIL EMP",
-        "produbanco": "CALL PRODUBANCO"
+        "pichincha": "APP BANCO PICHINCHA EMP",
+        "pacifico": "APP BANCO PACIFICO EMP",
+        "guayaquil": "APP BANCO GUAYAQUIL EMP",
+        "produbanco": "APP PRODUBANCO"
     }
     let idcuneta = {
         "pichincha": "Q9pdBBVzt6yqd8KE",

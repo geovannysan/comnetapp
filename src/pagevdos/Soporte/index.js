@@ -59,6 +59,7 @@ export default function SoporteView() {
 
             Get_onu_signal(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput => {
                 if (ouput.status) {
+                    console.log("sign",ouput)
                     Gt_onu_status(infouser.servicios[0].idperfil).then(ouputv => {
                         if (ouputv.status) {
                             console.log({
@@ -123,11 +124,12 @@ export default function SoporteView() {
         let infouser = obtenervaariables(users.servicios[0].smartolt)
         console.log(infouser)
         //if (infouser.servicios[0].smartolt == "" ){ return}
+   
         dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
-
+        //Router
         Equipos(users.servicios[0].nodo).then(ou => {
             // dismiss()
-            console.log(ou)
+            console.log("Router",ou)
             if (ou.estado == "exito") {
                 if (ou.routers.length > 0) {
                     console.log(ou)
@@ -142,8 +144,9 @@ export default function SoporteView() {
                         //dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
                         return
                     }
+                    //Detalle de la olt 
                     DetalleOlt(users.servicios[0].id).then(ouput => {
-                        console.log(ouput)
+                        console.log("Detalle de la olt" + users.servicios[0].id,ouput)
                       //  console.log(users.servicios[0].id, ouput)
                         if (ouput.status) {
                             dispat(setModal({ nombre: "Alerta", payloa: "Comprobando puertos olt" }))
@@ -156,20 +159,23 @@ export default function SoporteView() {
                                 return
                             }
                             console.log(ouput.onu_details.administrative_status)
+                            //Detalle de oltport
                             Detalleoltport(infouser.olt_id).then(ou => {
                                 let board = ouput.onu_details["board"]
                                 let poart = ouput.onu_details["port"]
-                                console.log(ouput.onu_details, ou)
+                                console.log("Detalle de oltport"+infouser.olt_id, ou)
                                 let oltstatus = ou.response.find((e) => e.board == board && e.pon_port == poart)
                                 console.log("Detalleoltport->", oltstatus)
                                 if (!oltstatus.operational_status.includes("Up")) {
+                                    //Mensaje Daño Masivo
                                     dispat(setSoport({ soporte: true }))
                                 }
                                 else {
                                     console.log("Gt_onu_status")
                                     dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado onu" }))
-                                    Gt_onu_status(users.servicios[0].id).then(ouputv => {
-                                        console.log("Gt_onu_status->" + JSON.stringify(ouputv))
+                                    //onu status
+                                    Gt_onu_status(infouser.onu_external_id).then(ouputv => {
+                                        console.log("Gt_onu_status->" + infouser.onu_external_id, JSON.stringify(ouputv))
                                         if (ouputv.status) {
                                             if (ouputv.onu_status == "Los") {
                                                 let info = {
@@ -233,10 +239,12 @@ export default function SoporteView() {
                                                     spinner: "bubbles",
                                                     duration: 3500
                                                 })*/
-                                                Get_onu_signal(users.servicios[0].id).then(ouput => {
+                                              let inf=  infouser.onu_external_id
+                                              //onu signal 
+                                                Get_onu_signal(inf).then(ouput => {
                                                     if (ouput.status) {
                                                         //dismiss()
-                                                        console.log(ouput)
+                                                        console.log("onu signal " + infouser.onu_external_id,ouput)
                                                         dispat(setSeñal({
                                                             onu_signal_value: ouput.onu_signal_value,
                                                             onu_status: ouputv.onu_status,
@@ -258,7 +266,7 @@ export default function SoporteView() {
                                                         //agregar mensaje
                                                         /** tickte de revision *
                                                     }*/
-                                                        if (se > 29) {
+                                                        if (se > 27) {
                                                             //agregar mensaje
                                                             /**visita tecnica */
                                                             console.log("entro")
