@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'www.speed.com.ec',
+  appId: 'www.speedv1.com.ec',
   appName: 'speed',
   webDir: 'build',
   bundledWebRuntime: false,
