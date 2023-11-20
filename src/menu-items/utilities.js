@@ -29,13 +29,13 @@ const utilities = {
     title: 'Utilities',
     type: 'group',
     children: [
-        {
+      /*  {
             id: 'Reportes',
             title: 'Reportes',
             type: 'item',
             url: '/reporte',
             icon: icons.FundViewOutlined
-        },
+        },*/
         {
             id: 'Solicitudes',
             title: 'Solicitudes',

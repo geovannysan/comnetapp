@@ -42,12 +42,32 @@ export default function SolicitudView() {
         history("/detalle/" + e.Id)
     };
 
+    function validarFormatoFechaHora(cadena) {
+        // Expresión regular para el formato ISO 8601
+        const formatoISO8601 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
-
+        // Verifica si la cadena coincide con el formato ISO 8601
+        return formatoISO8601.test(cadena);
+    }
     useEffect(() => {
         listarSolicitud(2).then(sali => {
-            console.log(sali)
-            setDatos(sali.data)
+           
+          let newdatos=  sali.data.map(e=>{
+               // console.log(e.Prioridad)
+                let pr = validarFormatoFechaHora(e.Prioridad) ? e.Prioridad :JSON.parse(e.Prioridad)
+                let date = !validarFormatoFechaHora(e.Prioridad) ?{
+                    cierre:pr.fin,
+                    inicio: pr.inicio,
+                    cantiadad:pr.monto
+                }:{...e}
+                return{
+                    ...e,
+                    ...date,
+                    Prioridad:pr
+                }
+            })
+            console.log(newdatos)
+            setDatos(newdatos)
             setSpinerdos("")
             setSpiner("d-none")
             setTimeout(function () {
@@ -136,7 +156,9 @@ export default function SolicitudView() {
     const showDatos = () => {
         try {
             return datos.map((item, index) => {
-                // console.log(item)
+                
+                let anticipo = item.cantiadad == null ? item.Prioridad.monto : item.cantiadad 
+                
                 return (
                     <tr key={index}>
 
@@ -146,8 +168,8 @@ export default function SolicitudView() {
                             {item.asunto}</td>
                         <td className=" font-weight-bold" style={{
                             whiteSpace: "initial"
-                        }}>{item.Tipo == "Trabajos" ? item.Tipo + "\n Tecnico Responsable:" + item.Nombre + "\n Hora inicio:" + moment(item.cantiadad).format('YYYY/MM/DD h:mm a') + "\n Hora de cirre: " + moment(item.Prioridad).format('YYYY/MM/DD h:mm a') : ""}
-                            {item.Tipo == "Anticipo" ? item.Tipo + "\nSolicitante:" + item.Nombre + "\n Valor solicitado:" + item.cantiadad : ""}
+                        }}>{item.Tipo == "Trabajos" ? item.Tipo + "\n Tecnico Responsable:" + item.Nombre + "\n Hora inicio:" + moment(item.inicio).format('YYYY/MM/DD h:mm a') + "\n Hora de cirre: " + moment(item.cierre).format('YYYY/MM/DD h:mm a')   : ""}
+                            {item.Tipo == "Anticipo" ? item.Tipo + "\nSolicitante:" + item.Nombre + "\n Valor solicitado:" + anticipo : ""}
                             {item.Tipo == "Permiso" ? item.Tipo + "\nSolicitante:" + item.Nombre + "\n Días" + item.cantiadad + "\n Fecha solicitada:" + moment(item.Prioridad).format('YYYY/MM/DD h:mm a') : ""}
                         </td>
                         <td className="text-xs font-weight-bold">{item.cedula}</td>
@@ -177,7 +199,7 @@ export default function SolicitudView() {
 
 
                     </tr>
-                )
+                )                   
             });
         } catch (error) { }
     }
