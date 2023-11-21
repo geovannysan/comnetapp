@@ -122,7 +122,7 @@ export default function SolicitudView() {
                                 [10, 20, 30, 50, "All"],
                             ],
 
-                            order: [[1, 'desc']],
+                            order: [[5, 'desc']],
 
                         });
                     })

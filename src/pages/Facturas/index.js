@@ -34,7 +34,7 @@ const FacturasView = () => {
                 "estado": "0",
                 "idfactura": ""
             })
-            console.log(datos)
+            console.log(fact)
             let facturas = []
             let facturaser = []
             fact.data.map(async (e) => {
