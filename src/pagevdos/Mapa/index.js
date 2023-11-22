@@ -3,7 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { IonButton, IonButtons, IonFab, IonFabButton, IonIcon, IonItem, IonLabel, IonList, IonPage, IonPopover, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
-import {  chevronBack, ellipsisVerticalCircle } from 'ionicons/icons';
+import { chevronBack, ellipsisVerticalCircle } from 'ionicons/icons';
 
 import './index.css'
 import mapaicon from "../../imagen/PUNTO DE PAGO_Mesa de trabajo 1.png"
@@ -20,7 +20,7 @@ function LocationMarker() {
     const [position, setPosition] = useState(null)
     const customIcon = new L.Icon({
         iconUrl: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9c64cfe3-bb3b-4ae8-b5a6-d2f39d21ff87/d3jme6i-8c702ad4-4b7a-4763-9901-99f8b4f038b0.png/v1/fill/w_600,h_400/fondo_transparente_png_by_imsnowbieber_d3jme6i-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDAwIiwicGF0aCI6IlwvZlwvOWM2NGNmZTMtYmIzYi00YWU4LWI1YTYtZDJmMzlkMjFmZjg3XC9kM2ptZTZpLThjNzAyYWQ0LTRiN2EtNDc2My05OTAxLTk5ZjhiNGYwMzhiMC5wbmciLCJ3aWR0aCI6Ijw9NjAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.Ymv-MHRcmXXpzmL3f0xZ0mCcyU85lCLnk0jbOnCO8Zg',
-       iconSize: [32, 32], // Tamaño del ícono
+        iconSize: [32, 32], // Tamaño del ícono
         iconAnchor: [16, 32], // Punto de anclaje del ícono
         popupAnchor: [0, -32], // Punto de anclaje del popup
     });
@@ -61,7 +61,7 @@ function LocationMarkers({ position }) {
         <Marker position={currentPosition} icon={customIcon}>
             <Popup>
                 tienda
-                
+
             </Popup>
         </Marker>
     );
@@ -85,8 +85,8 @@ export function MapsVies() {
             info: 'Tenda tres nuevos datos',
         },
         {
-            position: [-2.135, -79.938],
-            info: 'Tienda nueva datos datos',
+            position: [-2.0798475, -80.0007646],
+            info: 'Tienda Amarillas',
         },
         // Agrega más objetos de marcadores aquí
     ];
@@ -108,15 +108,15 @@ export function MapsVies() {
             [...e]);
         setShowPopover({ showPopover: false, event: undefined });
     }
-  function  regregsar(){
-      setShowPopover({ showPopover: false, event: undefined });
-      history.goBack()
+    function regregsar() {
+        setShowPopover({ showPopover: false, event: undefined });
+        history.goBack()
     }
     useEffect(() => {
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                   // const { latitude, longitude } = position.coords;
+                    // const { latitude, longitude } = position.coords;
                     console.log(position)
                     setUserLocation([-2.129304, -79.936441,]);
                 },
@@ -144,8 +144,8 @@ export function MapsVies() {
             <IonToolbar className='bg-blue-gradient'>
                 <IonButtons slot='start'>
                     <IonButton onClick={() => history.goBack()}>
-                    <IonIcon icon={chevronBack} />
-                    </IonButton> 
+                        <IonIcon icon={chevronBack} />
+                    </IonButton>
                 </IonButtons>
             </IonToolbar>
             <MapContainer center={posicion} zoom={zomm} style={{ height: '100%', width: '100%' }}>
@@ -154,21 +154,24 @@ export function MapsVies() {
                 />
                 {markers.map((marker, index) => (
                     <Marker key={index} position={marker.position} icon={customIcon}>
-                        <Popup>{marker.info}
-                        
-                            <IonButton onClick={() => openGoogleMapsNavigation(marker.position)} >ok</IonButton>
+                        <Popup className="d-flex justify-content-center">
+                            <div className="d-flex flex-column justify-content-center">
+                                <p>{marker.info}</p>
+                                <IonButton onClick={() => openGoogleMapsNavigation(marker.position)} >ok</IonButton>
+
+                            </div>
                         </Popup>
                     </Marker>
                 ))}
 
-                
-                <LocationMarker/>
-                
-               {locate.length>0? <LocationMarkers
+
+                <LocationMarker />
+
+                {locate.length > 0 ? <LocationMarkers
                     position={locate}
-                />:""}
-           
-          
+                /> : ""}
+
+
                 <IonFab vertical="top" horizontal="end" slot="fixed">
                     <IonFabButton onClick={openPopover}>
                         <ion-icon icon={ellipsisVerticalCircle}></ion-icon>

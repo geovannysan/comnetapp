@@ -101,7 +101,7 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2">
                                 <div className="container p-1">
-                                    <a href="/home"><img src="img/botones-home/terminos-y-condiciones-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="https://speed.com.ec/" target="_blank"><img src="img/botones-home/terminos-y-condiciones-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2">

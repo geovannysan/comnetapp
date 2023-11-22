@@ -109,3 +109,12 @@ export const Get_speed_profiles = async ()=>{
         return error
     }
 }
+
+export const Soportespeed = async(parms)=>{
+    try {
+        let { data } = await Axiosroot.post("MovilApi/Soporte",parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}

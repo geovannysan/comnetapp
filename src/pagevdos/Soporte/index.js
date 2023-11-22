@@ -1,7 +1,7 @@
 import React from "react"
 import { useEffect, useState } from "react"
 import { obtenervaariables } from "../../pages/Home/parsesmart"
-import { DetalleOlt, Detalleoltport, Get_onu_signal, Gt_onu_status } from "../../utils/Querystados"
+import { DetalleOlt, Detalleoltport, Get_onu_signal, Gt_onu_status, Soportespeed } from "../../utils/Querystados"
 import { useDispatch, useSelector } from "react-redux"
 import { Equipos, ListarTicket, Newtickte } from "../../utils/Queryuser"
 import * as moment from "moment"
@@ -59,7 +59,7 @@ export default function SoporteView() {
 
             Get_onu_signal(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput => {
                 if (ouput.status) {
-                    console.log("sign",ouput)
+                    console.log("sign", ouput)
                     Gt_onu_status(infouser.servicios[0].idperfil).then(ouputv => {
                         if (ouputv.status) {
                             console.log({
@@ -100,7 +100,7 @@ export default function SoporteView() {
             console.log(response)
             if (response.estado == "exito") {
                 console.log(response)
-                let soport = response.data.tickets.filter(e => e.estado == "abierto")
+                let soport = response.data.tickets.filter(e => e.estado == "abierto").length
                 console.log(response)
                 //return
                 Soporte(soport)
@@ -124,277 +124,210 @@ export default function SoporteView() {
         let infouser = obtenervaariables(users.servicios[0].smartolt)
         console.log(infouser)
         //if (infouser.servicios[0].smartolt == "" ){ return}
-   
+
         dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
         //Router
-        Equipos(users.servicios[0].nodo).then(ou => {
-            // dismiss()
-            console.log("Router",ou)
-            if (ou.estado == "exito") {
-                if (ou.routers.length > 0) {
-                    console.log(ou)
-                    console.log(ou.routers[0].estado)
-                    console.log(infouser)
-                    if (ou.routers[0].estado != "CONECTADO") {
-                        dispat(setSoport({ soporte: true }))
-                        //agregar mensaje
-                        /*
-                        Daño masivo
-                        */
-                        //dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
-                        return
-                    }
-                    //Detalle de la olt 
-                    DetalleOlt(users.servicios[0].id).then(ouput => {
-                        console.log("Detalle de la olt" + users.servicios[0].id,ouput)
-                      //  console.log(users.servicios[0].id, ouput)
-                        if (ouput.status) {
-                            dispat(setModal({ nombre: "Alerta", payloa: "Comprobando puertos olt" }))
-                            if (ouput.onu_details.administrative_status != "Enabled") {
-                                dispat(setSoport({ soporte: true }))
-                                /*
-                                //agregar mensaje
-                                */
-                                dispat(setModal({ nombre: "", payloa: "" }))
-                                return
-                            }
-                            console.log(ouput.onu_details.administrative_status)
-                            //Detalle de oltport
-                            Detalleoltport(infouser.olt_id).then(ou => {
-                                let board = ouput.onu_details["board"]
-                                let poart = ouput.onu_details["port"]
-                                console.log("Detalle de oltport"+infouser.olt_id, ou)
-                                let oltstatus = ou.response.find((e) => e.board == board && e.pon_port == poart)
-                                console.log("Detalleoltport->", oltstatus)
-                                if (!oltstatus.operational_status.includes("Up")) {
-                                    //Mensaje Daño Masivo
-                                    dispat(setSoport({ soporte: true }))
-                                }
-                                else {
-                                    console.log("Gt_onu_status")
-                                    dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado onu" }))
-                                    //onu status
-                                    Gt_onu_status(infouser.onu_external_id).then(ouputv => {
-                                        console.log("Gt_onu_status->" + infouser.onu_external_id, JSON.stringify(ouputv))
-                                        if (ouputv.status) {
-                                            if (ouputv.onu_status == "Los") {
-                                                let info = {
-                                                    "idcliente": users.id,
-                                                    "asunto": "Visita tecnica de señal",
-                                                    "solicitante": users.nombre,
-                                                    "fechavisita": moment().format('YYYY-MM-D'),
-                                                    "turno": "MAÑANA",
-                                                    "agendado": "PAGINA WEB",
-                                                    "contenido": "Hola,<br> Necesito ayuda para mi conexión de internet  onu status " + ouputv.onu_status + "."
-                                                }
-                                                if (so == 0) {
-                                                    dispat(setModal({ nombre: "Alerta", payloa: "Creando ticket de soporte" }))
-                                                    Newtickte(info).then(oput => {
-                                                        // dismiss()
-                                                        dispat(setSoport({ soporte: true }))
-                                                        console.log(oput)
-                                                    }).catch(err => {
-                                                        console.log(err)
-                                                    })
-                                                    dispat(setSoport({ soporte: true }))
-                                                    return
-                                                }
-
-                                                present({
-                                                    message: "Ya tines un Ticket de soporte pendiente",
-                                                    duration: 4500,
-                                                    position: "bottom"
-                                                });
-
-                                                setTimeout(function () {
-                                                    dispat(setModal({ nombre: "", payloa: "" }))
-                                                }, 1000)
-                                                return
-                                            }
-                                            if (ouputv.onu_status == "Power fail") {
-                                                dispat(setSoport({ soporte: true }))
-                                                //agregar mensaje
-                                                /* present({
-                                                     message: 'crear gif intructivo. seria un modal con el gif',
-                                                     cssClass: 'custom-loading',
-                                                     duration: 4500,
-                                                     buttons: [
-                                                         {
-                                                             text: "cerrar",
-                                                             role: "cancel",
- 
-                                                         }
-                                                     ]
-                                                 })*/
-                                                /* Revisar conexio gif intructivo */
-                                                return
-                                            }
-                                            if (ouputv.onu_status == "Online") {
-                                                //agregar mensaje
-                                                dispat(setSoport({ soporte: true }))
-                                                //dismiss()
-                                                /*presentlo({
-                                                    message: 'Comprobando estado de la señal',
-                                                    cssClass: 'custom-loading',
-                                                    spinner: "bubbles",
-                                                    duration: 3500
-                                                })*/
-                                              let inf=  infouser.onu_external_id
-                                              //onu signal 
-                                                Get_onu_signal(inf).then(ouput => {
-                                                    if (ouput.status) {
-                                                        //dismiss()
-                                                        console.log("onu signal " + infouser.onu_external_id,ouput)
-                                                        dispat(setSeñal({
-                                                            onu_signal_value: ouput.onu_signal_value,
-                                                            onu_status: ouputv.onu_status,
-                                                            onu_signal: ouput.onu_signal
-                                                        }))
-                                                        let se = ouput.onu_signal_1490.replace("-", "").replace("dBm", "")
-                                                        console.log(se)
-                                                        dispat(setSoport({ soporte: true }))
-                                                        /*if (se < 29) {
-                                                            //agregar mensaje
-                                                            /** mostrar servicio ok */
-                                                        /*present({
-                                                            message: 'Buena señal',
-                                                            cssClass: 'custom-loading',
-                                                            duration: 4500,
-                                                        })*
-                                                    }
-                                                    if (se > 26.50 && se < 29) {
-                                                        //agregar mensaje
-                                                        /** tickte de revision *
-                                                    }*/
-                                                        if (se > 27) {
-                                                            //agregar mensaje
-                                                            /**visita tecnica */
-                                                            console.log("entro")
-                                                            let info = {
-                                                                "idcliente": users.id,
-                                                                "asunto": "Revision de señal",
-                                                                "solicitante": users.nombre,
-                                                                "fechavisita": moment().format('YYYY-MM-D'),
-                                                                "turno": "MAÑANA",
-                                                                "agendado": "PAGINA WEB",
-                                                                "contenido": "Hola,<br> Necesito ayuda para mi conexión de internet " + ouput.onu_signal_1490 + "."
-                                                            }
-                                                            if (so == 0) {
-
-                                                                dispat(setModal({ nombre: "Alerta", payloa: "Creando ticket de soporte" }))
-                                                                //agregar mensaje
-                                                                /*  present({
-                                                                      message: 'Creando ticket de soporte',
-                                                                      cssClass: 'custom-loading',
-                                                                      duration: 4500,
-                                                                  })*/
-
-                                                                Newtickte(info).then(oput => {
-                                                                    // dismiss()
-                                                                    if (ouput.estado = "exito") {
-                                                                        dispat(setModal({ nombre: "", payloa: "" }))
-                                                                        present({
-                                                                            message: 'Se a creando un ticket de soporte',
-                                                                            duration: 5000,
-                                                                        })
-                                                                    }
-                                                                    console.log(oput)
-
-                                                                }).catch(err => {
-                                                                    present({
-                                                                        message: 'No se creo el ticket de usuario',
-                                                                        duration: 5000,
-                                                                    })
-                                                                    console.log(err)
-                                                                })
-
-                                                                return
-                                                            } else {
-                                                                present({
-                                                                    message: "Ya tines Ticket pendiente",
-                                                                    duration: 2500,
-                                                                    position: "bottom"
-                                                                });
-                                                                /*present({
-                                                                    message: 'Tienes un ticke abierto ',
-                                                                    cssClass: 'custom-loading',
-                                                                    duration: 4500,
-                                                                })*/
-                                                            }
-                                                        } else {
-                                                            present({
-                                                                message: 'El servicio no cuenta con problemas ',
-                                                                duration: 5000,
-                                                            })
-                                                        }
-                                                    } else {
-                                                        //agregar mensaje no hubo problemasa 
-
-                                                        dispat(setSoport({ soporte: true }))
-                                                        /*present({
-                                                             message: 'Hubo un error intente mas tarde',
-                                                             cssClass: 'custom-loading',
-                                                             duration: 4500,
-                                                             buttons: [
-                                                                 {
-                                                                     text: "cerrar",
-                                                                     role: "cancel",
- 
-                                                                 }
-                                                             ]
-                                                         })*/
-                                                    }
-                                                })
-                                                return
-                                            }
-
-                                        } else {
-                                            console.log("mmmm")
-                                            dispat(setSoport({ soporte: true }))
-                                            //agregar mensaje
-                                        }
-                                    }).catch(err => {
-                                        console.log(err)
-                                        dispat(setModal({ nombre: "", payloa: "" }))
-                                    })
-                                    dispat(setModal({ nombre: "", payloa: "" }))
-
-
-                                }
-
-                            }).catch(err => {
-                                dispat(setModal({ nombre: "", payloa: "" }))
-                                console.log(err)
-                            })
-                        }
-                    })
-                    /* OLTcardDETA(infouser.olt_id).then(oltouput => {
-                         console.log(oltouput)
-                     }).catch(err => {
-                         console.log(err)
-                     })*/
-                } else {
-                    dispat(setSoport({ soporte: true }))
-                    //agregar mensaje
+        let datos_soporte = {
+            "onu_external_id": infouser.onu_external_id,
+            "ideservicio": infouser.onu_external_id,
+            "olt_id": infouser.olt_id,
+            "nodo": users.servicios[0].nodo
+        }
+        console.log(datos_soporte)
+        let tick = userlog()
+        Soportespeed(datos_soporte).then(ouput => {
+            console.log(ouput)
+            let routes = ouput.routers
+            let onudetalle = ouput.onudetail
+            let oltport = ouput.oltport
+            let status = ouput.status
+            let signal = ouput.signal
+            if (routes.routers[0].estado != "CONECTADO") {
+                //agregar mensaje
+                /*
+                Daño masivo
+                */
+                //dispat(setModal({ nombre: "Alerta", payloa: "Comprobando estado de equipo" }))
+                dispat(setSoport({ soporte: true }))
+                return
+            }
+            if (onudetalle.onu_details.administrative_status != "Enabled") {
+                dispat(setSoport({ soporte: true }))
+                /*
+                //agregar mensaje
+                */
+                dispat(setModal({ nombre: "", payloa: "" }))
+                return
+            }
+            if (!oltport.operational_status.includes("Up")) {
+                //Mensaje Daño Masivo
+                dispat(setSoport({ soporte: true }))
+            }
+            if (status.onu_status == "Los") {
+                let info = {
+                    "idcliente": users.id,
+                    "asunto": "Visita tecnica de señal",
+                    "solicitante": users.nombre,
+                    "fechavisita": moment().format('YYYY-MM-D'),
+                    "turno": "MAÑANA",
+                    "agendado": "PAGINA WEB",
+                    "contenido": "Hola,<br> Necesito ayuda para mi conexión de internet  onu status " + status.onu_status + "."
                 }
 
+
+                dispat(setModal({ nombre: "Alerta", payloa: "Creando ticket de soporte" }))
+                ListarTicket(tick.id).then(response => {
+                    if (response.estado == "exito") {
+                        let soport = response.data.tickets.filter(e => e.estado == "abierto")
+                        //console.log(response.data)
+                        // return
+                        if (soport.length > 0) {
+                            Newtickte(info).then(oput => {
+                                // dismiss()
+                                dispat(setSoport({ soporte: true }))
+                                console.log(oput)
+                            }).catch(err => {
+                                console.log(err)
+                            })
+                            dispat(setSoport({ soporte: true }))
+                        }
+                        present({
+                            message: "Ya tines un Ticket de soporte pendiente",
+                            duration: 4500,
+                            position: "bottom"
+                        });
+
+                        setTimeout(function () {
+                            dispat(setModal({ nombre: "", payloa: "" }))
+                        }, 1000)
+                    }
+                    // return
+                })
+
+                return
             }
-            else {
+            if (status.onu_status == "Power fail") {
                 dispat(setSoport({ soporte: true }))
                 //agregar mensaje
-                /*  dismiss()
-                  presentlo({
-                      message: ou.mensaje,
-                      cssClass: 'custom-loading',
-                      spinner: "bubbles",
-                      duration: 4500,
-                  })*/
+                /* present({
+                     message: 'crear gif intructivo. seria un modal con el gif',
+                     cssClass: 'custom-loading',
+                     duration: 4500,
+                     buttons: [
+                         {
+                             text: "cerrar",
+                             role: "cancel",
+ 
+                         }
+                     ]
+                 })*/
+                /* Revisar conexio gif intructivo */
+                return
             }
-        }).catch(err => {
-            dispat(setModal({ nombre: "", payloa: "" }))
-            dispat(setSoport({ soporte: true }))
-            console.log(err)
+            if (status.onu_status == "Online") {
+                //agregar mensaje
+                dispat(setSoport({ soporte: true }))
+                //dismiss()
+                /*presentlo({
+                    message: 'Comprobando estado de la señal',
+                    cssClass: 'custom-loading',
+                    spinner: "bubbles",
+                    duration: 3500
+                })*/
+                let inf = infouser.onu_external_id
+                //onu signal 
+                dispat(setSeñal({
+                    onu_signal_value: signal.onu_signal_value,
+                    onu_status: signal.onu_status,
+                    onu_signal: signal.onu_signal
+                }))
+                let se = signal.onu_signal_1490.replace("-", "").replace("dBm", "")
+                console.log(se)
+                dispat(setSoport({ soporte: true }))
+                if (se > 27) {
+                    //agregar mensaje
+                    /**visita tecnica */
+                    console.log("entro")
+                    let info = {
+                        "idcliente": users.id,
+                        "asunto": "Revision de señal",
+                        "solicitante": users.nombre,
+                        "fechavisita": moment().format('YYYY-MM-D'),
+                        "turno": "MAÑANA",
+                        "agendado": "PAGINA WEB",
+                        "contenido": "Hola,<br> Necesito ayuda para mi conexión de internet " + signal.onu_signal_1490 + "."
+                    }
+                    if (so == 0) {
+
+                        dispat(setModal({ nombre: "Alerta", payloa: "Creando ticket de soporte" }))
+                        //agregar mensaje
+                        /*  present({
+                              message: 'Creando ticket de soporte',
+                              cssClass: 'custom-loading',
+                              duration: 4500,
+                          })*/
+                        let tick = userlog()
+                        ListarTicket(tick.id).then(response => {
+                            if (response.estado == "exito") {
+                                let soport = response.data.tickets.filter(e => e.estado == "abierto")
+                                //console.log(response.data)
+                                // return
+                                if (soport.length > 0) {
+
+                                    Newtickte(info).then(oput => {
+                                        // dismiss()
+                                        if (ouput.estado = "exito") {
+                                            dispat(setModal({ nombre: "", payloa: "" }))
+                                            present({
+                                                message: 'Se a creando un ticket de soporte',
+                                                duration: 5000,
+                                            })
+                                        }
+                                        console.log(oput)
+
+                                    }).catch(err => {
+                                        present({
+                                            message: 'No se creo el ticket de usuario',
+                                            duration: 5000,
+                                        })
+                                        console.log(err)
+                                    })
+                                }
+                                dispat(setModal({ nombre: "", payloa: "" }))
+                            }
+                            // return
+                        })
+                    } else {
+                        present({
+                            message: "Ya tines Ticket pendiente",
+                            duration: 2500,
+                            position: "bottom"
+                        });
+                        /*present({
+                            message: 'Tienes un ticke abierto ',
+                            cssClass: 'custom-loading',
+                            duration: 4500,
+                        })*/
+                    }
+                } else {
+                    dispat(setModal({ nombre: "", payloa: "" }))
+                    dispat(setSoport({ soporte: true }))
+                    present({
+                        message: 'El servicio no cuenta con problemas ',
+                        duration: 5000,
+                    })
+                }
+
+                return
+            }
+
+
+
+
+        }).catch(error => {
+            console.log(error)
         })
+        
     }
 
     return (
