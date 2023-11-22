@@ -3,8 +3,13 @@ import { ListarFacturas } from "util/Querireport"
 //import moment from "moment/moment";
 import { Tabs } from 'antd';
 import MainCard from "components/MainCard";
+import { setFacturas } from "store/reducers/menu";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
 
 const FacturasView = () => {
+    let usedispatch = useDispatch()
+    let history = useNavigate()
     const items = [
         {
             key: '1',
@@ -24,6 +29,14 @@ const FacturasView = () => {
     ];
     const [factura, setFactura] = useState([])
     const [facturaerr, setFacturaerr] = useState([])
+    const fechaReferencia = new Date();
+
+    // Obtener el primer día del mes
+    const primerDiaDelMes = new Date(fechaReferencia.getFullYear(), fechaReferencia.getMonth(), 1);
+
+    // Obtener el último día del mes
+    const ultimoDiaDelMes = new Date(fechaReferencia.getFullYear(), fechaReferencia.getMonth() + 1, 0);
+
     async function getFactura() {
         try {
             let datos = await ListarFacturas({
@@ -37,7 +50,12 @@ const FacturasView = () => {
             console.log(fact)
             let facturas = []
             let facturaser = []
-            fact.data.map(async (e) => {
+            fact.data.filter((elemento) => {
+                const fechaElemento = new Date(elemento.fecha); // Asegúrate de ajustar la propiedad 'fecha' según la estructura real de tu objeto
+
+                // Comprobar si la fecha está dentro del rango del mes actual
+                return fechaElemento >= primerDiaDelMes && fechaElemento <= ultimoDiaDelMes;
+            }).map(async (e) => {
                 let fact = JSON.parse(e.mensajes)
                 if (fact.persona != undefined) {
 
@@ -46,7 +64,12 @@ const FacturasView = () => {
                     facturaser.push({ ...e, mensajes: fact, cliente: fact.cliente["cedula"] })
                 }
             })
-            datos.data.map(async (e) => {
+            datos.data.filter((elemento) => {
+                const fechaElemento = new Date(elemento.fecha); // Asegúrate de ajustar la propiedad 'fecha' según la estructura real de tu objeto
+
+                // Comprobar si la fecha está dentro del rango del mes actual
+                return fechaElemento >= primerDiaDelMes && fechaElemento <= ultimoDiaDelMes;
+            }).map(async (e) => {
                 let datos = JSON.parse(e.mensajes)
                 if (datos.persona != undefined) {
 
@@ -55,7 +78,7 @@ const FacturasView = () => {
                     facturas.push({ ...e, mensajes: datos, cliente: datos.cliente["cedula"] })
                 }
             })
-          //  const factur = await Promise.all(facturaPromesas);
+            //  const factur = await Promise.all(facturaPromesas);
             /*datos.data.map(e => {
                 let informa = JSON.parse(e.mensajes)
                 e.mensajes = JSON.parse(e.mensajes)
@@ -75,7 +98,7 @@ const FacturasView = () => {
                         "pageLength": 10,
                         "bDestroy": true,
                         "sSearch": false,
-                        paging:true,
+                        paging: true,
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando page _PAGE_ de _PAGES_",
                             "sSearch": "",
@@ -200,10 +223,12 @@ const FacturasView = () => {
             return error
         }
     }
-
+    function abrirfactura(e) {
+        usedispatch(setFacturas({ factura: { ...e } }))
+        history("/Facturaid")
+    }
     useEffect(() => {
         getFactura()
-
     }, [])
     const thead = () => {
         return (
@@ -227,7 +252,7 @@ const FacturasView = () => {
         )
 
     }
-    
+
     const showDatos = () => {
         try {
 
@@ -250,10 +275,10 @@ const FacturasView = () => {
                             {item.numfactura}
                         </td>
                         <td className=" font-weight-bold">
-                            { item.cliente}
+                            {item.cliente}
                         </td>
                         <td className="text-xs font-weight-bold">
-                            {item.estado == "0" ? "No Emitido" : (parseFloat(item.subtotal_12).toFixed(2) != parseFloat(item.mensajes.subtotal_12).toFixed(2))?"importe": "Emitido"}</td>
+                            {item.estado == "0" ? "No Emitido" : (parseFloat(item.subtotal_12).toFixed(2) != parseFloat(item.mensajes.subtotal_12).toFixed(2)) ? "importe" : "Emitido"}</td>
                         <td className="text-xs font-weight-bold">
                             {item.admin.username}
                         </td>
@@ -263,11 +288,11 @@ const FacturasView = () => {
                             {parseFloat(item.subtotal_12).toFixed(2)}
                         </td>
                         <td className="text-xs font-weight-bold">
-                            {parseFloat( item.total).toFixed(2)}
+                            {parseFloat(item.total).toFixed(2)}
                         </td>
-                  
+
                         <td className=" font-weight-bold">
-                            <button className="btn btn-success" onClick={()=>console.log("nuevos datos")}  >ver</button>
+                            <button className="btn btn-success" onClick={() => abrirfactura({ ...item.mensajes, idfactura: item.idfactura })}  >ver</button>
                         </td>
                         {/* <td className="text-xs font-weight-bold"  ><code style={{ maxWidth:"400px"}}> <pre>{JSON.stringify(js).replace(/,/g, ",\n")}</pre>
                         </code> </td>
@@ -347,7 +372,7 @@ const FacturasView = () => {
                         </td>
 
                         <td className=" font-weight-bold">
-                            <button className="btn btn-success" onClick={() => console.log("nuevos datos")}  >ver</button>
+                            <button className="btn btn-success" onClick={() => abrirfactura(item.mensajes)}  >ver</button>
                         </td>
                         {/* <td className="text-xs font-weight-bold"  ><code style={{ maxWidth:"400px"}}> <pre>{JSON.stringify(js).replace(/,/g, ",\n")}</pre>
                         </code> </td>
@@ -355,7 +380,7 @@ const FacturasView = () => {
                 )
             });
         } catch (error) { }
-     
+
     }
     return (
         <div>
@@ -376,9 +401,9 @@ const FacturasView = () => {
                     ]}
                     onChange={onChange}
                 />
-                
+
                 <div className="tab-content" id="pills-tabContent">
-                    <div className={!(tab==1)?"d-none":"tab-pane fade show active"} id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div className={!(tab == 1) ? "d-none" : "tab-pane fade show active"} id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                         <table id={"doc"} className="table table-striped "
                             style={{
                                 width: "100%",
@@ -402,8 +427,8 @@ const FacturasView = () => {
                             </tbody>
                         </table>
                     </div>
-               </div>
-                
+                </div>
+
             </MainCard>
         </div>)
 }

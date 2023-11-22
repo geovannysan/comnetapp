@@ -108,7 +108,7 @@ export default function DetallesView() {
                         <Grid className="mx-auto ">
                             <Title>Tipo de solicitud: {solicitud.Tipo}  </Title>
                             {solicitud.Tipo == "Anticipo"?   <table className="table table-bordered border-3">
-                                <thead className="bg-dark" >
+                                <thead className="" >
                                     <tr className=" bg-secondary-sm ">
                                         <td colspan="4" className=" bg-secondary-sm ">
                                           
@@ -123,7 +123,7 @@ export default function DetallesView() {
                                     </tr>
                                 </thead>
                               
-                                <thead className="bg-dark" >
+                                <thead className="" >
                                     <tr className=" bg-secondary-sm ">
                                         <td colspan="2" className=" bg-secondary-sm ">Nombre:</td>
                                         <td colspan="2" className=" bg-secondary-sm ">Cédula </td>
@@ -242,7 +242,7 @@ export default function DetallesView() {
                                 </thead>
                             </table>:""}
                             {solicitud.Tipo == "Permiso" ? <table className="table table-bordered border-3">
-                                <thead className="bg-dark" >
+                                <thead className="" >
                                     <tr className=" bg-secondary-sm ">
                                         <td colspan="4" className=" bg-secondary-sm ">
 
@@ -257,7 +257,7 @@ export default function DetallesView() {
                                     </tr>
                                 </thead>
 
-                                <thead className="bg-dark" >
+                                <thead className="" >
                                     <tr className=" bg-secondary-sm ">
                                         <td colspan="2" className=" bg-secondary-sm ">Nombre:</td>
                                         <td colspan="2" className=" bg-secondary-sm ">Cédula </td>
@@ -349,7 +349,7 @@ export default function DetallesView() {
 
                             }
                             {solicitud.Tipo == "Trabajos" ? <table className="table table-bordered border-3">
-                                <thead className="bg-dark" >
+                                <thead className="" >
                                     <tr className=" bg-secondary-sm ">
                                         <td colspan="4" className=" bg-secondary-sm ">
 
@@ -364,7 +364,7 @@ export default function DetallesView() {
                                     </tr>
                                 </thead>
 
-                                <thead className="bg-dark" >
+                                <thead className="" >
                                     <tr className=" bg-secondary-sm ">
                                         <td colspan="2" className=" bg-secondary-sm ">Nombre:</td>
                                         <td colspan="2" className=" bg-secondary-sm ">Cédula </td>

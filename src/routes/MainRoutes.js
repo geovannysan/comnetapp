@@ -43,6 +43,10 @@ const MainRoutes = {
         },
         {
             path: 'Facturas',
+            element: <FacturasView />
+        },
+        {
+            path:'Facturaid',
             element: <FacturaDetalle />
         },
         {

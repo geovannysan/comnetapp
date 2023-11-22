@@ -8993,7 +8993,7 @@ textarea.form-control-lg {
 }
 .bg-secondary-sm {
   --bs-bg-opacity: 1;
-  background-color: var(--bs-gray-500) !important;
+  background-color: rgba(131, 129, 129, 0.103) !important;
 }
 .bg-success {
   --bs-bg-opacity: 1;

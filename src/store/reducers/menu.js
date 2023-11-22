@@ -15,7 +15,10 @@ const initialState = {
         telefono: '',
         usuario: ''
     },
-    estado: false
+    estado: false,
+    facturadetalle:{
+
+    }
 };
 
 // ==============================|| SLICE - MENU ||============================== //
@@ -44,10 +47,13 @@ const menu = createSlice({
         },
         setlogin(state, action) {
             state.estado = action.payload.estado
+        },
+        setFacturas(state,action){
+            state.facturadetalle=action.payload.factura
         }
     }
 });
 
 export default menu.reducer;
 
-export const { activeItem, activeComponent, openDrawer, openComponentDrawer, setDatosuser, setlogin } = menu.actions;
+export const { activeItem, activeComponent, openDrawer, openComponentDrawer, setDatosuser, setlogin,setFacturas } = menu.actions;

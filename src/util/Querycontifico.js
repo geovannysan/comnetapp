@@ -240,16 +240,17 @@ export const ObtenerFacturas = async () => {
         return error
     }
 }
-export const ObtenerFactura = async () => {
-    let dias = -7
-    let fin = new Date()
-    fin.setDate(fin.getDate() + dias);
-    let fechainicios = new Date(JSON.stringify(fin).replace('"', '').replace('"', '')).toLocaleDateString("en-GB")
-    let fechafinal = new Date().toLocaleDateString("en-GB")
-    console.log(fechainicios, fechafinal)
+const AxionConti = axios.create({
+    baseURL: "https://api.t-ickets.com/mikroti/",
+    headers: {
+        'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
+    }
+})
+export const ObtenerFactura = async (parms) => {
+    
     try {
 
-        let { data } = await axios.get("https://portalfac.netbot.ec/contifico.php")
+        let { data } = await AxionConti.get("Facturaid/"+parms)
         console.log(data)
         return data
     } catch (error) {

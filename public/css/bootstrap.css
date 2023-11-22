@@ -10016,7 +10016,7 @@ fieldset:disabled .btn {
 }
 .bg-secondary-sm{
     --bs-bg-opacity: 1;
-      background-color: #746e6e !important;
+      background-color: rgba(131, 129, 129, 0.103) !important;
 }
 
 .bg-success {
