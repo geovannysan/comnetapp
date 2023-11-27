@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setDatosuser, setModal, setlogin } from "../../StoreRedux/Slice/UserSlice"
 import { IonFab, IonFabButton, IonIcon } from "@ionic/react"
 import DialogoServicio from "../../components/Alert/Servicios"
-import { powerOutline } from "ionicons/icons"
+import { key, powerOutline } from "ionicons/icons"
 import { useHistory } from "react-router"
 import DialogViewa from "../../components/Alert/Dialog"
 export default function PerfilViews() {
@@ -66,6 +66,11 @@ export default function PerfilViews() {
         history.push("/")
 
     }
+    function cerrarnuevo(e: string) {
+        setAlert("")
+        //setShowAlert(e)
+
+    }
     useEffect(() => {
         setDatos({
             nombre: dtos.nombre,
@@ -89,6 +94,18 @@ export default function PerfilViews() {
                 subheader={""}
                 Confirmcall={() => cerrarSession()}
             />
+            <DialogViewa
+                setAlert={setAlert}
+                alert={(Alert == "passwor")}
+                header={"El nombre debe ser de minimo"}
+                subheader={" 7 caracteres"}
+                Confirmcall={() => cerrarnuevo("")}
+            />
+            <IonFab slot="fixed" vertical="bottom" horizontal="end">
+                <IonFabButton onClick={() => setAlert("passwor")}>
+                    <IonIcon icon={key}></IonIcon>
+                </IonFabButton>
+            </IonFab>
             <div className="container-fluid h-20 pb-2 bg-welcome bg-welcome-radius px-0">
                 {/* <!--header welcome-->*/}
                 <div className="container-fluid pt-2 h-35 text-end btn-group-vertical">

@@ -80,10 +80,10 @@ export function MapsVies() {
     };
 
     const markers = [
-        {
+        /*{
             position: [-2.129304, -79.936441],
             info: 'Tenda tres nuevos datos',
-        },
+        },*/
         {
             position: [-2.0798475, -80.0007646],
             info: 'Tienda Amarillas',
@@ -183,13 +183,13 @@ export function MapsVies() {
                     onDidDismiss={closePopover}
                 >
                     <IonList lines='none'>
-                        <IonItem button onClick={() => Agregardat([-2.1016308, -79.9898898,])}>
+                        {/* <IonItem button onClick={() => Agregardat([-2.080703, -79.999962])}>
                             <IonLabel>Sergio Toral </IonLabel>
                         </IonItem>
                         <IonItem button onClick={() => Agregardat([-2.209304, -79.566441,])}>
                             <IonLabel>Balerio </IonLabel>
-                        </IonItem>
-                        <IonItem button onClick={() => Agregardat([-2.309304, -79.936441,])}>
+                        </IonItem>*/}
+                        <IonItem button onClick={() => Agregardat([-2.080703, -79.999962])}>
                             <IonLabel>Ciudad de Díos</IonLabel>
                         </IonItem>
                         <IonItem button onClick={() => regregsar()}>

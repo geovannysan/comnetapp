@@ -164,6 +164,14 @@ export const UserUpdate = async (parms) => {
         return error
     }
 }
+export const UserUpdatePassword = async (parms) => {
+    try {
+        let { data } = await axios.post(Hostv1 + "/PortalApi/UpdatePassword", parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
 export const Newtickte = async (parms) => {
     try {
         let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/CreaTicket", parms)

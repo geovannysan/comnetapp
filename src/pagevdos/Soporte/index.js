@@ -142,6 +142,7 @@ export default function SoporteView() {
             let oltport = ouput.oltport
             let status = ouput.status
             let signal = ouput.signal
+            console.log(oltport)
             if (routes.routers[0].estado != "CONECTADO") {
                 //agregar mensaje
                 /*
@@ -327,7 +328,7 @@ export default function SoporteView() {
         }).catch(error => {
             console.log(error)
         })
-        
+
     }
 
     return (
