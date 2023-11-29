@@ -26,7 +26,7 @@ export default function ModalViews(props) {
     }
     return (
 
-        <Dialog open={showAlert} TransitionComponent={Transition} onClose={() => setShowAlert("")}>
+        <Dialog open={showAlert} maxWidth="xs" TransitionComponent={Transition} onClose={() => setShowAlert("")}>
             {/*<Modal show={showAlert}
             id="example-modal2"
             backdrop={false}
@@ -78,8 +78,8 @@ export default function ModalViews(props) {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={() => submitHAndel(wifi)}>Actualizar</Button>
+                <Button className='btn btn-sm   text-white rounded-pill btn-size-1 py-25 shadow-2' color='error' variant={"contained"} onClick={handleClose}>Cancel</Button>
+                <Button className='btn btn-sm  bg-blue-gradient text-white rounded-pill btn-size-1 py-25 shadow-2' color={"success"} variant={"contained"} onClick={() => submitHAndel(wifi)}>Actualizar</Button>
             </DialogActions>
         </Dialog>
 

@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react"
 import { userlog } from "../../utils/User"
-import { UserUpdate, autenticar } from "../../utils/Queryuser"
+import { UserUpdate, UserUpdatePassword, autenticar } from "../../utils/Queryuser"
 import AlerModal from "../../components/Modal/Modal"
 import { useDispatch, useSelector } from "react-redux"
 import { setDatosuser, setModal, setlogin } from "../../StoreRedux/Slice/UserSlice"
-import { IonFab, IonFabButton, IonIcon } from "@ionic/react"
+import { IonFab, IonFabButton, IonFabList, IonIcon } from "@ionic/react"
 import DialogoServicio from "../../components/Alert/Servicios"
-import { key, powerOutline } from "ionicons/icons"
+import { chevronUpCircleOutline, key, powerOutline } from "ionicons/icons"
 import { useHistory } from "react-router"
 import DialogViewa from "../../components/Alert/Dialog"
+import ModalViews from "../../components/Modal"
 export default function PerfilViews() {
     let dtos = userlog()
     let history = useHistory()
@@ -80,6 +81,45 @@ export default function PerfilViews() {
             telefono: dtos.telefono
         })
     }, [serv])
+    let [showAlert, setShowAlert] = useState("")
+
+    function cambiarPWS(e: any) {
+        console.log(e)
+        if (e.trim().length > 6) {
+            dispatch(setModal({ nombre: "Alerta", payloa: "Actualizando datos del perfil" }))
+            console.log({ "idcliente": dtos.id, "password": e, "cedula": dtos.cedula })
+
+            UserUpdatePassword({ "idcliente": dtos.id, "password": e, "cedula": dtos.cedula }).then(salida => {
+                if (salida.estado = "exito") {
+                    autenticar(dtos.cedula).then(e => {
+                        if (e.estado == "exito") {
+                            console.log(e.datos)
+                            let datos = e.datos.map((e: any) => {
+                                let servicio = e.servicios[e.servicios.length - 1]
+                                return {
+                                    ...e,
+                                    servicios: [servicio]
+                                }
+                            })
+                            console.log(datos.filter((f: any) => f.id == dtos.id)[0])
+                            localStorage.setItem("Perfiles", JSON.stringify([...datos]))
+                            localStorage.setItem("USERLOGIN", JSON.stringify({ ...datos.filter((f: any) => f.id == dtos.id)[0] }))
+                            dispatch(setDatosuser({ ...datos.filter((f: any) => f.id == dtos.id)[0] }))
+                            setShowAlert("")
+
+                        }
+                    })
+                    setShowAlert("")
+                    dispatch(setModal({ nombre: "", payloa: "" }))
+                } else {
+                    setShowAlert("")
+                }
+            })
+            return
+        }
+    }
+
+
     return (
         <div>
             <AlerModal />
@@ -101,10 +141,26 @@ export default function PerfilViews() {
                 subheader={" 7 caracteres"}
                 Confirmcall={() => cerrarnuevo("")}
             />
+
+            <ModalViews
+                showAlert={(showAlert == "password")}
+                setShowAlert={setShowAlert}
+                ssi={""} submitHAndel={cambiarPWS}
+                header={"Cambiar contraseña"}
+            />
+
             <IonFab slot="fixed" vertical="bottom" horizontal="end">
-                <IonFabButton onClick={() => setAlert("passwor")}>
-                    <IonIcon icon={key}></IonIcon>
+                <IonFabButton>
+                    <IonIcon icon={chevronUpCircleOutline}></IonIcon>
                 </IonFabButton>
+                <IonFabList side="top">
+                    <IonFabButton onClick={() => setShowAlert("password")}>
+                        <IonIcon icon={key}></IonIcon>
+                    </IonFabButton>
+                    <IonFabButton onClick={() => setAlert("cerrar")}  >
+                        <IonIcon icon={powerOutline} />
+                    </IonFabButton>
+                </IonFabList>
             </IonFab>
             <div className="container-fluid h-20 pb-2 bg-welcome bg-welcome-radius px-0">
                 {/* <!--header welcome-->*/}
@@ -217,10 +273,5 @@ export default function PerfilViews() {
 
 
             </div>
-            <IonFab slot="fixed" vertical="top" horizontal="center">
-                <IonFabButton onClick={() => setAlert("cerrar")} color={"light"} className=" shadow-lg" size="small">
-                    <IonIcon icon={powerOutline} />
-                </IonFabButton>
-            </IonFab>
         </div>)
 }

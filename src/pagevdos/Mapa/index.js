@@ -57,14 +57,7 @@ function LocationMarkers({ position }) {
     useEffect(() => {
         setCurrentPosition(position)
     }, [position])
-    return (
-        <Marker position={currentPosition} icon={customIcon}>
-            <Popup>
-                tienda
-
-            </Popup>
-        </Marker>
-    );
+    
 }
 export function MapsVies() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -86,7 +79,7 @@ export function MapsVies() {
         },*/
         {
             position: [-2.0798475, -80.0007646],
-            info: 'Tienda Amarillas',
+            info: 'Tienda-Amarillas',
         },
         // Agrega más objetos de marcadores aquí
     ];
@@ -155,9 +148,9 @@ export function MapsVies() {
                 {markers.map((marker, index) => (
                     <Marker key={index} position={marker.position} icon={customIcon}>
                         <Popup className="d-flex justify-content-center">
-                            <div className="d-flex flex-column justify-content-center">
+                            <div className="d-flex flex-column justify-content-center text-center">
                                 <p>{marker.info}</p>
-                                <IonButton onClick={() => openGoogleMapsNavigation(marker.position)} >ok</IonButton>
+                                <IonButton onClick={() => openGoogleMapsNavigation(marker.position)} >Indicaciones</IonButton>
 
                             </div>
                         </Popup>
