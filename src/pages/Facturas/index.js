@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { ListarFacturas } from "util/Querireport"
+import { Arreglarerror, ListarFacturas } from "util/Querireport"
 //import moment from "moment/moment";
 import { Tabs } from 'antd';
 import MainCard from "components/MainCard";
@@ -10,23 +10,7 @@ import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
 const FacturasView = () => {
     let usedispatch = useDispatch()
     let history = useNavigate()
-    const items = [
-        {
-            key: '1',
-            label: 'Tab 1',
-            children: 'Content of Tab Pane 1',
-        },
-        {
-            key: '2',
-            label: 'Tab 2',
-            children: 'Content of Tab Pane 2',
-        },
-        {
-            key: '3',
-            label: 'Tab 3',
-            children: 'Content of Tab Pane 3',
-        },
-    ];
+
     const [factura, setFactura] = useState([])
     const [facturaerr, setFacturaerr] = useState([])
     const fechaReferencia = new Date();
@@ -50,13 +34,15 @@ const FacturasView = () => {
             console.log(fact)
             let facturas = []
             let facturaser = []
-            fact.data.filter((elemento) => {
+
+            await fact.data.filter((elemento) => {
                 const fechaElemento = new Date(elemento.fecha); // Asegúrate de ajustar la propiedad 'fecha' según la estructura real de tu objeto
 
                 // Comprobar si la fecha está dentro del rango del mes actual
                 return fechaElemento >= primerDiaDelMes && fechaElemento <= ultimoDiaDelMes;
             }).map(async (e) => {
-                let fact = JSON.parse(e.mensajes)
+                let fact = JSON.parse(e.mensajes).parame
+                console.log(fact)
                 if (fact.persona != undefined) {
 
                     facturaser.push({ ...e, mensajes: fact, cliente: fact.persona["cedula"] })
@@ -64,6 +50,8 @@ const FacturasView = () => {
                     facturaser.push({ ...e, mensajes: fact, cliente: fact.cliente["cedula"] })
                 }
             })
+
+           // console.log(actual)
             datos.data.filter((elemento) => {
                 const fechaElemento = new Date(elemento.fecha); // Asegúrate de ajustar la propiedad 'fecha' según la estructura real de tu objeto
 
@@ -227,6 +215,14 @@ const FacturasView = () => {
         usedispatch(setFacturas({ factura: { ...e } }))
         history("/Facturaid")
     }
+    function Emitir() {
+        Arreglarerror().then(ouput => {
+            console.log(ouput)
+            window.location.reload()
+        }).catch(error => {
+            console.log(error)
+        })
+    }
     useEffect(() => {
         getFactura()
     }, [])
@@ -372,7 +368,7 @@ const FacturasView = () => {
                         </td>
 
                         <td className=" font-weight-bold">
-                            <button className="btn btn-success" onClick={() => abrirfactura(item.mensajes)}  >ver</button>
+                            <button className="btn btn-success" onClick={() => Emitir()}  >Emitir</button>
                         </td>
                         {/* <td className="text-xs font-weight-bold"  ><code style={{ maxWidth:"400px"}}> <pre>{JSON.stringify(js).replace(/,/g, ",\n")}</pre>
                         </code> </td>
