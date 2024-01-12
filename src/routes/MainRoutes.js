@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
 import FacturaDetalle from 'pages/Facturas/Factura';
+import Usuario from 'pages/Usuarios/index';
 const DetallesView = Loadable(lazy(() => import('pages/solicitud/Detalle')));
 const SolicitudView = Loadable(lazy(() => import('pages/solicitud/index')));
 const PagosView = Loadable(lazy(() => import('pages/pagos/index')));
@@ -54,8 +55,8 @@ const MainRoutes = {
             element: <SolicitudView />
         },
         {
-            path: 'reporte',
-            element: <SamplePage />
+            path: 'usuarios',
+            element: <Usuario />
         },
         {
             path: 'page/inicio',

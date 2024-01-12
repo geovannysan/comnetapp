@@ -9,6 +9,7 @@ import {
     FundViewOutlined,
     ReadOutlined
 } from '@ant-design/icons';
+import { userlog } from 'util/User';
 
 // icons
 const icons = {
@@ -21,7 +22,7 @@ const icons = {
     FundViewOutlined,
     ReadOutlined
 };
-
+let datos = userlog()
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
 
 const utilities = {
@@ -43,15 +44,15 @@ const utilities = {
             url: '/Solicitud',
             icon: icons.ReadOutlined,
             target: false
-        },/*
-        {
-            id: 'Framepage',
-            title: 'Framepage',
+        },
+        datos.respuestatres=="1" ?{
+            id: 'Usuarios',
+            title: 'Usuarios',
             type: 'item',
-            url: '/pageview',
+            url: '/usuarios',
             icon: icons.AntDesignOutlined,
-            breadcrumbs: false
-        }*/
+            breadcrumbs: true
+        }:""
     ]
 };
 

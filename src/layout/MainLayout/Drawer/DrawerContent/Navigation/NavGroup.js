@@ -22,7 +22,7 @@ const NavGroup = ({ item }) => {
             default:
                 return (
                     <Typography key={menuItem.id} variant="h6" color="error" align="center">
-                        Fix - Group Collapse or Items
+                      
                     </Typography>
                 );
         }

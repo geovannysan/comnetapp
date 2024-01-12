@@ -211,7 +211,7 @@ export default function SolicitudView() {
             <MainCard contentSX={{ p: 2.25 }} style={{ marginBottom: "15px" }}>
                 <div className={spiner + "table-responsive"}>
 
-                    <table id={"doc"} className="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
+                    <table id={"doc"} className="table  table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
                         style={{
                             width: "100%",
                         }}>

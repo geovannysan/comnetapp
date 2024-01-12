@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { Arreglarerror, ListarFacturas } from "util/Querireport"
-//import moment from "moment/moment";
 import { Tabs } from 'antd';
 import MainCard from "components/MainCard";
 import { setFacturas } from "store/reducers/menu";

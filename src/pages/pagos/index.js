@@ -1665,9 +1665,7 @@ const PagosView = () => {
     }
 
     const handleKeyPress = (event) => {
-        // Aquí puedes manejar la lógica de teclas según tus necesidades
         if (event.key === 'Enter') {
-            // Por ejemplo, ejecutar una acción al presionar la tecla Enter
             buscar()
         }
     };
@@ -1704,12 +1702,12 @@ const PagosView = () => {
                                     Id contifico: {totalcon.id}/ Estado contifico : {totalcon.estado} / Total producto : {parseFloat(totalcon.total).toFixed(2)} <p className="px-2">{JSON.stringify(impri)}</p>
                                 </Typography>
                             </Grid>
-                            <div className="col-12 col-md-6 d-flex  align-items-center">
+                            <div className="col-12  d-flex  justify-content-between align-items-center ">
                                 <h5 className=" text-dark">{usuario.nombre}
                                 </h5>
-                                {usuario.estado === "ACTIVO" ? <span className='badge p-3 bg-success mx-3'>ACTIVO</span> : ""}
-                                {usuario.estado === "SUSPENDIDO" ? <span className='badge p-3 bg-danger mx-3'>SUSPENDIDO</span> : ""}
-                                {usuario.estado === "RETIRADO" ? <span className='badge p-3 bg-warnig mx-3'>RETIRADO</span> : ""}
+                                {usuario.estado === "ACTIVO" ? <span className='badge p-2 pb-3  bg-success texte-center  '> ACTIVO</span> : ""}
+                                {usuario.estado === "SUSPENDIDO" ? <span className='badge p-3 bg-danger '>SUSPENDIDO</span> : ""}
+                                {usuario.estado === "RETIRADO" ? <span className='badge p-3 bg-warnig '>RETIRADO</span> : ""}
 
                             </div>
                             <div className=" container text-center mb-3 py-3">
