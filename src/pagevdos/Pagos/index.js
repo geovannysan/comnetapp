@@ -391,7 +391,7 @@ export default function PAgosViewa() {
                                                 style={{
                                                     fontSize: "1.7vh"
                                                     /*"font-size: 1.7vh;"*/
-                                                }} onClick={() => history.push("Facturas")}>Ver Facturas </a>
+                                                }} onClick={() => history.push("/home/Facturas")}>Ver Facturas </a>
                                         </div>
                                     </div>
                                 </div>{/*<!--ciere card opcion-->*/}
@@ -518,7 +518,7 @@ export default function PAgosViewa() {
                         </Fab>
                     </Zoom>
                 }
-                <div className="container-fluid h-7 bg-blue-gradient  ">
+                <div className="container-fluid h-7 bg-blue-gradient d-none  ">
                     <div className="container h-100 btn-group-vertical">
                         <div className="container d-none">
                             <div className="row justify-content-center">

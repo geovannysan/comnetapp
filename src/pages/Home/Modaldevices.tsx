@@ -72,8 +72,8 @@ export default function DeviceView(props: any, recargar: void) {
 
         <IonModal isOpen={showModal}
             onDidDismiss={() => setModal(false)}
+            initialBreakpoint={0.50} breakpoints={[0, 0.25, 0.5, 0.75, 1]}
             backdropDismiss={false}
-
         >
             <IonHeader className=" bg-welcome">
                 <IonToolbar className=""
@@ -86,22 +86,15 @@ export default function DeviceView(props: any, recargar: void) {
                     </IonTitle>
                     <IonButtons slot="end"  >
                         <IonButton
-
                             onClick={() => setModal(false)}>
-                            <IonIcon className="text-white" icon={close}></IonIcon>
+                            <IonIcon className="text-white fw-bold" size="large" icon={close}></IonIcon>
                         </IonButton>
-
                     </IonButtons>
-
                 </IonToolbar>
             </IonHeader>
-
             <IonContent>
-
                 <IonItem>
-
                     <IonLabel>
-
                         <h3><i className=" bi bi-router px-1"></i> Route</h3>
                         <p>HS8545M</p>
                     </IonLabel>
@@ -111,9 +104,7 @@ export default function DeviceView(props: any, recargar: void) {
                     </IonLabel>
                 </IonItem>
                 <IonList >
-
                     {devices.length > 0 ? devices.map((e: any, i: number) => {
-
                         {
                             if (e.HostName != undefined) {
                                 return (<IonItem lines="none" key={i}>
@@ -134,9 +125,7 @@ export default function DeviceView(props: any, recargar: void) {
                             }
                         }
                     }) :
-
                         <IonItem>
-
                             <IonLabel>
                                 <h3>
                                     <IonSkeletonText animated={true} style={{ width: '80%' }}></IonSkeletonText>
@@ -149,23 +138,16 @@ export default function DeviceView(props: any, recargar: void) {
                                 </p>
                             </IonLabel>
                         </IonItem>}
-
-
-
                 </IonList>
-
             </IonContent>
             <IonFooter>
                 <IonToolbar className="text-center py-2">
                     <IonTitle>Actualizar lista de Dispositivo</IonTitle>
-
                     <button onClick={Recargarlista} className="btn btn-sm bg-success   text-white rounded-pill btn-size-1 py-20 shadow-2">
                         Recargar
                     </button>
-
                 </IonToolbar>
             </IonFooter>
         </IonModal>
-
     )
 }

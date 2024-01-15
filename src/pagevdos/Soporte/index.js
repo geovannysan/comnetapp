@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Equipos, ListarTicket, Newtickte } from "../../utils/Queryuser"
 import * as moment from "moment"
 import { userlog } from "../../utils/User"
-import { IonFab, IonFabButton, IonIcon, useIonLoading, useIonToast } from "@ionic/react"
+import { IonFab, IonFabButton, IonItem, IonLabel, IonIcon, IonButtons, IonBadge, IonButton, IonModal, IonHeader, IonContent, IonToolbar, IonTitle, IonPage, useIonToast } from "@ionic/react"
 import AlerModal from "../../components/Modal/Modal"
 import { setModal, setSeñal, setSoport } from "../../StoreRedux/Slice/UserSlice"
 
@@ -17,7 +17,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import { radioOutline } from "ionicons/icons"
+import { add, close, pulse, radioOutline } from "ionicons/icons"
 import { useHistory } from "react-router"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -33,8 +33,9 @@ export default function SoporteView() {
     let dtos = userlog()
     const [present] = useIonToast();
     const [btn, setBtn] = useState(false)
+    const [ticktes, setTicktes] = useState([])
     const [open, setOpen] = React.useState(false);
-
+    const [isOpen, setIsOpen] = useState(false);
     const handleClickOpen = () => {
         setOpen(!open);
     };
@@ -60,20 +61,18 @@ export default function SoporteView() {
             Get_onu_signal(obtenervaariables(infouser.servicios[0].smartolt).onu_external_id).then(ouput => {
                 if (ouput.status) {
                     console.log("sign", ouput)
-                    Gt_onu_status(infouser.servicios[0].idperfil).then(ouputv => {
-                        if (ouputv.status) {
-                            console.log({
-                                onu_signal_value: ouput.onu_signal_value,
-                                onu_status: ouputv.onu_status,
-                                onu_signal: ouput.onu_signal
-                            })
-                            dispat(setSeñal({
-                                onu_signal_value: ouput.onu_signal_value,
-                                onu_status: ouputv.onu_status,
-                                onu_signal: ouput.onu_signal
-                            }))
-                        }
-                    })
+                    dispat(setSeñal(ouput))
+                    /*Gt_onu_status(infouser.servicios[0].idperfil).then(ouputv => {
+                         console.log(ouputv)
+                         if (ouputv.status) {
+                             console.log({
+                                 onu_signal_value: ouput.onu_signal_value,
+                                 onu_status: ouputv.onu_status,
+                                 onu_signal: ouput.onu_signal
+                             })
+                             dispat(setSeñal(ouput))
+                         }
+                     })*/
                 }
             })
         }
@@ -81,6 +80,7 @@ export default function SoporteView() {
             if (response.estado == "exito") {
                 let soport = response.data.tickets.filter(e => e.estado == "abierto")
                 //console.log(response.data)
+                setTicktes(response.data.tickets)
                 // return
                 if (!soportes) {
 
@@ -100,6 +100,7 @@ export default function SoporteView() {
             console.log(response)
             if (response.estado == "exito") {
                 console.log(response)
+                setTicktes(response.data.tickets)
                 let soport = response.data.tickets.filter(e => e.estado == "abierto").length
                 console.log(response)
                 //return
@@ -180,6 +181,7 @@ export default function SoporteView() {
                 ListarTicket(tick.id).then(response => {
                     if (response.estado == "exito") {
                         let soport = response.data.tickets.filter(e => e.estado == "abierto")
+                        setTicktes(response.data.tickets)
                         //console.log(response.data)
                         // return
                         if (soport.length > 0) {
@@ -228,15 +230,13 @@ export default function SoporteView() {
             if (status.onu_status == "Online") {
                 //agregar mensaje
                 dispat(setSoport({ soporte: true }))
-                //dismiss()
-                /*presentlo({
-                    message: 'Comprobando estado de la señal',
-                    cssClass: 'custom-loading',
-                    spinner: "bubbles",
-                    duration: 3500
-                })*/
                 let inf = infouser.onu_external_id
                 //onu signal 
+                console.log({
+                    onu_signal_value: signal.onu_signal_value,
+                    onu_status: signal.onu_status,
+                    onu_signal: signal.onu_signal
+                })
                 dispat(setSeñal({
                     onu_signal_value: signal.onu_signal_value,
                     onu_status: signal.onu_status,
@@ -270,7 +270,9 @@ export default function SoporteView() {
                         let tick = userlog()
                         ListarTicket(tick.id).then(response => {
                             if (response.estado == "exito") {
+                                console.log(response)
                                 let soport = response.data.tickets.filter(e => e.estado == "abierto")
+                                setTicktes(response.data.tickets)
                                 //console.log(response.data)
                                 // return
                                 if (soport.length > 0) {
@@ -339,6 +341,75 @@ export default function SoporteView() {
                     <IonIcon icon={radioOutline}></IonIcon>
                 </IonFabButton>
             </IonFab>}
+
+            <IonModal isOpen={false}>
+
+                {/*
+                cliente
+                departamento
+                Asunto
+                cliente
+                fecha
+                turno
+                asunto 
+                */}
+
+
+            </IonModal>
+
+            <IonModal isOpen={isOpen}
+                onDidDismiss={() => setIsOpen(false)}
+                initialBreakpoint={0.50}
+                backdropDismiss={false}
+                breakpoints={[0, 0.25, 0.5, 0.75, 1]}>
+                <IonHeader className="bg-welcome">
+                    <IonToolbar className="pt-3"
+                        style={{
+                            color: "#ffffs"
+                        }}
+                    >
+                        <IonTitle className="text-white">Tickets</IonTitle>
+                        <IonButtons slot="secondary" className="text-white">
+                            <IonButton fill="outline">
+                                <IonIcon slot="end" color="primary" icon={add}></IonIcon>
+                                Nuevo
+                            </IonButton>
+                        </IonButtons>
+                        <IonButtons slot="primary" className="text-white">
+                            <IonButton fill="outline"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                cerrar
+                                <IonIcon slot="end" color="primary" icon={close}></IonIcon>
+                            </IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent className="ion-padding">
+                    <>
+                        {ticktes.length > 0 ? ticktes.map((e, i) => {
+                            return (<IonItem lines="none" key={i}>
+                                <IonLabel slot="">
+                                    <h3>{e.asunto}</h3>
+                                    <p>{e.dp}</p>
+                                    <p>{e.estado == "cerrado" ? e.fecha_cerrado :
+                                        e.fechavisita
+                                    }</p>
+
+                                </IonLabel>
+                                <IonLabel slot="end" className="text-end">
+                                    {e.estado == "cerrado" ?
+                                        <IonBadge color="danger" slot="end">{e.estado}</IonBadge> :
+                                        <IonBadge color="success" slot="end">{e.estado}</IonBadge>
+                                    }
+                                </IonLabel>
+
+                            </IonItem>)
+
+                        }) : ""}
+                    </>
+                </IonContent>
+            </IonModal>
             <AlerModal />
 
 
@@ -431,16 +502,17 @@ export default function SoporteView() {
                             </div>
                         </div>
                         {/*<!--cierre card opcion-->*/}
-                        {!btn ? "" : <div className="row col-12 shadow-3   rounded-4 mx-auto my-2 h-15 bg-white py-0">
+                        {<div className="row col-12 shadow-3   rounded-4 mx-auto my-2 h-15 bg-white py-0">
                             {/* <!--card opcion-->*/}
                             <div className="col-8 h-100 border rounded-start-4">
                                 <div className="row w-100 mx-auto h-100">
                                     <div className="col-12 h-100 btn-group-vertical">
                                         <li className="list-unstyled my-md-1" style={{ width: "100%", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }} >
                                             <span className="" ><img src="img/opcion soporte/signal-wifi.png" className="img-fluid" style={{ height: "2vh" }} alt="" /> </span>
-                                            <span className="text-muted" style={{ fontSize: "1.4vh" }}>Señal: <span>-23.65 dBm</span></span>
+                                            <span className="text-muted" style={{ fontSize: "1.4vh" }}>Señal: <span>{señal.onu_signal_value}</span></span>
                                         </li>
-                                        <a onClick={() => Soportenew()} className="bg-white shadow-1 none-style border px-4 rounded-pill text-center text-celeste" style={{ fontSize: "1.6vh" }}>Auto soporte</a>
+                                        <a onClick={() => Soportenew()} className="bg-white shadow-1 none-style border px-4 rounded-pill text-center text-celeste" style={{ fontSize: "1.6vh" }}>
+                                            Auto soporte</a>
                                     </div>
                                 </div>
                             </div>
@@ -454,7 +526,7 @@ export default function SoporteView() {
                         </div>}
                         {/*<!--cierre card opcion-->*/}
 
-                        {btn ? <div className="row col-12 shadow-3  rounded-4 mx-auto my-2 h-15 bg-white py-0">
+                        {<div className="row col-12 shadow-3  rounded-4 mx-auto my-2 h-15 bg-white py-0">
                             {/* <!--card opcion-->*/}
                             <div className="col-8 h-100 border rounded-start-4">
                                 <div className="row w-100 mx-auto h-100">
@@ -466,32 +538,7 @@ export default function SoporteView() {
                                                 {señal.onu_signal == "Warning" ? "Buena" : ""}
                                                 {señal.onu_signal == "Critical" ? "Mala" : ""}</span></span>
                                         </li>
-                                        <a className="bg-white shadow-1 none-style  border px-4 rounded-pill text-center text-celeste" onClick={handleClickOpen} style={{ fontSize: "1.8vh" }}>regresar</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-4 px-1 d-no h-100 rounded-end-4 bg-red-gradient">
-                                <div className="col-12 h-100 w-100 btn-group-vertical">
-                                    <div className="container h-100 text-center btn-group-vertical">
-                                        <img src="img/opcion soporte/estado-internet.png" className="img-fluid drop-shadow-2 mx-auto" style={{ height: "8vh" }} alt="" />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div> : <div className="row col-12 shadow-3  rounded-4 mx-auto my-2 h-15 bg-white py-0">
-                            {/* <!--card opcion-->*/}
-                            <div className="col-8 h-100 border rounded-start-4">
-                                <div className="row w-100 mx-auto h-100">
-                                    <div className="col-12 h-100 btn-group-vertical">
-                                        <li className="list-unstyled my-md-1" style={{ width: "100%", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
-                                            <span className="" ><img src="img/opcion soporte/signal-wifi.png" className="img-fluid" style={{ height: "2vh" }} alt="" /></span>
-                                            <span className="text-muted" style={{ fontSize: "1.4vh" }}>Estado: <span>
-                                                {señal.onu_signal == "Very good" ? "Muy buena" : ""}
-                                                {señal.onu_signal == "Warning" ? "Buena" : ""}
-                                                {señal.onu_signal == "Critical" ? "Mala" : ""}</span></span>
-                                        </li>
-                                        <a className="bg-white shadow-1 none-style  border px-4 rounded-pill text-center text-celeste" onClick={handleClickOpen} style={{ fontSize: "1.8vh" }}>Soporte</a>
+                                        <a className="bg-white shadow-1 none-style  border px-4 rounded-pill text-center text-celeste" onClick={() => setIsOpen(true)} style={{ fontSize: "1.8vh" }}>Tickets Soporte</a>
                                     </div>
                                 </div>
                             </div>

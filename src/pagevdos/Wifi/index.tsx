@@ -146,9 +146,17 @@ export default function WifiView() {
                 //console.log(ouput)
                 if (ouput.length > 0) {
                     console.log("error list", ouput)
+                    //let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
+                    //setDevices(Object.values(dtso))
+                    //console.log(Object.values(dtso))
                     let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
-                    setDevices(Object.values(dtso))
-                    console.log(Object.values(dtso))
+                    const arrayDeObjetos: any = Object.keys(dtso).filter((key: any) => !isNaN(key)).map((clave) => ({
+                        host: clave,
+                        ...dtso[clave]
+                    }));
+                    setDevices(arrayDeObjetos)
+                    setCount(arrayDeObjetos.length)
+                    console.log(arrayDeObjetos)
                 }
             }).catch(err => {
                 console.log(err)

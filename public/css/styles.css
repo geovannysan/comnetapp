@@ -8,7 +8,54 @@
     --bs-rojo: #ed1c24;
     --bs-verde:#40bc42;
 }
+.bg-pagos{
+    background-color: rgb(213, 210, 210);
+}
+@font-face {
+    font-family: 'asap-regular';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Asap Regular'), local('Asap-Regular'), url(../font/-KZsao_xwBpcExaHoPH8_w.ttf) format('truetype');
+}
 
+@font-face {
+    font-family: 'Asap', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    src: local('Asap Regular'), local('Asap-Regular'), url(https://fonts.googleapis.com/css2?family=Asap:wght@700&display=swap) format('truetype');
+}
+
+.slick-carousel {
+    display: flex;
+    /* Utiliza flexbox para centrar los elementos */
+    justify-content: center;
+    /* Centra los elementos horizontalmente */
+    align-items: center;
+    /* Centra los elementos verticalmente */
+    gap: 20px;
+    /* Ajusta el espaciado entre los elementos */
+}
+
+/* Ajusta el tamaño de las imágenes dentro del carrusel */
+.slick-carousel img {
+    height: 350px;
+    width: auto;
+    /* Ajusta el ancho automáticamente */
+    max-width: 100%;
+    /* Asegura que las imágenes no se desborden */
+}
+
+.slick-list {
+
+    max-width: 1100px !important;
+    width: 1100px !important;
+}
+
+.slick-carousel {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
 /* Background Styles */
 
 .bg-welcome {
@@ -339,3 +386,93 @@
 
 
 /*avatar */
+
+
+.loader {
+    width: 196px;
+    height: 48px;
+    display: inline-block;
+    position: relative;
+    background: #5e5e5e;
+    border-radius: 48px 48px 0 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.loader::after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    width: 24px;
+    height: 12px;
+    border-radius: 24px 24px 0 0;
+    background: yellow;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+}
+
+.loader::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 32px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 0;
+    background: yellow;
+    transform-origin: 50% 100%;
+    box-sizing: border-box;
+    animation: animloader 2s linear infinite alternate;
+}
+
+@keyframes animloader {
+    0% {
+        transform: rotate(-70deg);
+    }
+
+    10% {
+        transform: rotate(-40deg);
+    }
+
+    20%,
+    45%,
+    35% {
+        transform: rotate(-10deg);
+    }
+
+    40%,
+    30% {
+        transform: rotate(-30deg);
+    }
+
+    50%,
+    60% {
+        transform: rotate(20deg);
+    }
+
+    55%,
+    65%,
+    75% {
+        transform: rotate(40deg);
+    }
+
+    70% {
+        transform: rotate(45deg);
+    }
+
+    85%,
+    90% {
+        transform: rotate(50deg);
+    }
+
+    95% {
+        transform: rotate(75deg);
+    }
+
+    100%,
+    93% {
+        transform: rotate(70deg);
+    }
+}

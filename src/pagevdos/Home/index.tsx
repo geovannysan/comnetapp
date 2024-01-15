@@ -20,11 +20,11 @@ export default function HomeView() {
                     const { latitude, longitude } = position.coords;
                     console.log(position)
                     dispatch(setPosision([latitude,longitude]))
-                    history.push("/mapas")
+                    history.push("/home/puntos")
                    // setUserLocation([-2.129304, -79.936441,]);
                 },
                 (error) => {
-                    history.push("/mapas")
+                    history.push("/home/puntos")
                     console.error('Error getting user location:', error.message);
                 }
             );
@@ -69,12 +69,13 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
-                                    <a onClick={() => history.push("/plan") }><img src="img/botones-home/mi-plan-boton-wifi.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/home/plan") }><img src="img/botones-home/mi-plan-boton-wifi.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
-                                    <a onClick={soportes}><img src="img/botones-home/soporte-tecnico-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={soportes}>
+                                        <img src="img/botones-home/soporte-tecnico-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
@@ -84,7 +85,7 @@ export default function HomeView() {
                             </div>
                             <div className="col-4 p-0 my-2">
                                 <div className="container p-1">
-                                    <a onClick={() => history.push("/pagos")}><img src="img/botones-home/reportar-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/home/pagos")}><img src="img/botones-home/reportar-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 ">

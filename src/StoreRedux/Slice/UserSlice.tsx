@@ -11,7 +11,7 @@ const initialState = {
     authb: false,
     progres: false,
     cosultstatus: false,
-    soporte: false,
+    soporte: true,
     opcion: "",
     nickname: "",
     señal: {

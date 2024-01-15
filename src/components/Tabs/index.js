@@ -10,14 +10,19 @@ import PerfilViews from "../../pagevdos/Perfil";
 import { lazy } from "react";
 import Loadable from "../Loadable";
 import { useSelector } from "react-redux";
-const HomeView = Loadable( lazy(() => import('../../pagevdos/Home')))
+import PAgosViewa from "../../pagevdos/Pagos";
+import PlanView from "../../pagevdos/Plan";
+import FacturaslisView from "../../pagevdos/Pagos/Faturalist";
+import Paginas from "../../pagevdos/Mapa/pagos";
+import { MapsVies } from "../../pagevdos/Mapa";
+const HomeView = Loadable(lazy(() => import('../../pagevdos/Home')))
 export default function TabsView() {
-     
-    const datos = useSelector((state)=>state.usuario.user)
+
+    const datos = useSelector((state) => state.usuario.user)
 
     return (
         <div>
-            
+
 
             <IonTabs>
 
@@ -25,7 +30,7 @@ export default function TabsView() {
                     <Switch>
                         <Route path="/home/inicio">
                             <HomeView />
-                            
+
                         </Route>
                         <Route path="/home/soporte">
                             <SoporteView />
@@ -36,13 +41,28 @@ export default function TabsView() {
                         <Route path="/home/perfil">
                             <PerfilViews />
                         </Route>
+                        <Route path="/home/pagos" >
+                            <PAgosViewa />
+                        </Route>
+                        <Route path="/home/plan">
+                            <PlanView />
+                        </Route>
+                        <Route path="/home/Facturas">
+                            <FacturaslisView />
+                        </Route>
+                        <Route path="/home/puntos">
+                            <Paginas/>
+                        </Route>
+                        <Route path="/home/mapas">
+                            <MapsVies/>
+                        </Route>
                         <Route path="/home" >
                             <Redirect from="/home" to="/home/inicio" />
                         </Route>
                     </Switch>
 
                 </IonRouterOutlet>
-                <IonTabBar slot='bottom' className={datos.estado == "SUSPENDIDO" ?"IonTabBar ta suspendido":"IonTabBar ta"}> 
+                <IonTabBar slot='bottom' className={datos.estado == "SUSPENDIDO" ? "IonTabBar ta suspendido" : "IonTabBar ta"}>
                     <IonTabButton tab='tab1' className="tab " href="/home/inicio" >
                         <IonIcon aria-hidden="true" icon={home} />
                     </IonTabButton>

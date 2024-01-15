@@ -520,7 +520,7 @@ export default function PlanView() {
                                 </div>
                             </div>
 
-                            <div className="col-4 px-1 d-no h-100 rounded-end-4 bg-red-gradient">
+                            <div className="col-4 px-1 d-no h-100 rounded-end-4 bg-red-gradient d-none">
                                 <div className="col-12 h-100 w-100 btn-group-vertical">
                                     <div className="container h-100 text-center btn-group-vertical">
                                         <img src="img/opcion soporte/estado-internet.png" className="img-fluid drop-shadow-2 mx-auto" 
@@ -538,7 +538,7 @@ export default function PlanView() {
                 </div>
             </div>
             {/*<!--fin card info-->*/}
-            <div className="container-fluid h-7 bg-blue-gradient ">
+            <div className="container-fluid h-7 bg-blue-gradient d-none ">
                 <div className="container h-100 btn-group-vertical">
                     <div className="container">
                         <div className="row justify-content-center">

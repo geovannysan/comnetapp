@@ -9,6 +9,7 @@ import './index.css'
 import mapaicon from "../../imagen/PUNTO DE PAGO_Mesa de trabajo 1.png"
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import Paginas from './pagos';
 
 const openGoogleMapsNavigation = (e) => {
     const latitude = e[0]; // Latitud
@@ -57,7 +58,7 @@ function LocationMarkers({ position }) {
     useEffect(() => {
         setCurrentPosition(position)
     }, [position])
-    
+
 }
 export function MapsVies() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -79,8 +80,19 @@ export function MapsVies() {
         },*/
         {
             position: [-2.0798475, -80.0007646],
-            info: 'Tienda-Amarillas',
+            info: 'Tienda-Amarilla\n Don edison',
         },
+        {
+            //-2.127921, -79.945703
+            position: [-2.127921, -79.945703],
+            info: 'Pancho-Jacome\n Bazar El Predicador',
+        },
+        ,
+        {
+            //-2.127921, -79.945703
+            position: [-2.101407, -79.989929],
+            info: 'Tienda\n Pagos y servicios Alexandra',
+        }
         // Agrega más objetos de marcadores aquí
     ];
     const customIcon = new L.Icon({
@@ -120,6 +132,19 @@ export function MapsVies() {
         } else {
             console.warn('Geolocation is not supported by this browser.');
         }
+        setTimeout(() => {
+            var navElement = document.querySelector('nav');
+
+            // Verificar si el elemento existe antes de intentar eliminarlo
+            if (navElement) {
+                // Obtener el padre del elemento nav
+                var padreElemento = navElement.parentNode;
+
+                // Eliminar el elemento nav del padre
+                padreElemento.removeChild(navElement);
+            }
+            console.log("error")
+        }, 3000)
 
 
     }, []);
@@ -132,6 +157,7 @@ export function MapsVies() {
     const closePopover = () => {
         setShowPopover({ showPopover: false, event: undefined });
     };
+
     return (
         <IonPage>
             <IonToolbar className='bg-blue-gradient'>
@@ -141,7 +167,9 @@ export function MapsVies() {
                     </IonButton>
                 </IonButtons>
             </IonToolbar>
-            <MapContainer center={posicion} zoom={zomm} style={{ height: '100%', width: '100%' }}>
+            <MapContainer
+
+                center={posicion} zoom={zomm} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
@@ -176,17 +204,17 @@ export function MapsVies() {
                     onDidDismiss={closePopover}
                 >
                     <IonList lines='none'>
-                        {/* <IonItem button onClick={() => Agregardat([-2.080703, -79.999962])}>
+                        <IonItem button onClick={() => Agregardat([-2.101407, -79.989929])}>
                             <IonLabel>Sergio Toral </IonLabel>
                         </IonItem>
-                        <IonItem button onClick={() => Agregardat([-2.209304, -79.566441,])}>
-                            <IonLabel>Balerio </IonLabel>
-                        </IonItem>*/}
+                        <IonItem button onClick={() => Agregardat([-2.127921, -79.945703])}>
+                            <IonLabel>Pancho Jacome </IonLabel>
+                        </IonItem>
                         <IonItem button onClick={() => Agregardat([-2.080703, -79.999962])}>
                             <IonLabel>Ciudad de Díos</IonLabel>
                         </IonItem>
                         <IonItem button onClick={() => regregsar()}>
-                            <IonLabel>Menú principal</IonLabel>
+                            <IonLabel>Regresar</IonLabel>
                         </IonItem>
                     </IonList>
                 </IonPopover>
