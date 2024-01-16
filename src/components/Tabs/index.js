@@ -15,6 +15,7 @@ import PlanView from "../../pagevdos/Plan";
 import FacturaslisView from "../../pagevdos/Pagos/Faturalist";
 import Paginas from "../../pagevdos/Mapa/pagos";
 import { MapsVies } from "../../pagevdos/Mapa";
+import RegisterViews from "../../pagevdos/Inicio/register";
 const HomeView = Loadable(lazy(() => import('../../pagevdos/Home')))
 export default function TabsView() {
 
@@ -55,6 +56,9 @@ export default function TabsView() {
                         </Route>
                         <Route path="/home/mapas">
                             <MapsVies/>
+                        </Route>
+                        <Route path="/home/registro">
+                            <RegisterViews/>
                         </Route>
                         <Route path="/home" >
                             <Redirect from="/home" to="/home/inicio" />
