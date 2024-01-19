@@ -170,12 +170,9 @@ const Usuario = () => {
                 </tr>
             </thead>
         )
-
     }
-
     const showDatos = () => {
         try {
-
             return usuarios.map((item, index) => {
 
                 return (
@@ -200,10 +197,7 @@ const Usuario = () => {
 
                         <td className=" font-weight-bold">
                             <button className="btn btn-sm btn-success" onClick={() => abrirfactura({ ...item, id: item.Id })}  >Editar</button>
-                        </td>
-                        {/* <td className="text-xs font-weight-bold"  ><code style={{ maxWidth:"400px"}}> <pre>{JSON.stringify(js).replace(/,/g, ",\n")}</pre>
-                        </code> </td>
-                    */}</tr>
+                        </td></tr>
                 )
             });
         } catch (error) { }
