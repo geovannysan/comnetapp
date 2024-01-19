@@ -47,7 +47,7 @@ export const Deviceslist = async (parms) => {
     }
 }
 /* Numero de conectados */
-export const Devicescom=async(parms)=>{
+export const Devicescom = async (parms) => {
     try {
         let { data } = await Axiosroot.post("MovilApi/Devicescont", parms)
         return data
@@ -101,7 +101,7 @@ export const Get_onu_profile_speed = async (parms) => {
     }
 }
 /** lista todos los perfiles profile */
-export const Get_speed_profiles = async ()=>{
+export const Get_speed_profiles = async () => {
     try {
         let { data } = await Axiosroot.get("api/SmartApi/get_speed_profiles")
         return data
@@ -109,10 +109,39 @@ export const Get_speed_profiles = async ()=>{
         return error
     }
 }
-
-export const Soportespeed = async(parms)=>{
+/**
+ * Soportespeed 
+ * verifica estado de servicio del cliente  
+ * @param {,onu_external_id,ideservicio,olt_id,nodo} parms 
+ * @returns {,routers,onudetail,oltport,status,signal}
+ */
+export const Soportespeed = async (parms) => {
     try {
-        let { data } = await Axiosroot.post("MovilApi/Soporte",parms)
+        let { data } = await Axiosroot.post("MovilApi/Soporte", parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+/**
+ * Preregitrouser
+ * Si registra una ficha de solicitud de instalación
+ * @param {*,cliente,cedula,
+ * direccion,
+ * telefono,movil,email,notas,
+ * fecha_instalacion} parms 
+ * @returns  {,estado,mensaje}
+ */
+export const Preregitrouser = async (parms) => {
+    try {
+        let { data, ok,status} = await Axiosroot.post("PreregistroApi/PreRegistro", parms)
+        if (ok) {
+            if (status != 200) {
+                return { estado: "error", mensaje: "Hubo un error" }
+            }
+            return data
+        };
         return data
     } catch (error) {
         return error

@@ -36,6 +36,7 @@ import Pagoslist from './pagevdos/Pagos/Pagoslist';
 import CargarComprobante from './pagevdos/Pagos/Pagarfactura';
 import FacturaslisView from './pagevdos/Pagos/Faturalist';
 import axios from 'axios';
+import RegisterViews from './pagevdos/Inicio/register';
 
 let { LoginView, TabsView, Tesvel } = routes
 
@@ -373,10 +374,14 @@ const App: React.FC = () => {
             <Route path="/mapas">
               <MapsVies />
             </Route>
+            <Route path="/registro">
+              <RegisterViews />
+            </Route>
 
 
             <Route path="/home">
-              {!initialized ? <APPv1 /> : <TabsView />}
+              {!initialized ? <APPv1 /> :
+                <TabsView />}
             </Route>
             <Route path="/test">
               <SpeddView />
@@ -389,9 +394,20 @@ const App: React.FC = () => {
           </IonRouterOutlet>
         </IonReactRouter>
         :
-
-        <LoginView />
-
+        
+          <IonReactRouter >
+          <IonRouterOutlet>
+            <Route path="/registro">
+              <RegisterViews />
+            </Route>
+            <Route exact path="/login">
+              <LoginView />
+            </Route>
+            <Route exact path="/">
+              <Redirect from='*' to="/login" />
+            </Route>
+        </IonRouterOutlet>
+        </IonReactRouter >
 
 
       }

@@ -57,9 +57,6 @@ export default function TabsView() {
                         <Route path="/home/mapas">
                             <MapsVies/>
                         </Route>
-                        <Route path="/home/registro">
-                            <RegisterViews/>
-                        </Route>
                         <Route path="/home" >
                             <Redirect from="/home" to="/home/inicio" />
                         </Route>

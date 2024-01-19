@@ -23,6 +23,8 @@ import { useHistory } from "react-router"
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
+
+
 export default function SoporteView() {
     const infouser = useSelector((state) => state.usuario.user)
     let history = useHistory()
