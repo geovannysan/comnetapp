@@ -45,14 +45,14 @@ const utilities = {
             icon: icons.ReadOutlined,
             target: false
         },
-        datos.respuestatres=="1" ?{
+       {
             id: 'Usuarios',
             title: 'Usuarios',
             type: 'item',
             url: '/usuarios',
             icon: icons.AntDesignOutlined,
             breadcrumbs: true
-        }:""
+        }
     ]
 };
 

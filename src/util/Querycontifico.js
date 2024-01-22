@@ -16,7 +16,7 @@ export const BuscaclienteContifico = async (parms) => {
                     "Authorization": "eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w"
                 }
             })
-            if(!data.length==0){
+            if (!data.length == 0) {
                 return data
             }
             let datas = await axios.get("https://api.contifico.com/sistema/api/v1/persona/?cedula=" + parms.substring(0, parms.length - 3), {
@@ -25,7 +25,7 @@ export const BuscaclienteContifico = async (parms) => {
                 }
             })
             return datas.data
-            
+
         } catch (error) {
             return error
         }
@@ -81,12 +81,12 @@ export const Consultarcedula = async (parms) => {
 
 //no encuentra por ruc ni crea por ruc
 export const CrearClienteContifico = async (parms) => {
-    let parmsme = parms.cedula.trim() == "" || parms.cedula.trim().length>10 ? {
+    let parmsme = parms.cedula.trim() == "" || parms.cedula.trim().length > 10 ? {
         ...parms,
-       // es_extranjero
-    }:{
-            ...parms,
-            es_extranjero: !validarCedula(parms.cedula.trim())//(parms.cedula.trim().length <9)
+        // es_extranjero
+    } : {
+        ...parms,
+        es_extranjero: !validarCedula(parms.cedula.trim())//(parms.cedula.trim().length <9)
     }
     try {
         let { data } = await axios({
@@ -98,7 +98,7 @@ export const CrearClienteContifico = async (parms) => {
         return data
 
     } catch (error) {
-       // console.log(error.response.data);
+        // console.log(error.response.data);
         return error
     }
 }
@@ -207,10 +207,10 @@ export const BuscarProductoContific = async (parms) => {
 export const IncremetoFacturaS = async () => {
     try {
         //https://api.t-ickets.com/mikroti/FactuApi/incrementodos
-       /* let { data } = await axios({
-            method: 'post', url: 'https://portalfac.netbot.ec/incrementov.php'
-        })*/
-        let data = { status: true, result: [{ contadores :0}]}
+        /* let { data } = await axios({
+             method: 'post', url: 'https://portalfac.netbot.ec/incrementov.php'
+         })*/
+        let data = { status: true, result: [{ contadores: 0 }] }
         return data
     } catch (error) {
         return error
@@ -259,15 +259,21 @@ export const PagoFacturacomnet = async (parms) => {
     let nombres = JSON.parse(sessionStorage.getItem("USERLOGIN"))
     console.log(nombres.password, parms)
     try {
-        //https://portalfac.netbot.ec/consultas.php
-        //http://45.224.96.50/api/v1/PaidInvoice
-        let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/PagosdelPortal",
-            {
-                ...parms,
-                "operador":nombres.cedula
-            }
-        )
-        return data
+        let pagos = await axios.get("https://api.t-ickets.com/mikroti/PortalApi/GetInvoice/" + parms.idfactura + "/" + userlog().cedula)
+        if (pagos.data.estado == "exito") {
+            if (pagos.data.factura.estado == "pagado") return { estado: "error", mensaje: "Factura ya se encuentra pagada" }
+            //https://portalfac.netbot.ec/consultas.php
+            //http://45.224.96.50/api/v1/PaidInvoice
+            let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/PagosdelPortal",
+                {
+                    ...parms,
+                    "operador": nombres.cedula
+                }
+            )
+            return data
+        } else {
+            return { estado: "error", mensaje: "no se encontro factura " }
+        }
     } catch (error) {
 
     }
@@ -326,10 +332,10 @@ const AxionConti = axios.create({
     }
 })
 export const ObtenerFactura = async (parms) => {
-    
+
     try {
 
-        let { data } = await AxionConti.get("Facturaid/"+parms)
+        let { data } = await AxionConti.get("Facturaid/" + parms)
         console.log(data)
         return data
     } catch (error) {
