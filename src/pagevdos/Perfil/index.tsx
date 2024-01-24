@@ -4,7 +4,7 @@ import { UserUpdate, UserUpdatePassword, autenticar } from "../../utils/Queryuse
 import AlerModal from "../../components/Modal/Modal"
 import { useDispatch, useSelector } from "react-redux"
 import { setDatosuser, setModal, setlogin } from "../../StoreRedux/Slice/UserSlice"
-import { IonFab, IonFabButton, IonFabList, IonIcon } from "@ionic/react"
+import { IonContent, IonFab, IonFabButton, IonFabList, IonHeader, IonIcon, IonPage } from "@ionic/react"
 import DialogoServicio from "../../components/Alert/Servicios"
 import { chevronUpCircleOutline, key, powerOutline } from "ionicons/icons"
 import { useHistory } from "react-router"
@@ -64,6 +64,7 @@ export default function PerfilViews() {
 
         localStorage.clear()
         dispatch(setlogin({ estado: false }))
+        window.location.href = "/"
         history.push("/")
 
     }
@@ -121,7 +122,8 @@ export default function PerfilViews() {
 
 
     return (
-        <div>
+
+        <IonPage>
             <AlerModal />
             <DialogoServicio
                 handleClose={handleClose}
@@ -162,116 +164,125 @@ export default function PerfilViews() {
                     </IonFabButton>
                 </IonFabList>
             </IonFab>
-            <div className="container-fluid h-20 pb-2 bg-welcome bg-welcome-radius px-0">
-                {/* <!--header welcome-->*/}
-                <div className="container-fluid pt-2 h-35 text-end btn-group-vertical">
-                    <img src="img/speed logo name.png" className="img-fluid ms-auto" style={{ height: "40px" }} alt="" />
-                </div>
-                <div className="container-fluid bg- h-35 bg-welcome-radius px-0">
-                    <div className="container w-75 h-50  ">
-                        <div className="row h-75  ">
-                            <div className="col-5  text-end p-0">
-                                <img src="img/user-avatar.png" style={{ height: "80px" }} className="img-fluid " alt="" />
-                            </div>
-                            <div className="col-4 w-50 btn-group-vertical text-white">
-                                <p></p>
-                                <h5 className="mt-n3">Mis datos</h5>
-                            </div>
-                        </div>
-                        <div onClick={() => setDatosn(true)} className=" cursor  text-white d-flex justify-content-center text-center pt-1 ">
-                            <p>Perfil # {aler.user.id.toString().padStart(7, '0')}</p>
-                            <i className="bi bi-caret-down px-3"></i>
+            <IonHeader className="ion-no-border  " >
 
-                        </div>
+
+                <div className="container-fluid   pb-2 bg-welcome bg-welcome-radius px-0">
+                    {/* <!--header welcome-->*/}
+                    <div className="container-fluid pt-2 h-35 text-end btn-group-vertical">
+                        <img src="img/speed logo name.png" className="img-fluid ms-auto" style={{ height: "40px" }} alt="" />
                     </div>
+                    <div className="container-fluid bg- h-35 bg-welcome-radius px-0">
+                        <div className="container w-75 h-50  ">
+                            <div className="row h-75  ">
+                                <div className="col-5  text-end p-0">
+                                    <img src="img/user-avatar.png" style={{ height: "80px" }} className="img-fluid " alt="" />
+                                </div>
+                                <div className="col-4 w-50 btn-group-vertical text-white">
+                                    <p></p>
+                                    <h5 className="mt-n3">Mis datos</h5>
+                                </div>
+                            </div>
+                            <div onClick={() => setDatosn(true)} className=" cursor  text-white d-flex justify-content-center text-center pt-1 ">
+                                <p>Perfil # {aler.user.id.toString().padStart(7, '0')}</p>
+                                <i className="bi bi-caret-down px-3"></i>
 
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
+            </IonHeader>
             {/*<!--fin header welcome-->*/}
 
+            <IonContent className="ion-padding px-0" style={{
 
-
-            <div className="container-fluid h-80  btn-group-vertical  p-4">
-                {/* <!--card info-->*/}
-                <div className="card h-100 col-12 col-md-8 mx-auto border pb-3  ver border-primary shadow-lg  ">
-                    <div className="px-4 my-auto">
-
-                        <div className="row">
-                            <div className="col-5 btn-group-vertical  text-center">
-                                <img src="img/user-avatar.png" className="img-fluid text-center" style={{ height: "90px" }} alt="" />
-                                <div className="col-sm">
+            }} >
+                <div className="container-fluid  btn-group-vertical px-3  p-4 "
+                    style={{
+                        overflowX: "auto"
+                    }}
+                >
+                    {/* <!--card info-->*/}
+                    <div className="card h-100 col-12 col-md-8 mx-auto border pb-3   border-primary shadow  ">
+                        <div className="px-4 my-auto">
+                            <div className="row">
+                                <div className="col-5 btn-group-vertical  text-center">
+                                    <img src="img/user-avatar.png" className="img-fluid text-center" style={{ height: "90px" }} alt="" />
+                                    <div className="col-sm">
+                                        <button
+                                            className="btn bg-white border d-none border-1 border-dark-subtle text-dark  rounded-pill  shadow-3">
+                                            <div style={{ fontSize: "0.4em" }} className="span">Actualizar Foto de perfil</div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className=" col-7 d-flex justify-content-center flex-column py-1  " 
+                                style={{
+                                    fontWeight: "0.px"
+                                }}>
+                                    <h6 style={{ fontSize: "0.7em" }}>Estado: <span>{dtos.estado}</span> </h6>
+                                    <h6 style={{ fontSize: "0.7em" }}>Saldo pendiente: <span>${dtos.facturacion.total_facturas}</span> </h6>
+                                    <h6 style={{ fontSize: "0.7em" }}>Plan actual: <span>{dtos.servicios[0].perfil}</span> </h6>
+                                    <h6 className="d-none" style={{ fontSize: "0.7em" }}>Contrato #: <span>MONTE-24-HOG</span> </h6>
+                                </div>
+                            </div>
+                            <div className="pt-3 ">
+                                <div className="group ">
+                                    <input type="text" className="textbox"
+                                        name="nombre"
+                                        onChange={(e: any) => handelChange(e.target)}
+                                        value={datos.nombre} required />
+                                    <span className="highlight"></span>
+                                    <span className=" bar"> </span>
+                                    <label>Nombre completo</label>
+                                </div>
+                                <div className="group ">
+                                    <input type="text" className="textbox"
+                                        name="cedula"
+                                        value={datos.cedula} required />
+                                    <span className="highlight"></span>
+                                    <span className=" bar"> </span>
+                                    <label>Número de identidad</label>
+                                </div>
+                                <div className="group ">
+                                    <input type="text" className="textbox"
+                                        name="ddireccion_principali"
+                                        value={datos.direccion_principal} required />
+                                    <span className="highlight"></span>
+                                    <span className=" bar"> </span>
+                                    <label>Direcion principal</label>
+                                </div>
+                                <div className="group ">
+                                    <input type="text" className="textbox disabled"
+                                        name="correo"
+                                        value={datos.correo} required />
+                                    <span className="highlight"></span>
+                                    <span className=" bar"> </span>
+                                    <label>Email</label>
+                                </div>
+                                <div className="group ">
+                                    <input type="text" className="textbox"
+                                        name="telefono"
+                                        onChange={(e: any) => handelChange(e.target)}
+                                        value={datos.telefono} required />
+                                    <span className="highlight"></span>
+                                    <span className=" bar"> </span>
+                                    <label>Telefono</label>
+                                </div>
+                                <div className=" text-center">
                                     <button
-                                        className="btn bg-white border d-none border-1 border-dark-subtle text-dark  rounded-pill  shadow-3">
-                                        <div style={{ fontSize: "0.4em" }} className="span">Actualizar Foto de perfil</div>
-                                    </button>
+                                        onClick={Actualizardatos} className="btn btn-sm  bg-blue-gradient text-white rounded-pill btn-size-1 py-25 shadow-2">
+
+                                        Actualizar</button>
                                 </div>
 
                             </div>
-                            <div className=" col-7 d-flex justify-content-center flex-column py-1  " style={{
-                                fontWeight: "0.px"
-                            }}>
-                                <h6 style={{ fontSize: "0.7em" }}>Estado: <span>{dtos.estado}</span> </h6>
-                                <h6 style={{ fontSize: "0.7em" }}>Saldo pendiente: <span>${dtos.facturacion.total_facturas}</span> </h6>
-                                <h6 style={{ fontSize: "0.7em" }}>Plan actual: <span>{dtos.servicios[0].perfil}</span> </h6>
-                                <h6 className="d-none" style={{ fontSize: "0.7em" }}>Contrato #: <span>MONTE-24-HOG</span> </h6>
-                            </div>
                         </div>
-                        <div className="pt-3 ">
-                            <div className="group ">
-                                <input type="text" className="textbox"
-                                    name="nombre"
-                                    onChange={(e: any) => handelChange(e.target)}
-                                    value={datos.nombre} required />
-                                <span className="highlight"></span>
-                                <span className=" bar"> </span>
-                                <label>Nombre completo</label>
-                            </div>
-                            <div className="group ">
-                                <input type="text" className="textbox"
-                                    name="cedula"
-                                    value={datos.cedula} required />
-                                <span className="highlight"></span>
-                                <span className=" bar"> </span>
-                                <label>Número de identidad</label>
-                            </div>
-                            <div className="group ">
-                                <input type="text" className="textbox"
-                                    name="ddireccion_principali"
-                                    value={datos.direccion_principal} required />
-                                <span className="highlight"></span>
-                                <span className=" bar"> </span>
-                                <label>Direcion principal</label>
-                            </div>
-                            <div className="group ">
-                                <input type="text" className="textbox disabled"
-                                    name="correo"
-                                    value={datos.correo} required />
-                                <span className="highlight"></span>
-                                <span className=" bar"> </span>
-                                <label>Email</label>
-                            </div>
-                            <div className="group ">
-                                <input type="text" className="textbox"
-                                    name="telefono"
-                                    onChange={(e: any) => handelChange(e.target)}
-                                    value={datos.telefono} required />
-                                <span className="highlight"></span>
-                                <span className=" bar"> </span>
-                                <label>Telefono</label>
-                            </div>
-                            <div className=" text-center">
-                                <button
-                                    onClick={Actualizardatos} className="btn btn-sm  bg-blue-gradient text-white rounded-pill btn-size-1 py-25 shadow-2">
 
-                                    Actualizar</button>
-                            </div>
-
-                        </div>
                     </div>
 
+
                 </div>
-
-
-            </div>
-        </div>)
+            </IonContent>
+        </IonPage>)
 }

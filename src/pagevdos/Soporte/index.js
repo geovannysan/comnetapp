@@ -19,6 +19,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { add, close, pulse, radioOutline } from "ionicons/icons"
 import { useHistory } from "react-router"
+import TicketView from "./nuevotickte"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -36,6 +37,7 @@ export default function SoporteView() {
     const [present] = useIonToast();
     const [btn, setBtn] = useState(false)
     const [ticktes, setTicktes] = useState([])
+    const [tiketopen, seticktemoadal]=useState(false)
     const [open, setOpen] = React.useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const handleClickOpen = () => {
@@ -281,7 +283,7 @@ export default function SoporteView() {
 
                                     Newtickte(info).then(oput => {
                                         // dismiss()
-                                        if (ouput.estado = "exito") {
+                                        if (oput.estado = "exito") {
                                             dispat(setModal({ nombre: "", payloa: "" }))
                                             present({
                                                 message: 'Se a creando un ticket de soporte',
@@ -334,7 +336,10 @@ export default function SoporteView() {
         })
 
     }
-
+    function Abrirtickte(){
+        setIsOpen(false)
+        seticktemoadal(true)
+    }
     return (
         <div className="container-fluid px-0 vh-100">
 
@@ -343,26 +348,15 @@ export default function SoporteView() {
                     <IonIcon icon={radioOutline}></IonIcon>
                 </IonFabButton>
             </IonFab>}
-
-            <IonModal isOpen={false}>
-
-                {/*
-                cliente
-                departamento
-                Asunto
-                cliente
-                fecha
-                turno
-                asunto 
-                */}
-
-
-            </IonModal>
+            <TicketView 
+                tiketopen={tiketopen}
+                 seticktemoadal={seticktemoadal}
+                />
 
             <IonModal isOpen={isOpen}
                 onDidDismiss={() => setIsOpen(false)}
                 initialBreakpoint={0.50}
-                backdropDismiss={false}
+                backdropDismiss={true}
                 breakpoints={[0, 0.25, 0.5, 0.75, 1]}>
                 <IonHeader className="bg-welcome">
                     <IonToolbar className="pt-3"
@@ -372,7 +366,7 @@ export default function SoporteView() {
                     >
                         <IonTitle className="text-white">Tickets</IonTitle>
                         <IonButtons slot="secondary" className="text-white">
-                            <IonButton fill="outline">
+                            <IonButton fill="outline" onClick={Abrirtickte}>
                                 <IonIcon slot="end" color="primary" icon={add}></IonIcon>
                                 Nuevo
                             </IonButton>

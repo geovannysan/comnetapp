@@ -254,6 +254,9 @@ const App: React.FC = () => {
   };
   //history.push("/home")
   Network.addListener('networkStatusChange', status => {
+    let datos = userlog()
+    console.log(datos)
+    if (datos == null) return
     if (!initialized) {
       console.log("nuevos")
 

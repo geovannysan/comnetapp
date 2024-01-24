@@ -27,39 +27,6 @@ export default function ModalViews(props) {
     return (
 
         <Dialog open={showAlert} maxWidth="xs" TransitionComponent={Transition} onClose={() => setShowAlert("")}>
-            {/*<Modal show={showAlert}
-            id="example-modal2"
-            backdrop={false}
-            centered
-        >
-            <IonHeader className="  border-0">
-                <IonToolbar className="ion-toolbar-transparent" >
-
-                    <IonButtons slot="end" onClick={() => setShowAlert("")}>
-                        <IonButton onClick={() => setShowAlert("")}>
-                            <IonIcon md={close} />
-                        </IonButton>
-                    </IonButtons>
-                </IonToolbar>
-            </IonHeader>
-            <Modal.Body>
-          
-                <div className="pt-5 px-2">
-                    <IonItem>
-                        <IonLabel position="floating">{header}</IonLabel>
-                        <IonInput
-                            id="custom-input"
-                            maxlength={20}
-                            value={wifi}
-                            onIonChange={(e) => setWifi(e.detail.value)}
-                        />
-                    </IonItem>
-                    <IonButton expand="full" onClick={() => submitHAndel(wifi)}  >Cambiar</IonButton>
-
-                </div>
-
-    </Modal.Body0>
-{ /* </Modal>*}*/}
             <DialogTitle>{header}</DialogTitle>
             <DialogContent>
                 <DialogContentText>

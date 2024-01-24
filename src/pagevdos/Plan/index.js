@@ -239,6 +239,24 @@ export default function PlanView() {
         }).catch(err => {
 
         })
+        Get_onu_signal(obtenervaariables(tick.servicios[0].smartolt).onu_external_id).then(ouput => {
+            if (ouput.status) {
+                console.log("sign", ouput)
+                dispat(setSeñal(ouput))
+                /*Gt_onu_status(infouser.servicios[0].idperfil).then(ouputv => {
+                     console.log(ouputv)
+                     if (ouputv.status) {
+                         console.log({
+                             onu_signal_value: ouput.onu_signal_value,
+                             onu_status: ouputv.onu_status,
+                             onu_signal: ouput.onu_signal
+                         })
+                         dispat(setSeñal(ouput))
+                     }
+                 })*/
+            }
+        })
+    
         //Soporte(1)
     }, [infouser])
    
@@ -426,7 +444,7 @@ export default function PlanView() {
                                             <span className="text-muted" 
                                             style={{
                                                 fontSize:"1.4vh"
-                                                /*"font-size: 1.4vh;"*/}}>Señal: <span>-23.65 dBm</span></span>
+                                                /*"font-size: 1.4vh;"*/}}>Señal: <span>{señal.onu_signal_1490}</span></span>
                                         </li>
                                         <a onClick={() => history.push("/home/soporte")} className="bg-white shadow-1 none-style border px-4 py-1 rounded-pill text-center text-celeste" 
                                         style={{

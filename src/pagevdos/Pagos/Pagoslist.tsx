@@ -13,7 +13,7 @@ export default function Pagoslist() {
     const [facturacion, setFacturaci] = useState([])
     function enviarFactura(e:any){
         dispatch(setFactura({...e}))
-        history.push("/Comprobante")
+        history.push("/home/Comprobante")
     }
     useEffect(() => {
         MostrarFacturas(datos.id).then(salida => {

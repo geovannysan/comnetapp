@@ -9,6 +9,7 @@ import { ListarFactura, Logearusar, autenticar } from '../../utils/Queryuser';
 import { arrowBack, arrowForwardCircleOutline, eye, eyeOff } from 'ionicons/icons';
 export default function LoginView() {
     let usedispat = useDispatch()
+    let historys = useHistory()
     const [present] = useIonToast();
     const [datos, setDatos] = useState({
         cedula: "",
@@ -28,8 +29,8 @@ export default function LoginView() {
                     })
                     localStorage.setItem("Perfiles", JSON.stringify([...datos]))
                     localStorage.setItem("USERLOGIN", JSON.stringify({ ...datos[0] }))
-                    window.location.href = "/home"
-                    //historys.push("/home/soporte")
+                    //window.location.href = "/home/inicio"
+                    historys.push("/home/inicio")
                     usedispat(setDatosuser(datos[0]))
                     usedispat(setlogin({ estado: true }))
                 } else {
@@ -63,7 +64,7 @@ export default function LoginView() {
     
     return (
         <div className="container-fluid px-0 vh-100">
-            <div className="container-fluid h-40 bg-welcome bg-welcome-radius ">
+            <div className="container-fluid h-35 bg-welcome bg-welcome-radius ">
                 {/*<!--header welcome-->*/}
                 <div className="container-fluid btn-group-vertical h-100 text-center px-0 ">
                     <div className="col-4 col-md-3 mx-auto"><img src="img/btn speed welcome.png" className="img-fluid" alt="" /></div>
@@ -117,30 +118,38 @@ export default function LoginView() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-12 text-center mt-2">
+                    <div className="row">
+                    <div className="col-6 text-center mt-2">
                         <button
-                            className="btn blue-gradient text-white rounded-pill btn-size-1 py-25 shadow-2"
+                        style={{
+                            width:"120px"
+                        }}
+                                className="btn blue-gradient text-white rounded-pill  py-25 shadow-2"
                             onClick={Iniciarsession}>
                                 Ingresar
                         </button>
                     </div>
+                    <div className="col-6 text-center mt-2">
+                        <button style={{
+                            width:"120px"
+                        }}
+                            className="btn blue-gradient text-white rounded-pill py-25 shadow-2"
+                            onClick={Registro}>
+                            Contratar
+                        </button>
+                    </div>
+                    </div>
                     <div className=" mx-auto pt-2 ">
                         <div className="col-12">
                             <div className="form-check form-switch  d-flex justify-content-center align-items-center ">
-                                <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
+                                <input className="form-check-input" type="checkbox" role="switch" checked={true} id="flexSwitchCheckDefault" />
                                 <label style={{ fontSize: " 0.6em" }} className="form-check-label pt-1 px-1 fw-bold"
                                 >Mantener la sesión
                                     activa</label>
                             </div>
                         </div>
                     </div>
-                    <div className="col-12 text-center mt-2">
-                        <button
-                            className="btn blue-gradient text-white rounded-pill btn-size-1 py-25 shadow-2"
-                            onClick={Registro}>
-                            Prerregistro
-                        </button>
-                    </div>
+                    
 
                 </div>
             </div>

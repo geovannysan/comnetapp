@@ -261,8 +261,8 @@ export default function RegisterViews() {
     }
     return (
         <IonPage>
-            <IonContent>
-                <div className="container-fluid px-0 h-100">
+            <IonContent >
+                <div className="container-fluid px-0 vh-100">
 
                     <div className="container-fluid  h-10 bg-welcome bg-welcome-radius ">
                         {/*<!--header welcome-->*/}
@@ -275,19 +275,21 @@ export default function RegisterViews() {
                         </div>
                     </div>
                     {/*!--fin header welcome-->*/}
+
+
                     <div className="container-fluid h-25  ">
                         <div className="d-flex justify-content-center align-items-end h-20  pb-1">
                             <div className="">
-                                <h4 style={{ fontSize: "1.5em" }} className="fw-bold">Solicitud de registro de servicio </h4>
+                                <h4 style={{ fontSize: "1.5em" }} className="fw-bold d-none">Solicitud de registro de servicio </h4>
                             </div>
 
                         </div>
-                        <div className="container-fluid btn-group-vertical  d-flex  align-items-center "
+                        <div className="row   d-flex  align-items-center "
                             style={{
-                                overflow: "scroll"
+                                overflowX: "scroll"
                             }}
                         >
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <input type="text"
                                         name="nombrecont"
@@ -299,7 +301,7 @@ export default function RegisterViews() {
                                     <label>Apellidos y Nombres</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <input type="number"
                                         autoComplete="false"
@@ -314,7 +316,7 @@ export default function RegisterViews() {
                                     <label>Cédula</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <input type="text"
                                         name="phone1"
@@ -326,7 +328,7 @@ export default function RegisterViews() {
                                     <label>Télefono 1</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <input type="text"
                                         name="phone2" onChange={(e) => handelchange(e)}
@@ -337,7 +339,7 @@ export default function RegisterViews() {
                                     <label>Télefono 2</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <input type="text"
                                         name="emailcont"
@@ -349,7 +351,7 @@ export default function RegisterViews() {
                                     <label>Correo electrónico</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <input type="text"
                                         name="direccioncont"
@@ -361,7 +363,7 @@ export default function RegisterViews() {
                                     <label>Dirección del domicilio. Mz. Solar</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <textarea
                                         name="indicaciones"
@@ -373,7 +375,7 @@ export default function RegisterViews() {
                                     <label>Indícanos brevemente cómo llegar a tu domicilio. (Un punto de referencia)</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <input
                                         name="nombreper"
@@ -385,7 +387,7 @@ export default function RegisterViews() {
                                     <label>Nombre de una Referencia Personal</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <input
                                         name="phoneper"
@@ -397,7 +399,7 @@ export default function RegisterViews() {
                                     <label>Télefono</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <input
                                         name="nombrefam"
@@ -409,7 +411,7 @@ export default function RegisterViews() {
                                     <label>Nombre de una Referencia Personal</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <input
                                         name="phonefam"
@@ -421,7 +423,7 @@ export default function RegisterViews() {
                                     <label>Télefono</label>
                                 </div>
                             </div>
-                            <div className="col-10">
+                            <div className="col-12">
                                 <div className="group">
                                     <IonSelect name="planes"
                                         onIonChange={(e) => handelchange(e)}
@@ -447,31 +449,40 @@ export default function RegisterViews() {
                                 <div className='row'>
                                     <div className='col-6'>
                                         <button
+                                            style={{
+                                                width: "120px"
+                                            }}
                                             onClick={onsubmint}
-                                            className="btn blue-gradient text-white rounded-pill btn-size-1 py-25 shadow-2">
+                                            className="btn blue-gradient text-white rounded-pill py-25 shadow-2">
                                             Registrar
                                         </button>
                                     </div>
                                     <div className='col-6'>
                                         <button
-                                            onClick={()=>history.goBack()}
-                                            className="btn bg-danger text-white rounded-pill btn-size-1 py-25 shadow-2">
+                                            style={{
+                                                width: "120px"
+                                            }}
+                                            onClick={() => history.goBack()}
+                                            className="btn bg-danger text-white rounded-pill py-25 shadow-2">
                                             Atrás
                                         </button>
                                     </div>
                                 </div>
-                                
+
                             </div>
 
 
                         </div>
                     </div>
                     {/*<!--fin card info-->*/}
+
+
                     <div className="d-none container-fluid h-10 bg-blue-gradient position-absolute bottom-0">
                         <div className="container-fluid btn-group-vertical  h-100">
                             <div className="col-12 text-center text-white fs-13"> COMPUTECNICSNET S.A </div>
                         </div>
                     </div>
+
                 </div>
             </IonContent>
         </IonPage>

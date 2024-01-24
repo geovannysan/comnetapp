@@ -147,7 +147,7 @@ export default function PAgosViewa() {
 
     function ReportarComprobante() {
         Pagados()
-        history.push("/Comprobante")
+        history.push("/home/Comprobante")
         setAlert(false)
 
     }
