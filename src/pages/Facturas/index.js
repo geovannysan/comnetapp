@@ -34,12 +34,7 @@ const FacturasView = () => {
             let facturas = []
             let facturaser = []
 
-            await fact.data.filter((elemento) => {
-                const fechaElemento = new Date(elemento.fecha); // Asegúrate de ajustar la propiedad 'fecha' según la estructura real de tu objeto
-
-                // Comprobar si la fecha está dentro del rango del mes actual
-                return fechaElemento >= primerDiaDelMes && fechaElemento <= ultimoDiaDelMes;
-            }).map(async (e) => {
+            await fact.data.map(async (e) => {
                 let fact = JSON.parse(e.mensajes).parame
                 console.log(fact)
                 if (fact.persona != undefined) {
@@ -51,12 +46,7 @@ const FacturasView = () => {
             })
 
            // console.log(actual)
-            datos.data.filter((elemento) => {
-                const fechaElemento = new Date(elemento.fecha); // Asegúrate de ajustar la propiedad 'fecha' según la estructura real de tu objeto
-
-                // Comprobar si la fecha está dentro del rango del mes actual
-                return fechaElemento >= primerDiaDelMes && fechaElemento <= ultimoDiaDelMes;
-            }).map(async (e) => {
+            datos.data.map(async (e) => {
                 let datos = JSON.parse(e.mensajes)
                 if (datos.persona != undefined) {
 
