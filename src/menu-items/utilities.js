@@ -24,7 +24,7 @@ const icons = {
 };
 let datos = userlog()
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
-
+console.log(datos)
 const utilities = {
     id: 'utilities',
     title: 'Utilities',
@@ -45,14 +45,14 @@ const utilities = {
             icon: icons.ReadOutlined,
             target: false
         },
-       {
+        (datos!=null && datos.respuestatres==1)?{
             id: 'Usuarios',
             title: 'Usuarios',
             type: 'item',
             url: '/usuarios',
             icon: icons.AntDesignOutlined,
             breadcrumbs: true
-        }
+        }:""
     ]
 };
 
