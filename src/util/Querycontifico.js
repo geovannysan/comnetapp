@@ -263,8 +263,6 @@ export const PagoFacturacomnet = async (parms) => {
         let pagos = await axios.get("https://api.t-ickets.com/mikroti/PortalApi/GetInvoice/" + parms.idfactura + "/" + userlog().cedula)
         if (pagos.data.estado == "exito") {
             if (pagos.data.factura.estado == "pagado") return { estado: "error", mensaje: "Factura ya se encuentra pagada" }
-            //https://portalfac.netbot.ec/consultas.php
-            //http://45.224.96.50/api/v1/PaidInvoice
             let { data } = await axios.post("https://api.t-ickets.com/mikroti/PortalApi/PagosdelPortal",
                 {
                     ...parms,

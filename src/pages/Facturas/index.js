@@ -36,7 +36,7 @@ const FacturasView = () => {
 
             await fact.data.map(async (e) => {
                 let fact = JSON.parse(e.mensajes).parame
-                console.log(fact)
+              
                 if (fact.persona != undefined) {
 
                     facturaser.push({ ...e, mensajes: fact, cliente: fact.persona["cedula"] })
@@ -64,7 +64,7 @@ const FacturasView = () => {
                 return { ...e }
             })*/
             //if (datos.estado) setFactura([...factura, ...datos.data])
-            console.log(facturas)
+          
             if (fact.estado && datos.estado) setFacturaerr([...facturaerr, ...facturaser.sort((a, b) => b.Id - a.Id)])
             if (fact.estado && datos.estado) setFactura([...factura, ...facturas.sort((a, b) => b.Id - a.Id)])
             if (!$.fn.DataTable.isDataTable("#doc")) {
@@ -205,9 +205,29 @@ const FacturasView = () => {
         history("/Facturaid")
     }
     function Emitir() {
+        //setFacturaerr([])
         Arreglarerror().then(ouput => {
             console.log(ouput)
-            window.location.reload()
+            let facturaser = []
+            ListarFacturas({
+                "estado": "0",
+                "idfactura": ""
+            }).then(fact=>{
+                if (fact.data.length>0) return
+                fact.data.map(async (e) => {
+                    let fact = JSON.parse(e.mensajes).parame
+
+                    if (fact.persona != undefined) {
+
+                        facturaser.push({ ...e, mensajes: fact, cliente: fact.persona["cedula"] })
+                    } else {
+                        facturaser.push({ ...e, mensajes: fact, cliente: fact.cliente["cedula"] })
+                    }
+                })
+                if (fact.estado) setFacturaerr([...facturaerr, ...facturaser.sort((a, b) => b.Id - a.Id)])
+
+            })
+            
         }).catch(error => {
             console.log(error)
         })
@@ -401,7 +421,7 @@ const FacturasView = () => {
                         </table>
                     </div>
                     <div className={!(tab == 2) ? "d-none" : "tab-pane fade show active"} id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                        <table id={"doc2"} className="table table-striped "
+                        {facturaerr.length==0?"": <table id={"doc2"} className="table table-striped "
                             style={{
                                 width: "100%",
                             }}>
@@ -410,7 +430,7 @@ const FacturasView = () => {
                             <tbody>
                                 {showDatoserr()}
                             </tbody>
-                        </table>
+                        </table>}
                     </div>
                 </div>
 
