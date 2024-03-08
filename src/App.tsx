@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 import { userlog } from './utils/User';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { setDatosuser, setlogin } from './StoreRedux/Slice/UserSlice';
-import { TokenOnesigna, autenticar } from './utils/Queryuser';
+import { TokenOnesigna, autenticar, getAppVersion } from './utils/Queryuser';
 import OneSignal from 'onesignal-cordova-plugin';
 import { initializeOneSignal } from './Onesignajs'
 import { getPlatforms } from '@ionic/react';
@@ -304,12 +304,19 @@ const App: React.FC = () => {
     // StatusBar.setBackgroundColor({ color: '#0000' });
     // StatusBar.setStyle()
     // StatusBar.setStyle({ Style.dark: 'dark' });
+   /* getAppVersion().then(oupt => {
+      if(oupt.estado){
+
+      }
+      console.log(oupt)
+    })*/
     NuevosDatos()
 
 
     let datos = userlog()
     console.log(datos)
     setStatusBarStyleLight()
+
     if (datos != null) {
       userdispach(setlogin({ estado: true }))
       autenticar(datos.cedula).then(salida => {
@@ -397,8 +404,8 @@ const App: React.FC = () => {
           </IonRouterOutlet>
         </IonReactRouter>
         :
-        
-          <IonReactRouter >
+
+        <IonReactRouter >
           <IonRouterOutlet>
             <Route path="/registro">
               <RegisterViews />
@@ -409,7 +416,7 @@ const App: React.FC = () => {
             <Route exact path="/">
               <Redirect from='*' to="/login" />
             </Route>
-        </IonRouterOutlet>
+          </IonRouterOutlet>
         </IonReactRouter >
 
 

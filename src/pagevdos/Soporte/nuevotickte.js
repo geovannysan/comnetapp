@@ -32,7 +32,7 @@ export default function TicketView(props) {
             "token": "",
             "idcliente": cliente.id,
             "solicitante": cliente.nombre,
-            "fechavisita": moment().format('YYYY-MM-D'),
+            "fechavisita": moment().format('YYYY-MM-DD'),
             "agendado": "PAGINA WEB",
             ...tiket,
             "contenido": tiket.asunto + " " + cliente.nombre + " " + tiket.contenido

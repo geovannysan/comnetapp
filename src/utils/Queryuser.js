@@ -22,6 +22,14 @@ export const autenticar = async (parms) => {
         return error
     }
 }
+export const getAppVersion = async () => {
+    try {
+        let { data } = await Axiosroot.get("MovilApi/app")
+        return data
+    } catch (error) {
+        return error
+    }
+}
 export const Logearusar = async (parms) => {
     try {
         console.log(Hostv1 + "/Login", parms)

@@ -30,7 +30,7 @@ export default function DeviceView(props: any, recargar: void) {
                     //console.log(ouput)
                     if (ouput.length > 0) {
                         console.log("error list", ouput)
-                        let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
+                        let dtso = ouput[0][0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
                         const arrayDeObjetos: any = Object.keys(dtso).filter((key: any) => !isNaN(key)).map((clave) => ({
                             host: clave,
                             ...dtso[clave]
@@ -56,7 +56,9 @@ export default function DeviceView(props: any, recargar: void) {
             //console.log(ouput)
             if (ouput.length > 0) {
                 console.log("error list", ouput)
-                let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
+                console.log(ouput[0].InternetGatewayDevice)
+                let dtso = ouput[0][0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
+                console.log(dtso)
                 const arrayDeObjetos: any = Object.keys(dtso).filter((key: any) => !isNaN(key)).map((clave) => ({
                     host: clave,
                     ...dtso[clave]
