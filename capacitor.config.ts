@@ -5,11 +5,12 @@ const config: CapacitorConfig = {
   appName: 'speed',
   webDir: 'build',
   bundledWebRuntime: false,
+  server: {
+    androidScheme: 'https'
+  },
   plugins: {
     LocalNotifications: {
-     
       iconColor: "#488AFF",
-     
     },
   },
   

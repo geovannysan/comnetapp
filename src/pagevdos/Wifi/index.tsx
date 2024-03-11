@@ -41,6 +41,7 @@ export default function WifiView() {
              spinner: "bubbles",
          })*/
         let campo = datos.ID_EXTERNO_ONU.includes("IGD") ? "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_TP_PreSharedKey" : "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.PreSharedKey.1.PreSharedKey"
+       
         Cambiarclave({
             "info": datos.ID_EXTERNO_ONU,
             "booleas": e,
@@ -106,7 +107,7 @@ export default function WifiView() {
             console.log(ou)
             Refresssi({
                 "info": datos.ID_EXTERNO_ONU,
-                "booleas": "" + !wifi
+                "booleas": "InternetGatewayDevice.LANDevice.1.WLANConfiguration.*.SSID" 
             }).then(salida => {
                 cargarssi()
                 setShowAlert("")
