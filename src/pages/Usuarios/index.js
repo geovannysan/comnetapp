@@ -11,12 +11,25 @@ import {
     notification,
 } from "antd"
 import { useEffect, useState } from "react"
-import { Crear_Usuario_Portal, Lista_Usuario_Portal } from "util/Queryportal"
+import { Actualiza_Usuario_Portal, Crear_Usuario_Portal, Lista_Usuario_Portal } from "util/Queryportal"
 
 const Usuario = () => {
     let [usuarios, setUsuarios] = useState([])
+    let [id, setID] = useState({
+
+    })
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpenid, setIsModalOpenid] = useState(false);
     const [api, contextHolder] = notification.useNotification();
+    const [user, setDatos] = useState({
+        "username": "",
+        "cedula": "",
+        "password": "",
+        "tocken": "",
+        "nombre": "",
+        "permiso": ""
+
+    })
     const openNotificationWithIcon = (type, mensaje, description) => {
         api[type]({
             message: "" + mensaje,
@@ -25,6 +38,21 @@ const Usuario = () => {
             placement: 'bottom'
         });
     };
+
+    function eliminarPropiedadesVacias(objeto) {
+        for (let clave in objeto) {
+            if (
+                objeto[clave] === null ||
+                objeto[clave] === undefined ||
+                objeto[clave] === "" ||
+                (Array.isArray(objeto[clave]) && objeto[clave].length === 0) ||
+                (typeof objeto[clave] === "object" && Object.keys(objeto[clave]).length === 0)
+            ) {
+                delete objeto[clave];
+            }
+        }
+        return objeto;
+    }
 
     useEffect(() => {
         Lista_Usuario_Portal().then(ouput => {
@@ -171,6 +199,7 @@ const Usuario = () => {
             </thead>
         )
     }
+
     const showDatos = () => {
         try {
             return usuarios.map((item, index) => {
@@ -204,10 +233,20 @@ const Usuario = () => {
     }
 
     const showModal = () => {
+        setID(0)
+        setDatos({
+            "username": "",
+            "cedula": "",
+            "password": "",
+            "tocken": "",
+            "nombre": "",
+            "permiso": ""
+
+        })
         setIsModalOpen(true);
     };
-
     const handleOk = () => {
+        setID(0)
         setIsModalOpen(false);
     };
 
@@ -215,6 +254,16 @@ const Usuario = () => {
         setIsModalOpen(false);
     };
 
+
+    const handleOkid = () => {
+
+
+        setIsModalOpenid(false);
+    };
+
+    const handleCancelid = () => {
+        setIsModalOpenid(false);
+    };
     const [componentSize, setComponentSize] = useState('default');
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);
@@ -224,27 +273,82 @@ const Usuario = () => {
         let params = {
             "username": values.username,
             "cedula": values.cedula,
-            "password": values.nombre,
+            "password": values.password,
             "tocken": values.tocken,
             "nombre": values.nombre,
             "permiso": values.permiso
         }
-        Crear_Usuario_Portal(params).then(ouput => {
-            if (ouput.status) {
-                handleCancel()
-                window.location.reload()
-            } else {
-                openNotificationWithIcon('error', "Alerta", ouput.mensaje)
+      //  const objetoSinPropiedadesVacias = eliminarPropiedadesVacias(params);
+        //console.log(objetoSinPropiedadesVacias)
+        //return
+        if (id == 0) {
+            Crear_Usuario_Portal(params).then(ouput => {
+                if (ouput.status) {
+                    handleCancel()
+                    window.location.reload()
+                } else {
+                    openNotificationWithIcon('error', "Alerta", ouput.mensaje)
 
 
+                }
+            }).catch(err => {
+                console.error(err)
+            })
+        } else {
+            let paramss = {
+                "username": values.username,
+                "cedula": values.cedula,
+                "password": values.password,
+                "campo": values.tocken,
+                "repuestauno": values.nombre,
+                "respuestatres": values.permiso
             }
-        }).catch(err => {
-            console.error(err)
-        })
+            const onjetonuevo = eliminarPropiedadesVacias(paramss);
+            console.log(onjetonuevo)
+            Actualiza_Usuario_Portal(id, onjetonuevo).then(ouput => {
+                console.log(ouput)
+                if (ouput.status) {
+                    handleCancel()
+                    window.location.reload()
+                } else {
+                    openNotificationWithIcon('error', "Alerta", ouput.mensaje)
+                }
+            }).catch(err => {
+                 consol.log(ouput)
+                console.error(err)
+            })
+        }
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
+    const [inputValue, setInputValue] = useState('');
+    const abrirfactura = (e) => {
+        setDatos({
+            "username": e.username,
+            "cedula": e.cedula,
+            "password": "",
+            "tocken": e.campo,
+            "nombre": e.repuestauno,
+            "permiso": e.respuestatres
+        })
+        setID(e.Id)
+        setIsModalOpen(true);
+        console.log(e)
+        const valorDinamico = 'Valor dinámico';
+        //setInputValue(valorDinamico);
+
+        //  setIsModalOpenid(true);
+        // user.value = "" + e.username
+        /*setDatos({
+            "username": e.username,
+            "cedula": e.cedula,
+            "password": e.password,
+            "tocken": "",
+            "nombre": "",
+            "permiso": ""
+        })*/
+    }
 
     return (
         <div>
@@ -253,13 +357,16 @@ const Usuario = () => {
                     Nuevo usuario
                 </button>
             </div>
-            <Modal title="Datos de usuarios" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            {/*
+                (id == 0) ? user : ""*/
+            }
+            {isModalOpen ? <Modal title="Datos de usuarios" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <div>
                     <Form
                         labelCol={{ span: 4 }}
                         wrapperCol={{ span: 14 }}
                         layout="horizontal"
-                        initialValues={{ size: componentSize }}
+                        initialValues={id == 0 ? { size: componentSize, } : { size: "default", ...user, }}
                         onValuesChange={onFormLayoutChange}
                         size={componentSize}
                         style={{ maxWidth: 600 }}
@@ -289,12 +396,12 @@ const Usuario = () => {
                                     message: 'Complete el usuario',
                                 },
                             ]}>
-                            <Input />
+                            <Input id="username" />
                         </Form.Item>
                         <Form.Item label="Cédula" name="cedula"
                             rules={[
                                 {
-                                    required: true,
+                                    required: id == 0 ? true : false,
                                     message: 'Complete la cédula',
                                 },
                             ]}
@@ -305,7 +412,7 @@ const Usuario = () => {
 
                             rules={[
                                 {
-                                    required: true,
+                                    required: id == 0 ? true : false,
                                     message: 'Compete el token Api',
                                 },
                             ]}>
@@ -324,7 +431,7 @@ const Usuario = () => {
                         <Form.Item label="perfil" name="permiso"
                             rules={[
                                 {
-                                    required: true,
+                                    required: id == 0 ? true : false,
                                     message: 'Seleccione un perfil',
                                 },
                             ]} >
@@ -337,7 +444,7 @@ const Usuario = () => {
 
                             rules={[
                                 {
-                                    required: true,
+                                    required: id == 0 ? true : false,
                                     message: 'Complete la contraseña',
                                 },
                             ]}
@@ -351,7 +458,8 @@ const Usuario = () => {
                         </Form.Item>
                     </Form>
                 </div>
-            </Modal>
+            </Modal> : ""}
+
             <MainCard contentSX={{}}>
                 <div className="tab-content" id="pills-tabContent">
                     <div id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">

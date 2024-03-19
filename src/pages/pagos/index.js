@@ -33,6 +33,7 @@ import { CreaLaFacturapor, Facturaid, MostrarFacturas, autenticar } from 'util/Q
 import { BuscaclienteContifico, BuscarProductoContific, Consultarcedula, CreaProducto, CrearClienteContifico, IncremetoCon, IncremetoFacturaS, PagoFacturacomnet } from 'util/Querycontifico';
 import jsPDF from "jspdf"
 import { Mes, userlog } from 'util/User';
+import { Arreglarerror, ListarFacturas } from 'util/Querireport';
 
 function SimpleDialogop(props) {
     const { onClose, open, servicios } = props;
@@ -313,29 +314,11 @@ const PagosView = () => {
 
 
 
-        // doc.text(3, 32, descri.items[0]["descrp"])
-        /*  doc.text(3, 25, 'Fecha Registro');
-          doc.text(3, 30, '_______________________________');
-          doc.text(3, 80, 'Recibí conforme');
-          doc.text(3, 85, 'Concierto       LOC	CANT.');
-         /* JSON.parse(nombres.info_concierto).map(e => {
-              doc.text(10, pagnum + 5, "" + LocalidadPrecio(e.idespaciolocalida, e.id_localidad) + "       " + parseInt(e.cantidad) * parseFloat(ListarPrecio(e.idespaciolocalida, e.id_localidad))
-              );
-          })*/
-
-
-
-
-        // doc.save('comprobante.pdf');
-        //doc.autoPrint();
-
         doc.output('dataurlnewwindow');
     }
     function validarCorreoElectronico(correo) {
-        // Expresión regular para validar una dirección de correo electrónico
         const expresionRegularCorreo = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     
-        // Utilizamos test() para verificar si el correo coincide con la expresión regular
         return expresionRegularCorreo.test(correo);
     }
     function buscar() {
@@ -343,227 +326,7 @@ const PagosView = () => {
         seTlist([])
         document.getElementById("pagos") != undefined ? document.getElementById("pagos").reset() : ""
         if (cedula.trim() == "") return
-        /* if (cedula.trim().length > 5 && cedula.trim().length < 10) {
-             setDatos({
-                 total: "",
-                 transacion: "",
-                 lugarpago: "",
-                 asunto: "",
-                 fecha: "",
-                 cedula: "",
-                 tipo: "",
-                 Factura: "",
-                 linkimagen: "",
-                 mensaje: ""
-             })
-             setBusca(false)
-             setOpen(true)
-             setMensaje({
-                 mensaje: "Busacando Cliente portal",
-                 estado: true
-             })
-             autenticar(cedula.trim()).then(ouput => {
-                 console.log(ouput)
-                 setimpri(false)
-                 if (ouput.estado === "exito") {
- 
-                     setMensaje({
-                         mensaje: "Buscando Facturas comnet",
-                         estado: true
-                     })
-                     seTlist([])
-                     setSingleSelect({ value: "", label: "" })
-                     let infor = ouput.datos.find(e => e.estado == "ACTIVO")
-                     console.log(infor.id)
-                     // if()
-                     MostrarFacturas(infor.id).then(ouput => {
-                         console.log(ouput)
-                         if (ouput.estado === "exito") {
-                             // dismiss()
-                             setOpen(false)
-                             console.log(ouput)
-                             let datos = ouput.facturas.map((el, index) => {
-                                 return { value: el.id, label: "Nº" + el.id + "- ($" + el.total + ") Factura de servicio " + el.vencimiento }
-                             })
-                             datos.unshift({ value: "", label: "Selecione Factura" })
-                             seTlist(datos)
-                             comprobante({ value: "", label: "Selecione Factura" })
-                         } else {
-                             setOpen(false)
-                             openNotificationWithIcon('success', "Rinformación", "No hay facturas pendientes")
-                         }
-                     }).catch(err => {
-                         console.log(err)
-                         setOpen(false)
-                         openNotificationWithIcon('error', "Alerta", "" + ouput.mensaje)
- 
-                     })
- 
-                     if (ouput.datos.length == 2) {
-                         if (ouput.datos[1].estado === "ACTIVO") {
-                             let datos = {
-                                 nombre: ouput.datos[1].nombre,
-                                 estado: ouput.datos[1].estado,
-                                 cedula: ouput.datos[1].cedula,
-                                 movil: ouput.datos[1].movil,
-                                 direccion_principal: ouput.datos[1].direccion_principal,
-                                 correo: ouput.datos[1].correo,
-                                 facturacion: {
-                                     ...ouput.datos[1].facturacion
-                                 },
-                                 servicios: ouput.datos[1].servicios
-                             }
-                             setUser({ ...datos })
-                         }
- 
-                         if (ouput.datos[1].estado === "SUSPENDIDO") {
-                             let datos = {
-                                 nombre: ouput.datos[1].nombre,
-                                 estado: ouput.datos[1].estado,
-                                 cedula: ouput.datos[1].cedula,
-                                 movil: ouput.datos[1].movil,
-                                 direccion_principal: ouput.datos[1].direccion_principal,
-                                 correo: ouput.datos[1].correo,
-                                 facturacion: {
-                                     ...ouput.datos[1].facturacion
-                                 },
-                                 servicios: ouput.datos[1].servicios
-                             }
-                             setUser({ ...datos })
-                         }
-                         if (ouput.datos.estado[1] === "RETIRADO") {
-                             let datos = {
-                                 nombre: ouput.datos[1].nombre,
-                                 estado: ouput.datos[1].estado,
-                                 cedula: ouput.datos[1].cedula,
-                                 movil: ouput.datos[1].movil,
-                                 direccion_principal: ouput.datos[1].direccion_principal,
-                                 correo: ouput.datos[1].correo,
-                                 facturacion: {
-                                     ...ouput.datos[1].facturacion
-                                 }
-                                 , servicios: ouput.datos[1].servicios
-                             }
- 
-                             setUser({ ...datos })
-                         }
-                         return
-                     }
-                     if (ouput.datos[0].estado === "ACTIVO") {
-                         let datos = {
-                             nombre: ouput.datos[0].nombre,
-                             estado: ouput.datos[0].estado,
-                             cedula: ouput.datos[0].cedula,
-                             movil: ouput.datos[0].movil,
-                             direccion_principal: ouput.datos[0].direccion_principal,
-                             correo: ouput.datos[0].correo,
-                             facturacion: {
-                                 ...ouput.datos[0].facturacion
-                             },
-                             servicios: ouput.datos[0].servicios
-                         }
-                         setUser({ ...datos })
-                     }
- 
-                     if (ouput.datos[0].estado === "SUSPENDIDO") {
-                         let datos = {
-                             nombre: ouput.datos[0].nombre,
-                             estado: ouput.datos[0].estado,
-                             cedula: ouput.datos[0].cedula,
-                             movil: ouput.datos[0].movil,
-                             direccion_principal: ouput.datos[0].direccion_principal,
-                             correo: ouput.datos[0].correo,
-                             facturacion: {
-                                 ...ouput.datos[0].facturacion
-                             },
-                             servicios: ouput.datos[0].servicios
-                         }
-                         setUser({ ...datos })
-                     }
-                     if (ouput.datos.estado[0] === "RETIRADO") {
-                         let datos = {
-                             nombre: ouput.datos[0].nombre,
-                             estado: ouput.datos[0].estado,
-                             cedula: ouput.datos[0].cedula,
-                             movil: ouput.datos[0].movil,
-                             direccion_principal: ouput.datos[0].direccion_principal,
-                             correo: ouput.datos[0].correo,
-                             facturacion: {
-                                 ...ouput.datos[0].facturacion
-                             }
-                             , servicios: ouput.datos[0].servicios
-                         }
- 
-                         setUser({ ...datos })
-                     }
-                 }
-                 if (ouput.estado === "error") {
-                     setOpen(false)
-                     openNotificationWithIcon('error', "Alerta", "" + ouput.mensaje)
- 
-                     /*dismiss()
-                     present({
-                         message: ouput.mensaje,
-                         cssClass: '-danger',
-                         duration: 4500,
-                         position: "middle",
-                         buttons: [
-                             {
-                                 text: "cerrar",
-                                 role: "cancel",
- 
-                             }
-                         ]
-                     });*
- 
-                     console.log("err")
-                     setUser({
-                         nombre: "",
-                         estado: "",
-                         cedula: "",
-                         movil: "",
-                         direccion_principal: "",
-                         correo: "",
-                         facturacion: {
-                             facturas_nopagadas: 0,
-                             total_facturas: "0000"
-                         }
-                         , servicios: []
-                     })
-                 }
-             }).catch(err => {
-                 /* dismiss()
-                  present({
-                      message: "Hubo un error" + err,
-                      cssClass: '',
-                      duration: 4500,
-                      position: "middle",
-                      buttons: [
-                          {
-                              text: "cerrar",
-                              role: "cancel",
-                          }
-                      ]
-                  })/ */
-        /* dismiss()
-         present({
-             message: err,
-             cssClass: '-danger',
-              duration: 4500,
-             position: "middle",
-             buttons: [
-                 {
-                     text: "cerrar",
-                     role: "cancel",
- 
-                 }
-             ]
-         });*
-        //console.log(err)
-    })
-    return
-}*/
-        // setBusca(false)
+        
         setOpen(true)
         setMensaje({
             mensaje: "Buscando Cliente en el Portal",
@@ -1057,6 +820,16 @@ const PagosView = () => {
             console.log(erro)
         })
     }
+    async function VerificaError() {
+        let fact = await ListarFacturas({
+            "estado": "0",
+            "idfactura": ""
+        })
+        if (fact.data.length > 0) {
+            await Arreglarerror()
+        }
+
+    }
     function comprobante(e) {
         setSingleSelect(e)
         if (e.value != "") {
@@ -1075,105 +848,20 @@ const PagosView = () => {
                     settotal(ouput.factura.total)
                     console.log(parseFloat(total).toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
                     console.log((parseFloat(total).toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)))
-                    /*console.log({
-                        "codigo_barra": null,
-                        "porcentaje_iva": "12",
-                        "categoria_id": "91qdGvZgXhY6nbN8",
-                        "pvp1": parseFloat(ouput.factura.total).toFixed(2),
-                        "tipo": "SER",
-                        "para_supereasy": false,
-                        "para_comisariato": false,
-                        "minimo": "0.0",
-                        "descripcion": "Servicio de Internet Banda ancha",
-                        "nombre": usuario.servicios[0]["perfil"],
-                        "codigo": usuario.servicios[0]["idperfil"],
-                        "estado": "A"
-                    })*/
+                    
                     if (parseFloat(total).toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)) {
                         setMensaje({
                             mensaje: "Cambiando precio producto contifico",
                             estado: true
                         })
                         let valor = parseFloat(ouput.factura.total).toFixed(2);
-                        /* console.log({
-                             total: valor,
-                             estado: estado,
-                             id: JSON.parse(produ).id,
-                         })*/
                         setOpen(false)
 
                         setValor({
                             ...totalcon,
                             total: valor,
                         })
-                        /* IncremetoCon().then(salida => {
-                             console.log(salida)
-                             if (salida.status) {
-                                 let facnum = salida.result[0].contadores
-                                 CreaProducto({
-                                     "pvp1": parseFloat(ouput.factura.subtotal).toFixed(2),
-                                     "nombre": usuario.servicios[0]["perfil"],
-                                     "codigo": facnum + "" + usuario.servicios[0]["idperfil"]
-                                 }).then(produ => {
-                                     console.log(produ)
- 
-                                     /*if (produ.response.data.status != 200) {
-                                         setimpri(true)
-                                         dismiss()
-                                         present({
-                                             message: "El PRODUCTO no se creo en contifico" + produ.response.data["mensaje"],
-                                             cssClass: '',
-                                             duration: 4500,
-                                             position: "middle",
-                                             buttons: [
-                                                 {
-                                                     text: "cerrar",
-                                                     role: "cancel",
-                                                 }
-                                             ]
-                                         })
-                                         return
-                                     }*
-                                     console.log({
-                                         "codigo_barra": null,
-                                         "porcentaje_iva": "12",
-                                         "categoria_id": "91qdGvZgXhY6nbN8",
-                                         "pvp1": parseFloat(ouput.factura.subtotal).toFixed(2),
-                                         "tipo": "SER",
-                                         "para_supereasy": false,
-                                         "para_comisariato": false,
-                                         "minimo": "0.0",
-                                         "descripcion": "Servicio de Internet Banda ancha",
-                                         "nombre": usuario.servicios[0]["perfil"],
-                                         "codigo": facnum + "" + usuario.servicios[0]["idperfil"],
-                                         "estado": "A"
-                                     })
-                                     console.log(produ)
-                                     let estado = produ.estado;
-                                     let valor = parseFloat(produ.pvp1).toFixed(2) * 1.12;
-                                     /* console.log({
-                                          total: valor,
-                                          estado: estado,
-                                          id: JSON.parse(produ).id,
-                                      })*
-                                     setValor({
-                                         total: valor,
-                                         estado: estado,
-                                         id: produ.id,
-                                     })
-                                     setOpen(false)
-                                 }).catch(err => {
-                                     console.log(err)
-                                     setOpen(false)
-                                     openNotificationWithIcon('error', "Hubo un error inesperado al crear producto contifico", "" + err.status)
- 
-                                 })*
-                             }
-                         }).catch(err => {
-                             setOpen(false)
-                             openNotificationWithIcon('error', "Hubo un error inesperado al crear procuto contifico", "" + err)
- 
-                         })*/
+                    
                         return
                     }
                     setOpen(false)
@@ -1204,8 +892,6 @@ const PagosView = () => {
         if (mm < 10) mm = '0' + mm;
         const formattedToday = dd + '/' + mm + '/' + yyyy;
         console.log(cedula, total, lugar.value, banco.value, singleSelect.value)
-        // creaComprobante() 
-        // if(true) return
         if (lugar.label.includes("CALL")) {
 
             console.log(banco.value)
@@ -1234,12 +920,9 @@ const PagosView = () => {
                 //  console.log(datosdefactura,fac)
                 PagoFacturacomnet(datosdefactura).then(fact => {
                     console.log(fact)
-
                     if (fact.estado == "exito") {
-                        //dismiss()
 
                         setimpri(true)
-                        //setOpen(false)
                         openNotificationWithIcon('success', "Factura Pagada en portal", "")
 
                         setOpen(true)
@@ -1324,7 +1007,7 @@ const PagosView = () => {
                                     let fat = "001-001-00000" + facnum
 
                                     if (salida.documento) {
-                                        // creaComprobante()
+                                        VerificaError()
                                         setimpri(true)
                                         document.getElementById("pagos").reset();
                                         setOpen(false)
@@ -1474,6 +1157,7 @@ const PagosView = () => {
                             let fat = "001-001-00000" + facnum
                             console.log(salida)
                             if (salida.documento) {
+                                VerificaError()
                                 document.getElementById("pagos").reset();
                                 seTlist([])
                                 setOpen(false)
@@ -1601,6 +1285,7 @@ const PagosView = () => {
                                     let fat = "001-001-00000" + facnum
                                     console.log(salida)
                                     if (salida.documento) {
+                                        VerificaError()
                                         setimpri(true)
                                         seTlist([])
                                         document.getElementById("pagos").reset();

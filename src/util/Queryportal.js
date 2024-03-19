@@ -128,9 +128,9 @@ export const Lista_Usuario_Portal = async (parms) => {
         return error
     }
 }
-export const Actualiza_Usuario_Portal = async (parms) => {
+export const Actualiza_Usuario_Portal = async (id,parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/mikroti/FactuApi/Users", parms, {
+        let { data } = await axios.put("https://api.t-ickets.com/mikroti/FactuApi/Users/"+id, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

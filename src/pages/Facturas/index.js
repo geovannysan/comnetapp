@@ -213,7 +213,10 @@ const FacturasView = () => {
                 "estado": "0",
                 "idfactura": ""
             }).then(fact=>{
-                if (fact.data.length>0) return
+                if (fact.data.length==0){
+                    setFacturaerr([])
+                    return
+                }
                 fact.data.map(async (e) => {
                     let fact = JSON.parse(e.mensajes).parame
 
@@ -224,7 +227,7 @@ const FacturasView = () => {
                         facturaser.push({ ...e, mensajes: fact, cliente: fact.cliente["cedula"] })
                     }
                 })
-                if (fact.estado) setFacturaerr([...facturaerr, ...facturaser.sort((a, b) => b.Id - a.Id)])
+                if (fact.estado) setFacturaerr([...facturaser.sort((a, b) => b.Id - a.Id)])
 
             })
             

@@ -56,23 +56,29 @@ const AuthLogin = () => {
             placement: 'bottom'
         });
     };
-    function iniciarsecion(user,passw) {
+    function iniciarsecion(user, passw) {
         let info = {
             username: user.trim(),
             password: passw.trim()
         }
-        console.log(user,passw)
+        console.log(user, passw)
         Logearse(info).then(oupt => {
             if (oupt.estado && oupt.estado != "error") {
                 sessionStorage.setItem("USERLOGIN", JSON.stringify({ ...oupt.user }))
                 usedispat(setDatosuser({ ...oupt.user }))
                 usedispat(setlogin({ estado: true }))
-                history("/dashboard/panel")
-                return
-            }else{
-               // openNotificationWithIcon('error', "Alerta", "Hubo un error contraseña o usuario incorecto" )
+                window.location.reload();
+                setTimeout(function () {
+                    
+                    window.location("/dashboard/panel")
+                }, 1000)
 
-               // alert(""+JSON.stringify(oupt))
+                // history("/dashboard/panel")
+                return
+            } else {
+                // openNotificationWithIcon('error', "Alerta", "Hubo un error contraseña o usuario incorecto" )
+
+                // alert(""+JSON.stringify(oupt))
             }
             openNotificationWithIcon('error', "Alerta", "Hubo un error contraseña o usuario incorecto")
 
@@ -99,7 +105,7 @@ const AuthLogin = () => {
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
                         console.log(values)
-                        iniciarsecion(values.email,values.password)
+                        iniciarsecion(values.email, values.password)
                         setStatus({ success: false });
                         setSubmitting(false);
                     } catch (err) {
@@ -116,7 +122,7 @@ const AuthLogin = () => {
                                 <Stack spacing={1}>
                                     <InputLabel htmlFor="email-login">Username </InputLabel>
                                     <OutlinedInput
-                                        id="email-login"                                       
+                                        id="email-login"
                                         value={values.email}
                                         name="email"
                                         onBlur={handleBlur}
@@ -167,7 +173,7 @@ const AuthLogin = () => {
                                 </Stack>
                             </Grid>
 
-                            
+
                             {errors.submit && (
                                 <Grid item xs={12}>
                                     <FormHelperText error>{errors.submit}</FormHelperText>
@@ -193,7 +199,7 @@ const AuthLogin = () => {
                                     <Typography variant="caption"> Login </Typography>
                                 </Divider>
                             </Grid>
-                            
+
                         </Grid>
                     </form>
                 )}
