@@ -11,6 +11,7 @@ const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
 const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
 //const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 //const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
+const Contractos = Loadable(lazy(() => import('pages/Usuarios/Contratos')));
 const FacturasView = Loadable(lazy(() => import('pages/Facturas/index')));
 const MainRoutes = {
     path: '/',
@@ -57,6 +58,10 @@ const MainRoutes = {
         {
             path: 'usuarios',
             element: <Usuario />
+        },
+        {
+            path: 'Contractos',
+            element: <Contractos />
         },
         {
             path: 'page/inicio',

@@ -112,7 +112,7 @@ export const Crear_Usuario_Portal = async (parms) => {
         return data
     } catch (error) {
         console.log(error)
-        return error 
+        return error
     }
 }
 export const Lista_Usuario_Portal = async (parms) => {
@@ -128,9 +128,9 @@ export const Lista_Usuario_Portal = async (parms) => {
         return error
     }
 }
-export const Actualiza_Usuario_Portal = async (id,parms) => {
+export const Lista_Contratos = async (parms) => {
     try {
-        let { data } = await axios.put("https://api.t-ickets.com/mikroti/FactuApi/Users/"+id, parms, {
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/Comnet/listar", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -138,7 +138,28 @@ export const Actualiza_Usuario_Portal = async (id,parms) => {
         })
         return data
     } catch (error) {
-        
+        return error
+    }
+}
+export const Lista_archivo = async () => {
+    try {
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/Comnet/Lista")
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Actualiza_Usuario_Portal = async (id, parms) => {
+    try {
+        let { data } = await axios.put("https://api.t-ickets.com/mikroti/FactuApi/Users/" + id, parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+
         return error
     }
 }

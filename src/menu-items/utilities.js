@@ -7,7 +7,8 @@ import {
     FontSizeOutlined,
     LoadingOutlined,
     FundViewOutlined,
-    ReadOutlined
+    ReadOutlined,
+    FileProtectOutlined
 } from '@ant-design/icons';
 import { userlog } from 'util/User';
 
@@ -20,7 +21,8 @@ const icons = {
     LoadingOutlined,
     AppstoreAddOutlined,
     FundViewOutlined,
-    ReadOutlined
+    ReadOutlined,
+    FileProtectOutlined
 };
 let datos = userlog()
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
@@ -30,13 +32,13 @@ const utilities = {
     title: 'Utilities',
     type: 'group',
     children: [
-      /*  {
-            id: 'Reportes',
-            title: 'Reportes',
-            type: 'item',
-            url: '/reporte',
-            icon: icons.FundViewOutlined
-        },*/
+        /*  {
+              id: 'Reportes',
+              title: 'Reportes',
+              type: 'item',
+              url: '/reporte',
+              icon: icons.FundViewOutlined
+          },*/
         {
             id: 'Solicitudes',
             title: 'Solicitudes',
@@ -45,14 +47,22 @@ const utilities = {
             icon: icons.ReadOutlined,
             target: false
         },
-        (datos!=null && datos.respuestatres==1)?{
+        {
+            id: 'Contrartos',
+            title: 'Contratos',
+            type: 'item',
+            url: '/Contractos',
+            icon: icons.FileProtectOutlined,
+            target: false
+        },
+            (datos != null && datos.respuestatres == 1) ? {
             id: 'Usuarios',
             title: 'Usuarios',
             type: 'item',
             url: '/usuarios',
             icon: icons.AntDesignOutlined,
             breadcrumbs: true
-        }:""
+        } : ''
     ]
 };
 
