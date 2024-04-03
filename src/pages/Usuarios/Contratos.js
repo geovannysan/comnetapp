@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import { Actualiza_Usuario_Portal, Crear_Usuario_Portal, Lista_Contratos, Lista_Usuario_Portal, Lista_archivo } from "util/Queryportal"
 import "./index.css"
 import { Axiosmikroser, EditarArchivo, EliminarArchivo } from "util/Querireport"
+import axios from "../../../node_modules/axios/index"
 const Usuario = () => {
     let [usuarios, setUsuarios] = useState([])
     let [id, setID] = useState({
@@ -214,6 +215,7 @@ const Usuario = () => {
                             <div className=" btn-group">
                             <button className="btn btn-sm btn-success" onClick={() => abrirfactura({ ...item, id: item.idContrato })}  >Editar</button>
                             <button className="btn btn-sm btn-danger text-white" onClick={() => eliminarContrato({ ...item, id: item.idContrato })}  >Eliminar</button>
+                                <button className="btn btn-sm btn-success " onClick={() => window.open("https://api.ticketsecuador.ec/store/img/" + item.nombreDocumento.split("(")[0],"_blank")} >Ver</button>
                             </div>
 
                         </td></tr>
@@ -244,13 +246,20 @@ const Usuario = () => {
                 console.error("No se ha seleccionado ningún archivo.");
                 return;
             }
-            console.log(fileInput.files[0])
             const selectedFile = fileInput.files[0];
+            const nombreSelect = fileInput.files[0].name.split("Nº ")[1];
             const formdata = new FormData();
             formdata.append("archivo", selectedFile);
-            formdata.append("nombre", "porcaca");
+
+           // formdata.append("nombre", "porcaca");
             let { data, statusText } = await Axiosmikroser.post("Comnet/contrato", formdata)
-            console.log(data, statusText)
+            const form = new FormData()
+            form.append("image",selectedFile, nombreSelect);
+
+           // let datos = await axios.post("https://api.ticketsecuador.ec/store/api/img/",form)
+           // console.log(datos)
+            //console.log(data, statusText)
+           // return
             if (statusText === 'OK') {
                 setFileUploaded(false);
                 openNotificationWithIcon('success', "" + data.nombre + "", data.message, "");

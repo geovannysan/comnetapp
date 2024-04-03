@@ -305,7 +305,7 @@ const PagosView = () => {
         doc.text(20, 69, "CLIENTE")
         doc.text(3, 73, "" + usuario.nombre)
         doc.text(3, 76, "" + usuario.direccion_principal)
-        doc.text(3, 79, "" + usuario.cedula.trim())
+        doc.text(3, 79, "" + usuario.cedula.trim().substring(0, 10))
         doc.text(3, 84, "Fecha corte: " + descri.factura.emitido)
         doc.text(3, 88, "*******************************************************************");
         doc.text(3, 94, "Operador " + nombres.usuario);
@@ -398,7 +398,8 @@ const PagosView = () => {
                         })
                         CrearClienteContifico(datos).then(crea => {
                             console.log(crea)
-                            if (Object.keys(crea).length > 1) {
+                            if (Object.keys(crea).length > 1 && crea[0].cedula == ouput.datos[0].cedula.trim().substring(0, 10)) {
+                                
                                 setContifico([crea])
                                 setOpen(true)
                                 setMensaje({
@@ -672,104 +673,7 @@ const PagosView = () => {
                     setOpen(false)
                     openNotificationWithIcon('error', "Alerta", "Hubo un error inesperado")
 
-                })
-                /* if (ouput.datos.length == 2) {
-                     if (ouput.datos[1].estado === "ACTIVO") {
-                         let datos = {
-                             nombre: ouput.datos[1].nombre,
-                             estado: ouput.datos[1].estado,
-                             cedula: ouput.datos[1].cedula,
-                             movil: ouput.datos[1].movil,
-                             direccion_principal: ouput.datos[1].direccion_principal,
-                             correo: ouput.datos[1].correo,
-                             facturacion: {
-                                 ...ouput.datos[1].facturacion
-                             },
-                             servicios: ouput.datos[1].servicios
-                         }
-                         setUser({ ...datos })
-                     }
- 
-                     if (ouput.datos[1].estado === "SUSPENDIDO") {
-                         let datos = {
-                             nombre: ouput.datos[1].nombre,
-                             estado: ouput.datos[1].estado,
-                             cedula: ouput.datos[1].cedula,
-                             movil: ouput.datos[1].movil,
-                             direccion_principal: ouput.datos[1].direccion_principal,
-                             correo: ouput.datos[1].correo,
-                             facturacion: {
-                                 ...ouput.datos[1].facturacion
-                             },
-                             servicios: ouput.datos[1].servicios
-                         }
-                         setUser({ ...datos })
-                     }
-                     if (ouput.datos.estado[1] === "RETIRADO") {
-                         let datos = {
-                             nombre: ouput.datos[1].nombre,
-                             estado: ouput.datos[1].estado,
-                             cedula: ouput.datos[1].cedula,
-                             movil: ouput.datos[1].movil,
-                             direccion_principal: ouput.datos[1].direccion_principal,
-                             correo: ouput.datos[1].correo,
-                             facturacion: {
-                                 ...ouput.datos[1].facturacion
-                             }
-                             , servicios: ouput.datos[1].servicios
-                         }
- 
-                         setUser({ ...datos })
-                     }
-                     return
-                 }
-                 if (ouput.datos[0].estado === "ACTIVO") {
-                     let datos = {
-                         nombre: ouput.datos[0].nombre,
-                         estado: ouput.datos[0].estado,
-                         cedula: ouput.datos[0].cedula,
-                         movil: ouput.datos[0].movil,
-                         direccion_principal: ouput.datos[0].direccion_principal,
-                         correo: ouput.datos[0].correo,
-                         facturacion: {
-                             ...ouput.datos[0].facturacion
-                         },
-                         servicios: ouput.datos[0].servicios
-                     }
-                     setUser({ ...datos })
-                 }
- 
-                 if (ouput.datos[0].estado === "SUSPENDIDO") {
-                     let datos = {
-                         nombre: ouput.datos[0].nombre,
-                         estado: ouput.datos[0].estado,
-                         cedula: ouput.datos[0].cedula,
-                         movil: ouput.datos[0].movil,
-                         direccion_principal: ouput.datos[0].direccion_principal,
-                         correo: ouput.datos[0].correo,
-                         facturacion: {
-                             ...ouput.datos[0].facturacion
-                         },
-                         servicios: ouput.datos[0].servicios
-                     }
-                     setUser({ ...datos })
-                 }
-                 if (ouput.datos.estado[0] === "RETIRADO") {
-                     let datos = {
-                         nombre: ouput.datos[0].nombre,
-                         estado: ouput.datos[0].estado,
-                         cedula: ouput.datos[0].cedula,
-                         movil: ouput.datos[0].movil,
-                         direccion_principal: ouput.datos[0].direccion_principal,
-                         correo: ouput.datos[0].correo,
-                         facturacion: {
-                             ...ouput.datos[0].facturacion
-                         }
-                         , servicios: ouput.datos[0].servicios
-                     }
- 
-                     setUser({ ...datos })
-                 }*/
+                })               
             }
             if (ouput.estado === "error") {
                 setOpen(false)
@@ -798,18 +702,6 @@ const PagosView = () => {
             if (ouput.success) {
                 setOpen(false)
                 openNotificationWithIcon('success', "Usuario exitestente en el registro civil", ouput.data.name)
-                /*present2({
-                    message: "" + ouput.message + " " + ouput.data.name,
-                    cssClass: '-',
-                    duration: 4500,
-                    position: "bottom",
-                    buttons: [
-                        {
-                            text: "cerrar",
-                            role: "cancel",
-                        }
-                    ]
-                })*/
                 return
             }
             setOpen(false)
@@ -892,6 +784,11 @@ const PagosView = () => {
         if (mm < 10) mm = '0' + mm;
         const formattedToday = dd + '/' + mm + '/' + yyyy;
         console.log(cedula, total, lugar.value, banco.value, singleSelect.value)
+        if (totalcon.id ==" ") {
+            openNotificationWithIcon('error', "Producto no encontrado", "")
+            return
+        }
+        //return
         if (lugar.label.includes("CALL")) {
 
             console.log(banco.value)
@@ -946,7 +843,7 @@ const PagosView = () => {
                                     "caja_id": null,
                                     "cliente": {
                                         "ruc": null,
-                                        "cedula": usuario.cedula.trim(),
+                                        "cedula": usuario.cedula.trim().substring(0, 10),
                                         "razon_social": usuario.nombre,
                                         "telefonos": usuario.movil,
                                         "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
@@ -964,7 +861,7 @@ const PagosView = () => {
                                         es_extranjero: (usuario.cedula.trim().length < 9)
                                     },
                                     //contifico[0].
-                                    "descripcion": descri.items[0]["descrp"],
+                                     "descripcion": usuario.cedula.trim().substring(0, 10)+" "+singleSelect.value,
                                     "subtotal_0": 0,
                                     "subtotal_12": (total) / 1.12,
                                     "iva": (parseFloat((total) - parseFloat((total) / 1.12))).toFixed(2),
@@ -1104,7 +1001,7 @@ const PagosView = () => {
                             "caja_id": null,
                             "cliente": {
                                 "ruc": null,
-                                "cedula": usuario.cedula.trim(),
+                                "cedula": usuario.cedula.trim().substring(0, 10),
                                 "razon_social": usuario.nombre,
                                 "telefonos": usuario.movil,
                                 "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,
@@ -1122,7 +1019,7 @@ const PagosView = () => {
                                 es_extranjero: (usuario.cedula.trim().length < 9)
                             },
                             //contifico[0].
-                            "descripcion": descri.items[0]["descrp"],
+                             "descripcion": usuario.cedula.trim().substring(0, 10)+" "+singleSelect.value,
                             "subtotal_0": 0,
                             "subtotal_12": (total) / 1.12,
                             "iva": (parseFloat((total) - parseFloat((total) / 1.12))).toFixed(2),
@@ -1236,14 +1133,14 @@ const PagosView = () => {
                                     "electronico": true,
                                     "autorizacion": null,
                                     "caja_id": null,
-                                    "descripcion": descri.items[0]["descrp"],
+                                     "descripcion": usuario.cedula.trim().substring(0, 10)+" "+singleSelect.value,
                                     "subtotal_0": 0,
                                     "subtotal_12": (total) / 1.12,
                                     "iva": (parseFloat((total) - parseFloat((total) / 1.12))).toFixed(2),
                                     "total": parseFloat(total).toFixed(2),
                                     "cliente": {
                                         "ruc": null,
-                                        "cedula": usuario.cedula.trim(),
+                                        "cedula": usuario.cedula.trim().substring(0, 10),
                                         "razon_social": usuario.nombre,
                                         "telefonos": usuario.movil,
                                         "direccion": !emailRegex.test(usuario.direccion_principal) ? "" : usuario.direccion_principal,

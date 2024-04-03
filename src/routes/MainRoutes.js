@@ -13,6 +13,7 @@ const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
 //const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
 const Contractos = Loadable(lazy(() => import('pages/Usuarios/Contratos')));
 const FacturasView = Loadable(lazy(() => import('pages/Facturas/index')));
+const Conciliacion = Loadable(lazy(()=>import("pages/pagos/concilia") ) );
 const MainRoutes = {
     path: '/',
     element: <MainLayout />,
@@ -67,10 +68,10 @@ const MainRoutes = {
             path: 'page/inicio',
             element: <DashboardDefault />
         },
-        /*{
-            path: 'pageview',
-            element: <AntIcons />
-        }*/
+        {
+            path: 'transacion',
+            element: <Conciliacion />
+        }
     ]
 };
 

@@ -125,7 +125,7 @@ const FacturaDetalle = () => {
                 </div>
                 <div className="row px-2 justify-content-end text-end">
                     <div className="col-6">
-                        <span className="">{"Servicio de Internet \r\nPlan internet : FIBRA-ADVANCE - ANTIGUO 80000K/80000K\r\nfacturacin del 13/08/2023 al 12/09/2023\r\nFecha del corte anterior : 18/08/2023\r\nMes  : Agosto"}</span>
+                        <span className="">{detalle.descripcion}</span>
 
                     </div>
                     <div className="col-6  ">

@@ -1,5 +1,5 @@
 /* colores root */
-:root{
+:root {
     --bs-azul: #1a2a5b;
     --bs-celeste: #0081c7;
 }
@@ -60,35 +60,38 @@
     -moz-box-shadow: 3px 6px 14px -6px rgba(143, 143, 143, 0.75);
 }
 
-.shadow-3{
-    box-shadow: 2px 6px 5px -2px rgba(0,0,0,0.35);
-    -webkit-box-shadow: 2px 6px 5px -2px rgba(0,0,0,0.35);
-    -moz-box-shadow: 2px 6px 5px -2px rgba(0,0,0,0.35);
-    
+.shadow-3 {
+    box-shadow: 2px 6px 5px -2px rgba(0, 0, 0, 0.35);
+    -webkit-box-shadow: 2px 6px 5px -2px rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 2px 6px 5px -2px rgba(0, 0, 0, 0.35);
+
 }
 
 /* Font Sizes */
-.fs-12{
+.fs-12 {
     font-size: 12px;
 }
-.fs-13{
+
+.fs-13 {
     font-size: 13px;
 }
-.fs-15{
+
+.fs-15 {
     font-size: 15px;
 }
-.fs-18{
+
+.fs-18 {
     font-size: 18px;
 }
 
 
 /*Text Colors*/
 
-.text-azul{
+.text-azul {
     color: var(--bs-azul);
 }
 
-.text-celeste{
+.text-celeste {
     color: var(--bs-celeste);
 }
 
@@ -127,16 +130,18 @@
     border-color: #1976d2;
     box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.3);
 }
-.inptFielsd{
+
+.inptFielsd {
     padding: 8px;
     border: solid 0.5px #dad9d9;
     border-radius: 3px;
-    
+
     margin: 0;
 }
-.form-check-input{
+
+.form-check-input {
     padding: 7px;
-    
+
     border-color: #333 !important;
     margin-right: 2px;
 }
@@ -13777,4 +13782,30 @@ hr {
 
 .custom_contifico_bootbox .modal-body {
     height: 500px;
+}
+
+ .form-control   {
+    font: inherit;
+    letter-spacing: inherit;
+    color: currentColor;
+    padding: 4px 0 5px;
+    border: 0;
+    box-sizing: content-box;
+    background: none;
+    height: 1.4375em;
+    margin: 0;
+    -webkit-tap-highlight-color: transparent;
+    display: block;
+    min-width: 0;
+    width: 100%;
+    -webkit-animation-name: mui-auto-fill-cancel;
+    animation-name: mui-auto-fill-cancel;
+    -webkit-animation-duration: 10ms;
+    animation-duration: 10ms;
+    padding-top: 1px;
+    padding: 8.5px 14px;
+    padding-left: 0;
+    padding-right: 0;
+    padding: 10.5px 14px 10.5px 12px;
+    padding: 7.5px 8px 7.5px 12px;
 }

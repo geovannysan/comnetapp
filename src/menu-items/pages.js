@@ -30,6 +30,15 @@ const pages = {
             url: '/Facturas',
             icon: icons.FileWordOutlined,
             target: false
+        },
+        ,
+        {
+            id: 'Transacion',
+            title: 'Transacion',
+            type: 'item',
+            url: '/transacion',
+            icon: icons.FileWordOutlined,
+            target: false
         }
     ]
 };

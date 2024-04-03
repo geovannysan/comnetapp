@@ -36,7 +36,7 @@ const FacturasView = () => {
 
             await fact.data.map(async (e) => {
                 let fact = JSON.parse(e.mensajes).parame
-              
+
                 if (fact.persona != undefined) {
 
                     facturaser.push({ ...e, mensajes: fact, cliente: fact.persona["cedula"] })
@@ -45,7 +45,7 @@ const FacturasView = () => {
                 }
             })
 
-           // console.log(actual)
+            // console.log(actual)
             datos.data.map(async (e) => {
                 let datos = JSON.parse(e.mensajes)
                 if (datos.persona != undefined) {
@@ -64,7 +64,7 @@ const FacturasView = () => {
                 return { ...e }
             })*/
             //if (datos.estado) setFactura([...factura, ...datos.data])
-          
+
             if (fact.estado && datos.estado) setFacturaerr([...facturaerr, ...facturaser.sort((a, b) => b.Id - a.Id)])
             if (fact.estado && datos.estado) setFactura([...factura, ...facturas.sort((a, b) => b.Id - a.Id)])
             if (!$.fn.DataTable.isDataTable("#doc")) {
@@ -82,7 +82,7 @@ const FacturasView = () => {
                             "searchPlaceholder": "",
                             'paginate': {
                                 'previous': '<span className="prev-icon">Ant </span>',
-                                'next': '<span className="next-icon"> <i className="fa fa-arrow-right"> </i></span>'
+                                'next': '<span className="next-icon"> <i className="fa fa-arrow-right">Sigu </i></span>'
                             }
                         },
                         "oLanguage": {
@@ -212,8 +212,8 @@ const FacturasView = () => {
             ListarFacturas({
                 "estado": "0",
                 "idfactura": ""
-            }).then(fact=>{
-                if (fact.data.length==0){
+            }).then(fact => {
+                if (fact.data.length == 0) {
                     setFacturaerr([])
                     return
                 }
@@ -230,7 +230,7 @@ const FacturasView = () => {
                 if (fact.estado) setFacturaerr([...facturaser.sort((a, b) => b.Id - a.Id)])
 
             })
-            
+
         }).catch(error => {
             console.log(error)
         })
@@ -390,8 +390,113 @@ const FacturasView = () => {
         } catch (error) { }
 
     }
+    const CambiarMes = async () => {
+        let meses = document.getElementById("date-month").value
+        console.log(meses)
+        try {
+            let facturas=[]
+            let datos = await ListarFacturas({
+                "estado": "1",
+                "idfactura": "",
+                "mes": meses,
+            })
+            datos.data.map(async (e) => {
+                let datos = JSON.parse(e.mensajes)
+                if (datos.persona != undefined) {
+
+                    facturas.push({ ...e, mensajes: datos, cliente: datos.persona["cedula"] })
+                } else {
+                    facturas.push({ ...e, mensajes: datos, cliente: datos.cliente["cedula"] })
+                }
+            })
+            if (datos.estado&& datos.data.length>0){
+                $('#doc').DataTable().destroy();
+                setFactura([])
+                if (!$.fn.DataTable.isDataTable("#doc")) {
+                   
+                    setFactura([...facturas.sort((a, b) => b.Id - a.Id)])
+
+                    $(document).ready(function () {
+                        $("#doc").dataTable({
+                            stateSave: true,
+                            responsive: true,
+                            "pageLength": 10,
+                            "bDestroy": true,
+                            "sSearch": false,
+                            paging: true,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando page _PAGE_ de _PAGES_",
+                                "sSearch": "",
+                                "searchPlaceholder": "",
+                                'paginate': {
+                                    'previous': '<span className="prev-icon">Ant </span>',
+                                    'next': '<span className="next-icon"> <i className="fa fa-arrow-right">Sigu </i></span>'
+                                }
+                            },
+                            "oLanguage": {
+                                "sSearch": ""
+                            },
+                            select: {
+                                style: "single",
+                            },
+                            columnDefs: [
+                                {
+
+                                    "responsivePriority": 1,
+                                    className: "",
+                                    targets: 5,
+                                    visible: true,
+                                    "responsive": false
+                                },
+                                {
+
+                                    "responsivePriority": 1,
+                                    className: "",
+                                    targets: 1,
+                                    visible: true,
+                                    "responsive": false
+                                },
+                                {
+
+                                    "responsivePriority": 1,
+                                    className: "hidden-lg",
+                                    targets: -1,
+                                    visible: true,
+                                    "responsive": false
+                                }
+                            ],
+                            dom: 'Bfrtip',
+                            buttons: [
+                                'copy', 'csv', 'excel', 'pdf'
+                            ],
+                            lengthMenu: [
+                                [10, 20, 30, 50, -1],
+                                [10, 20, 30, 50, "All"],
+                            ],
+
+                            order: [[0, 'desc']],
+
+                        });
+                    })
+                }
+            }
+           
+            console.log(datos);
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
     return (
         <div>
+            <MainCard contentSX={{ p: 2 }} className="mb-2">
+                <div className=" container col-6 text-center">
+                    <h3>Periodo de Factura</h3>
+                    <input id="date-month" className=" form-control text-center" type="month"></input>
+                    <button className=" btn btn-primary m-1 mt-1 p-2 " onClick={CambiarMes}>CONSULTAR</button>
+                </div>
+
+            </MainCard>
             <MainCard contentSX={{ p: 2.25 }}>
                 <Tabs
                     defaultActiveKey="1"
@@ -424,7 +529,7 @@ const FacturasView = () => {
                         </table>
                     </div>
                     <div className={!(tab == 2) ? "d-none" : "tab-pane fade show active"} id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                        {facturaerr.length==0?"": <table id={"doc2"} className="table table-striped "
+                        {facturaerr.length == 0 ? "" : <table id={"doc2"} className="table table-striped "
                             style={{
                                 width: "100%",
                             }}>
