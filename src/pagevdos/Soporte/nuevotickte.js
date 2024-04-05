@@ -201,45 +201,7 @@ export default function TicketView(props) {
             </DialogActions>
 
         </Dialog>
-        /* <IonModal isOpen={true}
-             onDidDismiss={() => seticktemoadal(false)}
-         >
-             <IonHeader>
-             </IonHeader>
-             <IonContent>
-                 <IonList>
-                     <IonItem>
-                         <IonSelect
-                             name="turno"
-                             onIonChange={(e) => handelchange(e)}
-                             interface="popover" placeholder="Turno">
-                             <IonSelectOption value="MAÑANA">MAÑANA</IonSelectOption>
-                             <IonSelectOption value="TARDE">TARDE</IonSelectOption>
-                         </IonSelect>
-                     </IonItem>
-                     <IonItem>
-                         <IonSelect
-                             name="dp"
-                             onIonChange={(e) => handelchange(e)}
-                             interface="popover" placeholder="Departamento">
-                             <IonSelectOption value="1">Soperte técnico</IonSelectOption>
-                             <IonSelectOption value="4">Facturación</IonSelectOption>
-                             <IonSelectOption value="6">Actualizaciones</IonSelectOption>
-                         </IonSelect>
-                     </IonItem>
-                     <IonItem>
-                         <IonSelect
-                             onIonChange={(e) => handelchange(e)}
-                             name="asunto"
-                             interface="popover" placeholder="asunto">
-                             <IonSelectOption value="Luz roja">Luz roja </IonSelectOption>
-                             <IonSelectOption value="Intermitencia en el servicio">Intermitencia en el servicio</IonSelectOption>
- 
-                         </IonSelect>
-                     </IonItem>
-                 </IonList>
-             </IonContent>
-     </IonModal>*/
+        
 
     )
 }

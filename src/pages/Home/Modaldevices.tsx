@@ -27,7 +27,6 @@ export default function DeviceView(props: any, recargar: void) {
             console.log(salida)
             if (salida) {
                 Deviceslist({ "info": datos.ID_EXTERNO_ONU }).then((ouput: any) => {
-                    //console.log(ouput)
                     if (ouput.length > 0) {
                         console.log("error list", ouput)
                         let dtso = ouput[0][0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
@@ -36,17 +35,14 @@ export default function DeviceView(props: any, recargar: void) {
                             ...dtso[clave]
                         }));
                         setDevices(arrayDeObjetos)
-                        // setDevices(Object.values(dtso))
                         console.log(arrayDeObjetos)
                     }
                 }).catch((err: any) => {
                     console.log(err)
                 })
             }
-            //dismiss()
             console.log(salida)
         }).catch((err: any) => {
-            //   dismiss()
             console.log(err)
         })
 
