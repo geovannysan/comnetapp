@@ -29,6 +29,14 @@ export const EliminarArchivo = async (id, params) => {
         return error
     }
 }
+export const ConsultarFactura = async (params) => {
+    try {
+        let { data } = await Axiosmikroser.delete('api/select', params)
+        return data
+    } catch (error) {
+        return error
+    }
+}
 export const ListarFacturas = async (parms) => {
     try {
         let { data } = await axios.post("https://api.t-ickets.com/mikroti/listarfactura", parms)

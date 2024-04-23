@@ -5,27 +5,54 @@ import MainCard from "components/MainCard";
 import { setFacturas } from "store/reducers/menu";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
-
+import axios from "../../../node_modules/axios/index";
 const FacturasView = () => {
     let usedispatch = useDispatch()
     let history = useNavigate()
-
     const [factura, setFactura] = useState([])
     const [facturaerr, setFacturaerr] = useState([])
     const fechaReferencia = new Date();
-
     // Obtener el primer día del mes
+    /*const { data, isLoading } =  useEndpointsQuery({
+        "estado": "1",
+        "idfactura": "",
+        "mes": ""
+    });
+    */
+    //console.log(data)
     const primerDiaDelMes = new Date(fechaReferencia.getFullYear(), fechaReferencia.getMonth(), 1);
 
     // Obtener el último día del mes
     const ultimoDiaDelMes = new Date(fechaReferencia.getFullYear(), fechaReferencia.getMonth() + 1, 0);
+   /* const fetchData = async () => {
+        try {
+            
 
+            if (data) {
+                // Si hay datos, realiza las transformaciones necesarias y actualiza el estado de las facturas
+                data.forEach((e) => {
+                    let mensajes = JSON.parse(e.mensajes);
+                    let clienteCedula = mensajes.persona ? mensajes.persona.cedula : mensajes.cliente.cedula;
+                    let factura = { ...e, mensajes, cliente: clienteCedula };
+                    setFacturas(prevFacturas => [...prevFacturas, factura]);
+                });
+            }
+
+            if (error) {
+                console.error('Error al obtener datos:', error);
+            }
+        } catch (error) {
+            console.error('Error al obtener datos:', error);
+        }
+    };*/
     async function getFactura() {
         try {
-            let datos = await ListarFacturas({
+            const datos = await ListarFacturas({
                 "estado": "1",
-                "idfactura": ""
-            })
+                "idfactura": "",
+                "mes": ""
+            });
+
             let fact = await ListarFacturas({
                 "estado": "0",
                 "idfactura": ""
@@ -39,32 +66,20 @@ const FacturasView = () => {
 
                 if (fact.persona != undefined) {
 
-                    facturaser.push({ ...e, mensajes: fact, cliente: fact.persona["cedula"] })
+                    facturaser.push({ ...e, mensajes: fact, cliente: fact.persona["cedula"] || 'No asignado' })
                 } else {
-                    facturaser.push({ ...e, mensajes: fact, cliente: fact.cliente["cedula"] })
+                    facturaser.push({ ...e, mensajes: fact, cliente: fact.cliente["cedula"] || 'No asignado' })
                 }
             })
-
-            // console.log(actual)
             datos.data.map(async (e) => {
                 let datos = JSON.parse(e.mensajes)
                 if (datos.persona != undefined) {
 
-                    facturas.push({ ...e, mensajes: datos, cliente: datos.persona["cedula"] })
+                    facturas.push({ ...e, mensajes: datos, cliente: datos.persona["cedula"] || 'No asignado' })
                 } else {
-                    facturas.push({ ...e, mensajes: datos, cliente: datos.cliente["cedula"] })
+                    facturas.push({ ...e, mensajes: datos, cliente: datos.cliente["cedula"] || 'No asignado' })
                 }
             })
-            //  const factur = await Promise.all(facturaPromesas);
-            /*datos.data.map(e => {
-                let informa = JSON.parse(e.mensajes)
-                e.mensajes = JSON.parse(e.mensajes)
-                
-                e.cliente = informa.persona.telefonos == undefined ? "" : "informa.persona.telefonos"
-                return { ...e }
-            })*/
-            //if (datos.estado) setFactura([...factura, ...datos.data])
-
             if (fact.estado && datos.estado) setFacturaerr([...facturaerr, ...facturaser.sort((a, b) => b.Id - a.Id)])
             if (fact.estado && datos.estado) setFactura([...factura, ...facturas.sort((a, b) => b.Id - a.Id)])
             if (!$.fn.DataTable.isDataTable("#doc")) {
@@ -394,12 +409,13 @@ const FacturasView = () => {
         let meses = document.getElementById("date-month").value
         console.log(meses)
         try {
-            let facturas=[]
+            let facturas = []
             let datos = await ListarFacturas({
                 "estado": "1",
                 "idfactura": "",
                 "mes": meses,
             })
+            //  const { isLoading, isError, data: datos, error } = await useFetchQuery(todos, "",{},meses)
             datos.data.map(async (e) => {
                 let datos = JSON.parse(e.mensajes)
                 if (datos.persona != undefined) {
@@ -409,13 +425,12 @@ const FacturasView = () => {
                     facturas.push({ ...e, mensajes: datos, cliente: datos.cliente["cedula"] })
                 }
             })
-            if (datos.estado&& datos.data.length>0){
+            if (datos.estado && datos.data.length > 0) {
                 $('#doc').DataTable().destroy();
                 setFactura([])
                 if (!$.fn.DataTable.isDataTable("#doc")) {
-                   
-                    setFactura([...facturas.sort((a, b) => b.Id - a.Id)])
 
+                    setFactura([...facturas.sort((a, b) => b.Id - a.Id)])
                     $(document).ready(function () {
                         $("#doc").dataTable({
                             stateSave: true,
@@ -480,7 +495,7 @@ const FacturasView = () => {
                     })
                 }
             }
-           
+
             console.log(datos);
         }
         catch (error) {
