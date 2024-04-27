@@ -39,6 +39,14 @@ const pages = {
             url: '/transacion',
             icon: icons.FileWordOutlined,
             target: false
+        },
+        {
+            id: 'Facturas_for',
+            title: 'Facturas form',
+            type: 'item',
+            url: '/Facturas_for',
+            icon: icons.FileWordOutlined,
+            target: false
         }
     ]
 };

@@ -105,51 +105,53 @@ const Conciliacion = () => {
 
 
     const Subir_archivo = async () => {
-        if (archivos.length > 0 && transacion.length > 0) {
-            setTransacion([])
+        if ([...archivos,...archivoGua,...archivosPa].length > 0 && transacion.length > 0) {
+            //setTransacion([])
             let nuevos = transacion.map(e => {
                 const objetoCon = archivos.find(item => Object.values(item).some(value => String(value).includes(e["# Transacción"])));
-             let cobrado=String(""+e["Cobrado"].replace("$", "")+"")
+                let cobrado = String("" + e["Cobrado"].replace("$", "") + "")
+                //console.log(objetoCon)
                 if (objetoCon) {
-
-                    // console.log(`El texto "${e["# Transacción"]}" está presente en algún valor de la transacción.`);
-                    // e.estado = "OK"
-
-                    (Object.values(objetoCon).some(value => parseFloat(value) == parseFloat(cobrado))) ? e.verifiva_valor = "Valor  Correcto" : ""
+                    //console.log(Object.values(objetoCon))
+                    const numerocompro = Object.values(objetoCon).map(f => {
+                        if (String(f).includes(String(e["# Transacción"]))) {
+                            return f
+                        }
+                        return null
+                    }).filter(ele => ele != null)
+                    //console.log(numerocompro)     
+                    Object.values(objetoCon).some(value => String(value).includes(parseFloat(cobrado))) ? e.verifiva_valor = "Valor  Correcto " + numerocompro[0] : "Valor incorrecto " + numerocompro[0]
                     e.estado = "ok"
                     return e;
                 }
-                else if (String(e["Forma de Pago"]) == "CALL BANCO GUAYAQUIL EMP" || String(e["Forma de Pago"]) == "SpeedMan BANCO GUAYAQUIL EMP" || String(e["Forma de Pago"]) == "SpeedMan BANCO GUAYAQUIL EMP" || String(e["Forma de Pago"]) == "APP BANCO GUAYAQUIL EMP") {
-                    /* if (archivoGua.some(item => Object.values(item).some(value => String(value).includes(e["# Transacción"])))) {
-                         console.log(`El texto "${e["# Transacción"]}" está presente en algún valor de la transacción.`);
-                         e.estado = "OK"
-                         return e;
-                     }*/
-                    const objetoCoincidente = archivoGua.find(item => Object.values(item).some(value => String(value).includes(e["# Transacción"])));
-                    console.log(objetoCoincidente)
-                    if (objetoCoincidente) {
-                        // Aquí puedes usar el objetoCoincidente como lo necesites
-                        console.log(cobrado, Object.values(objetoCoincidente).some(value => parseFloat(value)== parseFloat(cobrado)))
-                        if (Object.values(objetoCoincidente).some(value => parseFloat(value) == parseFloat(cobrado))) {
-                            e.verifiva_valor = "Valor  Correcto"
-                            e.estado = "ok"
-                            return e;
-                        }
-                        else {
-                            e.verifiva_valor = "Valor  incorrecto"
-                            e.estado = "ok"
+                if (String(e["Forma de Pago"]) == "CALL BANCO GUAYAQUIL EMP" || String(e["Forma de Pago"]) == "SpeedMan BANCO GUAYAQUIL EMP" || String(e["Forma de Pago"]) == "SpeedMan BANCO GUAYAQUIL EMP" || String(e["Forma de Pago"]) == "APP BANCO GUAYAQUIL EMP") {
+                  
+                        //console.log(e["# Transacción"])
+                        const objetoCoincidente = archivoGua.find(item => String(e["# Transacción"]).includes(String(item.NUMERO))
+                        );
+                        //console.log(objetoCoincidente)
+                        if (objetoCoincidente) {
+                            console.log(cobrado, Object.values(objetoCoincidente).some(value => parseFloat(value) == parseFloat(cobrado)))
+                            if (Object.values(objetoCoincidente).some(value => parseFloat(value) == parseFloat(cobrado))) {
+                                e.verifiva_valor = "Valor  Correcto " + objetoCoincidente.NUMERO
+                                e.estado = "ok"
+                                return e;
+                            }
+                            else {
+                                e.verifiva_valor = "Valor  incorrecto " + objetoCoincidente.NUMERO
+                                e.estado = "ok"
+                                return e;
+                            }
 
-                            return e;
                         }
-
-                    }
+                    
                 }
-                else if (String(e["Forma de Pago"]) == "CALL BANCO PACIFICO EMP" || String(e["Forma de Pago"]) == "CALL BANCO PACIFICO PRS" || String(e["Forma de Pago"]) == "SpeedMan BANCO PACIFICO EMP" || String(e["Forma de Pago"]) == "SpeedMan BANCO PACIFICO PRS" || String(e["Forma de Pago"]) == "APP BANCO PACIFICO EMP") {
+                if (String(e["Forma de Pago"]) == "CALL BANCO PACIFICO EMP" || String(e["Forma de Pago"]) == "CALL BANCO PACIFICO PRS" || String(e["Forma de Pago"]) == "SpeedMan BANCO PACIFICO EMP" || String(e["Forma de Pago"]) == "SpeedMan BANCO PACIFICO PRS" || String(e["Forma de Pago"]) == "APP BANCO PACIFICO EMP") {
                     let total = String(e["Cobrado"]).replace("$ ", "")
                     let fecha = String(e["Fecha & Hora"]).split(" ")[0].split("/")
                     let fe = String(`${fecha[2]}-${fecha[1]}-${fecha[0]}`)
                     let buscarFecha = archivosPa.filter(elem => { if (parseFloat(elem["VALOR"]) == parseFloat(total)) return elem })
-                    console.log(archivosPa)
+                    // console.log(archivosPa)
                     if (buscarFecha.length > 0) {
                         let buscardo = buscarFecha.filter(element => {
                             let fechas = element["FECHA"].split(" ")[0].split("/")
@@ -445,7 +447,7 @@ const Conciliacion = () => {
                     </label>
                 </div>
                 <div className="d-flex justify-content-center pt-2">
-                    {(fileUploaded && fileUploadedban) ? <button className="btn btn-primary" onClick={Subir_archivo}>
+                    {([...archivoGua, ...archivos, ...archivosPa].length>0) ? <button className="btn btn-primary" onClick={Subir_archivo}>
                         Comparar
                     </button> : ""}
                 </div>

@@ -10,7 +10,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
 const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
 //const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
-//const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
+const FacturasCon = Loadable(lazy(() => import('pages/Facturas/FacturaCon')));
 const Contractos = Loadable(lazy(() => import('pages/Usuarios/Contratos')));
 const FacturasView = Loadable(lazy(() => import('pages/Facturas/index')));
 const Conciliacion = Loadable(lazy(()=>import("pages/pagos/concilia") ) );
@@ -71,6 +71,10 @@ const MainRoutes = {
         {
             path: 'transacion',
             element: <Conciliacion />
+        },
+        {
+            path:'Facturas_for',
+            element:<FacturasCon/>
         }
     ]
 };

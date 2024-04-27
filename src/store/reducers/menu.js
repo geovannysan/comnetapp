@@ -7,6 +7,7 @@ const initialState = {
     openComponent: 'buttons',
     drawerOpen: false,
     componentDrawerOpen: true,
+    spiner: false,
     user: {
         Id:'',
         nombre: '',
@@ -50,6 +51,9 @@ const menu = createSlice({
         },
         setFacturas(state,action){
             state.facturadetalle=action.payload.factura
+        },
+        setSpiner(state,action){
+            state.spiner=action.payload.spiner
         }
     }
 });
