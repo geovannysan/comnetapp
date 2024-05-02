@@ -7,9 +7,8 @@ import {
     Button
 } from "antd"
 import { Tabs } from 'antd';
-import { Cargar_factura } from "util/Querireport"
-import { useState } from "react"
-import Lsita_de_Factura from "./Tablasfacturas";
+import { Cargar_factura, Genera_Factura } from "util/Querireport"
+import { useEffect, useState } from "react"
 import "./index.css"
 import { userlog } from "util/User";
 const FacturasCon = () => {
@@ -28,6 +27,7 @@ const FacturasCon = () => {
         if (meses == "" && forma == "") {
             return
         }
+    
         try {
             setSpiner(true)
             let data = await Cargar_factura(
@@ -37,12 +37,110 @@ const FacturasCon = () => {
                     "fin": "" + meses
                 }
             )
+            setTransacion({
+                "pagadas": [],
+                "nopagadas": [],
+                "registradas": [],
+                "noseencvio": [],
+                "arreglos": 0
+            })
             setTransacion(data)
             console.log(data, {
                 "forma": "" + forma,
                 "inicio": "" + meses,
                 "fin": "" + meses
             });
+            setTimeout(function(){
+                console.log("aqui")
+            if (transacion["registradas"].length>0) {
+                $('#doc').DataTable().destroy();
+                if (!$.fn.DataTable.isDataTable('#doc')) {
+                    $(document).ready(function () {
+
+                        $("#doc").dataTable({
+                            stateSave: true,
+                            responsive: true,
+                            "pageLength": 10,
+                            "bDestroy": true,
+                            "sSearch": false,
+                            paging: true,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "sSearch": "",
+                                "searchPlaceholder": "",
+                                'paginate': {
+                                    'previous': '<span className="prev-icon">Ant </span>',
+                                    'next': '<span className="next-icon"> Next</span>'
+                                }
+                            },
+                            "oLanguage": {
+                                "sSearch": ""
+                            },
+                            select: {
+                                style: "single",
+                            },
+                            columnDefs: [
+                            ],
+                            dom: 'Bfrtip',
+                            buttons: [
+                                "excel",
+                            ],
+                            lengthMenu: [
+                                [10, 20, 30, 50, -1],
+                                [10, 20, 30, 50, "All"],
+                            ],
+
+                            order: [[0, 'desc']],
+
+                        });
+
+                    })
+                }
+            }
+            if (transacion["pagadas"].length > 0) {
+                $('#docdos').DataTable().destroy();
+                if (!$.fn.DataTable.isDataTable('#docdos')) {
+                    $(document).ready(function () {
+
+                        $("#doc").dataTable({
+                            stateSave: true,
+                            responsive: true,
+                            "pageLength": 10,
+                            "bDestroy": true,
+                            "sSearch": false,
+                            paging: true,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "sSearch": "",
+                                "searchPlaceholder": "",
+                                'paginate': {
+                                    'previous': '<span className="prev-icon">Ant </span>',
+                                    'next': '<span className="next-icon"> Next</span>'
+                                }
+                            },
+                            "oLanguage": {
+                                "sSearch": ""
+                            },
+                            select: {
+                                style: "single",
+                            },
+                            columnDefs: [
+                            ],
+                            dom: 'Bfrtip',
+                            buttons: [
+                                "excel",
+                            ],
+                            lengthMenu: [
+                                [10, 20, 30, 50, -1],
+                                [10, 20, 30, 50, "All"],
+                            ],
+
+                            order: [[0, 'desc']],
+
+                        });
+
+                    })
+                }
+            }
+        },3000)
             setSpiner(false)
         }
         catch (error) {
@@ -54,14 +152,26 @@ const FacturasCon = () => {
     const GenerarFactura = async () => {
         let numfactura = document.getElementById("comprobante").value
         let factura = document.getElementById("prefactura").value
+        if (factura == "") return alert("Ingrese numero de prefactura")
         try {
             let user = userlog()
+            if (user == null) {
+                window.location.reload()
+                return
+            }
             let dato = {
                 "comprobante": "" + numfactura,
                 "factura": "" + factura,
                 "oper": user.Id
             }
-            console.log(dato)
+            let data = await Genera_Factura(dato);
+            if (data.estado) {
+                alert("Factura creada" + "\n" + data.parame.documento)
+            }
+            alert(data.mensaje + "\n" + data.factura.documento)
+            console.log(dato, data)
+            document.getElementById("comprobante").value = "";
+            document.getElementById("prefactura").value = ""
 
         } catch (error) {
             console.log(error);
@@ -73,7 +183,125 @@ const FacturasCon = () => {
     };
 
     const [inputValue, setInputValue] = useState('');
+    const thead = () => {
+        return (
+            <thead className="bg-primary">
+                <tr className="bg-primary ">
+                    <th>Pre Factura</th>
+                    <th >cedula cli</th>
+                    <th  ># Factura</th>
 
+                    <th ># Transacción</th>
+
+                    <th >Forma de Pago</th>
+                    <th>Subtotal</th>
+                    <th >Iva</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+        )
+    }
+
+    const showDatos = () => {
+        try {
+            // console.log(transacion)
+            return transacion["registradas"].map((item, index) => {
+
+                return (
+                    <tr key={index}>
+                        <td className="text-xs font-weight-bold">{item.idfactura}</td>
+                        <td className="text-xs font-weight-bold " style={{
+                            whiteSpace: "initial"
+                        }}>
+                            {item.id ? item.persona.cedula | "" : ""}</td>
+                        <td className="text-xs font-weight-bold " style={{
+                            whiteSpace: "initial"
+                        }}>
+                            {item.documento}</td>
+
+                        <td className=" font-weight-bold">
+                            {item.cobros[0].forma_cobro == "TRA" ? item.cobros[0].numero_comprobante : item.fecha}
+                        </td>
+                        <td className=" font-weight-bold">
+                            {item.cobros[0].forma_cobro}
+                        </td>
+                        <td className=" font-weight-bold">
+                            {item.subtotal_12}
+                        </td>
+                        <td className=" font-weight-bold">
+                            {item.iva}
+                        </td>
+                        <td>
+                            {item.total}
+                        </td>
+
+
+                    </tr>
+                )
+            });
+        } catch (error) { }
+    }
+    const theaddos = () => {
+        return (
+            <thead className="bg-primary">
+                <tr className="bg-primary ">
+                    <th>Pre Factura</th>
+                    <th >cedula cli</th>
+                    <th  ># Factura</th>
+
+                    <th ># Transacción</th>
+
+                    <th >Forma de Pago</th>
+                    <th>Subtotal</th>
+                    <th >Iva</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+        )
+    }
+
+    const showDatodos = () => {
+        try {
+            // console.log(transacion)
+            return transacion["pagadas"].map((item, index) => {
+
+                return (
+                    <tr key={index}>
+                        <td className="text-xs font-weight-bold">{item.idfactura}</td>
+                        <td className="text-xs font-weight-bold " style={{
+                            whiteSpace: "initial"
+                        }}>
+                            {item.id ? item.persona.cedula | "" : ""}</td>
+                        <td className="text-xs font-weight-bold " style={{
+                            whiteSpace: "initial"
+                        }}>
+                            {item.documento}</td>
+
+                        <td className=" font-weight-bold">
+                            {item.cobros[0].forma_cobro == "TRA" ? item.cobros[0].numero_comprobante : item.fecha}
+                        </td>
+                        <td className=" font-weight-bold">
+                            {item.cobros[0].forma_cobro}
+                        </td>
+                        <td className=" font-weight-bold">
+                            {item.subtotal_12}
+                        </td>
+                        <td className=" font-weight-bold">
+                            {item.iva}
+                        </td>
+                        <td>
+                            {item.total}
+                        </td>
+
+
+                    </tr>
+                )
+            });
+        } catch (error) { }
+    }
+    useEffect(() => {
+
+    }, [])
     return (
         <div>
             {spiner ? <div className="  d-flex flex-column" id="superpuesto">
@@ -325,19 +553,30 @@ const FacturasCon = () => {
                     <div id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                         <div className={!(tab == 1) ? "d-none" : "tab-pane fade show active"} id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 
-                            {transacion["registradas"].length > 0 ?
-                                <Lsita_de_Factura
-                                    nombre={"doc"}
-                                    transacion={transacion["registradas"]}
-                                /> : ""}
+                            <table id={"doc"} className="table table-striped "
+                                style={{
+                                    width: "100%",
+                                }}>
+                                {thead()}
+
+                                <tbody>
+                                    {showDatos()}
+                                </tbody>
+                            </table>
                         </div>
                         <div className={!(tab == 2) ? "d-none" : "tab-pane fade show active"} id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                            {transacion["pagadas"].length == 0 ? "" :
-                                <Lsita_de_Factura
-                                    nombre={"doc2"}
-                                    transacion={transacion["pagadas"]}
-                                />
-                            }
+
+                            {<table id={"docdos"} className="table table-striped "
+                                style={{
+                                    width: "100%",
+                                }}>
+                                {theaddos()}
+
+                                <tbody>
+                                    {showDatodos()}
+                                </tbody>
+                            </table>}
+
                         </div>
 
                     </div>

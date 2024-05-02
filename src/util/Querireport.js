@@ -67,8 +67,8 @@ export const Cargar_factura = async (params) => {
 }
 export const Genera_Factura = async (params) => {
     try {
-        
-        let {data} = await Axiosmikroserdos.post("api/emite", params )
+
+        let { data } = await Axiosmikroserdos.post("api/emite", params)
         return data
     } catch (error) {
         return error
