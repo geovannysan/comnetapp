@@ -10,7 +10,6 @@ import {
     DialogContent,
     DialogContentText
 } from '@mui/material';
-import PropTypes from 'prop-types';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -20,7 +19,6 @@ import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import PersonIcon from '@mui/icons-material/Person';
-import AddIcon from '@mui/icons-material/Add';
 import { blue } from '@mui/material/colors';
 import React, { useEffect } from 'react';
 import Button from '@mui/material/Button';
@@ -723,6 +721,7 @@ const PagosView = () => {
 
     }
     function comprobante(e) {
+        console.log(e)
         setSingleSelect(e)
         if (e.value != "") {
             setOpen(true)
@@ -737,6 +736,9 @@ const PagosView = () => {
                         ...ouput.factura
                     })
                     setDescrip({ factura: { ...ouput.factura }, items: ouput.items })
+                    sessionStorage.setItem("imp",parseInt(ouput.items[0].imp))
+                    sessionStorage.setItem("descripcion", ouput.items[0].descrp)
+
                     settotal(ouput.factura.total)
                     console.log(parseFloat(total).toFixed(2), parseFloat(ouput.factura.total).toFixed(2))
                     console.log((parseFloat(total).toFixed(2) != parseFloat(ouput.factura.total).toFixed(2)))

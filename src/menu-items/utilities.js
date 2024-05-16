@@ -1,5 +1,7 @@
 // assets
 import {
+
+
     AppstoreAddOutlined,
     AntDesignOutlined,
     BarcodeOutlined,
@@ -8,7 +10,9 @@ import {
     LoadingOutlined,
     FundViewOutlined,
     ReadOutlined,
-    FileProtectOutlined
+    FileProtectOutlined,
+    ClusterOutlined
+
 } from '@ant-design/icons';
 import { userlog } from 'util/User';
 
@@ -22,7 +26,8 @@ const icons = {
     AppstoreAddOutlined,
     FundViewOutlined,
     ReadOutlined,
-    FileProtectOutlined
+    FileProtectOutlined,
+    ClusterOutlined
 };
 let datos = userlog()
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
@@ -40,12 +45,13 @@ const utilities = {
               icon: icons.FundViewOutlined
           },*/
         {
-            id: 'Solicitudes',
-            title: 'Solicitudes',
+            id: 'Mapas',
+            title: 'Cobertura',
             type: 'item',
-            url: '/Solicitud',
-            icon: icons.ReadOutlined,
-            target: false
+            url: '/cobertura',
+            icon: icons.ClusterOutlined,
+            breadcrumbs: true
+
         },
         {
             id: 'Contrartos',
@@ -55,7 +61,8 @@ const utilities = {
             icon: icons.FileProtectOutlined,
             target: false
         },
-            (datos != null && datos.respuestatres == 1) ? {
+        ,
+        (datos != null && datos.respuestatres == 1) ? {
             id: 'Usuarios',
             title: 'Usuarios',
             type: 'item',
@@ -63,6 +70,15 @@ const utilities = {
             icon: icons.AntDesignOutlined,
             breadcrumbs: true
         } : ''
+        ,
+        {
+            id: 'Solicitudes',
+            title: 'Solicitudes',
+            type: 'item',
+            url: '/Solicitud',
+            icon: icons.ReadOutlined,
+            target: false
+        }
     ]
 };
 

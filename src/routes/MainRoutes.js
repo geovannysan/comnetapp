@@ -14,6 +14,7 @@ const FacturasCon = Loadable(lazy(() => import('pages/Facturas/FacturaCon')));
 const Contractos = Loadable(lazy(() => import('pages/Usuarios/Contratos')));
 const FacturasView = Loadable(lazy(() => import('pages/Facturas/index')));
 const Conciliacion = Loadable(lazy(()=>import("pages/pagos/concilia") ) );
+const CoverturaMap = Loadable(lazy(() => import("pages/Usuarios/Covertura"))); 
 const MainRoutes = {
     path: '/',
     element: <MainLayout />,
@@ -75,6 +76,10 @@ const MainRoutes = {
         {
             path:'Facturas_for',
             element:<FacturasCon/>
+        },
+        {
+            path:'cobertura',
+            element:<CoverturaMap/>
         }
     ]
 };

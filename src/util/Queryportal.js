@@ -76,14 +76,43 @@ export const Facturaid = async (parms) => {
     }
 }
 export const CreaLaFacturapor = async (parms, idfacttu) => {
+    let inpuestoconsult = parseInt(sessionStorage.getItem("imp"))
+    let descrip = sessionStorage.getItem("descripcion")
     try {
 
+        let valoresfact = valoresdeivacondecimal(parms.total, inpuestoconsult)
+        let parametros = {
+            ...parms,
+            "descripcion": parms.cliente.cedula.trim() + " " + descrip +" " +idfacttu ,
+
+            subtotal_12: (inpuestoconsult == 0) ? 0 : valoresfact.subtotal_12,
+            iva: valoresfact.iva,
+            total: valoresfact.total,
+            detalles:
+                [
+                    {
+                        ...parms.detalles[0],
+                        precio: valoresfact.subtotal_12,
+                        porcentaje_iva: inpuestoconsult,
+                        base_gravable: (inpuestoconsult == 0) ? 0 : valoresfact.subtotal_12,
+                        base_cero: 0,
+                        "base_no_gravable": (inpuestoconsult == 0) ? valoresfact.total : 0,
+                    }
+                ],
+            cobros: [
+                {
+                    ...parms.cobros[0],
+                    monto: valoresfact.total
+                }
+            ]
+        }
+        console.log(parametros)
         /*  let { data } = await axios({
               method: 'post', url: 'https://api.contifico.com/sistema/api/v1/documento/', data: parms, headers: {
                   'Authorization': 'eYxkPDD5SDLv0nRB7CIKsDCL6dwHppHwHmHMXIHqH8w'
               }
           })*/
-        let { data } = await axios.post("https://api.t-ickets.com/mikroti/newdocumento/" + idfacttu + "/" + userlog().Id, { "parms": { ...parms } })
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/newdocumento/" + idfacttu + "/" + userlog().Id, { "parms": { ...parametros } })
         return data
 
     } catch (error) {
@@ -91,6 +120,183 @@ export const CreaLaFacturapor = async (parms, idfacttu) => {
         return error
 
     }
+}
+function formatNumber(num) {
+    const thirdDecimal = Math.floor(num * 1000) % 10;
+    if (thirdDecimal > 5) {
+        return num.toFixed(2);
+    } else {
+        return Math.trunc(num * 100) / 100;
+    }
+}
+function valoresdeivacondecimal(total, IVA) {
+    try {
+        /* if (IVA == 12) {
+             let montoTotal = total
+             const tasaIVA = Number(IVA);
+             //const ivas = montoTotal - (montoTotal / (1 + tasaIVA
+             const ivas = (montoTotal - (montoTotal / (1 + tasaIVA / 100))).toFixed(3);
+             const subtotals = (parseFloat(montoTotal) / (1 + tasaIVA / 100));
+             let parametrosivas = String(String(ivas).split(".")[1]).substring(2, 3)
+             let parametrossubto = String(String(subtotals).split(".")[1]).substring(2, 3)
+     
+             let suma = parseInt(parametrossubto) + parseInt(parametrosivas)
+             // console.log("d", parametrosivas, parametrossubto)
+             if (parseInt(parametrosivas) < 6 && parseInt(parametrossubto) < 6) {
+     
+                 let sumas = (Math.trunc(parseFloat(ivas) * 100) / 100) + parseFloat("" + Math.trunc(subtotals * 100) / 100)
+                 let valores = {
+                     "iva": Math.trunc(parseFloat(ivas) * 100) / 100,
+                     "subtotal_12": Math.trunc(subtotals * 100) / 100,
+                     "total": formatNumber(sumas),
+                     "op": 1
+                 }
+                 console.log(valores, total)
+                 return valores
+             }
+             if (parseInt(parametrosivas) > 6) {
+     
+                 let sumas = parseFloat(formatNumber(parseFloat(ivas))) + parseFloat("" + Math.trunc(subtotals * 100) / 100)
+                 let valores = {
+                     "iva": formatNumber(parseFloat(ivas)),
+                     "subtotal_12": Math.trunc(subtotals * 100) / 100,
+                     "total": formatNumber(sumas),
+                     "op": 2
+                 }
+                 console.log(valores, total)
+                 return valores
+             }
+             if (suma > 6 && suma <= 9) {
+                 let sumas = parseFloat("" + subtotals) + parseFloat(ivas)
+                 //let sumas = parseFloat(formatNumber(parseFloat(ivas))) + parseFloat("" + Math.trunc(subtotals * 100) / 100)
+                 let valores = {
+                     "iva": formatNumber(ivas),
+                     "subtotal_12": formatNumber(subtotals),
+                     "total": formatNumber(sumas),
+                     "op": 3
+                 }
+                 // console.log(valores, total)
+                 return valores
+             }
+             else if (suma > 10) {
+                 console.log("mayora10")
+                 let sumas = parseFloat("" + subtotals) + parseFloat(ivas)
+                 let valores = {
+                     "iva": formatNumber(ivas),
+                     "subtotal_12": formatNumber(subtotals),
+                     "total": formatNumber(total),
+                     "op": 4
+                 }
+                 console.log(valores, total)
+                 return valores
+             }
+             else {
+                 console.log("igual a 10")
+                 let sumas = parseFloat("" + subtotals) + parseFloat(ivas)
+                 let valores = {
+                     "iva": parseFloat(ivas),
+                     "subtotal_12": formatNumber(subtotals),
+                     "total": formatNumber(sumas),
+                     "op": 4
+                 }
+                 console.log(valores, total)
+                 return valores
+             }
+         }
+         else {*/
+
+        let montoTotal = total
+        console.log("entro ->" + montoTotal);
+        const tasaIVA = Number(IVA);
+        //const ivas = montoTotal - (montoTotal / (1 + tasaIVA
+        const ivas = (montoTotal - (montoTotal / (1 + tasaIVA / 100))).toFixed(3);
+        const subtotals = (parseFloat(montoTotal) / (1 + tasaIVA / 100));
+        let parametrosivas = String(String(ivas).split(".")[1]).substring(2, 3)
+        let parametrossubto = String(String(subtotals).split(".")[1]).substring(2, 3)
+
+        let suma = parseInt(parametrossubto) + parseInt(parametrosivas)
+        //console.log("d", parametrosivas, parametrossubto)
+        if (parseInt(parametrosivas) <= 5 && parseInt(parametrossubto) <= 5) {
+
+            let sumas = (Math.trunc(parseFloat(ivas) * 100) / 100) + parseFloat("" + Math.trunc(subtotals * 100) / 100)
+            let valores = {
+                "iva": Math.trunc(parseFloat(ivas) * 100) / 100,
+                "subtotal_12": Math.trunc(subtotals * 100) / 100,
+                "total": formatNumber(sumas),
+                "op": 1
+            }
+            console.log(valores, total)
+            return valores
+        }
+        console.log(suma, parametrossubto + "," + parametrosivas)
+        if (parseInt(suma) > 8) {
+            console.log("mayora10")
+            let sumas = parseFloat("" + subtotals) + parseFloat(ivas);
+            let valores = {
+                "iva": formatNumber(parseFloat(ivas)),
+                "subtotal_12": formatNumber(subtotals),
+                "total": formatNumber(sumas),
+                "op": 4.5
+            }
+            console.log(valores, total)
+            return valores
+            //return valores
+        }
+        if (parseInt(parametrossubto) < 4) {
+            if (parseInt(parametrosivas) <= 6) {
+                let sumas = (Math.trunc(parseFloat(ivas) * 100) / 100) + parseFloat("" + Math.trunc(subtotals * 100) / 100)
+                let valores = {
+                    "iva": Math.trunc(parseFloat(ivas) * 100) / 100,
+                    "subtotal_12": Math.trunc(subtotals * 100) / 100,
+                    "total": formatNumber(montoTotal),
+                    "op": 1.5
+                }
+                console.log(valores, total)
+                return valores
+            }
+        }
+        if (parseInt(parametrosivas) >= 6) {
+
+            let sumas = parseFloat(formatNumber(parseFloat(ivas))) + parseFloat("" + Math.trunc(subtotals * 100) / 100)
+            let valores = {
+                "iva": formatNumber(parseFloat(ivas)),
+                "subtotal_12": Math.trunc(subtotals * 100) / 100,
+                "total": formatNumber(sumas),
+                "op": 2
+            }
+            console.log(valores, total)
+            return valores
+        }
+        if (suma > 6 && suma <= 9) {
+
+            let sumas = parseFloat(formatNumber(parseFloat(ivas))) + parseFloat("" + Math.trunc(subtotals * 100) / 100)
+            let valores = {
+                "iva": formatNumber(ivas),
+                "subtotal_12": formatNumber(subtotals),
+                "total": formatNumber(sumas), //formatNumber(parseFloat(ivas) + parseFloat(subtotals)),
+                "op": 3
+            }
+            console.log(valores, total)
+            return valores
+        }
+
+        else {
+            console.log("igual a 10")
+            let sumas = (Math.trunc(parseFloat(ivas) * 100) / 100) + parseFloat("" + Math.trunc(subtotals * 100) / 100)
+            let sum = parseFloat(formatNumber(ivas)) + parseFloat(formatNumber(subtotals))
+            let valores = {
+                "iva": formatNumber(ivas),
+                "subtotal_12": formatNumber(subtotals),
+                "total": total,
+                "op": 5
+            }
+            console.log(valores, total)
+            return valores
+        }
+    } catch (err) {
+        console.error(`Error en la función calcularIVA: ${err}`);
+    }
+    //  }
 }
 export const Loginadmin = async (parms) => {
     const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/auth_admin", parms, {
