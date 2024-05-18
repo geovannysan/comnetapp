@@ -9,7 +9,7 @@ set second=%datetime:~12,2%
 set formatted_date=%year%-%month%-%day%_%hour%:%minute%:%second%
 
 git commit -m "%formatted_date%"
-git push origin main --force
+git push origin master --force
 #crear numero randon
 
 SET var1=%RANDOM% 
