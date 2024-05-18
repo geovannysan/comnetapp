@@ -1,24 +1,20 @@
-# Usa una imagen base ligera de Node.js
-FROM node:16-alpine as build
+FROM node:14-alpine AS development
+ENV NODE_ENV development
 
-# Establece el directorio de trabajo dentro del contenedor
-WORKDIR /reactapp
 
-# Copia los archivos de tu aplicación al directorio de trabajo
+WORKDIR /app
+
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm install --force
+
+#RUN yarn install
+RUN npm i --force
+
+# Copy app files
 COPY . .
 
-# Construye la aplicación React
-#RUN npm run build
+# Expose port
+EXPOSE 3000
 
-# Usa una imagen base ligera de Nginx para servir los archivos estáticos
-#FROM nginx:alpine
-
-# Copia los archivos de la aplicación React compilados
-#COPY --from=build /reactapp/build /usr/share/nginx/html
-
-# Exponer el puerto 80
-EXPOSE 4580
-CMD ["npm", "run", "start"]
+# Start the app
+CMD [ "npm", "start" ]

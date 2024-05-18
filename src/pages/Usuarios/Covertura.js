@@ -18,7 +18,7 @@ import { Spin, notification, Popover, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { autenticar } from "util/Queryportal";
 const CoverturaMap = () => {
-    const [visible, setVisible] = useState(false);
+    const [distancias, setDistancia] = useState("");
     const [opcione, setOpcion] = useState("")
     const [infocliente, setCliente] = useState({});
     const [api, contextHolder] = notification.useNotification();
@@ -131,6 +131,10 @@ const CoverturaMap = () => {
                 cordenada1: grupo.coordenadas,
                 cordenada2: [marker._latlng.lat, marker._latlng.lng]
             }])
+            let resultados = calcularDistancia(grupo.coordenadas[0], grupo.coordenadas[1], marker._latlng.lat, marker._latlng.lng)
+            console.log( resultados)
+            setDistancia(resultados +" km")
+
             setOpcion("mapa")
         }
     };
@@ -157,6 +161,9 @@ const CoverturaMap = () => {
                     cordenada1: grupo.coordenadas,
                     cordenada2: [cordenada.split(",")[0], cordenada.split(",")[1]]
                 }])
+                let resultados = calcularDistancia(grupo.coordenadas[0], grupo.coordenadas[1], cordenada.split(",")[0], cordenada.split(",")[1])
+                setDistancia(resultados + " km")
+                console.log(resultados)
                 setOpcion("mapa")
                 
             }
@@ -415,24 +422,25 @@ const CoverturaMap = () => {
     useEffect(() => {
         fetchData()
     }, [])
+    const gradosARadianes = (grados) => {
+        return grados * Math.PI / 180;
+    };
     function calcularDistancia(lat1, lon1, lat2, lon2) {
-        var radioTierraMetros = 6371000;
-        var toRadians = function (valor) {
-            return valor * Math.PI / 180;
-        };
-        var deltaLat = toRadians(lat2 - lat1);
-        var deltaLon = toRadians(lon2 - lon1);
-        var a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-            Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-            Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        var distancia = radioTierraMetros * c;
-       // console.log(distancia)
-        if (distancia < 2000) {
-            return distancia.toFixed(2) + " metros";
-        } else {
-            return (distancia / 1000).toFixed(2) + " kilómetros";
-        }
+       // console.log(lat1, lon1, lat2, lon2)
+        lat1 = gradosARadianes(lat1);
+        lon1 = gradosARadianes(lon1);
+        lat2 = gradosARadianes(lat2);
+        lon2 = gradosARadianes(lon2);
+        // Aplicar fórmula
+        const RADIO_TIERRA_EN_KILOMETROS = 6371;
+        let diferenciaEntreLongitudes = (lon2 - lon1);
+        let diferenciaEntreLatitudes = (lat2 - lat1);
+        let a = Math.pow(Math.sin(diferenciaEntreLatitudes / 2.0), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(diferenciaEntreLongitudes / 2.0), 2);
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        let dis = RADIO_TIERRA_EN_KILOMETROS * c;
+        return   (dis).toFixed(2);
+
+
     }
 
 
@@ -659,7 +667,7 @@ const CoverturaMap = () => {
                                     position={position}
                                     ref={markerRef}
                                 >
-                                    <Popup>Arrastra este marcador</Popup>
+                                    <Popup>Arrastra este marcador{position}</Popup>
                                 </Marker>
                                 : ""
                         }
@@ -778,7 +786,7 @@ const CoverturaMap = () => {
                         </div>
                         <div className="m-2">
                             <div className="card-body">
-                                <h5 className="card-title">Distancias : </h5>
+                                <h5 className="card-title">Distancias : {distancias} </h5>
                                
                                
 
