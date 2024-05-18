@@ -2,12 +2,12 @@ version: "3.8"
 
 services:
   app:
-    container_name: app-dev-c
-    image: app-dev-i
+    container_name: tickes-reactpagos
+    image: tickes-reactpagos
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
       - ./src:/app/src
     ports:
-      - "3000:3000"
+      - "5055:3000"
