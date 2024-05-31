@@ -163,7 +163,7 @@ const CoverturaMap = () => {
                 }])
                 let resultados = calcularDistancia(grupo.coordenadas[0], grupo.coordenadas[1], cordenada.split(",")[0], cordenada.split(",")[1])
                 setDistancia(resultados + " km")
-                console.log(resultados)
+                //console.log(resultados)
                 setOpcion("mapa")
                 
             }
@@ -173,7 +173,7 @@ const CoverturaMap = () => {
         console.log(event.key)
         if (event.key === 'Enter' ) {
             if (cedula == "") return
-            console.log(cedula)
+           // console.log(cedula)
             setLocateClie([]);
             setMarkerClinete([])
             setPosition([])
@@ -251,20 +251,6 @@ const CoverturaMap = () => {
        
         return Math.sqrt(Math.pow(lat1 - lat2, 2) + Math.pow(lon1 - lon2, 2));
     }
-    function distanciaEnKilometros(coord1, coord2) {
-        const earthRadiusKm = 6371; // Radio de la Tierra en kilómetros
-        const lat1Rad = toRadians(coord1[0]);
-        const lat2Rad = toRadians(coord2[0]);
-        const deltaLatRad = toRadians(coord2[0] - coord1[0]);
-        const deltaLonRad = toRadians(coord2[1] - coord1[1]);
-
-        const a = Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) +
-            Math.cos(lat1Rad) * Math.cos(lat2Rad) *
-            Math.sin(deltaLonRad / 2) * Math.sin(deltaLonRad / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return earthRadiusKm * c;
-    }
     function coordenadaMasCercana(listaCoords, coord) {
         let minDist = Infinity;
         let closestCoord = null;
@@ -284,11 +270,6 @@ const CoverturaMap = () => {
         return { coordenada: closestCoord, distancia: distKm };
     }
     
-
-    function toRadians(degrees) {
-        return degrees * (Math.PI / 180);
-    }
-
 
 
     const fetchData = async () => {

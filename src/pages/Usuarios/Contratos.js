@@ -62,10 +62,10 @@ const Usuario = () => {
                 console.log(datas)
                 let constrayos = await ouput.contratos.map((item) => {
                     if (datas.length>0&& datas.includes(item.nombreDocumento)){
-                        item.nombreDocumento=item.nombreDocumento+ "(Subido)"
+                        item.nombreDocumento=item.nombreDocumento
                         return {...item}
                     }else{
-                        item.nombreDocumento = item.nombreDocumento + "(No Subido)"
+                        item.nombreDocumento = item.nombreDocumento 
                         return {...item}
                     }
                 })

@@ -24,27 +24,27 @@ const FacturasView = () => {
 
     // Obtener el último día del mes
     const ultimoDiaDelMes = new Date(fechaReferencia.getFullYear(), fechaReferencia.getMonth() + 1, 0);
-   /* const fetchData = async () => {
-        try {
-            
-
-            if (data) {
-                // Si hay datos, realiza las transformaciones necesarias y actualiza el estado de las facturas
-                data.forEach((e) => {
-                    let mensajes = JSON.parse(e.mensajes);
-                    let clienteCedula = mensajes.persona ? mensajes.persona.cedula : mensajes.cliente.cedula;
-                    let factura = { ...e, mensajes, cliente: clienteCedula };
-                    setFacturas(prevFacturas => [...prevFacturas, factura]);
-                });
-            }
-
-            if (error) {
-                console.error('Error al obtener datos:', error);
-            }
-        } catch (error) {
-            console.error('Error al obtener datos:', error);
-        }
-    };*/
+    /* const fetchData = async () => {
+         try {
+             
+ 
+             if (data) {
+                 // Si hay datos, realiza las transformaciones necesarias y actualiza el estado de las facturas
+                 data.forEach((e) => {
+                     let mensajes = JSON.parse(e.mensajes);
+                     let clienteCedula = mensajes.persona ? mensajes.persona.cedula : mensajes.cliente.cedula;
+                     let factura = { ...e, mensajes, cliente: clienteCedula };
+                     setFacturas(prevFacturas => [...prevFacturas, factura]);
+                 });
+             }
+ 
+             if (error) {
+                 console.error('Error al obtener datos:', error);
+             }
+         } catch (error) {
+             console.error('Error al obtener datos:', error);
+         }
+     };*/
     async function getFactura() {
         try {
             const datos = await ListarFacturas({
@@ -262,11 +262,12 @@ const FacturasView = () => {
                     <th >Fecha</th>
                     <th ># de factura</th>
                     <th ># cédula</th>
-                    <th >estado </th>
-                    <th >ID operador </th>
-                    <th >iva </th>
-                    <th >subtotal </th>
+                    <th >Metodo </th>
+                    <th > operador </th>
+                    <th >Forma </th>
                     <th >total </th>
+                    <th >subtotal </th>
+                    
                     <th >Ver </th>
 
 
@@ -280,7 +281,6 @@ const FacturasView = () => {
         try {
 
             return factura.filter(es => es.estado != "0").map((item, index) => {
-
                 return (
                     <tr key={index}>
                         <td className="text-xs font-weight-bold " style={{
@@ -306,13 +306,14 @@ const FacturasView = () => {
                             {item.admin.username}
                         </td>
                         <td className="text-xs font-weight-bold">
-                            {parseFloat(item.iva).toFixed(2)}</td>
-                        <td className="text-xs font-weight-bold">
-                            {parseFloat(item.subtotal_12).toFixed(2)}
-                        </td>
+                            {item["mensajes"].cobros[0].forma_cobro}</td>
                         <td className="text-xs font-weight-bold">
                             {parseFloat(item.total).toFixed(2)}
                         </td>
+                        <td className="text-xs font-weight-bold">
+                            {parseFloat(item.subtotal_12).toFixed(2)}
+                        </td>
+
 
                         <td className=" font-weight-bold">
                             <button className="btn btn-success" onClick={() => abrirfactura({ ...item.mensajes, idfactura: item.idfactura })}  >ver</button>

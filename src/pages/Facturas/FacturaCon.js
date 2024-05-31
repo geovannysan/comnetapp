@@ -53,6 +53,7 @@ const FacturasCon = () => {
             setTimeout(function(){
                 console.log("aqui")
             if (transacion["registradas"].length>0) {
+                return
                 $('#doc').DataTable().destroy();
                 if (!$.fn.DataTable.isDataTable('#doc')) {
                     $(document).ready(function () {
@@ -97,6 +98,7 @@ const FacturasCon = () => {
                 }
             }
             if (transacion["pagadas"].length > 0) {
+                return
                 $('#docdos').DataTable().destroy();
                 if (!$.fn.DataTable.isDataTable('#docdos')) {
                     $(document).ready(function () {
