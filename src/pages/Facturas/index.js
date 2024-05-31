@@ -267,11 +267,8 @@ const FacturasView = () => {
                     <th >Forma </th>
                     <th >total </th>
                     <th >subtotal </th>
-                    
-                    <th >Ver </th>
-
-
-                </tr>
+                    <th >Ver </th>                
+                    </tr>
             </thead>
         )
 
