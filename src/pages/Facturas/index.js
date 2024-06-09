@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Arreglarerror, ListarFacturas } from "util/Querireport"
+import { Arreglarerror, Axiosmikroserdos, ListarFacturas } from "util/Querireport"
 import { Tabs } from 'antd';
 import MainCard from "components/MainCard";
 import { setFacturas } from "store/reducers/menu";
@@ -218,6 +218,24 @@ const FacturasView = () => {
     function abrirfactura(e) {
         usedispatch(setFacturas({ factura: { ...e } }))
         history("/Facturaid")
+    }
+    function descarga(){
+
+        Axiosmikroserdos.get('api/descargar', {
+            responseType: 'blob'  // Important for handling binary data
+        })
+            .then(response => {
+                console.log(response)
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'facturas.xlsx');
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            })
+            .catch(error => console.error('There was a problem with the Axios request:', error));
+    
     }
     function Emitir() {
         //setFacturaerr([])
@@ -529,6 +547,10 @@ const FacturasView = () => {
                 />
 
                 <div className="tab-content" id="pills-tabContent">
+                <div className=" container-fluid text-end">
+                        <button className="btn btn-success" onClick={descarga}>Importar <i  className="fa fa-download"></i> </button>
+
+                </div>
                     <div className={!(tab == 1) ? "d-none" : "tab-pane fade show active"} id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                         <table id={"doc"} className="table table-striped "
                             style={{

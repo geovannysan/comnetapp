@@ -12,6 +12,14 @@ export const Logearse = async (parms) => {
         return error
     }
 }
+export const Descargar = async()=>{
+    try {
+        let { data } = await axios.get("http://localhost:3008/api/descargar")
+        return data
+    } catch (error) {
+        return error
+    }
+}
 export const autenticar = async (parms) => {
     console.log(userlog())
     try {
