@@ -499,6 +499,7 @@ const FacturasCon = () => {
                                 <Select.Option value="CALL BANCO GUAYAQUIL EMP">CALL BANCO GUAYAQUIL EMP</Select.Option>
                                 <Select.Option value="CALL BANCO PRODUBANCO">CALL BANCO PRODUBANCO</Select.Option>
                                 <Select.Option value="Banco Guayaquil">Banco Guayaquil</Select.Option>
+                                <Select.Option value="FACILITO">Facilito</Select.Option>
                             </Select>
                         </Form.Item>
                         <h5>Día de Factura</h5>
