@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react"
-import { ArrowBack, Label } from "../../../node_modules/@mui/icons-material/index"
-import { Box, Skeleton, Stack } from "../../../node_modules/@mui/material/index"
+import { ArrowBack, DeleteOutline, Label } from "../../../node_modules/@mui/icons-material/index"
+import { Box, Button, Skeleton, Stack } from "../../../node_modules/@mui/material/index"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index"
 import { ObtenerFactura } from "util/Querycontifico"
 import { setFacturas } from "store/reducers/menu"
+import { Popconfirm } from "../../../node_modules/antd/es/index"
 
 const FacturaDetalle = () => {
+    const [openStates, setOpenStates] = useState({});
     let detalle = useSelector(state => state.menu.facturadetalle)
     let usedispatch = useDispatch()
     let history = useNavigate()
     let [estado, setEstado] = useState(false)
     let [error, setError] = useState(false)
+    const handleOpenChange = (itemId) => (newOpenState) => {
+        setOpenStates((prevOpenStates) => ({
+            ...prevOpenStates,
+            [itemId]: newOpenState,
+        }));
+    };
+
     useEffect(() => {
         //console.log(detalle)
         ObtenerFactura(detalle.id).then(oput => {
@@ -41,6 +50,22 @@ const FacturaDetalle = () => {
                         <button class="dropdown-item" onClick={() => abrir()} >Ver Rider</button>
                         <a class="dropdown-item" href="#">Editar id Comnet </a>
                     </div>
+                </div>
+                <div className=" container-fluid text-end ">
+                    <Popconfirm
+                        title="Eliminar transacion y factura"
+                        description="Estas seguro@ de eliminar esta estos?"
+                        open={openStates[detalle.Id] || false}
+                        onOpenChange={handleOpenChange(detalle.Id)}
+                        onConfirm={() => confirm(detalle.Id)}
+                        onCancel={()=>{}}
+                        okText="Si"
+                        cancelText="No"
+                    >
+                        <Button>
+                        <DeleteOutline /> 
+                        </Button>
+                    </Popconfirm>
                 </div>
                 <div className="col-12  d-flex justify-content-center">
                     <div className=" container-fluid bg-secondary-sm">

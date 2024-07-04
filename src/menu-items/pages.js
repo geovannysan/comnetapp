@@ -1,11 +1,11 @@
 // assets
-import { LoginOutlined, ProfileOutlined, FileWordOutlined} from '@ant-design/icons';
+import { LoginOutlined, ProfileOutlined, ChromeOutlined, FileWordOutlined } from '@ant-design/icons';
 
 // icons
 const icons = {
     LoginOutlined,
-    ProfileOutlined, 
-    FileWordOutlined
+    ProfileOutlined,
+    FileWordOutlined, ChromeOutlined
 };
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
@@ -48,7 +48,28 @@ const pages = {
             icon: icons.FileWordOutlined,
             target: false
         }
-    ]
+    ],
+
+   /* id: 'collapse-example',
+    title: 'Collapse Example',
+    type: 'collapse',
+    icon: icons.ChromeOutlined,
+    children: [
+        {
+            id: 'color',
+            title: 'Color',
+            url: '/color',
+            icon: icons.ChromeOutlined
+        },
+        {
+            id: 'dashboard-default',
+            title: 'Dashboard Default',
+            url: '/dashboard/default',
+            icon: icons.ChromeOutlined
+        }
+    ]*/
+
+
 };
 
 export default pages;

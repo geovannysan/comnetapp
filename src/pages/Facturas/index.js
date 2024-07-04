@@ -1,13 +1,24 @@
 import { useEffect, useState } from "react"
-import { Arreglarerror, Axiosmikroserdos, ListarFacturas } from "util/Querireport"
-import { Tabs } from 'antd';
+import { Arreglarerror, Axiosmikroserdos, EliminarFactura, ListarFacturas } from "util/Querireport"
+import { Tabs, Button } from 'antd';
 import MainCard from "components/MainCard";
 import { setFacturas } from "store/reducers/menu";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
-import axios from "../../../node_modules/axios/index";
+import { Popconfirm } from "../../../node_modules/antd/es/index"
+import { userlog } from "util/User";
+
 const FacturasView = () => {
     let usedispatch = useDispatch()
+    const [openStates, setOpenStates] = useState({});
+    let user = userlog();
+    const handleOpenChange = (itemId) => (newOpenState) => {
+        setOpenStates((prevOpenStates) => ({
+            ...prevOpenStates,
+            [itemId]: newOpenState,
+        }));
+    };
+
     let history = useNavigate()
     const [factura, setFactura] = useState([])
     const [facturaerr, setFacturaerr] = useState([])
@@ -219,7 +230,7 @@ const FacturasView = () => {
         usedispatch(setFacturas({ factura: { ...e } }))
         history("/Facturaid")
     }
-    function descarga(){
+    function descarga() {
 
         Axiosmikroserdos.get('api/descargar', {
             responseType: 'blob'  // Important for handling binary data
@@ -235,7 +246,7 @@ const FacturasView = () => {
                 link.parentNode.removeChild(link);
             })
             .catch(error => console.error('There was a problem with the Axios request:', error));
-    
+
     }
     function Emitir() {
         //setFacturaerr([])
@@ -268,6 +279,23 @@ const FacturasView = () => {
             console.log(error)
         })
     }
+    async function EliminarFacturas(id) {
+        try {
+            let { data } = await EliminarFactura(id)
+            if (data.status) {
+                alert(data.mensaje)
+                window.location.reload()
+
+            } else {
+                alert(data.mensaje)
+
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+    const cancel = () => {
+    };
     useEffect(() => {
         getFactura()
     }, [])
@@ -285,8 +313,8 @@ const FacturasView = () => {
                     <th >Forma </th>
                     <th >total </th>
                     <th >subtotal </th>
-                    <th >Ver </th>                
-                    </tr>
+                    <th >Ver </th>
+                </tr>
             </thead>
         )
 
@@ -331,7 +359,43 @@ const FacturasView = () => {
 
 
                         <td className=" font-weight-bold">
-                            <button className="btn btn-success" onClick={() => abrirfactura({ ...item.mensajes, idfactura: item.idfactura })}  >ver</button>
+                            <div className="d-flex justify-content-around">
+                                {user.respuestatres == 1 ? <Popconfirm
+                                    title="Eliminar transacion y factura"
+                                    description="Despiuies de eliminar notifica con contabilidad la naulacion en contifico"
+                                    open={openStates[item.Id] || false}
+                                    onOpenChange={handleOpenChange(item.Id)}
+                                    onConfirm={() => EliminarFacturas(item.Id)}
+                                    onCancel={cancel}
+                                    okText="Si"
+                                    cancelText="No"
+                                >
+                                    <Button type="primary" danger size='small' onClick={handleOpenChange(item.Id)}>
+                                        <i className="fa fa-trash"></i>
+                                    </Button>
+
+
+                                </Popconfirm> :
+                                    ""
+                              /*  (user.username == item.admin.username)?    <Popconfirm
+                                        title="Eliminar transacion y factura"
+                                        description="Estas seguro@ de eliminar esta estos?"
+                                        open={openStates[item.Id] || false}
+                                        onOpenChange={handleOpenChange(item.Id)}
+                                        onConfirm={() => console.log(item.Id)}
+                                        onCancel={cancel}
+                                        okText="Si"
+                                        cancelText="No"
+                                    >
+                                        <Button type="primary" danger size='small' onClick={handleOpenChange(item.Id)}>
+                                            <i className="fa fa-trash"></i>
+                                        </Button>
+
+
+                                    </Popconfirm>: */ }
+                                <Button type="primary" size='small' onClick={() => abrirfactura({ ...item.mensajes, idfactura: item.idfactura })}  >
+                                    <i className=" fa fa-eye"></i> </Button>
+                            </div>
                         </td>
                         {/* <td className="text-xs font-weight-bold"  ><code style={{ maxWidth:"400px"}}> <pre>{JSON.stringify(js).replace(/,/g, ",\n")}</pre>
                         </code> </td>
@@ -547,10 +611,10 @@ const FacturasView = () => {
                 />
 
                 <div className="tab-content" id="pills-tabContent">
-                <div className=" container-fluid text-end">
-                        <button className="btn btn-success" onClick={descarga}>Importar <i  className="fa fa-download"></i> </button>
+                    <div className=" container-fluid text-end">
+                        <button className="btn btn-success" onClick={descarga}>Importar <i className="fa fa-download"></i> </button>
 
-                </div>
+                    </div>
                     <div className={!(tab == 1) ? "d-none" : "tab-pane fade show active"} id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                         <table id={"doc"} className="table table-striped "
                             style={{

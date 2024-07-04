@@ -1,4 +1,5 @@
 import axios from "axios"
+import { userlog } from "./User"
 export const Axiosmikroser = axios.create({
     baseURL: "https://api.t-ickets.com/mikroti/"
 })
@@ -28,6 +29,17 @@ export const EliminarArchivo = async (id, params) => {
     try {
         let { data } = await Axiosmikroser.delete(`Comnet/eliminar/${id}`, params);
         return data;
+    } catch (error) {
+        return error
+    }
+}
+export const EliminarFactura = async (id) => {
+    try {
+        let user = userlog()
+        let { data } = await Axiosmikroser.delete('/Comnet/EliminarFactura/' + id, {
+            "cedula": "" + user.cedula
+        })
+        return data
     } catch (error) {
         return error
     }
