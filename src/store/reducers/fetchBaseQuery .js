@@ -3,16 +3,16 @@ export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://api.t-ickets.com/mikroti' }),
     endpoints: (builder) => ({
-        
-        getFactura: builder.query({
+
+        getClientes: builder.query({
             query: (body) => ({
-                url: '/listarfactura',
-                method: 'POST',
+                url: '/ListarClientes',
+                method: 'GET',
                 body,
             }),
         }),
     }),
 });
 
-export const { useEndpointsQuery }=api
+export const { useGetCliente } = api
 export default api

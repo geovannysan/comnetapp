@@ -9,6 +9,7 @@ export const userlog = () => {
         return error
     }
 }
+export const hostCron ="https://api.t-ickets.com/mikrotiv2/"
 export const Mes = {
     0: "ENERO",
     1: "FEBRERO",
@@ -22,4 +23,12 @@ export const Mes = {
     9: "OCTUBRE",
     10: "NOVIEMBRE",
     11: "DICIEMBRE"
+}
+export const Departamento={
+    "1":"Soporte técnico",
+    "2":"Ventas",
+    "4":"Facturas",
+    "5":"Retiro",
+    "6":"Actualizaciones",
+    "7":"Monitoreo",
 }

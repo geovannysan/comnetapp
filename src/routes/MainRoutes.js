@@ -3,6 +3,7 @@ import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
 import FacturaDetalle from 'pages/Facturas/Factura';
 import Usuario from 'pages/Usuarios/index';
+import ListarCliente from 'pages/Clientes/index';
 const DetallesView = Loadable(lazy(() => import('pages/solicitud/Detalle')));
 const SolicitudView = Loadable(lazy(() => import('pages/solicitud/index')));
 const PagosView = Loadable(lazy(() => import('pages/pagos/index')));
@@ -13,12 +14,14 @@ const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
 const FacturasCon = Loadable(lazy(() => import('pages/Facturas/FacturaCon')));
 const Contractos = Loadable(lazy(() => import('pages/Usuarios/Contratos')));
 const FacturasView = Loadable(lazy(() => import('pages/Facturas/index')));
-const Conciliacion = Loadable(lazy(()=>import("pages/pagos/concilia") ) );
-const CoverturaMap = Loadable(lazy(() => import("pages/Usuarios/Covertura"))); 
+const Conciliacion = Loadable(lazy(() => import("pages/pagos/concilia")));
+const CoverturaMap = Loadable(lazy(() => import("pages/Usuarios/Covertura")));
+
+const ClienteID = Loadable(lazy(() => import("pages/Clientes/clienteID")));
 const MainRoutes = {
     path: '/',
     element: <MainLayout />,
-    
+
     children: [
         {
             path: '/',
@@ -38,9 +41,10 @@ const MainRoutes = {
             ]
         },
         {
-            path:"detalle/:id",
+            path: "detalle/:id",
             element: <DetallesView />
         },
+
         {
             path: '/pagos',
             element: <PagosView />
@@ -50,7 +54,7 @@ const MainRoutes = {
             element: <FacturasView />
         },
         {
-            path:'Facturaid',
+            path: 'Facturaid',
             element: <FacturaDetalle />
         },
         {
@@ -74,12 +78,21 @@ const MainRoutes = {
             element: <Conciliacion />
         },
         {
-            path:'Facturas_for',
-            element:<FacturasCon/>
+            path: 'Facturas_for',
+            element: <FacturasCon />
         },
         {
-            path:'cobertura',
-            element:<CoverturaMap/>
+            path: 'cobertura',
+            element: <CoverturaMap />
+        },
+        {
+            path: 'clientes',
+            element: <ListarCliente />
+        }
+        ,
+        {
+            path: 'clientes/:id',
+            element: <ClienteID />
         }
     ]
 };

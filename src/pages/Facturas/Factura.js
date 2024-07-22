@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { ArrowBack, DeleteOutline, Label } from "../../../node_modules/@mui/icons-material/index"
-import { Box, Button, Skeleton, Stack } from "../../../node_modules/@mui/material/index"
+import { Box, Skeleton } from "../../../node_modules/@mui/material/index"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index"
 import { ObtenerFactura } from "util/Querycontifico"
 import { setFacturas } from "store/reducers/menu"
-import { Popconfirm } from "../../../node_modules/antd/es/index"
+import { Button, Popconfirm } from "../../../node_modules/antd/es/index"
 
 const FacturaDetalle = () => {
     const [openStates, setOpenStates] = useState({});
@@ -48,27 +48,25 @@ const FacturaDetalle = () => {
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <button class="dropdown-item" onClick={() => abrir()} >Ver Rider</button>
-                        <a class="dropdown-item" href="#">Editar id Comnet </a>
                     </div>
-                </div>
-                <div className=" container-fluid text-end ">
-                    <Popconfirm
-                        title="Eliminar transacion y factura"
-                        description="Estas seguro@ de eliminar esta estos?"
-                        open={openStates[detalle.Id] || false}
-                        onOpenChange={handleOpenChange(detalle.Id)}
-                        onConfirm={() => confirm(detalle.Id)}
-                        onCancel={()=>{}}
-                        okText="Si"
-                        cancelText="No"
-                    >
-                        <Button>
-                        <DeleteOutline /> 
-                        </Button>
-                    </Popconfirm>
                 </div>
                 <div className="col-12  d-flex justify-content-center">
                     <div className=" container-fluid bg-secondary-sm">
+                        <div className=" container-fluid text-end pt-2 ">
+                            <Popconfirm
+                                title="Eliminar transacion y factura"
+                                description="Estas seguro@ de eliminar esta estos?"
+                                open={openStates[detalle.Id] || false}
+                                onOpenChange={handleOpenChange(detalle.Id)}
+                                onConfirm={() => confirm(detalle.Id)}
+                                onCancel={() => { }}
+                                okText="Si"
+                                cancelText="No"
+                            > <Button type="primary" danger size='small' >
+                                    <i className="fa fa-trash"></i>
+                                </Button>
+                            </Popconfirm>
+                        </div>
                         <div className=" ">
                             <div className="d-flex flex-wrap pt-3 datos px-0 ">
                                 <div className="col-12 col-md-4 border-bottom p-3">

@@ -1,11 +1,14 @@
 // assets
-import { LoginOutlined, ProfileOutlined, ChromeOutlined, FileWordOutlined } from '@ant-design/icons';
+import {
+    LoginOutlined, ProfileOutlined, ChromeOutlined, FileWordOutlined, TeamOutlined
+} from '@ant-design/icons';
 
 // icons
 const icons = {
     LoginOutlined,
     ProfileOutlined,
-    FileWordOutlined, ChromeOutlined
+    FileWordOutlined, ChromeOutlined,
+    TeamOutlined
 };
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
@@ -31,7 +34,6 @@ const pages = {
             icon: icons.FileWordOutlined,
             target: false
         },
-        ,
         {
             id: 'Transacion',
             title: 'Transacion',
@@ -47,27 +49,34 @@ const pages = {
             url: '/Facturas_for',
             icon: icons.FileWordOutlined,
             target: false
+        }, {
+            id: 'Clientes',
+            title: 'Clientes App',
+            type: 'item',
+            url: '/clientes',
+            icon: icons.TeamOutlined,
+            target: false
         }
     ],
 
-   /* id: 'collapse-example',
-    title: 'Collapse Example',
-    type: 'collapse',
-    icon: icons.ChromeOutlined,
-    children: [
-        {
-            id: 'color',
-            title: 'Color',
-            url: '/color',
-            icon: icons.ChromeOutlined
-        },
-        {
-            id: 'dashboard-default',
-            title: 'Dashboard Default',
-            url: '/dashboard/default',
-            icon: icons.ChromeOutlined
-        }
-    ]*/
+    /* id: 'collapse-example',
+     title: 'Collapse Example',
+     type: 'collapse',
+     icon: icons.ChromeOutlined,
+     children: [
+         {
+             id: 'color',
+             title: 'Color',
+             url: '/color',
+             icon: icons.ChromeOutlined
+         },
+         {
+             id: 'dashboard-default',
+             title: 'Dashboard Default',
+             url: '/dashboard/default',
+             icon: icons.ChromeOutlined
+         }
+     ]*/
 
 
 };

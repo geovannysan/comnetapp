@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 import { Arreglarerror, Axiosmikroserdos, EliminarFactura, ListarFacturas } from "util/Querireport"
 import { Tabs, Button } from 'antd';
 import MainCard from "components/MainCard";
-import { setFacturas } from "store/reducers/menu";
-import { useDispatch } from "react-redux";
+import { setFacturas, setListaFactura } from "store/reducers/menu";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
 import { Popconfirm } from "../../../node_modules/antd/es/index"
 import { userlog } from "util/User";
@@ -20,7 +20,8 @@ const FacturasView = () => {
     };
 
     let history = useNavigate()
-    const [factura, setFactura] = useState([])
+    //const [factura, setFactura] = useState([])
+    let factura = useSelector(state => state.menu.facturas)
     const [facturaerr, setFacturaerr] = useState([])
     const fechaReferencia = new Date();
     // Obtener el primer día del mes
@@ -92,7 +93,7 @@ const FacturasView = () => {
                 }
             })
             if (fact.estado && datos.estado) setFacturaerr([...facturaerr, ...facturaser.sort((a, b) => b.Id - a.Id)])
-            if (fact.estado && datos.estado) setFactura([...factura, ...facturas.sort((a, b) => b.Id - a.Id)])
+            if (fact.estado && datos.estado) usedispatch(setListaFactura({ listaFactura: [...facturas.sort((a, b) => b.Id - a.Id)] }))
             if (!$.fn.DataTable.isDataTable("#doc")) {
                 $(document).ready(function () {
                     $("#doc").dataTable({
@@ -360,9 +361,10 @@ const FacturasView = () => {
 
                         <td className=" font-weight-bold">
                             <div className="d-flex justify-content-around">
-                                {user.respuestatres == 1 ? <Popconfirm
+
+                                {  /*   <Popconfirm
                                     title="Eliminar transacion y factura"
-                                    description="Despiuies de eliminar notifica con contabilidad la naulacion en contifico"
+                                    description="Despuies de eliminar notificar ha contabilidad la anulacion en contifico"
                                     open={openStates[item.Id] || false}
                                     onOpenChange={handleOpenChange(item.Id)}
                                     onConfirm={() => EliminarFacturas(item.Id)}
@@ -370,29 +372,13 @@ const FacturasView = () => {
                                     okText="Si"
                                     cancelText="No"
                                 >
-                                    <Button type="primary" danger size='small' onClick={handleOpenChange(item.Id)}>
+                                    <Button type="primary" danger size='small'  >
                                         <i className="fa fa-trash"></i>
                                     </Button>
 
 
-                                </Popconfirm> :
-                                    ""
-                              /*  (user.username == item.admin.username)?    <Popconfirm
-                                        title="Eliminar transacion y factura"
-                                        description="Estas seguro@ de eliminar esta estos?"
-                                        open={openStates[item.Id] || false}
-                                        onOpenChange={handleOpenChange(item.Id)}
-                                        onConfirm={() => console.log(item.Id)}
-                                        onCancel={cancel}
-                                        okText="Si"
-                                        cancelText="No"
-                                    >
-                                        <Button type="primary" danger size='small' onClick={handleOpenChange(item.Id)}>
-                                            <i className="fa fa-trash"></i>
-                                        </Button>
+                                </Popconfirm> */}
 
-
-                                    </Popconfirm>: */ }
                                 <Button type="primary" size='small' onClick={() => abrirfactura({ ...item.mensajes, idfactura: item.idfactura })}  >
                                     <i className=" fa fa-eye"></i> </Button>
                             </div>
@@ -414,31 +400,25 @@ const FacturasView = () => {
         setTabs(key);
     };
     const theaderr = () => {
-        return (
-            <thead className="bg-primary">
-                <tr className="bg-primary ">
-                    <th  >#</th>
-                    <th  >Id Factura</th>
-                    <th >Fecha</th>
-                    <th ># de factura</th>
-                    <th ># cédula</th>
-                    <th >estado </th>
-                    <th >ID operador </th>
-                    <th >iva </th>
-                    <th >subtotal </th>
-                    <th >total </th>
-                    <th >Ver </th>
-
-
-                </tr>
-            </thead>
-        )
-
+        return (<thead className="bg-primary">
+            <tr className="bg-primary ">
+                <th  >#</th>
+                <th  >Id Factura</th>
+                <th >Fecha</th>
+                <th ># de factura</th>
+                <th ># cédula</th>
+                <th >estado </th>
+                <th >ID operador </th>
+                <th >iva </th>
+                <th >subtotal </th>
+                <th >total </th>
+                <th >Ver </th>
+            </tr>
+        </thead>)
     }
 
     const showDatoserr = () => {
         try {
-
             return facturaerr.filter(es => es.estado == "0").map((item, index) => {
 
                 return (
@@ -507,10 +487,10 @@ const FacturasView = () => {
             })
             if (datos.estado && datos.data.length > 0) {
                 $('#doc').DataTable().destroy();
-                setFactura([])
+                //  setFactura([])
                 if (!$.fn.DataTable.isDataTable("#doc")) {
-
-                    setFactura([...facturas.sort((a, b) => b.Id - a.Id)])
+                    usedispatch(setListaFactura({ listaFactura: [...facturas.sort((a, b) => b.Id - a.Id)] }))
+                    //    setFactura([...facturas.sort((a, b) => b.Id - a.Id)])
                     $(document).ready(function () {
                         $("#doc").dataTable({
                             stateSave: true,

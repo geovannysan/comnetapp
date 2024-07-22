@@ -8,8 +8,11 @@ const initialState = {
     drawerOpen: false,
     componentDrawerOpen: true,
     spiner: false,
+    facturas: [],
+    clientes: [],
+    tickets: [],
     user: {
-        Id:'',
+        Id: '',
         nombre: '',
         password: '',
         permiso: '',
@@ -17,7 +20,7 @@ const initialState = {
         usuario: ''
     },
     estado: false,
-    facturadetalle:{
+    facturadetalle: {
 
     }
 };
@@ -28,6 +31,9 @@ const menu = createSlice({
     name: 'menu',
     initialState,
     reducers: {
+        setTickets(state, action) {
+            state.tickets = [...action.payload.tickets];
+        },
         activeItem(state, action) {
             state.openItem = action.payload.openItem;
         },
@@ -49,15 +55,31 @@ const menu = createSlice({
         setlogin(state, action) {
             state.estado = action.payload.estado
         },
-        setFacturas(state,action){
-            state.facturadetalle=action.payload.factura
+        setFacturas(state, action) {
+            state.facturadetalle = action.payload.factura
         },
-        setSpiner(state,action){
-            state.spiner=action.payload.spiner
+        setSpiner(state, action) {
+            state.spiner = action.payload.spiner
+        },
+        setListaFactura(state, action) {
+            state.facturas = action.payload.listaFactura
+        },
+        setClientes(state, action) {
+            state.clientes = action.payload.clientes
         }
     }
 });
 
 export default menu.reducer;
 
-export const { activeItem, activeComponent, openDrawer, openComponentDrawer, setDatosuser, setlogin,setFacturas } = menu.actions;
+export const { activeItem,
+    activeComponent,
+    setListaFactura,
+    setClientes,
+    openDrawer,
+    openComponentDrawer,
+    setDatosuser,
+    setlogin,
+    setFacturas,
+    setTickets
+} = menu.actions;

@@ -1,8 +1,10 @@
 
 
 import axios from "axios";
-import { userlog } from "./User";
+import { hostCron, userlog } from "./User";
+import { Axiosmikroser } from "./Querireport";
 let Host = "https://portal.comnet.ec/api/v1/";
+let Hostv1 = "https://api.t-ickets.com/mikroti"
 //let userlog() = JSON.parse(sessionStorage.getItem("USERLOGIN"))
 export const Logearse = async (parms) => {
     try {
@@ -12,9 +14,59 @@ export const Logearse = async (parms) => {
         return error
     }
 }
-export const Descargar = async()=>{
+export const Cliente = async (parms) => {
     try {
-        let { data } = await axios.get("http://localhost:3008/api/descargar")
+        let { data } = await axios.post(Hostv1 + "/PortalApi/GetClientsDetails",
+            {
+                "operador": "appspeed",
+                "cedula": parms
+            }, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Listar_tickets = async () => {
+    try {
+        let data = Axiosmikroser.get("Comnet/tickes")
+        return data
+
+    } catch (error) {
+        return error
+    }
+
+}
+export const ActualizarPasswordClienet = async (parms) => {
+    try {
+        let { data } = await axios.post(Hostv1 + "/PortalApi/UpdatePasswordCliente",
+            parms, {
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+                , 'Content-Type': 'application/json',
+            }
+        }
+        )
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Descargar = async () => {
+    try {
+        let { data } = await axios.get(hostCron + "api/descargar")
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const ListaClientes = async () => {
+    try {
+        let { data } = await axios.get("https://api.t-ickets.com/mikroti/Comnet/ListarClientes")
         return data
     } catch (error) {
         return error
@@ -91,7 +143,7 @@ export const CreaLaFacturapor = async (parms, idfacttu) => {
         let valoresfact = valoresdeivacondecimal(parms.total, inpuestoconsult)
         let parametros = {
             ...parms,
-            "descripcion": parms.cliente.cedula.trim() + " " + descrip +" " +idfacttu ,
+            "descripcion": parms.cliente.cedula.trim() + " " + descrip + " " + idfacttu,
 
             subtotal_12: (inpuestoconsult == 0) ? 0 : valoresfact.subtotal_12,
             iva: valoresfact.iva,

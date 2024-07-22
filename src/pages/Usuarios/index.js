@@ -278,7 +278,7 @@ const Usuario = () => {
             "nombre": values.nombre,
             "permiso": values.permiso
         }
-      //  const objetoSinPropiedadesVacias = eliminarPropiedadesVacias(params);
+        //  const objetoSinPropiedadesVacias = eliminarPropiedadesVacias(params);
         //console.log(objetoSinPropiedadesVacias)
         //return
         if (id == 0) {
@@ -288,8 +288,6 @@ const Usuario = () => {
                     window.location.reload()
                 } else {
                     openNotificationWithIcon('error', "Alerta", ouput.mensaje)
-
-
                 }
             }).catch(err => {
                 console.error(err)
@@ -314,7 +312,7 @@ const Usuario = () => {
                     openNotificationWithIcon('error', "Alerta", ouput.mensaje)
                 }
             }).catch(err => {
-                 consol.log(ouput)
+                consol.log(ouput)
                 console.error(err)
             })
         }
@@ -322,7 +320,6 @@ const Usuario = () => {
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
-    const [inputValue, setInputValue] = useState('');
     const abrirfactura = (e) => {
         setDatos({
             "username": e.username,
@@ -335,19 +332,7 @@ const Usuario = () => {
         setID(e.Id)
         setIsModalOpen(true);
         console.log(e)
-        const valorDinamico = 'Valor dinámico';
-        //setInputValue(valorDinamico);
-
-        //  setIsModalOpenid(true);
-        // user.value = "" + e.username
-        /*setDatos({
-            "username": e.username,
-            "cedula": e.cedula,
-            "password": e.password,
-            "tocken": "",
-            "nombre": "",
-            "permiso": ""
-        })*/
+        //  const valorDinamico = 'Valor dinámico';
     }
 
     return (
@@ -360,105 +345,106 @@ const Usuario = () => {
             {/*
                 (id == 0) ? user : ""*/
             }
-            {isModalOpen ? <Modal title="Datos de usuarios" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <div>
-                    <Form
-                        labelCol={{ span: 4 }}
-                        wrapperCol={{ span: 14 }}
-                        layout="horizontal"
-                        initialValues={id == 0 ? { size: componentSize, } : { size: "default", ...user, }}
-                        onValuesChange={onFormLayoutChange}
-                        size={componentSize}
-                        style={{ maxWidth: 600 }}
-                        name="basic"
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-                        autoComplete="off"
-                    >
-                        <Form.Item label="Tamaño" name="size"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'seleccione',
-                                },
-                            ]}>
-                            <Radio.Group>
-                                <Radio.Button value="small">Pequeño</Radio.Button>
-                                <Radio.Button value="default">Defecto</Radio.Button>
-                                <Radio.Button value="large">Grande</Radio.Button>
-                            </Radio.Group>
-                        </Form.Item>
-                        <Form.Item label="username" name="username"
-
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Complete el usuario',
-                                },
-                            ]}>
-                            <Input id="username" />
-                        </Form.Item>
-                        <Form.Item label="Cédula" name="cedula"
-                            rules={[
-                                {
-                                    required: id == 0 ? true : false,
-                                    message: 'Complete la cédula',
-                                },
-                            ]}
+            {isModalOpen ?
+                <Modal title="Datos de usuarios" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                    <div>
+                        <Form
+                            labelCol={{ span: 4 }}
+                            wrapperCol={{ span: 14 }}
+                            layout="horizontal"
+                            initialValues={id == 0 ? { size: componentSize, } : { size: "default", ...user, }}
+                            onValuesChange={onFormLayoutChange}
+                            size={componentSize}
+                            style={{ maxWidth: 600 }}
+                            name="basic"
+                            onFinish={onFinish}
+                            onFinishFailed={onFinishFailed}
+                            autoComplete="off"
                         >
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="token Api" name="tocken"
+                            <Form.Item label="Tamaño" name="size"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'seleccione',
+                                    },
+                                ]}>
+                                <Radio.Group>
+                                    <Radio.Button value="small">Pequeño</Radio.Button>
+                                    <Radio.Button value="default">Defecto</Radio.Button>
+                                    <Radio.Button value="large">Grande</Radio.Button>
+                                </Radio.Group>
+                            </Form.Item>
+                            <Form.Item label="username" name="username"
 
-                            rules={[
-                                {
-                                    required: id == 0 ? true : false,
-                                    message: 'Compete el token Api',
-                                },
-                            ]}>
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="Nombre" name="nombre"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Complete el nombre',
-                                },
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="perfil" name="permiso"
-                            rules={[
-                                {
-                                    required: id == 0 ? true : false,
-                                    message: 'Seleccione un perfil',
-                                },
-                            ]} >
-                            <Select>
-                                <Select.Option value="1">Administrador</Select.Option>
-                                <Select.Option value="2">Agente</Select.Option>
-                            </Select>
-                        </Form.Item>
-                        <Form.Item label="Password" name="password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Complete el usuario',
+                                    },
+                                ]}>
+                                <Input id="username" />
+                            </Form.Item>
+                            <Form.Item label="Cédula" name="cedula"
+                                rules={[
+                                    {
+                                        required: id == 0 ? true : false,
+                                        message: 'Complete la cédula',
+                                    },
+                                ]}
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="token Api" name="tocken"
 
-                            rules={[
-                                {
-                                    required: id == 0 ? true : false,
-                                    message: 'Complete la contraseña',
-                                },
-                            ]}
-                        >
-                            <Input.Password />
-                        </Form.Item>
-                        <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
-                            <Button type="primary" htmlType="submit">
-                                Guardar
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </div>
-            </Modal> : ""}
+                                rules={[
+                                    {
+                                        required: id == 0 ? true : false,
+                                        message: 'Compete el token Api',
+                                    },
+                                ]}>
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="Nombre" name="nombre"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Complete el nombre',
+                                    },
+                                ]}
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="perfil" name="permiso"
+                                rules={[
+                                    {
+                                        required: id == 0 ? true : false,
+                                        message: 'Seleccione un perfil',
+                                    },
+                                ]} >
+                                <Select>
+                                    <Select.Option value="1">Administrador</Select.Option>
+                                    <Select.Option value="2">Agente</Select.Option>
+                                </Select>
+                            </Form.Item>
+                            <Form.Item label="Password" name="password"
+
+                                rules={[
+                                    {
+                                        required: id == 0 ? true : false,
+                                        message: 'Complete la contraseña',
+                                    },
+                                ]}
+                            >
+                                <Input.Password />
+                            </Form.Item>
+                            <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
+                                <Button type="primary" htmlType="submit">
+                                    Guardar
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </div>
+                </Modal> : ""}
 
             <MainCard contentSX={{}}>
                 <div className="tab-content" id="pills-tabContent">
