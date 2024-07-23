@@ -12,31 +12,32 @@ import audios from './BS_BUUXbKq5.mp3';
 
 export default function ThemeRoutes() {
     let ticketss = useSelector((state) => state.menu.tickets)
-    let tickets = JSON.parse(localStorage.getItem("ticktes"))
+    
     let usedispatch = useDispatch()
 
 
     async function Tickets() {
+        let tickets = JSON.parse(localStorage.getItem("ticktes"))
         let { data } = await Listar_tickets();
         console.log(tickets);
         let nuevos = [];
         if (data.success) {
-            let numeros = [...tickets];
-            console.log([...tickets], [...tickets].length);
+            let numeros = tickets != null ? [...tickets] : [];
+            // console.log([...tickets], [...tickets].length);
             if ([...numeros].length == 0 && tickets == undefined) {
                 console.log("use", data.data.tickets);
                 usedispatch(setTickets({ tickets: [...data.data.tickets] }));
                 localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
 
-                setTimeout(function () {
-                    console.log('Ejecutando función cada 5 segundos');
-                    //https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3
-                    const audio = new Audio("https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3");
-                    audio.play();
-                    setTimeout(function () {
-                        audio.pause();
-                    }, 1500)
-                }, 2500)
+                 setTimeout(function () {
+                     console.log('Ejecutando función cada 5 segundos');
+                     //https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3
+                     const audio = new Audio("https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3");
+                     audio.play();
+                     setTimeout(function () {
+                         audio.pause();
+                     }, 1500)
+                 }, 2500)
 
                 //playAudiosSequentially(data.data.tickets);
             } else {
