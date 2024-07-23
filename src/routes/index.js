@@ -6,8 +6,9 @@ import MainRoutes from './MainRoutes';
 import { useEffect } from 'react';
 import { Listar_tickets } from 'util/Queryportal';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTickets } from 'store/reducers/menu';
+import { setSoporte, setTickets } from 'store/reducers/menu';
 import audios from './BS_BUUXbKq5.mp3';
+import { Departamento } from 'util/User';
 // ==============================|| ROUTING RENDER ||============================== //
 
 export default function ThemeRoutes() {
@@ -21,11 +22,13 @@ export default function ThemeRoutes() {
         let { data } = await Listar_tickets();
         console.log(tickets);
         let nuevos = [];
-        if (data.success) {
+        if (data.success && data.data.tickets.length>0) {
             let numeros = tickets != null ? [...tickets] : [];
             // console.log([...tickets], [...tickets].length);
+        
             if ([...numeros].length == 0 && tickets == undefined) {
                 console.log("use", data.data.tickets);
+                usedispatch(setSoporte({ soporte: [...data.data.lista] }))
                 usedispatch(setTickets({ tickets: [...data.data.tickets] }));
                 localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
 
@@ -48,22 +51,21 @@ export default function ThemeRoutes() {
                         //console.log(valida);
                         if (valida == undefined) {
                             console.log("Se ecnontro ")
-                            nuevos.push({ ...valida });
+                            nuevos.push({ ...e });
                         }
                     });
+                usedispatch(setSoporte({ soporte: [...data.data.lista] }))
                 usedispatch(setTickets({ tickets: [...data.data.tickets] }));
                 localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
-                console.log("Total", nuevos.length)
+                console.log("Total", nuevos.length, nuevos)
                 if (nuevos.length != 0) {
-                    console.log("mayor a cero")
+                    console.log("mayor a cero", nuevos)
                     setTimeout(function () {
-                        const text = "Ticket nuevo";
+                        let dp = nuevos[0]
+                        let departamento = Departamento[dp.dp] != undefined ? "de " + Departamento[dp.dp] : ""
+                        const text = "Ticket nuevo " + departamento;
                         const message = new SpeechSynthesisUtterance(text);
                         speechSynthesis.speak(message);
-                       // console.log('Ejecutando función cada 5 segundos');
-                        //https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3
-                        //const audio = new Audio("https://api.ticketsecuador.ec/store/img/whatsapp-incoming_1635131788_(mp3cut.net).mp3");
-                        //   audio.play();
                         setTimeout(function () {
                             speechSynthesis.cancel();
                         }, 1500)

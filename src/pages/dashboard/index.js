@@ -35,6 +35,8 @@ import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
 import { ListarReportes } from '../../util/Queryportal';
 import { Arreglarerror, ListarFacturas, Listareportes } from 'util/Querireport';
+import { useSelector } from 'react-redux';
+import { Departamento } from 'util/User';
 
 // avatar style
 const avatarSX = {
@@ -74,6 +76,7 @@ const status = [
 
 const DashboardDefault = () => {
     const [value, setValue] = useState('today');
+    let ticketss = useSelector((state) => state.menu.soporte)
     const [slot, setSlot] = useState('week');
     let [info, setInfo] = useState(
 
@@ -141,20 +144,43 @@ const DashboardDefault = () => {
                 <Typography variant="h5">Dashboard</Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AnalyticEcommerce title="Total Usuarios creados" count={info.admin_count}  />
+                <AnalyticEcommerce title="Total Agentes" count={info.admin_count} />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AnalyticEcommerce title="Total Clientes app" count={info.comnetusers_count}  color="success" />
+                <AnalyticEcommerce title="Total Clientes app" count={info.comnetusers_count} color="success" />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AnalyticEcommerce title="Total Solicitudes" count={info.solicitud}  color="warning" />
-            </Grid>
+
             <Grid item xs={12} sm={6} md={4} lg={3}>
 
                 <AnalyticEcommerce title="Subtotal registrado" count={"$" + info.subtotal} extra="totales Global del mes " />{/*
                 <AnalyticEcommerce title="Total Sales" count="$35,078" percentage={27.4} isLoss color="warning" extra="$20,395" />
  */}           </Grid>
 
+            {
+                ticketss.length > 0 ?
+                    ticketss.map((e, i) => {
+
+                        let sumaTotal = ticketss.reduce((acc, curr) => {
+                            return acc + curr.total;
+                        }, 0);
+                        let departamento = Departamento[e.dp]
+                        let colores = {
+                            "1": "warning",
+                            "2": "success",
+                            "4": "error",
+                            "5": "primary",
+                            "6": "error",
+                            "7": "secondary",
+                        }
+                        let colo = colores[e.dp] == undefined ? "" : colores[e.dp]
+                        return (
+                            <Grid item xs={12} sm={6} md={4} lg={3}>
+                                <AnalyticEcommerce title={"Tickets de " + departamento} percentage={((e.total / sumaTotal) * 100).toFixed(0)} color={colo} count={e.total} />
+                            </Grid>
+                        )
+                    })
+                    : ""
+            }
             <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
             {/* row 2 */}

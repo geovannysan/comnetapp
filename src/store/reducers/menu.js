@@ -11,6 +11,7 @@ const initialState = {
     facturas: [],
     clientes: [],
     tickets: [],
+    soporte: [],
     user: {
         Id: '',
         nombre: '',
@@ -66,6 +67,9 @@ const menu = createSlice({
         },
         setClientes(state, action) {
             state.clientes = action.payload.clientes
+        }, setSoporte(state, action) {
+             let dato = 
+            state.soporte = [...action.payload.soporte]
         }
     }
 });
@@ -81,5 +85,6 @@ export const { activeItem,
     setDatosuser,
     setlogin,
     setFacturas,
-    setTickets
+    setTickets,
+    setSoporte
 } = menu.actions;
