@@ -60,7 +60,7 @@ export default function ThemeRoutes() {
                         const text = "Ticket nuevo";
                         const message = new SpeechSynthesisUtterance(text);
                         speechSynthesis.speak(message);
-                        console.log('Ejecutando función cada 5 segundos');
+                       // console.log('Ejecutando función cada 5 segundos');
                         //https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3
                         //const audio = new Audio("https://api.ticketsecuador.ec/store/img/whatsapp-incoming_1635131788_(mp3cut.net).mp3");
                         //   audio.play();
