@@ -12,7 +12,7 @@ import audios from './BS_BUUXbKq5.mp3';
 
 export default function ThemeRoutes() {
     let ticketss = useSelector((state) => state.menu.tickets)
-    
+
     let usedispatch = useDispatch()
 
 
@@ -29,15 +29,15 @@ export default function ThemeRoutes() {
                 usedispatch(setTickets({ tickets: [...data.data.tickets] }));
                 localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
 
-                 setTimeout(function () {
-                     console.log('Ejecutando función cada 5 segundos');
-                     //https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3
-                     const audio = new Audio("https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3");
-                     audio.play();
-                     setTimeout(function () {
-                         audio.pause();
-                     }, 1500)
-                 }, 2500)
+                setTimeout(function () {
+                    console.log('Ejecutando función cada 5 segundos');
+                    //https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3
+                    const audio = new Audio("https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3");
+                    audio.play();
+                    setTimeout(function () {
+                        audio.pause();
+                    }, 1500)
+                }, 2500)
 
                 //playAudiosSequentially(data.data.tickets);
             } else {
@@ -57,12 +57,15 @@ export default function ThemeRoutes() {
                 if (nuevos.length != 0) {
                     console.log("mayor a cero")
                     setTimeout(function () {
+                        const text = "Ticket nuevo";
+                        const message = new SpeechSynthesisUtterance(text);
+                        speechSynthesis.speak(message);
                         console.log('Ejecutando función cada 5 segundos');
                         //https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3
-                        const audio = new Audio("https://api.ticketsecuador.ec/store/img/whatsapp-incoming_1635131788_(mp3cut.net).mp3");
-                        audio.play();
+                        //const audio = new Audio("https://api.ticketsecuador.ec/store/img/whatsapp-incoming_1635131788_(mp3cut.net).mp3");
+                        //   audio.play();
                         setTimeout(function () {
-                            audio.pause();
+                            speechSynthesis.cancel();
                         }, 1500)
                     }, 2500)
                 }

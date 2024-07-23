@@ -141,13 +141,13 @@ const DashboardDefault = () => {
                 <Typography variant="h5">Dashboard</Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AnalyticEcommerce title="Total Usuarios creados" count={info.admin_count} percentage={info.admin_count} />
+                <AnalyticEcommerce title="Total Usuarios creados" count={info.admin_count}  />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AnalyticEcommerce title="Total Clientes app" count={info.comnetusers_count} percentage={info.comnetusers_count} color="success" />
+                <AnalyticEcommerce title="Total Clientes app" count={info.comnetusers_count}  color="success" />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AnalyticEcommerce title="Total Solicitudes" count={info.solicitud} percentage={info.solicitud} color="warning" />
+                <AnalyticEcommerce title="Total Solicitudes" count={info.solicitud}  color="warning" />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
 
