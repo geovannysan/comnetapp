@@ -69,7 +69,7 @@ export default function ThemeRoutes() {
                         speechSynthesis.speak(message);
                         setTimeout(function () {
                             speechSynthesis.cancel();
-                        }, 2500)
+                        }, 3000)
                     }, 2500)
                 }
             }
