@@ -22,6 +22,28 @@ export const autenticar = async (parms) => {
         return error
     }
 }
+export const GeneraTocken = async (parms) => {
+    try {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/generador/token/generate", {
+            "cedula": parms,
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+export const verificaTocken = async (params) => {
+    try {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/generador/token/verify", {
+            "token": params
+        })
+        return data
+
+    } catch (error) {
+        return error
+    }
+}
 export const getAppVersion = async () => {
     try {
         let { data } = await Axiosroot.get("MovilApi/app")
@@ -32,7 +54,7 @@ export const getAppVersion = async () => {
 }
 export const Logearusar = async (parms) => {
     try {
-        console.log(Hostv1 + "/Login", parms)
+
         let { data } = await axios.post(Hostv1 + "/Login", parms)
         return data
     } catch (error) {

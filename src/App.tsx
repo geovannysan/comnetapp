@@ -37,6 +37,7 @@ import CargarComprobante from './pagevdos/Pagos/Pagarfactura';
 import FacturaslisView from './pagevdos/Pagos/Faturalist';
 import axios from 'axios';
 import RegisterViews from './pagevdos/Inicio/register';
+import IpAndress from './components/IPAdrees';
 
 let { LoginView, TabsView, Tesvel } = routes
 
@@ -93,6 +94,10 @@ const setStatusBarStyleLight = async () => {
   await StatusBar.setBackgroundColor({ color: '#0081c7' })
   await StatusBar.show()
   await StatusBar.setStyle({ style: Style.Default });
+  let iplocal = await IpAndress.NativeMethod()
+  // alert(JSON.stringify(iplocal))
+ localStorage.setItem("local",''+iplocal)
+
 };
 const APPv1: React.FC = () => {
   return (<>
@@ -304,12 +309,12 @@ const App: React.FC = () => {
     // StatusBar.setBackgroundColor({ color: '#0000' });
     // StatusBar.setStyle()
     // StatusBar.setStyle({ Style.dark: 'dark' });
-   /* getAppVersion().then(oupt => {
-      if(oupt.estado){
-
-      }
-      console.log(oupt)
-    })*/
+    /* getAppVersion().then(oupt => {
+       if(oupt.estado){
+ 
+       }
+       console.log(oupt)
+     })*/
     NuevosDatos()
 
 
