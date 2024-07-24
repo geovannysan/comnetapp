@@ -105,7 +105,7 @@ const Profile = () => {
                 }}
                 onClick={Regresar}
             >
-                <Stack direction="row" spacing={4} alignItems="center" sx={{ p: 0.5 }}>
+                <Stack direction="row" spacing={1} alignItems="center" sx={{ p: 0.5 }}>
                     <Avatar sx={{ width: 32, height: 32 }} ><DollarOutlined/></Avatar>   
                 <Typography variant="subtitle1">Registrar pagos</Typography>
                 </Stack>

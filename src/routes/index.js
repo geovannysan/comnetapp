@@ -20,12 +20,12 @@ export default function ThemeRoutes() {
     async function Tickets() {
         let tickets = JSON.parse(localStorage.getItem("ticktes"))
         let { data } = await Listar_tickets();
-        console.log(tickets);
+        //console.log(tickets);
         let nuevos = [];
-        if (data.success && data.data.tickets.length>0) {
+        if (data.success && data.data.tickets.length > 0) {
             let numeros = tickets != null ? [...tickets] : [];
             // console.log([...tickets], [...tickets].length);
-        
+
             if ([...numeros].length == 0 && tickets == undefined) {
                 console.log("use", data.data.tickets);
                 usedispatch(setSoporte({ soporte: [...data.data.lista] }))
@@ -45,19 +45,20 @@ export default function ThemeRoutes() {
                 //playAudiosSequentially(data.data.tickets);
             } else {
                 let tickelist = JSON.parse(localStorage.getItem("ticktes"))
-                if (tickelist != undefined)
-                    [...data.data.tickets].forEach(e => {
-                        let valida = [...tickelist].find(f => e.id == f.id);
-                        //console.log(valida);
-                        if (valida == undefined) {
-                            console.log("Se ecnontro ")
-                            nuevos.push({ ...e });
-                        }
-                    });
+               // if (tickelist != undefined)
+                //     console.log(tickelist, data.data.tickets);
+                    //  [...tickelist].forEach(e => {
+                    let valida = ([...data.data.tickets][0].id > [...tickelist][0].id);
+               //   console.log(valida);
+                if (valida) {
+                    console.log("Se ecnontro ")
+                    nuevos.push({ ...[...tickelist][0] });
+                }
+                // });
                 usedispatch(setSoporte({ soporte: [...data.data.lista] }))
                 usedispatch(setTickets({ tickets: [...data.data.tickets] }));
                 localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
-                console.log("Total", nuevos.length, nuevos)
+                //console.log("Total", nuevos.length)
                 if (nuevos.length != 0) {
                     console.log("mayor a cero", nuevos)
                     setTimeout(function () {
