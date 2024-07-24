@@ -86,7 +86,7 @@ export default function ThemeRoutes() {
         // }, 1500)
         const intervalo = setInterval(() => {
             Tickets()
-        }, 10000);
+        }, 8000);
         //Limpiar el intervalo cuando el componente se desmonte
         return () => clearInterval(intervalo);
     }, []);

@@ -34,7 +34,7 @@ let datos = userlog()
 console.log(datos)
 const utilities = {
     id: 'utilities',
-    title: 'Utilities',
+    title: 'Utilidades',
     type: 'group',
     children: [
         /*  {

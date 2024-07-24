@@ -20,43 +20,12 @@ const FacturasView = () => {
     };
 
     let history = useNavigate()
-    //const [factura, setFactura] = useState([])
     let factura = useSelector(state => state.menu.facturas)
     const [facturaerr, setFacturaerr] = useState([])
     const fechaReferencia = new Date();
-    // Obtener el primer día del mes
-    /*const { data, isLoading } =  useEndpointsQuery({
-        "estado": "1",
-        "idfactura": "",
-        "mes": ""
-    });
-    */
-    //console.log(data)
     const primerDiaDelMes = new Date(fechaReferencia.getFullYear(), fechaReferencia.getMonth(), 1);
-
-    // Obtener el último día del mes
     const ultimoDiaDelMes = new Date(fechaReferencia.getFullYear(), fechaReferencia.getMonth() + 1, 0);
-    /* const fetchData = async () => {
-         try {
-             
- 
-             if (data) {
-                 // Si hay datos, realiza las transformaciones necesarias y actualiza el estado de las facturas
-                 data.forEach((e) => {
-                     let mensajes = JSON.parse(e.mensajes);
-                     let clienteCedula = mensajes.persona ? mensajes.persona.cedula : mensajes.cliente.cedula;
-                     let factura = { ...e, mensajes, cliente: clienteCedula };
-                     setFacturas(prevFacturas => [...prevFacturas, factura]);
-                 });
-             }
- 
-             if (error) {
-                 console.error('Error al obtener datos:', error);
-             }
-         } catch (error) {
-             console.error('Error al obtener datos:', error);
-         }
-     };*/
+    
     async function getFactura() {
         try {
             const datos = await ListarFacturas({

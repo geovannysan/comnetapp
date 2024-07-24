@@ -4,6 +4,7 @@ import MainLayout from 'layout/MainLayout';
 import FacturaDetalle from 'pages/Facturas/Factura';
 import Usuario from 'pages/Usuarios/index';
 import ListarCliente from 'pages/Clientes/index';
+import TicktesVies from 'pages/reportes/ticketsView';
 const DetallesView = Loadable(lazy(() => import('pages/solicitud/Detalle')));
 const SolicitudView = Loadable(lazy(() => import('pages/solicitud/index')));
 const PagosView = Loadable(lazy(() => import('pages/pagos/index')));
@@ -93,6 +94,10 @@ const MainRoutes = {
         {
             path: 'clientes/:id',
             element: <ClienteID />
+        },
+        {
+            path: 'tickets',
+            element: <TicktesVies />
         }
     ]
 };

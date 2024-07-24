@@ -1,6 +1,6 @@
 // assets
 import {
-    LoginOutlined, ProfileOutlined, ChromeOutlined, FileWordOutlined, TeamOutlined
+    LoginOutlined, ProfileOutlined, ChromeOutlined, FileWordOutlined, TeamOutlined, BellOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -8,7 +8,8 @@ const icons = {
     LoginOutlined,
     ProfileOutlined,
     FileWordOutlined, ChromeOutlined,
-    TeamOutlined
+    TeamOutlined,
+    BellOutlined
 };
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
@@ -55,6 +56,13 @@ const pages = {
             type: 'item',
             url: '/clientes',
             icon: icons.TeamOutlined,
+            target: false
+        }, {
+            id: 'Tickets',
+            title: 'Tickets App',
+            type: 'item',
+            icon: icons.BellOutlined,
+            url: '/tickets',
             target: false
         }
     ],
