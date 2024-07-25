@@ -52,7 +52,7 @@ export default function ThemeRoutes() {
                //   console.log(valida);
                 if (valida) {
                     console.log("Se ecnontro ")
-                    nuevos.push({ ...[...tickelist][0] });
+                    nuevos.push({ ...[...data.data.tickets][0] });
                 }
                 // });
                 usedispatch(setSoporte({ soporte: [...data.data.lista] }))
@@ -69,7 +69,7 @@ export default function ThemeRoutes() {
                         speechSynthesis.speak(message);
                         setTimeout(function () {
                             speechSynthesis.cancel();
-                        }, 3000)
+                        }, 2000)
                     }, 2000)
                 }
             }
