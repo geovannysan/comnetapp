@@ -70,7 +70,7 @@ export default function ThemeRoutes() {
                         setTimeout(function () {
                             speechSynthesis.cancel();
                         }, 3000)
-                    }, 2500)
+                    }, 2000)
                 }
             }
         }
