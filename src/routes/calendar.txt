@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calendario de Horarios de Personal Mensual</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .off {
+            background-color: #eda8a8;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calendario de Horarios de Personal Mensual</h1>
+    
+    <label for="startDate">Fecha de Inicio:</label>
+    <input type="date" id="startDate">
+    <button onclick="createSchedule()">Generar Calendario</button>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Empleado</th>
+                <th>Semana</th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sábado</th>
+                <th>Domingo</th>
+            </tr>
+        </thead>
+        <tbody id="schedule">
+            <!-- El calendario será llenado aquí por JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        const employees = [
+            { name: "Empleado 1", initialDaysOff: [1, 2] },
+            { name: "Empleado 2", initialDaysOff: [4, 5] },
+            { name: "Empleado 3", initialDaysOff: [6, 7] },
+            { name: "Empleado 4", initialDaysOff: [1, 2] },
+            { name: "Empleado 5", initialDaysOff: [3, 4] }
+        ];
+
+        function shiftDays(days, shift) {
+            return days.map(day => (day + shift - 1) % 7 + 1);
+        }
+
+        function formatDate(date) {
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            return `${day}/${month}`;
+        }
+
+        function createSchedule() {
+            const startDateInput = document.getElementById('startDate').value;
+            if (!startDateInput) {
+                alert("Por favor, ingrese una fecha de inicio.");
+                return;
+            }
+
+            const startDate = new Date(startDateInput);
+            const tbody = document.getElementById('schedule');
+            tbody.innerHTML = ''; // Limpiar tabla anterior
+
+            employees.forEach(employee => {
+                for (let week = 1; week <= 5; week++) {
+                    const row = document.createElement('tr');
+
+                    if (week === 1) {
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = employee.name;
+                        nameCell.rowSpan = 5;
+                        row.appendChild(nameCell);
+                    }
+
+                    const weekCell = document.createElement('td');
+                    weekCell.textContent = `Semana ${week}`;
+                    row.appendChild(weekCell);
+
+                    const daysOff = shiftDays(employee.initialDaysOff, week - 1);
+
+                    for (let day = 1; day <= 7; day++) {
+                        const currentDate = new Date(startDate);
+                        currentDate.setDate(currentDate.getDate() + (week - 1) * 7 + day );
+                        const cell = document.createElement('td');
+                        if (daysOff.includes(day)) {
+                            cell.innerHTML = `Libre<br>${formatDate(currentDate)}`;
+                            cell.classList.add('off');
+                        } else {
+                            cell.innerHTML = `Trabaja<br>${formatDate(currentDate)}`;
+                        }
+                        row.appendChild(cell);
+                    }
+                    tbody.appendChild(row);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
