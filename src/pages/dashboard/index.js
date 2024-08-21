@@ -172,7 +172,7 @@ const DashboardDefault = () => {
                             "6": "error",
                             "7": "secondary",
                         }
-                        let colo = colores[e.dp] == undefined ? "" : colores[e.dp]
+                        let colo = colores[e.dp] == undefined ? "error" : colores[e.dp]
                         return (
                             <Grid item xs={12} sm={6} md={4} lg={3}>
                                 <AnalyticEcommerce title={"Tickets de " + departamento} percentage={((e.total / sumaTotal) * 100).toFixed(0)} color={colo} count={e.total} />

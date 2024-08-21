@@ -94,7 +94,7 @@ const Breadcrumbs = ({ navigation, title, ...others }) => {
                                         "6": "error",
                                         "7": "secondary",
                                     }
-                                    let colo = colores[e.dp] == undefined ? "" : colores[e.dp]
+                                    let colo = colores[e.dp] == undefined ? "error" : colores[e.dp]
                                     return (
                                         <Chip
                                             variant="combined"
