@@ -40,7 +40,7 @@ export default function ThemeRoutes() {
                     setTimeout(function () {
                         audio.pause();
                     }, 1500)
-                }, 2500)
+                }, 5500)
 
                 //playAudiosSequentially(data.data.tickets);
             } else {
@@ -63,14 +63,14 @@ export default function ThemeRoutes() {
                     console.log("mayor a cero", nuevos)
                     setTimeout(function () {
                         let dp = nuevos[0]
-                        let departamento = Departamento[dp.dp] != undefined ? "de " + Departamento[dp.dp] : ""
+                        let departamento =  "de " + dp.departamentos
                         const text = "Ticket nuevo " + departamento;
                         const message = new SpeechSynthesisUtterance(text);
                         speechSynthesis.speak(message);
                         setTimeout(function () {
                             speechSynthesis.cancel();
-                        }, 2000)
-                    }, 2000)
+                        }, 3000)
+                    }, 5500)
                 }
             }
         }
@@ -86,7 +86,7 @@ export default function ThemeRoutes() {
         // }, 1500)
         const intervalo = setInterval(() => {
             Tickets()
-        }, 8000);
+        }, 10000);
         //Limpiar el intervalo cuando el componente se desmonte
         return () => clearInterval(intervalo);
     }, []);

@@ -32,3 +32,4 @@ export const Departamento={
     "6":"Actualizaciones",
     "7":"Monitoreo",
 }
+

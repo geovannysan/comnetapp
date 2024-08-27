@@ -163,7 +163,7 @@ const DashboardDefault = () => {
                         let sumaTotal = ticketss.reduce((acc, curr) => {
                             return acc + curr.total;
                         }, 0);
-                        let departamento = Departamento[e.dp]
+                        let departamento = e.departamentos
                         let colores = {
                             "1": "warning",
                             "2": "success",
