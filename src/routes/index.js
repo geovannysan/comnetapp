@@ -29,7 +29,7 @@ export default function ThemeRoutes() {
             if ([...numeros].length == 0 && tickets == undefined) {
                 console.log("use", data.data.tickets);
                 usedispatch(setSoporte({ soporte: [...data.data.lista] }))
-                usedispatch(setTickets({ tickets: [...data.data.tickets] }));
+               // usedispatch(setTickets({ tickets: [...data.data.tickets] }));
                 localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
 
                 setTimeout(function () {
@@ -40,37 +40,37 @@ export default function ThemeRoutes() {
                     setTimeout(function () {
                         audio.pause();
                     }, 1500)
-                }, 5500)
+                }, 2500)
 
                 //playAudiosSequentially(data.data.tickets);
             } else {
                 let tickelist = JSON.parse(localStorage.getItem("ticktes"))
-               // if (tickelist != undefined)
+                // if (tickelist != undefined)
                 //     console.log(tickelist, data.data.tickets);
-                    //  [...tickelist].forEach(e => {
-                    let valida = ([...data.data.tickets][0].id > [...tickelist][0].id);
-               //   console.log(valida);
+                //  [...tickelist].forEach(e => {
+                let valida = ([...data.data.tickets][data.data.tickets.length-1].id > [...tickelist][tickelist.length-1].id);
+                //   console.log(valida);
                 if (valida) {
                     console.log("Se ecnontro ")
-                    nuevos.push({ ...[...data.data.tickets][0] });
+                    nuevos.push({ ...[...tickelist][0] });
                 }
                 // });
                 usedispatch(setSoporte({ soporte: [...data.data.lista] }))
-                usedispatch(setTickets({ tickets: [...data.data.tickets] }));
+                //usedispatch(setTickets({ tickets: [...data.data.tickets] }));
                 localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
                 //console.log("Total", nuevos.length)
                 if (nuevos.length != 0) {
                     console.log("mayor a cero", nuevos)
                     setTimeout(function () {
                         let dp = nuevos[0]
-                        let departamento =  "de " + dp.departamentos
+                        let departamento = Departamento[dp.dp] != undefined ? "de " + Departamento[dp.dp] : ""
                         const text = "Ticket nuevo " + departamento;
                         const message = new SpeechSynthesisUtterance(text);
                         speechSynthesis.speak(message);
                         setTimeout(function () {
                             speechSynthesis.cancel();
-                        }, 3000)
-                    }, 5500)
+                        }, 1500)
+                    }, 2500)
                 }
             }
         }
@@ -84,11 +84,11 @@ export default function ThemeRoutes() {
         // setTimeout(function () {
         //      audio.pause(); 
         // }, 1500)
-        const intervalo = setInterval(() => {
+       const intervalo = setInterval(() => {
             Tickets()
-        }, 10000);
+        }, 5000);
         //Limpiar el intervalo cuando el componente se desmonte
-        return () => clearInterval(intervalo);
+       return () => clearInterval(intervalo);
     }, []);
     return useRoutes([MainRoutes, LoginRoutes]);
 }

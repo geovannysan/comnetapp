@@ -40,6 +40,17 @@ export const Listar_tickets = async () => {
         return error
     }
 
+    
+}
+export const Listar_tickets_Abiertos = async () => {
+    try {
+        let data = Axiosmikroser.post("Comnet/tickes")
+        return data
+
+    } catch (error) {
+        return error
+    }
+
 }
 export const ActualizarPasswordClienet = async (parms) => {
     try {
