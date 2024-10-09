@@ -134,12 +134,12 @@ const Conciliacion = () => {
                             console.log(cobrado, Object.values(objetoCoincidente).some(value => parseFloat(value) == parseFloat(cobrado)))
                             if (Object.values(objetoCoincidente).some(value => parseFloat(value) == parseFloat(cobrado))) {
                                 e.verifiva_valor = "Valor  Correcto " + objetoCoincidente.NUMERO
-                                e.estado = "ok"
+                                e.estado = "ok GUAYAQUIL"
                                 return e;
                             }
                             else {
                                 e.verifiva_valor = "Valor  incorrecto " + objetoCoincidente.NUMERO
-                                e.estado = "ok"
+                                e.estado = "ok GUAYAQUIL"
                                 return e;
                             }
 
