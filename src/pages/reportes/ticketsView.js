@@ -42,7 +42,7 @@ export default function TicktesVies() {
 
             key: 'solicitante',
             render: (_, { solicitante, idcliente }) => (
-                <a>{solicitante || "idCliente: "+idcliente}</a>
+                <a>{solicitante || "idCliente: " + idcliente}</a>
             )
         },
         {
@@ -84,36 +84,25 @@ export default function TicktesVies() {
         //console.log(tickets);
         console.log(data)
         if (data.success) {
-
-
             console.log("use", data.data.lista);
-            // usedispatch(setSoporte({ soporte: [...data.data.lista] }))
             usedispatch(setTickets({ tickets: [...data.data.lista] }));
-            // localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
-
-
-            //playAudiosSequentially(data.data.tickets);
-
-
         }
-        // console.log(data);
     }
     useEffect(() => {
 
         Tickets()
     }, [])
     return (
-        
-            <Table
-                columns={columns}
-                size="small"
-                bordered
-                dataSource={ticketss.map(f => { return { ...f, fecha_soporte: moment(f.fecha_soporte).format('MM-DD-YYYY, h:mm:ss a') } })}
-                showSorterTooltip={{
-                    target: 'sorter-icon',
-                }}
-            />
+        <Table
+            columns={columns}
+            size="small"
+            bordered
+            dataSource={ticketss.map(f => { return { ...f, fecha_soporte: moment(f.fecha_soporte).format('MM-DD-YYYY, h:mm:ss a') } })}
+            showSorterTooltip={{
+                target: 'sorter-icon',
+            }}
+        />
 
-        
+
     )
 }

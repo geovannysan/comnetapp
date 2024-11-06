@@ -37,7 +37,6 @@ import { setDatosuser, setlogin } from '../../../store/reducers/menu';
 
 const AuthLogin = () => {
     let usedispat = useDispatch()
-    let history = useNavigate()
 
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => {

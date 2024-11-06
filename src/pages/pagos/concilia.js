@@ -1,32 +1,9 @@
 import MainCard from "components/MainCard"
-import {
-    Modal,
-    Form,
-    Input,
-    Button,
-    Radio,
-    Select,
-    notification,
-} from "antd"
 import { useEffect, useState } from "react"
-import { Actualiza_Usuario_Portal, Crear_Usuario_Portal, Lista_Contratos, Lista_Usuario_Portal, Lista_archivo } from "util/Queryportal"
 import "../Usuarios/index.css"
-import { Axiosmikroser, EditarArchivo, EliminarArchivo } from "util/Querireport"
-import axios from "../../../node_modules/axios/index"
 import * as xlsx from 'xlsx';
+import SpinerView from "components/Spiner/index";
 const Conciliacion = () => {
-    let [usuarios, setUsuarios] = useState([])
-    const [api, contextHolder] = notification.useNotification();
-    const openNotificationWithIcon = (type, mensaje, description) => {
-        api[type]({
-            message: "" + mensaje,
-            description:
-                "" + description,
-            placement: 'bottom'
-        });
-    };
-
-
     const thead = () => {
         return (
             <thead className="bg-primary">
@@ -49,8 +26,8 @@ const Conciliacion = () => {
             </thead>
         )
     }
-
     const showDatos = () => {
+        //  console.log(transacion)
         try {
             return transacion.map((item, index) => {
 
@@ -102,76 +79,7 @@ const Conciliacion = () => {
             });
         } catch (error) { }
     }
-
-
-    const Subir_archivo = async () => {
-        if ([...archivos,...archivoGua,...archivosPa].length > 0 && transacion.length > 0) {
-            //setTransacion([])
-            let nuevos = transacion.map(e => {
-                const objetoCon = archivos.find(item => Object.values(item).some(value => String(value).includes(e["# Transacción"])));
-                let cobrado = String("" + e["Cobrado"].replace("$", "") + "")
-                //console.log(objetoCon)
-                if (objetoCon) {
-                    //console.log(Object.values(objetoCon))
-                    const numerocompro = Object.values(objetoCon).map(f => {
-                        if (String(f).includes(String(e["# Transacción"]))) {
-                            return f
-                        }
-                        return null
-                    }).filter(ele => ele != null)
-                    //console.log(numerocompro)     
-                    Object.values(objetoCon).some(value => String(value).includes(parseFloat(cobrado))) ? e.verifiva_valor = "Valor  Correcto " + numerocompro[0] : "Valor incorrecto " + numerocompro[0]
-                    e.estado = "ok"
-                    return e;
-                }
-                if (String(e["Forma de Pago"]) == "CALL BANCO GUAYAQUIL EMP" || String(e["Forma de Pago"]) == "SpeedMan BANCO GUAYAQUIL EMP" || String(e["Forma de Pago"]) == "SpeedMan BANCO GUAYAQUIL EMP" || String(e["Forma de Pago"]) == "APP BANCO GUAYAQUIL EMP") {
-                  
-                        //console.log(e["# Transacción"])
-                        const objetoCoincidente = archivoGua.find(item => String(e["# Transacción"]).includes(String(item.NUMERO))
-                        );
-                        //console.log(objetoCoincidente)
-                        if (objetoCoincidente) {
-                            console.log(cobrado, Object.values(objetoCoincidente).some(value => parseFloat(value) == parseFloat(cobrado)))
-                            if (Object.values(objetoCoincidente).some(value => parseFloat(value) == parseFloat(cobrado))) {
-                                e.verifiva_valor = "Valor  Correcto " + objetoCoincidente.NUMERO
-                                e.estado = "ok GUAYAQUIL"
-                                return e;
-                            }
-                            else {
-                                e.verifiva_valor = "Valor  incorrecto " + objetoCoincidente.NUMERO
-                                e.estado = "ok GUAYAQUIL"
-                                return e;
-                            }
-
-                        }
-                    
-                }
-                if (String(e["Forma de Pago"]) == "CALL BANCO PACIFICO EMP" || String(e["Forma de Pago"]) == "CALL BANCO PACIFICO PRS" || String(e["Forma de Pago"]) == "SpeedMan BANCO PACIFICO EMP" || String(e["Forma de Pago"]) == "SpeedMan BANCO PACIFICO PRS" || String(e["Forma de Pago"]) == "APP BANCO PACIFICO EMP") {
-                    let total = String(e["Cobrado"]).replace("$ ", "")
-                    let fecha = String(e["Fecha & Hora"]).split(" ")[0].split("/")
-                    let fe = String(`${fecha[2]}-${fecha[1]}-${fecha[0]}`)
-                    let buscarFecha = archivosPa.filter(elem => { if (parseFloat(elem["VALOR"]) == parseFloat(total)) return elem })
-                    // console.log(archivosPa)
-                    if (buscarFecha.length > 0) {
-                        let buscardo = buscarFecha.filter(element => {
-                            let fechas = element["FECHA"].split(" ")[0].split("/")
-                            let pagofe = `${fechas[2]}-${fechas[0]}-${fechas[1]}`
-                            if (parseFloat(pagofe) == parseFloat(fe)) return element
-                        })
-                        if (buscardo.length > 0) {
-                            e.estado = `OK  pacifico` + buscardo.length
-                            return e
-                        }
-                    }
-                }
-                else {
-                    return e
-                }
-                return e
-            })
-            setTransacion(nuevos)
-        }
-    };
+    const [load, setUload] = useState(false)
     const [fileUploaded, setFileUploaded] = useState(false);
     const [fileUploadedban, setFileUploadedban] = useState(false);
     const [fileUploadPa, setFileUploadPa] = useState(false);
@@ -180,35 +88,131 @@ const Conciliacion = () => {
     const [archivos, setArchivos] = useState([]);
     const [archivoGua, setGuayaquil] = useState([])
     const [archivosPa, setPAcifico] = useState([])
+    const [percenta, setPesent] = useState(0)
+    const Subir_archivo = async () => {
+        setUload(true);
+        setPesent(10); // Inicia el porcentaje en 0
+
+        setTimeout(function () {
+            const totalItems = [...archivos, ...archivoGua, ...archivosPa].length;
+            const porcentajeIncremento = 10;
+            const itemsPorPorcentaje = Math.ceil(totalItems / (100 / porcentajeIncremento));
+            let porcentajeActual = 0;
+
+            if (totalItems > 0 && transacion.length > 0) {
+                const nuevos = transacion.map((e, index) => {
+                    const objetoCon = archivos.find(item =>
+                        Object.values(item).some(value => String(value).includes(e["# Transacción"]))
+                    );
+
+                    let cobrado = String(e["Cobrado"].replace("$", ""));
+
+                    // Incrementa el porcentaje cada 10% y limita al 100%
+                    if ((index + 1) % itemsPorPorcentaje === 0 && porcentajeActual < 100) {
+                        porcentajeActual += porcentajeIncremento;
+                        if (porcentajeActual > 100) porcentajeActual = 100; // Limitar al 100%
+                        console.log(`Progreso: ${porcentajeActual}%`);
+                        setPesent(porcentajeActual);
+                    }
+
+                    if (objetoCon) {
+                        const numerocompro = Object.values(objetoCon)
+                            .filter(f => String(f).includes(String(e["# Transacción"])));
+
+                        e.verifiva_valor = Object.values(objetoCon).some(value =>
+                            String(value).includes(parseFloat(cobrado))
+                        ) ? `Valor Correcto ${numerocompro[0]}` : `Valor incorrecto ${numerocompro[0]}`;
+
+                        e.estado = "ok";
+                        return e;
+                    }
+
+                    // Verificaciones para BANCO GUAYAQUIL y BANCO PACIFICO
+                    if (["CALL BANCO GUAYAQUIL EMP", "SpeedMan BANCO GUAYAQUIL EMP", "APP BANCO GUAYAQUIL EMP"].includes(String(e["Forma de Pago"]))) {
+                        const objetoCoincidente = archivoGua.find(item =>
+                            String(e["# Transacción"]).includes(String(item.NUMERO))
+                        );
+
+                        if (objetoCoincidente) {
+                            e.verifiva_valor = Object.values(objetoCoincidente).some(value =>
+                                parseFloat(value) === parseFloat(cobrado)
+                            ) ? `Valor Correcto ${objetoCoincidente.NUMERO}` : `Valor incorrecto ${objetoCoincidente.NUMERO}`;
+
+                            e.estado = "ok GUAYAQUIL";
+                            return e;
+                        }
+                    }
+
+                    if (["CALL BANCO PACIFICO EMP", "CALL BANCO PACIFICO PRS", "SpeedMan BANCO PACIFICO EMP", "SpeedMan BANCO PACIFICO PRS", "APP BANCO PACIFICO EMP"].includes(String(e["Forma de Pago"]))) {
+                        let total = String(e["Cobrado"]).replace("$ ", "");
+                        let fecha = String(e["Fecha & Hora"]).split(" ")[0].split("/");
+                        let fe = `${fecha[2]}-${fecha[1]}-${fecha[0]}`;
+
+                        const buscarFecha = archivosPa.filter(elem => parseFloat(elem["VALOR"]) === parseFloat(total));
+
+                        if (buscarFecha.length > 0) {
+                            const buscardo = buscarFecha.filter(element => {
+                                let fechas = element["FECHA"].split(" ")[0].split("/");
+                                let pagofe = `${fechas[2]}-${fechas[0]}-${fechas[1]}`;
+                                return pagofe === fe;
+                            });
+
+                            if (buscardo.length > 0) {
+                                e.estado = `OK pacifico ${buscardo.length}`;
+                                return e;
+                            }
+                        }
+                    }
+
+                    return e;
+                });
+
+                setTransacion(nuevos);
+            } else {
+                setUload(false);
+            }
+        }, 1000);
+    };
+
     const handleFileUpload = (event) => {
         // Verificar si se cargó un archivo
         if (event.target.files.length > 0) {
+            setUload(true)
+            setPesent(10)
             // Cambiar el estado para indicar que se ha cargado un archivo
             setFileUploaded(true);
             const reader = new FileReader();
             reader.onload = (e) => {
+
                 const data = e.target.result;
                 const workbook = xlsx.read(data, { type: "array" });
                 const sheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[sheetName];
                 const json = xlsx.utils.sheet_to_json(worksheet);
                 if (Object.keys(json).some(value => String(value).includes("ID"))) {
-
+                    setPesent(60)
                     setTransacion(json)
                     console.log(json);
                 } else {
                     const range = xlsx.utils.decode_range(worksheet['!ref']);
-
+                    setPesent(50)
                     // Eliminar la primera columna (columna A)
                     for (let R = range.s.r; R <= range.e.r; ++R) {
                         const cellAddress = { r: R, c: range.s.c };
                         const cellRef = xlsx.utils.encode_cell(cellAddress);
                         delete worksheet[cellRef];
+
                     }
 
                     const jsons = xlsx.utils.sheet_to_json(worksheet);
                     setTransacion(json);
                     console.log(jsons);
+                    setPesent(100)
+                    setTimeout(function () {
+                        setUload(false)
+                    }, 600)
+
+
                 }
             };
             reader.readAsArrayBuffer(event.target.files[0]);
@@ -281,28 +285,12 @@ const Conciliacion = () => {
             setFileUploadPa(false);
         }
     };
-    function NuevoLibro() {
-        const wb = xlsx.utils.book_new();
-
-        const ws = xlsx.utils.json_to_sheet(transacion);
-        const rowsOK = transacion.filter(row => (row.estado === 'OK' && row.estado != undefined));
-        rowsOK.forEach(row => {
-            const rowIndex = data.indexOf(row);
-            Object.keys(row).forEach(key => {
-                if (ws[key]) {
-                    const cellRef = xlsx.utils.encode_cell({ r: rowIndex, c: ws[key].v });
-                    ws[cellRef].s = { fill: { fgColor: { rgb: 'FFFF0000' } } };
-                }
-            });
-        });
-        xlsx.utils.book_append_sheet(wb, ws, 'Hoja1');
-
-        let nombre = "new Date()"
-        xlsx.writeFile(wb, "portal.xlsx");
-    }
     useEffect(() => {
+        console.log(transacion)
+        console.log(transacion.map(r => (Object.values(r))))
         transacion.length > 0 ?
             $(document).ready(function () {
+                setUload(true)
                 $('#docs').DataTable().destroy();
                 $("#docs").dataTable({
                     stateSave: true,
@@ -326,25 +314,55 @@ const Conciliacion = () => {
                         style: "single",
                     },
                     columnDefs: [
-                        /* {
-                             targets: -1,
-                             
-                             data: null, 
-                             defaultContent: '<button class="btn btn-primary">Acción</button>', // Contenido predeterminado
-                             orderable: false, 
-                             searchable: false
-                         }*/
                     ],
                     dom: 'Bfrtip',
                     buttons: [
-                        "excel",
-                        /*{
-                            text: 'Mi Botón',
-                            className: 'btn btn-primary ',
-                            action: function (e, dt, node, config) {
-                                NuevoLibro();
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Exportar a Excel',
+                            customize: function (xlsx) {
+                                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                                var rowIndex = 0;
+
+                                $('row', sheet).each(function () {
+                                    rowIndex++;
+                                    if (rowIndex > 1) { // Evita la primera fila (encabezado)
+
+                                        var cellC = $('c[r^="C"] t', this).text();  // Obtiene el valor de la columna "C"
+                                        var cellI = $('c[r^="I"] t', this).text();  // Obtiene el valor de la columna "I"
+                                        var cellD = $('c[r^="D"] t', this).text();  // Obtiene el valor de la columna "C"
+                                        var cellJ = $('c[r^="J"] t', this).text();  // Obtiene el valor de la columna "I"
+                                        console.log("cellD" + cellD, "cellI" + cellI, "cellJ" + cellJ, "cellC" + cellC)
+                                        // Condición: si el valor en la columna C es igual al de la columna I
+                                        if (cellJ == "") return
+                                        if (cellJ.includes(cellD)) {
+                                            if (cellJ.toLowerCase().includes("incorrecto")) {
+                                                // Cambia el estilo de la celda en la columna "I"
+                                                $(this).find('c[r^="J"]').attr('s', '36'); // Aplica el fondo amarillo
+                                                return
+                                            }
+                                            if (cellJ.toLowerCase().includes("correcto")) {
+                                                $(this).find('c[r^="J"]').attr('s', '19'); // azul
+                                                return
+                                            }
+                                        }
+                                        else {
+                                            if (cellJ.toLowerCase().includes("incorrecto")) {
+                                                // Cambia el estilo de la celda en la columna "I"
+                                                $(this).find('c[r^="J"]').attr('s', '22'); // Aplica el fondo amarillo
+                                                return
+                                            }
+                                            if (cellJ.toLowerCase().includes("correcto")) {
+                                                $(this).find('c[r^="J"]').attr('s', '46'); // Aplica el fondo amarillo
+                                                return
+                                            }
+                                        }
+
+
+                                    }
+                                });
                             }
-                        }*/
+                        }
                     ],
                     lengthMenu: [
                         [10, 20, 30, 50, -1],
@@ -354,19 +372,23 @@ const Conciliacion = () => {
                     order: [[0, 'desc']],
 
                 });
+                setUload(false)
 
             }) : ""
     }, [transacion])
     return (
         <div>
-            {contextHolder}
+            <SpinerView
+                bolean={load}
+                percent={percenta}
+            />
             <div className="p-3">
 
                 <div className='d-flex  mt-3 pt-3 mb-1  pb-3 text-center  justify-content-around '>
                     <label className="custum-file-upload" >
                         <div className="icon">
                             {fileUploaded ? (
-                                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" className="bi bi-check-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" fill="green" />
                                     <path fill="green" d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
                                 </svg>
@@ -389,7 +411,7 @@ const Conciliacion = () => {
                     <label className="custum-file-upload2"  >
                         <div className="icon">
                             {fileUploadedban ? (
-                                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" className="bi bi-check-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" fill="green" />
                                     <path fill="green" d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
                                 </svg>
@@ -408,7 +430,7 @@ const Conciliacion = () => {
                     <label className="custum-file-upload2"  >
                         <div className="icon">
                             {fileUploadGu ? (
-                                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" className="bi bi-check-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" fill="green" />
                                     <path fill="green" d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
                                 </svg>
@@ -429,7 +451,7 @@ const Conciliacion = () => {
                     }} >
                         <div className="icon">
                             {fileUploadPa ? (
-                                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" className="bi bi-check-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" fill="green" />
                                     <path fill="green" d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
                                 </svg>
@@ -447,7 +469,7 @@ const Conciliacion = () => {
                     </label>
                 </div>
                 <div className="d-flex justify-content-center pt-2">
-                    {([...archivoGua, ...archivos, ...archivosPa].length>0) ? <button className="btn btn-primary" onClick={Subir_archivo}>
+                    {([...archivoGua, ...archivos, ...archivosPa].length > 0) ? <button className="btn btn-primary" onClick={Subir_archivo}>
                         Comparar
                     </button> : ""}
                 </div>
