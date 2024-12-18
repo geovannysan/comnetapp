@@ -215,7 +215,7 @@ const Usuario = () => {
                             <div className=" btn-group">
                             <button className="btn btn-sm btn-success" onClick={() => abrirfactura({ ...item, id: item.idContrato })}  >Editar</button>
                             <button className="btn btn-sm btn-danger text-white" onClick={() => eliminarContrato({ ...item, id: item.idContrato })}  >Eliminar</button>
-                                <button className="btn btn-sm btn-success " onClick={() => window.open("https://api.ticketsecuador.ec/store/img/" + item.nombreDocumento.split("(")[0],"_blank")} >Ver</button>
+                                <button className="btn btn-sm btn-success " onClick={() => window.open("https://api.t-ickets.com/store/img/" + item.nombreDocumento.split("(")[0],"_blank")} >Ver</button>
                             </div>
 
                         </td></tr>
@@ -247,7 +247,7 @@ const Usuario = () => {
                 return;
             }
             const selectedFile = fileInput.files[0];
-            const nombreSelect = fileInput.files[0].name.split("Nº ")[1];
+            const nombreSelect = fileInput.files[0].name.replace("Contrato Nº ", "").toLowerCase().replace(/ /g, "_")//.split("Nº ")[1];
             const formdata = new FormData();
             formdata.append("archivo", selectedFile);
 
@@ -256,9 +256,9 @@ const Usuario = () => {
             const form = new FormData()
             form.append("image",selectedFile, nombreSelect);
 
-           // let datos = await axios.post("https://api.ticketsecuador.ec/store/api/img/",form)
-           // console.log(datos)
-            //console.log(data, statusText)
+            let datos = await axios.post("https://api.ticketsecuador.ec/store/api/img/",form)
+           console.log(datos)
+            console.log(data, statusText)
            // return
             if (statusText === 'OK') {
                 setFileUploaded(false);

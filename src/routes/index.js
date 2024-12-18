@@ -23,55 +23,59 @@ export default function ThemeRoutes() {
         //console.log(tickets);
         let nuevos = [];
         if (data.success && data.data.tickets.length > 0) {
-            let numeros = tickets != null ? [...tickets] : [];
-            // console.log([...tickets], [...tickets].length);
+            try {
+                let numeros = tickets != null ? [...tickets] : [];
+                // console.log([...tickets], [...tickets].length);
 
-            if ([...numeros].length == 0 && tickets == undefined) {
-                console.log("use", data.data.tickets);
-                usedispatch(setSoporte({ soporte: [...data.data.lista] }))
-               // usedispatch(setTickets({ tickets: [...data.data.tickets] }));
-                localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
+                if ([...numeros].length == 0 && tickets == undefined) {
+                    console.log("use", data.data.tickets);
+                    usedispatch(setSoporte({ soporte: [...data.data.lista] }))
+                    // usedispatch(setTickets({ tickets: [...data.data.tickets] }));
+                    localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
+//
+                  //  setTimeout(function () {
+                        console.log('Ejecutando función cada 5 segundos');
+                        //https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3
+                        const audio = new Audio("https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3");
+                        audio.play();
+                  //      setTimeout(function () {
+                            audio.pause();
+                    //    }, 1500)
+                   // }, 2500)
 
-                setTimeout(function () {
-                    console.log('Ejecutando función cada 5 segundos');
-                    //https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3
-                    const audio = new Audio("https://api.ticketsecuador.ec/store/img/bs_buuxbkq5.mp3");
-                    audio.play();
-                    setTimeout(function () {
-                        audio.pause();
-                    }, 1500)
-                }, 2500)
-
-                //playAudiosSequentially(data.data.tickets);
-            } else {
-                let tickelist = JSON.parse(localStorage.getItem("ticktes"))
-                // if (tickelist != undefined)
-                //     console.log(tickelist, data.data.tickets);
-                //  [...tickelist].forEach(e => {
-                let valida = ([...data.data.tickets][data.data.tickets.length-1].id > [...tickelist][tickelist.length-1].id);
-                //   console.log(valida);
-                if (valida) {
-                    console.log("Se ecnontro ")
-                    nuevos.push({ ...[...tickelist][0] });
+                    //playAudiosSequentially(data.data.tickets);
+                } else {
+                    let tickelist = JSON.parse(localStorage.getItem("ticktes"))
+                    // if (tickelist != undefined)
+                    //     console.log(tickelist, data.data.tickets);
+                    //  [...tickelist].forEach(e => {
+                    let valida = ([...data.data.tickets][data.data.tickets.length - 1].id > [...tickelist][tickelist.length - 1].id);
+                    //   console.log(valida);
+                    if (valida) {
+                        console.log("Se ecnontro ")
+                        nuevos.push({ ...[...tickelist][0] });
+                    }
+                    // });
+                    usedispatch(setSoporte({ soporte: [...data.data.lista] }))
+                    //usedispatch(setTickets({ tickets: [...data.data.tickets] }));
+                    localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
+                    //console.log("Total", nuevos.length)
+                    if (nuevos.length != 0) {
+                        console.log("mayor a cero", nuevos)
+                        //setTimeout(function () {
+                            let dp = nuevos[0]
+                            let departamento = Departamento[dp.dp] != undefined ? "de " + Departamento[dp.dp] : ""
+                            const text = "Ticket nuevo " + departamento;
+                            const message = new SpeechSynthesisUtterance(text);
+                            speechSynthesis.speak(message);
+                         //   setTimeout(function () {
+                                speechSynthesis.cancel();
+                        //    }, 1500)
+                        //}, 2500)
+                    }
                 }
-                // });
-                usedispatch(setSoporte({ soporte: [...data.data.lista] }))
-                //usedispatch(setTickets({ tickets: [...data.data.tickets] }));
-                localStorage.setItem("ticktes", JSON.stringify([...data.data.tickets]))
-                //console.log("Total", nuevos.length)
-                if (nuevos.length != 0) {
-                    console.log("mayor a cero", nuevos)
-                    setTimeout(function () {
-                        let dp = nuevos[0]
-                        let departamento = Departamento[dp.dp] != undefined ? "de " + Departamento[dp.dp] : ""
-                        const text = "Ticket nuevo " + departamento;
-                        const message = new SpeechSynthesisUtterance(text);
-                        speechSynthesis.speak(message);
-                        setTimeout(function () {
-                            speechSynthesis.cancel();
-                        }, 1500)
-                    }, 2500)
-                }
+            } catch (err) {
+                console.log(err)
             }
         }
         // console.log(data);
@@ -84,11 +88,11 @@ export default function ThemeRoutes() {
         // setTimeout(function () {
         //      audio.pause(); 
         // }, 1500)
-       const intervalo = setInterval(() => {
+        const intervalo = setInterval(() => {
             Tickets()
         }, 5000);
         //Limpiar el intervalo cuando el componente se desmonte
-       return () => clearInterval(intervalo);
+        return () => clearInterval(intervalo);
     }, []);
     return useRoutes([MainRoutes, LoginRoutes]);
 }

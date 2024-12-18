@@ -58,10 +58,10 @@ const MainRoutes = {
             path: 'Facturaid',
             element: <FacturaDetalle />
         },
-        {
+        /*{
             path: 'Solicitud',
             element: <SolicitudView />
-        },
+        },*/
         {
             path: 'usuarios',
             element: <Usuario />

@@ -70,7 +70,7 @@ const utilities = {
             icon: icons.AntDesignOutlined,
             breadcrumbs: true
         } : ''
-        ,
+       /* ,
         {
             id: 'Solicitudes',
             title: 'Solicitudes',
@@ -78,7 +78,7 @@ const utilities = {
             url: '/Solicitud',
             icon: icons.ReadOutlined,
             target: false
-        }
+        }*/
     ]
 };
 
