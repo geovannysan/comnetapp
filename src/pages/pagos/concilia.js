@@ -128,13 +128,11 @@ const Conciliacion = () => {
                         e.estado = "ok " + PICH
                         return e;
                     }
-                    //console.log(String(e["Forma de Pago"]).includes("PRODUBANCO"))
                     if (String(e["Forma de Pago"]).includes("PRODUBANCO")) {
 
                         console.log(String(e["Forma de Pago"]).includes("PRODUBANCO"), String(e["Forma de Pago"]), String(e["# Transacción"]), archivoProd.find(item =>
                             Object.values(item).some(value => value.includes(String(e["# Transacción"])))
                         ))
-                        //console.log(archivoProd.find(item => String(item.REFERENCIA).trim() == '69246311'))
                         const objetoCoincidente = archivoProd.find(item =>
                             Object.values(item).some(value => value.includes(String(e["# Transacción"])))
                         )
@@ -149,18 +147,6 @@ const Conciliacion = () => {
                             return e;
                         }
                     }
-                    /*if (objetoCon || objetoProdubanco) {
-                        const numerocompro = Object.values(objetoCon)
-                            .filter(f => String(f).includes(String(e["# Transacción"])));
-
-                        e.verifiva_valor = Object.values(objetoCon).some(value =>
-                            String(value).includes(parseFloat(cobrado))
-                        ) ? `Valor Correcto ${numerocompro[0]}` : `Valor incorrecto ${numerocompro[0]}`;
-                        let PICH = objetoCon ? 'PICHINCHA' : ''
-                        let PROD = objetoProdubanco ? 'PRODUBANCO' : ''
-                        e.estado = "ok " + PICH + PROD;
-                        return e;
-                    }*/
 
                     // Verificaciones para BANCO GUAYAQUIL y BANCO PACIFICO
                     if (["CALL BANCO GUAYAQUIL EMP", "SpeedMan BANCO GUAYAQUIL EMP", "APP BANCO GUAYAQUIL EMP"].includes(String(e["Forma de Pago"]))) {
