@@ -41,7 +41,7 @@ export default function WifiView() {
              spinner: "bubbles",
          })*/
         let campo = datos.ID_EXTERNO_ONU.includes("IGD") ? "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_TP_PreSharedKey" : "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.PreSharedKey.1.PreSharedKey"
-       
+
         Cambiarclave({
             "info": datos.ID_EXTERNO_ONU,
             "booleas": e,
@@ -67,7 +67,7 @@ export default function WifiView() {
             console.log(err)
         })
     }
-    
+
     function Confirmcall() {
         Changessihide({
             "info": datos.ID_EXTERNO_ONU,
@@ -107,7 +107,7 @@ export default function WifiView() {
             console.log(ou)
             Refresssi({
                 "info": datos.ID_EXTERNO_ONU,
-                "booleas": "InternetGatewayDevice.LANDevice.1.WLANConfiguration.*.SSID" 
+                "booleas": "InternetGatewayDevice.LANDevice.1.WLANConfiguration.*.SSID"
             }).then(salida => {
                 cargarssi()
                 setShowAlert("")
@@ -134,56 +134,66 @@ export default function WifiView() {
         })
         console.log(e)
     }
-    let [count,setCount]= useState(0)
+    let [count, setCount] = useState(0)
     async function cargarssi() {
         if (datos.ID_EXTERNO_ONU != "") {
-            console.log(datos)
-            let conectados = await Devicescom({ "info": datos.ID_EXTERNO_ONU })
-            console.log(conectados)
-            if(conectados.length>0){
-                setCount(conectados[0].InternetGatewayDevice.LANDevice["1"].Hosts.HostNumberOfEntries["_value"])
+            try {
+                console.log(datos)
+                let conectados = await Devicescom({ "info": datos.ID_EXTERNO_ONU })
+               
+                if (conectados.length > 0) {
+                    setCount(conectados[0].InternetGatewayDevice.LANDevice["1"].Hosts.HostNumberOfEntries["_value"])
+                }
+                Deviceslist({ "info": datos.ID_EXTERNO_ONU }).then(ouput => {
+                    //console.log(ouput)
+                    if (ouput.length > 0) {
+                        console.log("error list", ouput)
+                        //let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
+                        //setDevices(Object.values(dtso))
+                        //console.log(Object.values(dtso))
+                        let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
+                        const arrayDeObjetos: any = Object.keys(dtso).filter((key: any) => !isNaN(key)).map((clave) => ({
+                            host: clave,
+                            ...dtso[clave]
+                        }));
+                        setDevices(arrayDeObjetos)
+                        setCount(arrayDeObjetos.length)
+                        console.log(arrayDeObjetos)
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+                Nombressi({ "info": datos.ID_EXTERNO_ONU }).then(ouput => {
+                    console.log(ouput)
+                    if (ouput.length > 0) {
+                        let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSID"]._value
+                        setNickname(dst)
+                        setNicknameslice({ nickname: dst })
+                        console.log(dst)
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+                Estadossi({ "onu": datos.ID_EXTERNO_ONU }).then(ouput => {
+                    console.log("estado ssi", ouput)
+                    console.log(conectados, ouput.code)
+                    if (ouput.code == "ERR_BAD_RESPONSE"){
+                        console.log("ERR_BAD_RESPONSE")
+                    }
+                    if (ouput.length > 0) {
+                        let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSIDAdvertisementEnabled"]._value
+                        console.log(dst)
+                        let net: boolean = dst
+                        setFifi(net)
+                    }
+                }).catch(err => {
+                    console.log(err.response)
+                    console.log("err Estadossi")
+                })
+            } catch (error) {
+                console.log("err",error)
             }
-            Deviceslist({ "info": datos.ID_EXTERNO_ONU }).then(ouput => {
-                //console.log(ouput)
-                if (ouput.length > 0) {
-                    console.log("error list", ouput)
-                    //let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
-                    //setDevices(Object.values(dtso))
-                    //console.log(Object.values(dtso))
-                    let dtso = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["Hosts"]["Host"]
-                    const arrayDeObjetos: any = Object.keys(dtso).filter((key: any) => !isNaN(key)).map((clave) => ({
-                        host: clave,
-                        ...dtso[clave]
-                    }));
-                    setDevices(arrayDeObjetos)
-                    setCount(arrayDeObjetos.length)
-                    console.log(arrayDeObjetos)
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-            Nombressi({ "info": datos.ID_EXTERNO_ONU }).then(ouput => {
-                console.log(ouput)
-                if (ouput.length > 0) {
-                    let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSID"]._value
-                    setNickname(dst)
-                    setNicknameslice({ nickname: dst })
-                    console.log(dst)
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-            Estadossi({ "onu": datos.ID_EXTERNO_ONU }).then(ouput => {
-                console.log("estado ssi", ouput)
-                if (ouput.length > 0) {
-                    let dst = ouput[0]["InternetGatewayDevice"]["LANDevice"]["1"]["WLANConfiguration"]["1"]["SSIDAdvertisementEnabled"]._value
-                    console.log(dst)
-                    let net: boolean = dst
-                    setFifi(net)
-                }
-            }).catch(err => {
-                console.log(err)
-            })
+
         } else {
 
         }

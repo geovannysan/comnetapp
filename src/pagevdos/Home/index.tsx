@@ -64,50 +64,57 @@ export default function HomeView() {
                             <div className="col-12 pb-4 text-center estado" ><b className="me-1">Servicio: </b>{datos.estado == "ACTIVO" ? <span className="icon-circle border p-1 pe-2 rounded-pill color ">{datos.estado}</span> : <span className="icon-circle border p-1 pe-2 rounded-pill  ">{datos.estado}</span>} </div>
                             <div className="col-4 p-0 my-2 ">
                                 <div className="container p-1">
-                                    <a onClick={() => history.push("/home/perfil")} ><img src="img/botones-home/mis-datos-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/home/perfil")} >
+                                        <img src="img/botones-home/mis-datos-boton.png" loading="lazy" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
-                                    <a onClick={() => history.push("/home/plan") }><img src="img/botones-home/mi-plan-boton-wifi.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/home/plan") }>
+                                        <img src="img/botones-home/mi-plan-boton-wifi.png" loading="lazy" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
                                     <a onClick={soportes}>
-                                        <img src="img/botones-home/soporte-tecnico-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                        <img src="img/botones-home/soporte-tecnico-boton.png" loading="lazy" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block">
                                 <div className="container p-1">
-                                    <a onClick={() => history.push("/home/wifi")} ><img src="img/botones-home/mi-wifi-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/home/wifi")} >
+                                        <img src="img/botones-home/mi-wifi-boton.png" loading="lazy" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2">
                                 <div className="container p-1">
-                                    <a onClick={() => history.push("/home/pagos")}><img src="img/botones-home/reportar-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/home/pagos")}>
+                                        <img src="img/botones-home/reportar-pago-boton.png" loading="lazy" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 ">
                                 <div className="container p-1">
                                     <a
                                     onClick={ObtenerLocatio}
-                                    ><img src="img/botones-home/puntos-de-pago-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    ><img src="img/botones-home/puntos-de-pago-boton.png" loading="lazy" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2 block d-none">
                                 <div className="container p-1">
-                                    <a onClick={() => history.push("/plan")} ><img src="img/botones-home/cambio-de-plan-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a onClick={() => history.push("/plan")} >
+                                        <img src="img/botones-home/cambio-de-plan-boton.png" loading="lazy" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2">
                                 <div className="container p-1">
-                                    <a href="https://speed.com.ec/" target="_blank"><img src="img/botones-home/terminos-y-condiciones-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="https://speed.com.ec/" target="_blank">
+                                        <img src="img/botones-home/terminos-y-condiciones-boton.png" loading="lazy" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                             <div className="col-4 p-0 my-2">
                                 <div className="container p-1">
-                                    <a href="https://api.whatsapp.com/send?phone=593980850287&text=Hola%20que%20%tal"><img src="img/botones-home/contactanos-boton.png" className="img-fluid drop-shadow-1" alt=""/></a>
+                                    <a href="https://api.whatsapp.com/send?phone=593980850287&text=Hola%20que%20%tal">
+                                        <img src="img/botones-home/contactanos-boton.png" loading="lazy" className="img-fluid drop-shadow-1" alt=""/></a>
                                 </div>
                             </div>
                         </div>

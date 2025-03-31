@@ -70,7 +70,7 @@ export const Estadossi = async (parms) => {
         let { data } = await Axiosroot.post("MovilApi/hide", parms)
         return data
     } catch (error) {
-        return error
+        throw error
     }
 }
 /* visivilidad de la red  */

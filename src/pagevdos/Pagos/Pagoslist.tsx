@@ -20,14 +20,6 @@ export default function Pagoslist() {
             console.log(salida)
             if (salida.estado == "error") return
             setFacturaci(salida.facturas)
-            /* const sumaTotal = salida.facturas.reduce((acumulador, objeto) => {
-                 return acumulador + parseFloat(objeto.total);
-             }, 0);*/
-            //console.log(sumaTotal)
-            /* setFactu({
-                 total: salida.facturas.length,
-                 valor: sumaTotal
-             })*/
 
         }).catch(err => {
             console.log(err)
